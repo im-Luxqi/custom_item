@@ -20,7 +20,7 @@ import java.util.Map;
  * @date 2020-05-27 14:32
  */
 @Configuration
-public class JdbcConfig {
+public class JdbcConfiguration {
     @ConfigurationProperties(prefix = "spring.datasource")
     @Bean
     public DataSource dataSource(){
