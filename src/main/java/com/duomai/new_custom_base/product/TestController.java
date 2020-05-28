@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description
@@ -23,15 +24,14 @@ public class TestController {
 
     @GetMapping("/test")
     public String test() {
-//        iGenTableService.getById(1);
+        iGenTableService.getById(1);
         PagePvLog pagePvLog = new PagePvLog();
-//        pagePvLog.setId("1111111111111");
         pagePvLog.setBuyerNick("121231");
         pagePvLog.setPage("eee");
         pagePvLog.setCreateTime(new Date());
         pagePvLog.setUpdateTime(new Date());
-//        List<PagePvLog> all = pagePvLogRepository.findAll();
         pagePvLogRepository.save(pagePvLog);
+//        List<PagePvLog> all = pagePvLogRepository.findAll();
         return "success";
     }
 }

@@ -1,21 +1,17 @@
-# 开发环境配置
 server:
   port: 8888
 
 spring:
+  profiles:
+    active: @activatedYml@
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
   # 数据库访问配置
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/laboratory_system?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
-    username: root
-    password: root
-
     # 下面为连接池的补充设置，应用到上面所有数据源中
     # 初始化大小，最小，最大
     initialSize: 5
@@ -27,7 +23,7 @@ spring:
     timeBetweenEvictionRunsMillis: 60000
     # 配置一个连接在池中最小生存的时间，单位是毫秒
     minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT 1 FROM DUAL
+    validationQuery: SELECT 1
     testWhileIdle: true
     testOnBorrow: false
     testOnReturn: false
@@ -35,7 +31,7 @@ spring:
     poolPreparedStatements: true
     maxPoolPreparedStatementPerConnectionSize: 25
     # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
-    filters: stat,wall,logback
+    filters: stat,slf4j
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
     # 合并多个DruidDataSource的监控数据
@@ -65,3 +61,8 @@ mybatis-plus:
   #  type-enums-package: org.crown.common.enums,org.crown.framework.enums
   type-aliases-package: com.duomai.new_custom_base.product.*.domain
   type-handlers-package: com.duomai.new_custom_base.framework.mybatisplus.typehandler
+
+
+# 日志配置
+logging:
+  config: classpath:log4j2.xml

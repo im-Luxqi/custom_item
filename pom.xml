@@ -216,5 +216,21 @@
             </plugin>
         </plugins>
     </build>
-
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <activatedYml>dev</activatedYml>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <activatedYml>prod</activatedYml>
+            </properties>
+        </profile>
+    </profiles>
 </project>
