@@ -17,7 +17,6 @@ import java.util.Properties;
 public class MybatisPlusConfiguration {
 
 
-
     /**
      * 自定义注入语句
      *
@@ -27,6 +26,7 @@ public class MybatisPlusConfiguration {
     public MybatisPlusSqlInjector mybatisPlusSqlInjector() {
         return new MybatisPlusSqlInjector();
     }
+
     /***
      * plus 的性能优化
      */
@@ -36,7 +36,7 @@ public class MybatisPlusConfiguration {
         /* <!-- SQL 执行性能分析，开发环境使用，线上不推荐。 maxTime 指的是 sql 最大执行时长 --> */
         //performanceInterceptor.setMaxTime(1000);
         /* <!--SQL是否格式化 默认false--> */
-        performanceInterceptor.setFormat(false);
+        performanceInterceptor.setFormat(true);
         return performanceInterceptor;
     }
 
