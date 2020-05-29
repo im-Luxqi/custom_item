@@ -53,10 +53,10 @@
             </Policies>
             <DefaultRolloverStrategy max="30"/>
         </RollingRandomAccessFile>
-        <Rewrite name="REWRITE">
-            <AppenderRef ref="INFO_LOG"/>
-            <ConsoleLogPolicy/>
-        </Rewrite>
+<!--        <Rewrite name="REWRITE">-->
+<!--            <AppenderRef ref="INFO_LOG"/>-->
+<!--            <ConsoleLogPolicy/>-->
+<!--        </Rewrite>-->
     </Appenders>
     <Loggers>
         <!--AsyncLogger-->
@@ -67,7 +67,7 @@
         <!--AsyncRoot-->
         <AsyncRoot level="warn" includeLocation="true">
             <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="REWRITE"/>
+<!--            <appender-ref ref="REWRITE"/>-->
             <appender-ref ref="ERROR_LOG"/>
         </AsyncRoot>
     </Loggers>

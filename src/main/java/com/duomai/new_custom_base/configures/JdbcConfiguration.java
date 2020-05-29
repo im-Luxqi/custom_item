@@ -41,8 +41,6 @@ public class JdbcConfiguration {
         map.put(StatViewServlet.PARAM_NAME_PASSWORD, "admin123");
         //允许访问的ip，默认是所有ip
         map.put(StatViewServlet.PARAM_NAME_ALLOW, "");
-        //禁止访问的ip
-//        map.put(StatViewServlet.PARAM_NAME_DENY, "192.168.1.1");
         bean.setInitParameters(map);
         return bean;
     }

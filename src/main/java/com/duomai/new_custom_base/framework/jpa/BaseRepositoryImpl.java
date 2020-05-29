@@ -1,10 +1,9 @@
-package com.duomai.new_custom_base.api.product.base;
+package com.duomai.new_custom_base.framework.jpa;
 
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
-import java.util.List;
 
 /*
  * @description
