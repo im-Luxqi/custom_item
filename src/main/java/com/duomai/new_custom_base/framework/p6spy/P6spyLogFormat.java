@@ -42,12 +42,12 @@ public class P6spyLogFormat implements MessageFormattingStrategy {
                         .replaceAll(" VALUES ", "\r\nVALUES\r\n\t")
                         .replaceAll(" from ", "\r\nfrom\r\n\t")
                         .replaceAll(" FROM ", "\r\nFROM\r\n\t")
-                        .replaceAll(" where ", "\r\nwhere\r\n\t")
-                        .replaceAll(" WHERE ", "\r\nWHERE\r\n\t")
-                        .replaceAll(" order by ", "\r\norder by\r\n\t")
-                        .replaceAll(" ORDER BY ", "\r\nORDER BY\r\n\t")
-                        .replaceAll(" group by ", "\r\ngroup by\r\n\t")
-                        .replaceAll(" GROUP BY ", "\r\nGROUP BY\r\n\t")+";"
+                        .replaceAll(" where ", "\rwhere\r\n\t")
+                        .replaceAll(" WHERE ", "\rWHERE\r\n\t")
+                        .replaceAll(" order by ", "\rorder by\r\n\t")
+                        .replaceAll(" ORDER BY ", "\rORDER BY\r\n\t")
+                        .replaceAll(" group by ", "\rgroup by\r\n\t")
+                        .replaceAll(" GROUP BY ", "\rGROUP BY\r\n\t")+";"
                 ;
     }
 

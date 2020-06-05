@@ -1,0 +1,13 @@
+package ${packageName}.service;
+
+import com.duomai.new_custom_base.framework.service.BaseService;
+import ${packageName}.domain.${ClassName};
+
+/**
+ * ${functionName} 服务层
+ *
+ * @author system
+ */
+public interface I${ClassName}Service extends BaseService<${ClassName}> {
+
+}

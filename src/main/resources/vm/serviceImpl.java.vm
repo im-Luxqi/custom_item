@@ -1,0 +1,17 @@
+package ${packageName}.service.impl;
+
+import com.duomai.new_custom_base.framework.service.impl.BaseServiceImpl;
+import ${packageName}.service.I${ClassName}Service;
+import ${packageName}.domain.${ClassName};
+import ${packageName}.mapper.${ClassName}Mapper;
+import org.springframework.stereotype.Service;
+
+/**
+ * ${functionName} 服务层实现
+ *
+ * @author system
+ */
+@Service
+public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}Mapper, ${ClassName}> implements I${ClassName}Service {
+
+}

@@ -1,14 +1,13 @@
 package com.duomai.new_custom_base.product;
 
-import com.duomai.new_custom_base.api.product.entity.PagePvLog;
-import com.duomai.new_custom_base.api.product.repository.PagePvLogRepository;
-import com.duomai.new_custom_base.product.gen.service.IGenTableService;
+import com.duomai.new_custom_base.api.product.pagepv.entity.PagePvLog;
+import com.duomai.new_custom_base.api.product.pagepv.repository.PagePvLogRepository;
+import com.duomai.new_custom_base.api.product.gen.service.IGenTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @description

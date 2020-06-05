@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title th:text="导入表结构"></title>
+    <link rel="shortcut icon" href="../static/favicon.ico">
+    <link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/static/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link th:href="@{/static/css/bootstrap-table.min.css}" rel="stylesheet"/>
+</head>
+
+<body class="gray-bg">
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="gen-form">
+                <div class="select-list">
+                    <ul>
+                        <li>
+                            表名称：<input type="text" name="tableName"/>
+                        </li>
+                        <li>
+                            表描述：<input type="text" name="tableComment"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="reSearch()">搜索</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table2" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<div>
+    <script th:inline="javascript"> var ctx = [[@{/}]]; </script>
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+    <script th:src="@{/static/js/bootstrap.min.js}"></script>
+    <script th:src="@{/static/js/bootstrap-table.min.js}"></script>
+    <script th:src="@{/static/js/jquery.blockUI.js}"></script>
+    <script th:src="@{/static/layer/layer.min.js}"></script>
+</div>
+<script type="text/javascript">
+    var prefix = ctx + "tool/gen";
+
+    $(function () {
+        //1.初始化Table
+        var oTable = new TableInit();
+        oTable.Init();
+    });
+
+
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#bootstrap-table2').bootstrapTable({
+                url: prefix + "/db/list",         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                // contentType: "application/json",   // 编码类型
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                // sortable: false,                     //是否启用排序
+                // sortOrder: "asc",                   //排序方式
+                queryParams: oTableInit.queryParams,//传递参数（*）
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+                // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                // strictSearch: true,
+                // showColumns: true,                  //是否显示所有的列
+                // showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                // height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                // cardView: false,                    //是否显示详细视图
+                // detailView: false,                   //是否显示父子表
+                columns: [{
+                    checkbox: true
+                },
+                    {
+                        title: "序号",
+                        formatter: function (value, row, index) {
+                            var table = $('#bootstrap-table2').bootstrapTable('getOptions');
+                            var pageSize = table.pageSize;
+                            var pageNumber = table.pageNumber;
+                            return pageSize * (pageNumber - 1) + index + 1;
+                        }
+                    },
+                    {
+                        field: 'tableName',
+                        title: '表名称',
+                        width: '35%',
+                        sortable: true
+                    },
+                    {
+                        field: 'tableComment',
+                        title: '表描述',
+                        width: '55%',
+                        sortable: true
+                    }]                //列设置
+            });
+        };
+
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var curParams = {
+                // 传递参数查询参数
+                pageSize: params.limit,
+                pageNum: params.offset / params.limit + 1,
+                tableName: $("[name='tableName']").val(),
+                tableComment: $("[name='tableComment']").val(),
+            };
+            if (!curParams.pageNum) {
+                curParams.pageNum = 1;
+            }
+            return curParams;
+        };
+        return oTableInit;
+    };
+
+    /* 导入表结构-选择表结构-提交 */
+    function submitHandler() {
+        var rows = $.map($('#bootstrap-table2').bootstrapTable('getSelections'), function (row) {
+            return row["tableName"];
+        });
+        console.log(rows);
+        if (rows.length == 0) {
+            layer.alert("老哥，至少选择一条记录", {
+                // icon: $.modal.icon(type),
+                title: "系统提示",
+                btn: ['确认'],
+                btnclass: ['btn btn-primary'],
+            });
+            return;
+        }
+        $.ajax({
+            url: prefix + "/importTable",
+            type: "post",
+            dataType: "json",
+            data: {"tables": rows.join()},
+            success: function (result) {
+
+            }
+        });
+        console.log(11111);
+        $(".layui-layer-btn1").click();
+    }
+
+    function reSearch() {
+        $('#bootstrap-table2').bootstrapTable('refresh');
+    }
+</script>
+</body>
+</html>

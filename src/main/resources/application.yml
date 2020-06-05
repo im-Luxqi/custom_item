@@ -60,7 +60,7 @@ mybatis-plus:
     banner: false
     super-mapper-class: com.duomai.new_custom_base.framework.mapper.BaseMapper
   #  type-enums-package: org.crown.common.enums,org.crown.framework.enums
-  type-aliases-package: com.duomai.new_custom_base.product.*.domain
+  type-aliases-package: com.duomai.new_custom_base.product.*.domain,com.duomai.new_custom_base.api.product.*.domain
   type-handlers-package: com.duomai.new_custom_base.framework.mybatisplus.typehandler
 
 

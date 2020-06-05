@@ -1,0 +1,35 @@
+package ${packageName}.domain;
+
+#foreach ($column in $columns)
+#if($column.attrType == 'Date')
+	#break
+#end
+#end
+#foreach ($column in $columns)
+#if($column.attrType == 'BigDecimal')
+	#break
+#end
+#end
+
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * ${functionName}表 ${tableName}
+ *
+ * @author system
+ */
+@Setter
+@Getter
+public class ${ClassName} {
+
+	private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+	/**
+	 * $column.columnComment
+	 */
+	private $column.javaType $column.javaField;
+#end
+
+}

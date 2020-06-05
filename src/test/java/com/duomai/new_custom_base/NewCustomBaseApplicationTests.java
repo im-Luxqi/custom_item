@@ -1,6 +1,6 @@
 package com.duomai.new_custom_base;
 
-import com.duomai.new_custom_base.product.gen.service.IGenTableService;
+import com.duomai.new_custom_base.api.product.gen.service.IGenTableService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
