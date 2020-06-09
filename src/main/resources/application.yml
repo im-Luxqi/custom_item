@@ -58,7 +58,7 @@ mybatis-plus:
       update-strategy: not_null
       select-strategy: not_empty
     banner: false
-    super-mapper-class: com.duomai.new_custom_base.framework.mapper.BaseMapper
+    super-mapper-class: com.duomai.new_custom_base.framework.mybatisplus.mapper.BaseMapper
   #  type-enums-package: org.crown.common.enums,org.crown.framework.enums
   type-aliases-package: com.duomai.new_custom_base.product.*.domain
   type-handlers-package: com.duomai.new_custom_base.framework.mybatisplus.typehandler

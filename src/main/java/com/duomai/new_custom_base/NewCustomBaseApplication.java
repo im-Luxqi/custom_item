@@ -23,9 +23,9 @@ public class NewCustomBaseApplication {
             path = "";
         }
         log.info("\n----------------------------------------------------------\n\t" +
-                "Application is running! Access URLs:\n\t" +
-                "Local: \thttp://localhost:" + port + path + "/\n\t" +
-                "Druid: \thttp://" + ip + ":" + port + path + "/druid\t(admin/admin123)\n\t" +
+                "启动成功!  URLs:\n\t" +
+                "生成实体类: \thttp://localhost:" + port + path + "/\n\t" +
+                "SQL监控: \thttp://" + ip + ":" + port + path + "/druid\t(root/root)\n\t" +
                 "----------------------------------------------------------");
     }
 

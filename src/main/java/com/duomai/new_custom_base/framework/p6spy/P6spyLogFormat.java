@@ -33,21 +33,20 @@ public class P6spyLogFormat implements MessageFormattingStrategy {
 
     @Override
     public String formatMessage(final int connectionId, final String now, final long elapsed, final String category, final String prepared, final String sql, final String url) {
-        if ("".equals(sql.trim()) || "SELECT 1".equals(sql))
+        if ("".equals(sql.trim()))
             return "";
         return this.format.format(new Date()) + " | SQL耗时 " + elapsed + "ms  | 连接信息 " + connectionId + "\t\n" +
                 sql
-//                        .replaceAll(" \\(", " \r\n\t\\(")
-                        .replaceAll(" values ", "\r\nvalues\r\n\t")
-                        .replaceAll(" VALUES ", "\r\nVALUES\r\n\t")
-                        .replaceAll(" from ", "\r\nfrom\r\n\t")
-                        .replaceAll(" FROM ", "\r\nFROM\r\n\t")
-                        .replaceAll(" where ", "\rwhere\r\n\t")
-                        .replaceAll(" WHERE ", "\rWHERE\r\n\t")
-                        .replaceAll(" order by ", "\rorder by\r\n\t")
-                        .replaceAll(" ORDER BY ", "\rORDER BY\r\n\t")
-                        .replaceAll(" group by ", "\rgroup by\r\n\t")
-                        .replaceAll(" GROUP BY ", "\rGROUP BY\r\n\t")+";"
+//                        .replaceAll(" values ", "\r\nvalues\r\n\t")
+//                        .replaceAll(" VALUES ", "\r\nVALUES\r\n\t")
+//                        .replaceAll(" from ", "\r\nfrom\r\n\t")
+//                        .replaceAll(" FROM ", "\r\nFROM\r\n\t")
+//                        .replaceAll(" where ", "\rwhere\r\n\t")
+//                        .replaceAll(" WHERE ", "\rWHERE\r\n\t")
+//                        .replaceAll(" order by ", "\rorder by\r\n\t")
+//                        .replaceAll(" ORDER BY ", "\rORDER BY\r\n\t")
+//                        .replaceAll(" group by ", "\rgroup by\r\n\t")
+//                        .replaceAll(" GROUP BY ", "\rGROUP BY\r\n\t")+";"
                 ;
     }
 

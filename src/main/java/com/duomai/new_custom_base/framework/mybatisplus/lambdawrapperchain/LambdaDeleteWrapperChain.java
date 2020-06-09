@@ -26,7 +26,7 @@ import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.toolkit.ExceptionUtils;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.additional.AbstractChainWrapper;
-import com.duomai.new_custom_base.framework.service.BaseService;
+import com.duomai.new_custom_base.framework.mybatisplus.service.BaseService;
 
 import java.util.function.Predicate;
 

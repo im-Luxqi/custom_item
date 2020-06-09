@@ -1,7 +1,6 @@
 package ${packageName}.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
-import com.duomai.new_custom_base.framework.mapper.BaseMapper
+import com.duomai.new_custom_base.framework.mybatisplus.mapper.BaseMapper
 import ${packageName}.domain.${ClassName};
 
 /**

@@ -37,8 +37,8 @@ public class JdbcConfiguration {
         ServletRegistrationBean<StatViewServlet> bean = new ServletRegistrationBean<>(new StatViewServlet(), "/druid/*");
         Map<String, String> map = new HashMap<>();
         //访问的用户名密码
-        map.put(StatViewServlet.PARAM_NAME_USERNAME, "admin");
-        map.put(StatViewServlet.PARAM_NAME_PASSWORD, "admin123");
+        map.put(StatViewServlet.PARAM_NAME_USERNAME, "root");
+        map.put(StatViewServlet.PARAM_NAME_PASSWORD, "root");
         //允许访问的ip，默认是所有ip
         map.put(StatViewServlet.PARAM_NAME_ALLOW, "");
         bean.setInitParameters(map);
