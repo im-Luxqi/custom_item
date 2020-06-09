@@ -1,6 +1,6 @@
 package com.duomai.new_custom_base.api.product.gen;
 
-import com.duomai.new_custom_base.api.product.gen.domain.GenTable;
+import com.duomai.new_custom_base.api.product.gen.entity.GenTable;
 import io.jsonwebtoken.lang.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.VelocityContext;
@@ -23,62 +23,23 @@ public class VelocityUtils {
     private static final String MYBATIS_PATH = "main/resources/mapper";
 
     /**
-     * html空间路径
-     */
-    private static final String TEMPLATES_PATH = "main/resources/templates";
-
-    /**
      * 设置模板变量信息
      *
      * @return 模板列表
      */
     public static VelocityContext prepareContext(GenTable genTable) {
-        String moduleName = genTable.getModuleName();
-        String businessName = genTable.getBusinessName();
         String packageName = genTable.getPackageName();
-//        String tplCategory = genTable.getTplCategory();
         String functionName = genTable.getFunctionName();
 
         VelocityContext velocityContext = new VelocityContext();
-//        velocityContext.put("tplCategory", genTable.getTplCategory());
         velocityContext.put("tableName", genTable.getTableName());
         velocityContext.put("functionName", StringUtils.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
         velocityContext.put("ClassName", genTable.getClassName());
-        velocityContext.put("className", StringUtils.uncapitalize(genTable.getClassName()));
-        velocityContext.put("moduleName", genTable.getModuleName());
-        velocityContext.put("businessName", genTable.getBusinessName());
-        velocityContext.put("basePackage", getPackagePrefix(packageName));
         velocityContext.put("packageName", packageName);
-//        velocityContext.put("author", genTable.getFunctionAuthor());
-//        velocityContext.put("datetime", parseDateToStr(format, new Date()));
-        velocityContext.put("pkColumn", genTable.getPkColumn());
-//        velocityContext.put("importList", getImportList(genTable.getColumns()));
-//        velocityContext.put("permissionPrefix", getPermissionPrefix(moduleName, businessName));
         velocityContext.put("columns", genTable.getColumns());
-        velocityContext.put("table", genTable);
-//        if (GenConstants.TPL_TREE.equals(tplCategory)) {
-//            setTreeVelocityContext(velocityContext, genTable);
-//        }
         return velocityContext;
     }
-    /*public static void setTreeVelocityContext(VelocityContext context, GenTable genTable) {
-        String options = genTable.getOptions();
-        JSONObject paramsObj = JSONObject.parseObject(options);
-        String treeCode = getTreecode(paramsObj);
-        String treeParentCode = getTreeParentCode(paramsObj);
-        String treeName = getTreeName(paramsObj);
 
-        context.put("treeCode", treeCode);
-        context.put("treeParentCode", treeParentCode);
-        context.put("treeName", treeName);
-        context.put("expandColumn", getExpandColumn(genTable));
-        if (paramsObj.containsKey(GenConstants.TREE_PARENT_CODE)) {
-            context.put("tree_parent_code", paramsObj.getString(GenConstants.TREE_PARENT_CODE));
-        }
-        if (paramsObj.containsKey(GenConstants.TREE_NAME)) {
-            context.put("tree_name", paramsObj.getString(GenConstants.TREE_NAME));
-        }
-    }*/
 
     /**
      * 获取模板信息
@@ -108,11 +69,9 @@ public class VelocityUtils {
         // 大写类名
         String className = genTable.getClassName();
         // 业务名称
-        String businessName = genTable.getBusinessName();
 
         String javaPath = PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
         String mybatisPath = MYBATIS_PATH + "/" + moduleName;
-        String htmlPath = TEMPLATES_PATH + "/" + moduleName + "/" + businessName;
 
         if (template.contains("domain.java.vm")) {
             fileName = format("{}/domain/{}.java", javaPath, className);
@@ -205,97 +164,7 @@ public class VelocityUtils {
         return StringUtils.substring(packageName, 0, lastIndex);
     }
 
-    /**
-     * 根据列类型获取导入包
-     *
-     * @param columns 列集合
-     * @return 返回需要导入的包列表
-     */
-    /*public static HashSet<String> getImportList(List<GenTableColumn> columns) {
-        HashSet<String> importList = new HashSet<>();
-        for (GenTableColumn column : columns) {
-            if (!column.isSuperColumn() && GenConstants.TYPE_DATE.equals(column.getJavaType())) {
-                importList.add("java.util.Date");
-            } else if (!column.isSuperColumn() && GenConstants.TYPE_BIGDECIMAL.equals(column.getJavaType())) {
-                importList.add("java.math.BigDecimal");
-            }
-        }
-        return importList;
-    }*/
 
-    /**
-     * 获取权限前缀
-     *
-     * @param moduleName   模块名称
-     * @param businessName 业务名称
-     * @return 返回权限前缀
-     */
-  /*  public static String getPermissionPrefix(String moduleName, String businessName) {
-        return StringUtils.format("{}:{}", moduleName, businessName);
-
-    }
-*/
-    /**
-     * 获取树编码
-     *
-     * @param paramsObj 生成其他选项
-     * @return 树编码
-     */
-  /*  public static String getTreecode(JSONObject paramsObj) {
-        if (paramsObj.containsKey(GenConstants.TREE_CODE)) {
-            return StringUtils.toCamelCase(paramsObj.getString(GenConstants.TREE_CODE));
-        }
-        return "";
-    }
-*/
-    /**
-     * 获取树父编码
-     *
-     * @param paramsObj 生成其他选项
-     * @return 树父编码
-     */
-   /* public static String getTreeParentCode(JSONObject paramsObj) {
-        if (paramsObj.containsKey(GenConstants.TREE_PARENT_CODE)) {
-            return StringUtils.toCamelCase(paramsObj.getString(GenConstants.TREE_PARENT_CODE));
-        }
-        return "";
-    }*/
-
-    /**
-     * 获取树名称
-     *
-     * @param paramsObj 生成其他选项
-     * @return 树名称
-     */
-   /* public static String getTreeName(JSONObject paramsObj) {
-        if (paramsObj.containsKey(GenConstants.TREE_NAME)) {
-            return StringUtils.toCamelCase(paramsObj.getString(GenConstants.TREE_NAME));
-        }
-        return "";
-    }*/
-
-    /**
-     * 获取需要在哪一列上面显示展开按钮
-     *
-     * @param genTable 业务表对象
-     * @return 展开按钮列序号
-     */
-    /*public static int getExpandColumn(GenTable genTable) {
-        String options = genTable.getOptions();
-        JSONObject paramsObj = JSONObject.parseObject(options);
-        String treeName = paramsObj.getString(GenConstants.TREE_NAME);
-        int num = 0;
-        for (GenTableColumn column : genTable.getColumns()) {
-            if (column.isList()) {
-                num++;
-                String columnName = column.getColumnName();
-                if (columnName.equals(treeName)) {
-                    break;
-                }
-            }
-        }
-        return num;
-    }*/
 
     /**
      * 将对象转为字符串<br>

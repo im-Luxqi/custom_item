@@ -15,9 +15,9 @@ import java.util.Date;
  */
 @Data
 @Entity
-@Table(name = "page_pv_log")
-@org.hibernate.annotations.Table(appliesTo = "page_pv_log", comment = "各个页面的pv")
-public class PagePvLog {
+@Table(name = "sys_page_pv_log")
+@org.hibernate.annotations.Table(appliesTo = "sys_page_pv_log", comment = "各个页面的pv")
+public class SysPagePvLog {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")

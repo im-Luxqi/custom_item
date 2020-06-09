@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 
 import javax.persistence.EntityManager;
 import java.io.Serializable;
+import java.util.List;
 
 /*
  * @description

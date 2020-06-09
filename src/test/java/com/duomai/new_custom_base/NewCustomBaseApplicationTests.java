@@ -1,6 +1,6 @@
 package com.duomai.new_custom_base;
 
-import com.duomai.new_custom_base.api.product.gen.service.IGenTableService;
+import com.duomai.new_custom_base.api.product.gen.repository.GenTableRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +16,7 @@ class NewCustomBaseApplicationTests {
     //    @Autowired
 //    CityService cityService;
     @Autowired
-    IGenTableService iGenTableService;
+    GenTableRepository genTableRepository;
 
     @Test
     void contextLoads() throws SQLException {
@@ -28,7 +28,8 @@ class NewCustomBaseApplicationTests {
 
     @Test
     void mptest() {
-        iGenTableService.getById(1);
+        genTableRepository.selectDbTableListByNames(null);
+//        iGenTableService.getById(1);
 //        City byId = cityService.getById(1);
 //        System.out.println("-----------------------------" + byId.getCityName());
     }
