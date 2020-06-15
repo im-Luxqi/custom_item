@@ -1,11 +1,11 @@
 package com.duomai.new_custom_base.api.product.gen.controller;
 
-import com.duomai.new_custom_base.api.product.gen.GenUtils;
-import com.duomai.new_custom_base.api.product.gen.VelocityInitializer;
-import com.duomai.new_custom_base.api.product.gen.VelocityUtils;
 import com.duomai.new_custom_base.api.product.gen.entity.GenTable;
 import com.duomai.new_custom_base.api.product.gen.entity.GenTableColumn;
 import com.duomai.new_custom_base.api.product.gen.repository.GenTableRepository;
+import com.duomai.new_custom_base.api.product.gen.tools.GenUtils;
+import com.duomai.new_custom_base.api.product.gen.tools.VelocityInitializer;
+import com.duomai.new_custom_base.api.product.gen.tools.VelocityUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
@@ -30,9 +30,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * @description
- * @create by 王星齐
- * @date 2020-05-29 14:27
+ * gen 生成
  */
 @Controller
 @RequestMapping("/tool/gen")
@@ -60,6 +58,14 @@ public class GenController {
         return "gen/importTable";
     }
 
+    /**
+     * 可生成表列表
+     */
+    @GetMapping("/table")
+    public String table() {
+        return "gen/table";
+    }
+
     @PostMapping("/importTable")
     @ResponseBody
     public void importTableSave(String tables) {
@@ -77,9 +83,10 @@ public class GenController {
 
     @PostMapping("/remove")
     @ResponseBody
-    public void remveTable(String tableId) {
+    public String remveTable(String tableId) {
         if (StringUtils.isNotBlank(tableId))
             genTableRepository.deleteById(Long.valueOf(tableId));
+        return "success";
     }
 
     @GetMapping("/db/list")

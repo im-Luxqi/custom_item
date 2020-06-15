@@ -1,4 +1,4 @@
-package com.duomai.new_custom_base.api.product.gen;
+package com.duomai.new_custom_base.api.product.gen.tools;
 
 /**
  * 代码生成通用常量

@@ -1,4 +1,4 @@
-package com.duomai.new_custom_base.api.product.gen;
+package com.duomai.new_custom_base.api.product.gen.tools;
 
 import java.util.HashMap;
 import java.util.Map;

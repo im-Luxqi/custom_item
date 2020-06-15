@@ -1,4 +1,4 @@
-package com.duomai.new_custom_base.api.product.gen;
+package com.duomai.new_custom_base.api.product.gen.tools;
 
 import com.duomai.new_custom_base.api.product.gen.entity.GenTable;
 import com.duomai.new_custom_base.api.product.gen.entity.GenTableColumn;

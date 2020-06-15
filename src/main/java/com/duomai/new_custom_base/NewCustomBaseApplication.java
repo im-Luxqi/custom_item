@@ -24,7 +24,7 @@ public class NewCustomBaseApplication {
         }
         log.info("\n----------------------------------------------------------\n\t" +
                 "启动成功!  URLs:\n\t" +
-                "生成实体类: \thttp://localhost:" + port + path + "/\n\t" +
+                "生成实体类: \thttp://localhost:" + port + path + "/tool/gen/table\n\t" +
                 "SQL监控: \thttp://" + ip + ":" + port + path + "/druid\t(root/root)\n\t" +
                 "----------------------------------------------------------");
     }

@@ -99,16 +99,6 @@
                         sortable: true
                     },
                     {
-                        field: 'createTime',
-                        title: '创建时间',
-                        sortable: true
-                    },
-                    {
-                        field: 'updateTime',
-                        title: '更新时间',
-                        sortable: true
-                    },
-                    {
                         title: '操作',
                         align: 'center',
                         formatter: function (value, row, index) {
@@ -144,7 +134,7 @@
             $.each(result, function (index, value) {
                 value = value.replace(/</g, "&lt;");
                 value = value.replace(/>/g, "&gt;");
-                var templateName = index.substring(index.lastIndexOf("/") + 1, index.length).replace(/\.vm/g, "");
+                var templateName = table.substring(table.lastIndexOf("/") + 1, table.length).replace(/\.vm/g, "");
                 if ("sql" != templateName) {
                     items.push({
                         title: templateName, content: "<pre class=\"layui-code\">" + value + "</pre>"
@@ -180,20 +170,8 @@
             url: prefix + "/batchGenCode",
             type: "post",
             dataType: "json",
-            data: {"tables":  rows.join()},
-            success: function (result) {
-
-            }
+            data: {"tables": rows.join()}
         });
-        // layer.confirm("确认要生成？", {
-        //     icon: 3,
-        //     title: "系统提示",
-        //     btn: ['确认', '取消']
-        // }, function (index) {
-        //     layer.close(index);
-        //     location.href = prefix + "/batchGenCode/" + rows.join();
-        // });
-
     }
 
     function remove(tableId) {
@@ -202,12 +180,10 @@
             url: prefix + "/remove",
             type: "post",
             dataType: "json",
-            data: {"tableId": tableId},
-            success: function (result) {
-
-            }
+            async: false,
+            data: {"tableId": tableId}
         });
-        $('#bootstrap-table').bootstrapTable('refresh');
+        refreshTableContent();
     }
 
 
@@ -228,9 +204,8 @@
             yes: function (index, layero) {
                 var iframeWin = layero.find('iframe')[0];
                 iframeWin.contentWindow.submitHandler(index, layero);
-                // $(".layui-layer-btn1").click();
                 setTimeout(function () {
-                    $('#bootstrap-table').bootstrapTable('refresh');
+                    refreshTableContent();
                     layer.close(index);
                 }, 50);
 
@@ -240,6 +215,11 @@
             }
         });
     }
+
+    function refreshTableContent() {
+        $('#bootstrap-table').bootstrapTable('refresh');
+    }
+
 </script>
 </body>
 </html>
