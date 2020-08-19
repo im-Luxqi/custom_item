@@ -8,10 +8,6 @@ import java.util.Date;
 
 /**
  * 记录各个页面的pv
- *
- * @description
- * @create by 王星齐
- * @date 2020-05-18 11:19
  */
 @Data
 @Entity

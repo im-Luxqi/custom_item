@@ -22,12 +22,12 @@ package com.duomai.new_custom_base.framework.mybatisplus.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.enums.SqlMethod;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.toolkit.*;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.core.toolkit.support.SerializedLambda;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.duomai.new_custom_base.framework.mybatisplus.mapper.BaseMapper;
 import com.duomai.new_custom_base.framework.mybatisplus.service.BaseService;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.session.SqlSession;
@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  * 基础Service实现 继承于Mybatis-plus
  * </p>
  */
-//@Transactional(readOnly = true)
+@Transactional(readOnly = true)
 public class BaseServiceImpl<M extends BaseMapper<T>, T> implements BaseService<T> {
 
     @Autowired

@@ -1,5 +1,8 @@
 package com.duomai.new_custom_base;
 
+import com.alibaba.fastjson.JSON;
+import com.duomai.new_custom_base.common.tool.ApplicationUtils;
+import com.duomai.new_custom_base.configures.SysProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +15,6 @@ import java.net.UnknownHostException;
 @Slf4j
 @SpringBootApplication
 public class NewCustomBaseApplication {
-
     public static void main(String[] args) throws UnknownHostException {
         ConfigurableApplicationContext application = SpringApplication.run(NewCustomBaseApplication.class, args);
         Environment env = application.getEnvironment();
@@ -27,6 +29,7 @@ public class NewCustomBaseApplication {
                 "生成实体类: \thttp://localhost:" + port + path + "/tool/gen/table\n\t" +
                 "SQL监控: \thttp://" + ip + ":" + port + path + "/druid\t(root/root)\n\t" +
                 "----------------------------------------------------------");
+        log.info(JSON.toJSONString(ApplicationUtils.getBean(SysProperties.class)));
     }
 
 }

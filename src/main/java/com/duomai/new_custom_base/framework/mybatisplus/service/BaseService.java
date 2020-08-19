@@ -1,4 +1,4 @@
-/*
+package com.duomai.new_custom_base.framework.mybatisplus.service;/*
  * Copyright (c) 2018-2022 Caratacus, (caratacus@qq.com).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -18,7 +18,6 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.duomai.new_custom_base.framework.mybatisplus.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;

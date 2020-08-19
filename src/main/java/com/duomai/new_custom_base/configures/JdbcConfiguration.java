@@ -3,6 +3,7 @@ package com.duomai.new_custom_base.configures;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -21,6 +22,10 @@ import java.util.Map;
  */
 @Configuration
 public class JdbcConfiguration {
+
+    @Autowired
+    private SysProperties sysProperties;
+
     @ConfigurationProperties(prefix = "spring.datasource")
     @Bean
     public DataSource dataSource(){
@@ -37,8 +42,8 @@ public class JdbcConfiguration {
         ServletRegistrationBean<StatViewServlet> bean = new ServletRegistrationBean<>(new StatViewServlet(), "/druid/*");
         Map<String, String> map = new HashMap<>();
         //访问的用户名密码
-        map.put(StatViewServlet.PARAM_NAME_USERNAME, "root");
-        map.put(StatViewServlet.PARAM_NAME_PASSWORD, "root");
+        map.put(StatViewServlet.PARAM_NAME_USERNAME, sysProperties.getDruidConfig().getMonitorUsername());
+        map.put(StatViewServlet.PARAM_NAME_PASSWORD, sysProperties.getDruidConfig().getMonitorPassword());
         //允许访问的ip，默认是所有ip
         map.put(StatViewServlet.PARAM_NAME_ALLOW, "");
         bean.setInitParameters(map);
