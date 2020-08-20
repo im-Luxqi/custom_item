@@ -1,8 +1,9 @@
-package com.duomai.project.api.tool;
+package com.duomai.project.api.gateway.tool;
 
 
 import com.duomai.common.util.EncryptUtil;
 import com.duomai.common.util.MD5Utils;
+import com.duomai.project.api.gateway.dto.ApiSysParameter;
 import com.duomai.project.tool.ApplicationUtils;
 import com.duomai.starter.SysProperties;
 import org.bouncycastle.util.encoders.Hex;

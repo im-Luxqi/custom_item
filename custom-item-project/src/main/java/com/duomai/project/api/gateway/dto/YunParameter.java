@@ -1,4 +1,4 @@
-package com.duomai.common.dto;
+package com.duomai.project.api.gateway.dto;
 
 
 import lombok.Data;

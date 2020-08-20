@@ -1,8 +1,6 @@
-package com.duomai.project.api.tool;
+package com.duomai.project.api.gateway.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.duomai.common.dto.ApiParameter;
-import com.duomai.common.dto.YunTokenParameter;
 import lombok.Data;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,18 +45,18 @@ public class ApiSysParameter {
     }
 
     public void findYunTokenParameter(HttpServletRequest request) {
-        String userNick=request.getParameter("user_nick");
-        String mixNick=request.getParameter("mix_nick");
-        String openUid=request.getParameter("open_id");
-        String dmZNick=request.getParameter("dmZNick");
-        String dmAvatar=request.getParameter("dmAvatar");
+        String userNick = request.getParameter("user_nick");
+        String mixNick = request.getParameter("mix_nick");
+        String openUid = request.getParameter("open_id");
+        String dmZNick = request.getParameter("dmZNick");
+        String dmAvatar = request.getParameter("dmAvatar");
 
         YunTokenParameter yunTokenParameter = new YunTokenParameter();
         yunTokenParameter.setAppKey(this.params.getCommomParameter().getAppkey());
         yunTokenParameter.setBuyerNick(mixNick);
         yunTokenParameter.setUserNick(userNick);
         yunTokenParameter.setOpenUId(openUid);
-        yunTokenParameter.setTimestamp(System.currentTimeMillis()+"");
+        yunTokenParameter.setTimestamp(System.currentTimeMillis() + "");
         yunTokenParameter.setDmAvatar(dmAvatar);
         yunTokenParameter.setDmZNick(dmZNick);
     }

@@ -1,8 +1,8 @@
 package com.duomai.project.api.gateway;
 
-import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.api.gateway.service.IApiExecute;
-import com.duomai.project.api.tool.ApiSysParameter;
+import com.duomai.project.api.gateway.dto.ApiSysParameter;
+import com.duomai.project.api.gateway.dto.YunReturnValue;
+import com.duomai.project.api.gateway.execute.IApiExecute;
 import com.duomai.project.tool.ApplicationUtils;
 import org.springframework.context.ApplicationContext;
 
