@@ -1,8 +1,5 @@
 package com.duomai.project;
 
-import com.alibaba.fastjson.JSON;
-import com.duomai.project.tool.ApplicationUtils;
-import com.duomai.starter.SysProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,13 +22,14 @@ public class CustomItemProjectApplication {
         String ip = InetAddress.getLocalHost().getHostAddress();
         String port = env.getProperty("server.port");
         String path = env.getProperty("server.servlet.context-path");
+        String druid = env.getProperty("sys.druidConfig.monitorUsername") + "/" + env.getProperty("sys.druidConfig.monitorPassword");
         if (path == null || "null".equals(path)) {
             path = "";
         }
         log.info("\n----------------------------------------------------------\n\t" +
                 "启动成功!  URLs:\n\t" +
                 "生成实体类: \thttp://localhost:" + port + path + "/tool/gen/table\n\t" +
-                "SQL监控: \thttp://" + ip + ":" + port + path + "/druid\t(root/root)\n\t" +
+                "SQL监控: \thttp://" + ip + ":" + port + path + "/druid\t(" + druid + ")\n\t" +
                 "----------------------------------------------------------");
     }
 

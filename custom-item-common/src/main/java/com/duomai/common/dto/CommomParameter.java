@@ -1,7 +1,9 @@
-package com.duomai.project.api.gateway.dto;
+package com.duomai.common.dto;
 
 
 import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * 公共参数
@@ -17,16 +19,19 @@ public class CommomParameter {
     /**
      * 分配给应用的AppKey
      */
+    @NotBlank(message = "AppKey不能为空")
     private String appkey;
 
     /**
      * 时间戳
      */
+    @NotBlank(message = "时间戳不能为空")
     private String timestamp;
 
     /**
      * API请求签名
      */
+    @NotBlank(message = "签名不能为空")
     private String sign;
 
     /**
@@ -34,10 +39,6 @@ public class CommomParameter {
      */
     private String siid;
 
-    /**
-     * 选择的门店id
-     */
-    private String storeId;
 
     /**
      * 令牌
@@ -47,10 +48,6 @@ public class CommomParameter {
      * 返回数据类型R2(混淆数据)和R1(明文数据)
      */
     private String returnDataType;
-
-    private Long userId;
-
-//    private TblUser user;
 
     private String admjsonStr;
 

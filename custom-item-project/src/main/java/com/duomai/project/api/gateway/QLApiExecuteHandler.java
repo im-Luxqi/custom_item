@@ -1,8 +1,9 @@
 package com.duomai.project.api.gateway;
 
-import com.duomai.project.api.gateway.dto.ApiSysParameter;
-import com.duomai.project.api.gateway.dto.YunReturnValue;
-import com.duomai.project.api.gateway.execute.IApiExecute;
+import com.duomai.common.base.execute.IApiExecute;
+import com.duomai.common.dto.ApiSysParameter;
+import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.product.demo.execute.GameIndexLoadExecute;
 import com.duomai.project.tool.ApplicationUtils;
 import org.springframework.context.ApplicationContext;
 
@@ -19,7 +20,7 @@ public class QLApiExecuteHandler {
         /*
          * adidas-zx
          **/
-//        map.put("wx.adidas.game.index", GameIndexLoadExecute.class);//首页load  wxq
+        map.put("wx.adidas.game.index", GameIndexLoadExecute.class);//首页load  wxq
 //        map.put("wx.adidas.auth.success", AuthorizationSuccessExecute.class);//授权成功后，完善用户信息  wxq
 //        map.put("wx.adidas.draw.post", DrawPostExecute.class);//翻拍抽奖  wxq
 //        map.put("wx.adidas.my.honor", MyHonorExecute.class);//我抽中的奖品  wxq

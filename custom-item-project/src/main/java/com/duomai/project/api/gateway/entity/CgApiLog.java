@@ -1,17 +1,21 @@
 package com.duomai.project.api.gateway.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
 
+
 /**
  * 记录各个页面的pv
  */
+
 @Data
 @Entity
 @Table(name = "cg_api_log")
+@Accessors(chain = true)
 @org.hibernate.annotations.Table(appliesTo = "cg_api_log", comment = "api日志表")
 public class CgApiLog {
     @Id

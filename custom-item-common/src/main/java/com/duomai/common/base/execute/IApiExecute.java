@@ -1,8 +1,8 @@
-package com.duomai.project.api.gateway.execute;
+package com.duomai.common.base.execute;
 
 
-import com.duomai.project.api.gateway.dto.YunReturnValue;
-import com.duomai.project.api.gateway.dto.ApiSysParameter;
+import com.duomai.common.dto.ApiSysParameter;
+import com.duomai.common.dto.YunReturnValue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

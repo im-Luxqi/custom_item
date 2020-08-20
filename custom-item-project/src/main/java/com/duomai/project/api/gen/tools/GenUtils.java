@@ -16,7 +16,7 @@ public class GenUtils {
      */
     public static void initTable(GenTable table) {
         String tableName = table.getTableName();
-        String packagePath = "com.duomai.new_custom_base.project";
+        String packagePath = "com.duomai.project.product";
         String businessName = StringUtils.substring(tableName, tableName.lastIndexOf("_") + 1, tableName.length());
         String moduleName = StringUtils.substring(packagePath, packagePath.lastIndexOf(".") + 1, packagePath.length());
 

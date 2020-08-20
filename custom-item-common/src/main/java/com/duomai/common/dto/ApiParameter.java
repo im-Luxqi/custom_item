@@ -1,7 +1,9 @@
-package com.duomai.project.api.gateway.dto;
+package com.duomai.common.dto;
 
 
 import lombok.Data;
+
+import javax.validation.Valid;
 
 /**
  * API请求参数
@@ -12,6 +14,7 @@ public class ApiParameter {
     /**
      * 公共参数
      */
+    @Valid
     private CommomParameter commomParameter;
 
     /**

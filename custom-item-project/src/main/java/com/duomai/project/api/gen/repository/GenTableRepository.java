@@ -7,7 +7,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-
+/*
+ * @description
+ * @create by 王星齐
+ * @time 2020-08-20 16:16:10
+ **/
 public interface GenTableRepository extends BaseRepository<GenTable, Long> {
     @Query(nativeQuery = true,
             value = "SELECT table_name, table_comment " +
