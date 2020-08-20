@@ -1,4 +1,4 @@
-package com.duomai.project.framework.mybatisplus.service;/*
+package com.duomai.common.framework.mybatisplus.service;/*
  * Copyright (c) 2018-2022 Caratacus, (caratacus@qq.com).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -23,9 +23,9 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import com.duomai.project.framework.mybatisplus.lambdawrapperchain.LambdaDeleteWrapperChain;
-import com.duomai.project.framework.mybatisplus.lambdawrapperchain.LambdaQueryWrapperChain;
-import com.duomai.project.framework.mybatisplus.lambdawrapperchain.LambdaUpdateWrapperChain;
+import com.duomai.common.framework.mybatisplus.lambdawrapperchain.LambdaDeleteWrapperChain;
+import com.duomai.common.framework.mybatisplus.lambdawrapperchain.LambdaQueryWrapperChain;
+import com.duomai.common.framework.mybatisplus.lambdawrapperchain.LambdaUpdateWrapperChain;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 

@@ -1,6 +1,6 @@
 package com.duomai.project.product.demo.service;
 
-import com.duomai.project.framework.mybatisplus.service.impl.BaseServiceImpl;
+import com.duomai.common.framework.mybatisplus.service.impl.BaseServiceImpl;
 import com.duomai.project.product.demo.domain.City;
 import com.duomai.project.product.demo.mapper.CityMapper;
 import org.springframework.stereotype.Service;

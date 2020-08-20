@@ -61,7 +61,7 @@
     <Loggers>
         <!--AsyncLogger-->
         <AsyncLogger name="com.duomai" level="INFO" includeLocation="true"/>
-        <AsyncLogger name="com.duomai.project.framework.p6spy" level="DEBUG" includeLocation="true"/>
+        <AsyncLogger name="com.duomai.common.framework.p6spy" level="DEBUG" includeLocation="true"/>
         <AsyncLogger name="com.baomidou.mybatisplus.core.metadata.TableInfoHelper" level="ERROR" includeLocation="true"/>
         <AsyncLogger name="com.baomidou.dynamic" level="INFO" includeLocation="true"/>
         <!--AsyncRoot-->

@@ -19,12 +19,6 @@
     <dependencies>
         <dependency>
             <groupId>com.duomai</groupId>
-            <artifactId>custom-item-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.duomai</groupId>
             <artifactId>custom-item-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -91,11 +85,11 @@
             <version>2.3.0.RELEASE</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba</groupId>-->
+<!--            <artifactId>fastjson</artifactId>-->
+<!--            <version>${fastjson.version}</version>-->
+<!--        </dependency>-->
 
 
         <!--        <dependency>-->
@@ -153,11 +147,11 @@
             <artifactId>vjkit</artifactId>
             <version>1.0.7</version>
         </dependency>
-        <dependency>
-            <groupId>p6spy</groupId>
-            <artifactId>p6spy</artifactId>
-            <version>3.8.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>p6spy</groupId>-->
+<!--            <artifactId>p6spy</artifactId>-->
+<!--            <version>3.8.0</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
@@ -198,16 +192,16 @@
 <!--            <version>${alibaba.druid.jdbc.version}</version>-->
 <!--        </dependency>-->
 
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${baomidou.mp.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>${baomidou.mp.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.baomidou</groupId>-->
+<!--            <artifactId>mybatis-plus-boot-starter</artifactId>-->
+<!--            <version>${baomidou.mp.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.baomidou</groupId>-->
+<!--            <artifactId>mybatis-plus-generator</artifactId>-->
+<!--            <version>${baomidou.mp.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-engine-core</artifactId>
@@ -224,10 +218,10 @@
             <artifactId>velocity-tools</artifactId>
             <version>2.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
     <build>
         <plugins>

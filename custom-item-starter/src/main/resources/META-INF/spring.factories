@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.duomai.common.taobao.TaobaoAutoConfiguration
+com.duomai.starter.taobao.TaobaoAutoConfiguration

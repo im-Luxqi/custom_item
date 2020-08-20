@@ -18,7 +18,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.duomai.project.framework.p6spy;
+package com.duomai.common.framework.p6spy;
 
 import com.p6spy.engine.spy.appender.MessageFormattingStrategy;
 

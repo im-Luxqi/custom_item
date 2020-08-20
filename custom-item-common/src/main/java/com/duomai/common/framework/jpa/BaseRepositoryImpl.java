@@ -1,4 +1,4 @@
-package com.duomai.project.framework.jpa;
+package com.duomai.common.framework.jpa;
 
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 

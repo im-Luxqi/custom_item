@@ -18,7 +18,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.duomai.project.framework.mybatisplus.lambdawrapperchain;
+package com.duomai.common.framework.mybatisplus.lambdawrapperchain;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.Query;
@@ -26,7 +26,7 @@ import com.baomidou.mybatisplus.core.metadata.TableFieldInfo;
 import com.baomidou.mybatisplus.core.toolkit.ExceptionUtils;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.service.additional.AbstractChainWrapper;
-import com.duomai.project.framework.mybatisplus.service.BaseService;
+import com.duomai.common.framework.mybatisplus.service.BaseService;
 
 import java.util.function.Predicate;
 

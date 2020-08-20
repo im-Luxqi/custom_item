@@ -1,10 +1,10 @@
 package com.duomai.project.api.tool;
 
 
-import com.duomai.common.SysProperties;
 import com.duomai.common.util.EncryptUtil;
 import com.duomai.common.util.MD5Utils;
 import com.duomai.project.tool.ApplicationUtils;
+import com.duomai.starter.SysProperties;
 import org.bouncycastle.util.encoders.Hex;
 import org.bouncycastle.util.encoders.UrlBase64;
 import org.slf4j.LoggerFactory;

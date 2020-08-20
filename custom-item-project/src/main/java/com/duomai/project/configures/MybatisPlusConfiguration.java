@@ -1,7 +1,7 @@
 package com.duomai.project.configures;
 
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
-import com.duomai.project.framework.mybatisplus.MybatisPlusSqlInjector;
+import com.duomai.common.framework.mybatisplus.MybatisPlusSqlInjector;
 import com.github.pagehelper.PageInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

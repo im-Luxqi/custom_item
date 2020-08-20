@@ -58,10 +58,10 @@ mybatis-plus:
       update-strategy: not_null
       select-strategy: not_empty
     banner: false
-    super-mapper-class: com.duomai.project.framework.mybatisplus.mapper.BaseMapper
+    super-mapper-class: com.duomai.common.framework.mybatisplus.mapper.BaseMapper
   #  type-enums-package: org.crown.common.enums,org.crown.framework.enums
-  type-aliases-package: com.duomai.new_custom_base.product.*.domain
-  type-handlers-package: com.duomai.new_custom_base.framework.mybatisplus.typehandler
+  type-aliases-package: com.duomai.project.product.*.domain
+  type-handlers-package: com.duomai.common.framework.mybatisplus.typehandler
 
 
 # 日志配置

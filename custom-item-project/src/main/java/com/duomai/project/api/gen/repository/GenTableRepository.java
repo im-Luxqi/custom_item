@@ -1,7 +1,7 @@
 package com.duomai.project.api.gen.repository;
 
+import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.api.gen.entity.GenTable;
-import com.duomai.project.framework.jpa.BaseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;

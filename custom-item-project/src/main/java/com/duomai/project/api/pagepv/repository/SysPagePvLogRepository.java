@@ -1,7 +1,7 @@
 package com.duomai.project.api.pagepv.repository;
 
+import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.api.pagepv.entity.SysPagePvLog;
-import com.duomai.project.framework.jpa.BaseRepository;
 
 import java.util.List;
 

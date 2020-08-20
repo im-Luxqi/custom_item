@@ -1,4 +1,4 @@
-package com.duomai.project.framework.mybatisplus.typehandler;
+package com.duomai.common.framework.mybatisplus.typehandler;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
