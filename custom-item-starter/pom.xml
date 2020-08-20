@@ -31,6 +31,13 @@
             <version>2.3.0.RELEASE</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${alibaba.druid.jdbc.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.taobao</groupId>
             <artifactId>taobao-sdk</artifactId>
@@ -38,6 +45,16 @@
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/taobao-sdk-2015.9.16.jar</systemPath>
         </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>4.0.3</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

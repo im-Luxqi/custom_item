@@ -33,7 +33,6 @@ public class CustomItemProjectApplication {
                 "生成实体类: \thttp://localhost:" + port + path + "/tool/gen/table\n\t" +
                 "SQL监控: \thttp://" + ip + ":" + port + path + "/druid\t(root/root)\n\t" +
                 "----------------------------------------------------------");
-        log.info(JSON.toJSONString(ApplicationUtils.getBean(SysProperties.class)));
     }
 
 }

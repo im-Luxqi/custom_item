@@ -1,23 +1,38 @@
 package com.duomai.project.product.demo.domain;
 
+
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * @description
- * @create by 王星齐
- * @date 2020-05-27 16:05
+ * 【请填写功能名称】表 city
+ *
+ * @author system
  */
-@Data
+@Setter
+@Getter
 public class City {
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
-    @TableField("city_name")
-    private String cityName;
-    @TableField("parent_id")
-    private Integer parentId;
-    @TableField("parent_name")
-    private String parentName;
+
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 
+	 */
+	@TableId(value = "id",type = IdType.UUID)
+	private String id;
+	/**
+	 * 
+	 */
+	private String cityName;
+	/**
+	 * 
+	 */
+	private Long parentId;
+	/**
+	 * 
+	 */
+	private String parentName;
+
 }

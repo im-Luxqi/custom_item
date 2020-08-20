@@ -134,7 +134,7 @@
             $.each(result, function (index, value) {
                 value = value.replace(/</g, "&lt;");
                 value = value.replace(/>/g, "&gt;");
-                var templateName = table.substring(table.lastIndexOf("/") + 1, table.length).replace(/\.vm/g, "");
+                var templateName = index.substring(index.lastIndexOf("/") + 1, index.length).replace(/\.vm/g, "");
                 if ("sql" != templateName) {
                     items.push({
                         title: templateName, content: "<pre class=\"layui-code\">" + value + "</pre>"

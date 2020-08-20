@@ -1,4 +1,4 @@
-package com.duomai.project.configures;
+package com.duomai.project.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;

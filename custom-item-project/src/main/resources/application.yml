@@ -15,22 +15,29 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     # 下面为连接池的补充设置，应用到上面所有数据源中
     # 初始化大小，最小，最大
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
+    #初始化时建立物理连接的个数
+    initialSize: 10
+    #最小连接池数量
+    minIdle: 10
+    #最大连接池数量
+    maxActive: 200
     # 配置获取连接等待超时的时间
     maxWait: 60000
     # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
     timeBetweenEvictionRunsMillis: 60000
     # 配置一个连接在池中最小生存的时间，单位是毫秒
     minEvictableIdleTimeMillis: 300000
+    #用来检测连接是否有效的sql，要求是一个查询语句
     validationQuery: SELECT 1
+    # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
     testWhileIdle: true
+    # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
     testOnBorrow: false
+    # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
     testOnReturn: false
-    # 打开PSCache，并且指定每个连接上PSCache的大小
-    poolPreparedStatements: true
-    maxPoolPreparedStatementPerConnectionSize: 25
+    # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+    poolPreparedStatements: false
+    maxPoolPreparedStatementPerConnectionSize: 20
     # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
     filters: stat,slf4j
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
@@ -51,7 +58,7 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
-      table-prefix: sys_
+#      table-prefix: sys_
       logic-delete-value: 1
       logic-not-delete-value: 0
       insert-strategy: not_null
@@ -62,6 +69,7 @@ mybatis-plus:
   #  type-enums-package: org.crown.common.enums,org.crown.framework.enums
   type-aliases-package: com.duomai.project.product.*.domain
   type-handlers-package: com.duomai.common.framework.mybatisplus.typehandler
+
 
 
 # 日志配置
