@@ -1,0 +1,14 @@
+package ${packageName}.mapper;
+
+import com.duomai.project.framework.mybatisplus.mapper.BaseMapper
+import ${packageName}.domain.${ClassName};
+
+/**
+ * ${functionName} 数据层
+ *
+ * @author system
+ */
+@Mapper
+public interface ${ClassName}Mapper extends BaseMapper<${ClassName}> {
+
+}

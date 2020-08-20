@@ -1,0 +1,85 @@
+server:
+  port: 8888
+
+spring:
+  profiles:
+    active: @activatedYml@
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: false
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+  # 数据库访问配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    # 下面为连接池的补充设置，应用到上面所有数据源中
+    # 初始化大小，最小，最大
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # 打开PSCache，并且指定每个连接上PSCache的大小
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 25
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,slf4j
+    # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+    connectionProperties: druid.stat.mergeSql=false;druid.stat.slowSqlMillis=500
+    # 合并多个DruidDataSource的监控数据
+    useGlobalDataSourceStat: true
+
+mybatis-plus:
+  configuration:
+    cache-enabled: false
+    default-executor-type: reuse
+    jdbc-type-for-null: 'null'
+    lazy-loading-enabled: true
+    local-cache-scope: session
+    map-underscore-to-camel-case: true
+    default-enum-type-handler: org.apache.ibatis.type.EnumTypeHandler
+  mapper-locations: classpath:mapper/**/*Mapper.xml
+  global-config:
+    db-config:
+      id-type: auto
+      table-prefix: sys_
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      insert-strategy: not_null
+      update-strategy: not_null
+      select-strategy: not_empty
+    banner: false
+    super-mapper-class: com.duomai.project.framework.mybatisplus.mapper.BaseMapper
+  #  type-enums-package: org.crown.common.enums,org.crown.framework.enums
+  type-aliases-package: com.duomai.new_custom_base.product.*.domain
+  type-handlers-package: com.duomai.new_custom_base.framework.mybatisplus.typehandler
+
+
+# 日志配置
+logging:
+  config: classpath:log4j2.xml
+
+
+#系统配置
+sys:
+  druidConfig:
+    monitorUsername: root
+    monitorPassword: root
+  sysConfig:
+    appkey: 21699045
+    secretkey: 20ee7d6400dda1c9622699123af2c2c8
+  customConfig:
+    appkey: 30482173
+    secretkey: d572b124d2d70b648a5e7e8790959a70
+    appName: promotioncenter-3000000019832114
+    sessionkey: 50000000b11gmdOAc0owgha19c51b2cl0hmTCuTgZEar8KW2EoDJnYeSwpGTQ0qoC00
+

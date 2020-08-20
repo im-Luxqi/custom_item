@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.duomai.project.product.demo.mapper.CityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.duomai.project.product.demo.domain.City">
+        <id column="id" property="id" />
+        <result column="city_name" property="cityName" />
+        <result column="parent_id" property="parentId" />
+        <result column="parent_name" property="parentName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, city_name AS cityName, parent_id AS parentId, parent_name AS parentName
+    </sql>
+</mapper>
