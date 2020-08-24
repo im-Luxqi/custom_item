@@ -1,6 +1,7 @@
 package com.duomai.project.product;
 
 import com.duomai.project.product.demo.domain.City;
+import com.duomai.project.product.demo.enums.Sex;
 import com.duomai.project.product.demo.service.ICityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +28,8 @@ public class TestController {
     public String test() {
         City city = new City();
 //        city.setId("1L");
-        city.setCityName("ccc");
+        city.setCityName("ddddd");
+        city.setSex(Sex.Female);
         List<City> list = cityService.list();
         cityService.save(city);
         return "success";

@@ -6,6 +6,7 @@ import com.duomai.project.api.gen.repository.GenTableRepository;
 import com.duomai.project.api.gen.tools.GenUtils;
 import com.duomai.project.api.gen.tools.VelocityInitializer;
 import com.duomai.project.api.gen.tools.VelocityUtils;
+import com.duomai.starter.SysProperties;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -38,6 +40,9 @@ public class GenController {
 
     @Autowired
     private GenTableRepository genTableRepository;
+
+    @Autowired
+    private SysProperties sysProperties;
 
 
     @GetMapping("/list")
@@ -63,6 +68,7 @@ public class GenController {
      */
     @GetMapping("/table")
     public String table() {
+        Assert.isTrue(sysProperties.isGenFlag(),"暂无权限");
         return "gen/table";
     }
 

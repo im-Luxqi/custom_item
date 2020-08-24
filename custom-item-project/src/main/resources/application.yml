@@ -66,9 +66,9 @@ mybatis-plus:
       select-strategy: not_empty
     banner: false
     super-mapper-class: com.duomai.common.framework.mybatisplus.mapper.BaseMapper
-  #  type-enums-package: org.crown.common.enums,org.crown.framework.enums
-  type-aliases-package: com.duomai.project.product.*.domain
   type-handlers-package: com.duomai.common.framework.mybatisplus.typehandler
+  type-enums-package: com.duomai.project.product.*.enums
+  type-aliases-package: com.duomai.project.product.*.domain
 
 
 
@@ -77,17 +77,5 @@ logging:
   config: classpath:log4j2.xml
 
 
-#系统配置
-sys:
-  druidConfig:
-    monitorUsername: root
-    monitorPassword: root
-  sysConfig:
-    appkey: 21699045
-    secretkey: 20ee7d6400dda1c9622699123af2c2c8
-  customConfig:
-    appkey: 30482173
-    secretkey: d572b124d2d70b648a5e7e8790959a70
-    appName: promotioncenter-3000000019832114
-    sessionkey: 50000000b11gmdOAc0owgha19c51b2cl0hmTCuTgZEar8KW2EoDJnYeSwpGTQ0qoC00
+
 

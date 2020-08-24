@@ -27,5 +27,8 @@ public class SysProperties {
      **/
     @NestedConfigurationProperty
     private CustomConfig customConfig;
-
+    /*
+     * 是否开启表自动生成
+     **/
+    boolean genFlag;
 }
