@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.sql.DataSource;
 import java.util.List;
 
-/**
+/** test
  * @description
- * @create by 王星齐
- * @date 2020-05-27 17:07
  */
 @RestController
 @RequestMapping(value = "test")

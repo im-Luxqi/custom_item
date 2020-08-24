@@ -2,10 +2,8 @@ package com.duomai.starter;
 
 import lombok.Data;
 
-/**
+/** 系统配置
  * @description
- * @create by 王星齐
- * @date 2020-08-19 9:19
  */
 @Data
 public class SysConfig {

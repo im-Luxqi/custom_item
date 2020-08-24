@@ -122,7 +122,7 @@ public class EncryptUtil {
         return key;    
     }
 
-    /*
+    /*前端后端转码有出入
      * @description
      * 1.URLEncoder.encode方法会将空格编码为符号"+"，而encodeURIComponent 则将空格编码为"%20’。
      * 2.encodeURIComponent(str) 对这个五个符号!’()~不进行编码 :

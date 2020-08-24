@@ -10,8 +10,6 @@ import java.util.List;
 
 /*
  * @description
- * @create by 王星齐
- * @time 2020-08-20 16:16:10
  **/
 public interface GenTableRepository extends BaseRepository<CgGenTable, Long> {
     @Query(nativeQuery = true,

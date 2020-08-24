@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /* 记录pv
  * @description
- * @create by 王星齐
- * @time 2020-08-21 09:19:23
  **/
 @Component
 public class PagePvExecute implements IApiExecute {

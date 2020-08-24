@@ -8,10 +8,8 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Properties;
 
-/**
+/**   配置mybatis
  * @description
- * @create by 王星齐
- * @date 2020-05-27 15:40
  */
 @Configuration
 public class MybatisPlusConfiguration {

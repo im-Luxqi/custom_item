@@ -1,9 +1,7 @@
 package com.duomai.common.enums;
 
-/**
+/**  系统错误
  * @description
- * @create by 王星齐
- * @date 2020-08-21 10:44
  */
 public enum SysErrorEnum {
     VALID_APPKEY("-32002", "appkey无效"), VALID_SIGN("-32003", "sign校验未通过"),

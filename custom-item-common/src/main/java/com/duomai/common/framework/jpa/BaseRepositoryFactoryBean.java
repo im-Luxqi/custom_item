@@ -13,8 +13,6 @@ import java.io.Serializable;
 
 /*
  * @description
- * @create by 王星齐
- * @time 2020-05-27 19:20:04
  **/
 public class BaseRepositoryFactoryBean<R extends JpaRepository<T, I>, T,
         I extends Serializable> extends JpaRepositoryFactoryBean<R, T, I> {

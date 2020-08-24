@@ -16,10 +16,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
+/** 连接池配置
  * @description
- * @create by 王星齐
- * @date 2020-05-27 14:32
  */
 @Configuration
 public class JdbcConfiguration {

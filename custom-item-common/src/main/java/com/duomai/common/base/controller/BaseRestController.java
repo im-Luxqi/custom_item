@@ -5,17 +5,13 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-/**
+/**  基础校验
  * @description
- * @create by 王星齐
- * @date 2019-10-17 20:12
  */
 public class BaseRestController {
 
     /* 参数检验
      * @description
-     * @create by 王星齐
-     * @time 2019-10-18 14:11:23
      * @param ex
      **/
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
