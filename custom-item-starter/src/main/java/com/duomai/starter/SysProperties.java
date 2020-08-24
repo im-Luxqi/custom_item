@@ -27,6 +27,13 @@ public class SysProperties {
      **/
     @NestedConfigurationProperty
     private CustomConfig customConfig;
+
+    /*
+     * 客户
+     **/
+    @NestedConfigurationProperty
+    private OcsConfig ocsConfig;
+
     /*
      * 是否开启表自动生成
      **/

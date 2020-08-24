@@ -10,6 +10,11 @@ spring:
 #系统配置
 sys:
   genFlag: false
+  ocsConfig:
+    host: m-k2j3c6d9a9b484e4.memcache.zhangbei.rds.aliyuncs.com
+    port: 11211
+    username: m-k2j3c6d9a9b484e4
+    password: 3sKmT2cBxnVFDo9Q
   druidConfig:
     monitorUsername: root
     monitorPassword: root

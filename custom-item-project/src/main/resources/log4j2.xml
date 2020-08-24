@@ -53,10 +53,10 @@
             </Policies>
             <DefaultRolloverStrategy max="30"/>
         </RollingRandomAccessFile>
-<!--        <Rewrite name="REWRITE">-->
-<!--            <AppenderRef ref="INFO_LOG"/>-->
-<!--            <ConsoleLogPolicy/>-->
-<!--        </Rewrite>-->
+        <Rewrite name="REWRITE">
+            <AppenderRef ref="INFO_LOG"/>
+            <ConsoleLogPolicy/>
+        </Rewrite>
     </Appenders>
     <Loggers>
         <!--AsyncLogger-->

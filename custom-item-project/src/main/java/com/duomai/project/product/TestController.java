@@ -1,5 +1,6 @@
 package com.duomai.project.product;
 
+import com.duomai.project.api.taobao.OcsTemplate;
 import com.duomai.project.product.demo.domain.City;
 import com.duomai.project.product.demo.enums.Sex;
 import com.duomai.project.product.demo.service.ICityService;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.sql.DataSource;
 import java.util.List;
 
-/** test
+/**
+ * test
+ *
  * @description
  */
 @RestController
@@ -23,6 +26,9 @@ public class TestController {
 
     @Autowired
     ICityService cityService;
+
+    @Autowired
+    OcsTemplate ocsTemplate;
 
     @GetMapping(value = "wxq")
     public String test() {
