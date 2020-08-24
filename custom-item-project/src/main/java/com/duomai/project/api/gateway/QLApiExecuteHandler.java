@@ -19,9 +19,14 @@ public class QLApiExecuteHandler {
 
     static {
         /*
-         * 定制通用
+         * 通用
          **/
         map.put("wx.dz.common.pv", PagePvExecute.class);//pv  wxq
+
+
+        /*
+         * 定制
+         **/
     }
 
 
