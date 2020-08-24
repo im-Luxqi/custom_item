@@ -1,13 +1,13 @@
 package com.duomai.project.product.demo.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 
-public enum Sex {
+import com.duomai.common.base.enums.IEnum;
+
+public enum Sex implements IEnum {
     Man(1, "男"), Female(0, "女"),
     ;
 
-    @EnumValue
-    private final Integer code;
+    private final int code;
     private final String descp;
 
     Sex(Integer code, String descp) {
@@ -15,11 +15,8 @@ public enum Sex {
         this.descp = descp;
     }
 
-    public Integer getCode() {
+    @Override
+    public int getValue() {
         return code;
-    }
-
-    public String getDescp() {
-        return descp;
     }
 }
