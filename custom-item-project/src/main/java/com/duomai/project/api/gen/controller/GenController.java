@@ -1,11 +1,11 @@
 package com.duomai.project.api.gen.controller;
 
-import com.duomai.project.api.gen.entity.GenTable;
+import com.duomai.project.api.gen.entity.CgGenTable;
 import com.duomai.project.api.gen.entity.GenTableColumn;
+import com.duomai.project.api.gen.repository.GenTableRepository;
 import com.duomai.project.api.gen.tools.GenUtils;
 import com.duomai.project.api.gen.tools.VelocityInitializer;
 import com.duomai.project.api.gen.tools.VelocityUtils;
-import com.duomai.project.api.gen.repository.GenTableRepository;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
@@ -42,8 +42,8 @@ public class GenController {
 
     @GetMapping("/list")
     @ResponseBody
-    public Map<String, Object> list(GenTable genTable, Integer pageNum, Integer pageSize) {
-        Page<GenTable> all = genTableRepository.findAll(PageRequest.of(pageNum - 1, pageSize));
+    public Map<String, Object> list(CgGenTable cgGenTable, Integer pageNum, Integer pageSize) {
+        Page<CgGenTable> all = genTableRepository.findAll(PageRequest.of(pageNum - 1, pageSize));
         Map<String, Object> result = new HashMap<>();
         result.put("total", all.getTotalPages());
         result.put("rows", all.get().collect(Collectors.toList()));
@@ -73,11 +73,11 @@ public class GenController {
         List<Object[]> objects = genTableRepository.selectDbTableListByNames(tables.split(","));
         if (objects != null)
             objects.forEach(obj -> {
-                GenTable genTable = new GenTable();
-                genTable.setTableName((String) obj[0]);
-                genTable.setTableComment((String) obj[1]);
-                GenUtils.initTable(genTable);
-                genTableRepository.save(genTable);
+                CgGenTable cgGenTable = new CgGenTable();
+                cgGenTable.setTableName((String) obj[0]);
+                cgGenTable.setTableComment((String) obj[1]);
+                GenUtils.initTable(cgGenTable);
+                genTableRepository.save(cgGenTable);
             });
     }
 
@@ -97,10 +97,10 @@ public class GenController {
         Map<String, Object> result = new HashMap<>();
         result.put("total", all.getTotalPages());
         result.put("rows", all.get().map((obj) -> {
-            GenTable genTable = new GenTable();
-            genTable.setTableName((String) obj[0]);
-            genTable.setTableComment((String) obj[1]);
-            return genTable;
+            CgGenTable cgGenTable = new CgGenTable();
+            cgGenTable.setTableName((String) obj[0]);
+            cgGenTable.setTableComment((String) obj[1]);
+            return cgGenTable;
         }).collect(Collectors.toList()));
         return result;
     }
@@ -109,7 +109,7 @@ public class GenController {
     @ResponseBody
     public Map<String, String> preview(@PathVariable("tableId") Long tableId) {
         Map<String, String> dataMap = new LinkedHashMap<>();
-        GenTable table = genTableRepository.findById(tableId).get();
+        CgGenTable table = genTableRepository.findById(tableId).get();
         List<Object[]> genTableColumnObjects = genTableRepository.selectDbTableColumnsByName(table.getTableName());
         table.setColumns(genTableColumnObjects.stream().map(obj -> {
             GenTableColumn column = new GenTableColumn();
@@ -139,7 +139,7 @@ public class GenController {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
         for (String tableId : tables.split(",")) {
-            GenTable table = genTableRepository.findById(Long.valueOf(tableId)).get();
+            CgGenTable table = genTableRepository.findById(Long.valueOf(tableId)).get();
             List<Object[]> genTableColumnObjects = genTableRepository.selectDbTableColumnsByName(table.getTableName());
             table.setColumns(genTableColumnObjects.stream().map(obj -> {
                 GenTableColumn column = new GenTableColumn();

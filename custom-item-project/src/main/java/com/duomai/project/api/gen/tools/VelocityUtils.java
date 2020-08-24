@@ -1,6 +1,6 @@
 package com.duomai.project.api.gen.tools;
 
-import com.duomai.project.api.gen.entity.GenTable;
+import com.duomai.project.api.gen.entity.CgGenTable;
 import io.jsonwebtoken.lang.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.VelocityContext;
@@ -27,16 +27,16 @@ public class VelocityUtils {
      *
      * @return 模板列表
      */
-    public static VelocityContext prepareContext(GenTable genTable) {
-        String packageName = genTable.getPackageName();
-        String functionName = genTable.getFunctionName();
+    public static VelocityContext prepareContext(CgGenTable cgGenTable) {
+        String packageName = cgGenTable.getPackageName();
+        String functionName = cgGenTable.getFunctionName();
 
         VelocityContext velocityContext = new VelocityContext();
-        velocityContext.put("tableName", genTable.getTableName());
+        velocityContext.put("tableName", cgGenTable.getTableName());
         velocityContext.put("functionName", StringUtils.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
-        velocityContext.put("ClassName", genTable.getClassName());
+        velocityContext.put("ClassName", cgGenTable.getClassName());
         velocityContext.put("packageName", packageName);
-        velocityContext.put("columns", genTable.getColumns());
+        velocityContext.put("columns", cgGenTable.getColumns());
         return velocityContext;
     }
 
@@ -59,15 +59,15 @@ public class VelocityUtils {
     /**
      * 获取文件名
      */
-    public static String getFileName(String template, GenTable genTable) {
+    public static String getFileName(String template, CgGenTable cgGenTable) {
         // 文件名称
         String fileName = "";
         // 包路径
-        String packageName = genTable.getPackageName();
+        String packageName = cgGenTable.getPackageName();
         // 模块名
-        String moduleName = genTable.getModuleName();
+        String moduleName = cgGenTable.getModuleName();
         // 大写类名
-        String className = genTable.getClassName();
+        String className = cgGenTable.getClassName();
         // 业务名称
 
         String javaPath = PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
@@ -163,7 +163,6 @@ public class VelocityUtils {
         int lastIndex = packageName.lastIndexOf(".");
         return StringUtils.substring(packageName, 0, lastIndex);
     }
-
 
 
     /**

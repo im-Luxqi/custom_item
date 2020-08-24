@@ -10,12 +10,6 @@ import javax.validation.constraints.NotBlank;
  **/
 @Data
 public class CommomParameter {
-
-    /**
-     * 随机码
-     */
-    private String nonceStr;
-
     /**
      * 分配给应用的AppKey
      */
@@ -35,22 +29,8 @@ public class CommomParameter {
     private String sign;
 
     /**
-     * 用户账号信息id
+     * API请求的ip
      */
-    private String siid;
-
-
-    /**
-     * 令牌
-     */
-    private String sessionKey;
-    /**
-     * 返回数据类型R2(混淆数据)和R1(明文数据)
-     */
-    private String returnDataType;
-
-    private String admjsonStr;
-
     private String ip;
 
 }

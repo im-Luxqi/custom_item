@@ -1,6 +1,6 @@
 package com.duomai.project.api.gen.tools;
 
-import com.duomai.project.api.gen.entity.GenTable;
+import com.duomai.project.api.gen.entity.CgGenTable;
 import com.duomai.project.api.gen.entity.GenTableColumn;
 import org.apache.commons.lang3.StringUtils;
 
@@ -14,7 +14,7 @@ public class GenUtils {
     /**
      * 初始化表信息
      */
-    public static void initTable(GenTable table) {
+    public static void initTable(CgGenTable table) {
         String tableName = table.getTableName();
         String packagePath = "com.duomai.project.product";
         String businessName = StringUtils.substring(tableName, tableName.lastIndexOf("_") + 1, tableName.length());
@@ -30,7 +30,7 @@ public class GenUtils {
     /**
      * 初始化列属性字段
      */
-    public static void initColumnField(GenTableColumn column, GenTable table) {
+    public static void initColumnField(GenTableColumn column, CgGenTable table) {
         String dataType = getDbType(column.getColumnType());
         String columnName = column.getColumnName();
         column.setTableId(table.getTableId());

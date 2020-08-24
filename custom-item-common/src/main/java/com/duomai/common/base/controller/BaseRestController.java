@@ -18,21 +18,18 @@ public class BaseRestController {
      * @time 2019-10-18 14:11:23
      * @param ex
      **/
-    @ExceptionHandler({Exception.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
     protected YunReturnValue paramNotValidHandle(Exception ex) {
         if (ex instanceof MethodArgumentNotValidException)
-            return YunReturnValue.fail(null, "0",
+            return YunReturnValue.fail(
                     ((MethodArgumentNotValidException) ex).getBindingResult()
                             .getAllErrors()
                             .get(0)
                             .getDefaultMessage());
-        if (ex instanceof BindException)
-            return YunReturnValue.fail(null, "0",
-                    ((BindException) ex).getBindingResult()
-                            .getAllErrors()
-                            .get(0)
-                            .getDefaultMessage());
-
-        return YunReturnValue.fail(null, null, "未知异常");
+        return YunReturnValue.fail(
+                ((BindException) ex).getBindingResult()
+                        .getAllErrors()
+                        .get(0)
+                        .getDefaultMessage());
     }
 }

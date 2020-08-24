@@ -16,12 +16,10 @@ public class YunTokenParameter {
     @NotBlank(message = "open_id不能为空")
     @ParamName("open_id")
     private String openUId;
-    private String timestamp;
     @NotBlank(message = "mix_nick不能为空")
     @ParamName("mix_nick")
     private String buyerNick;
     private String dmZNick;
-    @NotBlank(message = "dmAvatar不能为空")
     private String dmAvatar;
 
 }

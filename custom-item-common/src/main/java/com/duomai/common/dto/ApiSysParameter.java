@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 /**
  * API请求
@@ -36,6 +37,11 @@ public class ApiSysParameter {
      * 调用标识符
      */
     private String id;
+
+    /**
+     * 调用标识符
+     */
+    private Date requestStartTime;
 
 
     @JSONField(name = "params")

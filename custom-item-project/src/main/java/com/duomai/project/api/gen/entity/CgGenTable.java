@@ -10,10 +10,10 @@ import java.util.List;
  */
 @Data
 @Entity
-@Table(name = "gen_table")
+@Table(name = "cg_gen_table")
 @SuppressWarnings("unchecked")
-@org.hibernate.annotations.Table(appliesTo = "gen_table", comment = "代码自动生成临时表")
-public class GenTable {
+@org.hibernate.annotations.Table(appliesTo = "cg_gen_table", comment = "代码自动生成临时表")
+public class CgGenTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

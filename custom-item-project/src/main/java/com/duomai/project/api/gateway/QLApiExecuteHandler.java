@@ -3,7 +3,8 @@ package com.duomai.project.api.gateway;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.product.demo.execute.GameIndexLoadExecute;
+import com.duomai.common.enums.SysErrorEnum;
+import com.duomai.project.product.general.execute.PagePvExecute;
 import com.duomai.project.tool.ApplicationUtils;
 import org.springframework.context.ApplicationContext;
 
@@ -18,16 +19,9 @@ public class QLApiExecuteHandler {
 
     static {
         /*
-         * adidas-zx
+         * 定制通用
          **/
-        map.put("wx.adidas.game.index", GameIndexLoadExecute.class);//首页load  wxq
-//        map.put("wx.adidas.auth.success", AuthorizationSuccessExecute.class);//授权成功后，完善用户信息  wxq
-//        map.put("wx.adidas.draw.post", DrawPostExecute.class);//翻拍抽奖  wxq
-//        map.put("wx.adidas.my.honor", MyHonorExecute.class);//我抽中的奖品  wxq
-//        map.put("wx.adidas.complete.address", CompleteAddressExecute.class);//完善地址信息  wxq
-//        map.put("wx.adidas.my.task", MyTaskExecute.class);//任务完成情况  wxq
-//        map.put("wx.adidas.do.task", DoTaskExecute.class);//做任务赢次数  wxq
-//        map.put("wx.adidas.page.pv", AdPagePvExcute.class);//pv  wxq
+        map.put("wx.dz.common.pv", PagePvExecute.class);//pv  wxq
     }
 
 
@@ -41,7 +35,7 @@ public class QLApiExecuteHandler {
             }
         }
         if (sendApiExecute == null) {
-            throw new Exception("sendApiExecute 为空，可能没有配置api接口");
+            return YunReturnValue.fail(SysErrorEnum.VALID_EXECUTE);
         }
         return sendApiExecute.ApiExecute(sysParm, request, response);
     }

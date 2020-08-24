@@ -1,6 +1,8 @@
 package com.duomai.project.api.gateway.tool;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.util.EncryptUtil;
 import com.duomai.common.util.MD5Utils;
@@ -10,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 
 @Slf4j
 public class ApiTool {
@@ -63,7 +64,7 @@ public class ApiTool {
         String appkey = sysParm.getApiParameter().getCommomParameter().getAppkey();
         String timestamp = sysParm.getApiParameter().getCommomParameter().getTimestamp();
         String frontSign = sysParm.getApiParameter().getCommomParameter().getSign();
-        String bizParam = sysParm.getApiParameter().getCommomParameter().getAdmjsonStr();
+        String bizParam = JSON.toJSONString(sysParm.getApiParameter().getAdmjson(), SerializerFeature.WriteMapNullValue);
 
         /**
          *  校验参数是否存在
@@ -71,11 +72,12 @@ public class ApiTool {
         String secretKey = ApplicationUtils.getBean(SysProperties.class).getSysConfig().getSecretkey();
         String behindSign;
         try {
-            String zhString = secretKey + "admjson" +
+            String zhString = secretKey + "admjson"
+                    +
                     EncryptUtil.adjustURLEncoderForJsEncodeURIComponent(bizParam)
                     + "appkey" + appkey + "m" + method + "timestamp" + timestamp + secretKey;
             behindSign = MD5Utils.getMD5(zhString.toLowerCase().getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
