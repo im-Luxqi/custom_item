@@ -5,7 +5,7 @@
 
     <parent>
         <groupId>com.duomai</groupId>
-        <artifactId>new_custom_base</artifactId>
+        <artifactId>custom-item</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 

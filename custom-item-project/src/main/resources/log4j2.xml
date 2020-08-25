@@ -67,7 +67,7 @@
         <!--AsyncRoot-->
         <AsyncRoot level="warn" includeLocation="true">
             <appender-ref ref="CONSOLE"/>
-<!--            <appender-ref ref="REWRITE"/>-->
+            <appender-ref ref="REWRITE"/>
             <appender-ref ref="ERROR_LOG"/>
         </AsyncRoot>
     </Loggers>
