@@ -51,8 +51,6 @@ public class PostExchanageRestController extends BaseRestController {
 
     /*gateWay
      * @description
-     * @create by 王星齐
-     * @time 2020-08-20 17:29:56
      **/
     @PostMapping(value = "/router/api")
     public YunReturnValue gateWay(

@@ -34,7 +34,7 @@ public class PagePvExecute implements IApiExecute {
         sysPagePvLogRepository.save(new SysPagePvLog()
                 .setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
                 .setCreateTime(sysParm.getRequestStartTime())
-                .setId(ApiTool.getIpAddress(request))
+                .setId(sysParm.getApiParameter().getCommomParameter().getIp())
                 .setChannel(channel)
                 .setPage(page));
 
