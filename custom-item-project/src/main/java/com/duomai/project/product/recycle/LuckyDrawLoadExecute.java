@@ -1,11 +1,15 @@
 package com.duomai.project.product.recycle;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.dto.ActBaseSetting;
+import com.duomai.project.product.general.dto.XyData;
+import com.duomai.project.product.general.dto.XyReturn;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import com.duomai.project.product.general.enums.LuckyChanceFrom;
 import com.duomai.project.product.general.repository.SysAwardRepository;
@@ -19,10 +23,8 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /* 抽奖页--load
  * @description
@@ -58,24 +60,26 @@ public class LuckyDrawLoadExecute implements IApiExecute {
         if (Objects.isNull(sysCustom)) {
             return YunReturnValue.fail("不存在该玩家");
         }
-        /*todo:3.查询订单是否属实，然后发放翻牌机会*/
-//        String orderSn = request.getParameter("orderSn");
-        String orderSn = "101112";
-
-        long l = sysLuckyChanceRepository.countByTid(orderSn);
-        if (l == 0) {
-//            XyReturn orderBySn = projectHelper.findOrderBySn(System.currentTimeMillis(), orderSn);
-//            XyReturn ordersByOpenId = projectHelper.findOrdersByOpenId(System.currentTimeMillis(), sysParm.getApiParameter().getYunTokenParameter().getOpenUId());
-//            if (orderBySn.getCode().equals(-1)) {
-//                //根据订单号查询订单信息接口异常，记录
-//            }
-//            if (ordersByOpenId.getCode().equals(-1)) {
-//                //根据用户id查询订单信息接口异常记录
-//            }
-            luckyDrawHelper.sendLuckyChance(sysCustom.getBuyerNick(), LuckyChanceFrom.ORDER_COMMIT, 1, orderSn);
+        /*3.查询订单是否属实，然后发放翻牌机会*/
+        XyReturn ordersByOpenId = projectHelper.findOrdersByOpenId(System.currentTimeMillis(), sysParm.getApiParameter().getYunTokenParameter().getOpenUId());
+        if (ordersByOpenId.getCode().equals(0) && CollectionUtils.isNotEmpty(ordersByOpenId.getData())) {
+            List<String> collectDm = new ArrayList<>();
+            List<SysLuckyChance> allByBuyerNick = sysLuckyChanceRepository.findAllByBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
+            if (allByBuyerNick.size() > 0) {
+                collectDm.addAll(allByBuyerNick.stream().map(SysLuckyChance::getTid).collect(Collectors.toList()));
+            }
+            List<String> collectXy = ordersByOpenId.getData().stream().map(XyData::getOrderSn).filter(o -> !collectDm.contains(o)).collect(Collectors.toList());
+            if (collectXy.size() > 0) {
+                Date sendTime = new Date();
+                List<SysLuckyChance> newChances = collectXy.stream().map((tid) -> new SysLuckyChance()
+                        .setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
+                        .setChanceFrom(LuckyChanceFrom.ORDER_COMMIT)
+                        .setGetTime(sendTime)
+                        .setIsUse(BooleanConstant.BOOLEAN_NO)
+                        .setTid(tid)).collect(Collectors.toList());
+                luckyDrawHelper.sendLuckyChance(newChances);
+            }
         }
-
-
 
         /*4.数据展示*/
         Map result = new HashMap<>();

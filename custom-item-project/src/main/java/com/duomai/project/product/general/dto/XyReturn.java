@@ -2,6 +2,8 @@ package com.duomai.project.product.general.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @description
  * @create by 王星齐
@@ -11,7 +13,7 @@ import lombok.Data;
 public class XyReturn {
 
     private Integer code;
-    private XyData data;
+    private List<XyData> data;
     private String msg;
 
 }

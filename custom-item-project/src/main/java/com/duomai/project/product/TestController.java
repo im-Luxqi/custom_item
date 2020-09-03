@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * test
@@ -39,9 +41,23 @@ public class TestController {
     public XyReturn test() {
         final String orderSn = "1204002036979524301";
         final String openID = "2088302134043800";
+
+
+
         sysLuckyChanceRepository.tryReduceOne("t0");
 //        projectHelper.findOrdersByOpenId(System.currentTimeMillis(),openID);
 //        XyReturn orderBySn = projectHelper.findOrderBySn(System.currentTimeMillis(), orderSn);
+        return null;
+    }
+    @GetMapping(value = "wxq1")
+    public XyReturn test1() {
+        List<String> strings = new ArrayList<>();
+        strings.add("aaaa");
+        strings.add("bbbb");
+        strings.add("cccc");
+
+        strings.contains("aaaa");
+
         return null;
     }
 }

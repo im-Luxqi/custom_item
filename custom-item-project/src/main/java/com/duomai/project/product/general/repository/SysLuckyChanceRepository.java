@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance, String> {
 
     long countByBuyerNickAndIsUse(String buyerNick, Integer use);
@@ -13,6 +15,8 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
     long countByTid(String tid);
 
     SysLuckyChance findFirstByBuyerNickAndIsUse(String buyerNick, Integer use);
+
+    List<SysLuckyChance> findAllByBuyerNick(String buyerNick);
 
     @Modifying
     @Transactional

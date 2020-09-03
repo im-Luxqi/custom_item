@@ -64,6 +64,16 @@ public class LuckyDrawHelper {
                         .setTid(tid)).collect(Collectors.toList()));
     }
 
+    /* 发放游戏机会
+     * @description
+     * @create by 王星齐
+     * @time 2020-08-28 16:13:28
+     **/
+    @Transactional
+    public List<SysLuckyChance> sendLuckyChance(List<SysLuckyChance> sysLuckyChances) {
+        return sysLuckyChanceRepository.saveAll(sysLuckyChances);
+    }
+
 
     /* 剩余抽奖次数
      * @description
