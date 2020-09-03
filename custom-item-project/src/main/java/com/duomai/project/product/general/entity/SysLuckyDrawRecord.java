@@ -1,0 +1,79 @@
+package com.duomai.project.product.general.entity;
+
+import com.duomai.project.product.general.enums.AwardType;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.Date;
+
+/**
+ * 抽奖日志表
+ */
+@Data
+@Entity
+@Accessors(chain = true)
+@Table(name = "sys_lucky_draw_record")
+@org.hibernate.annotations.Table(appliesTo = "sys_lucky_draw_record", comment = "抽奖日志表")
+public class SysLuckyDrawRecord {
+
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(length = 64)
+//    @NotBlank(message = "获奖记录不能为空")
+    private String id;
+    @Column(nullable = false, columnDefinition = "varchar(64) COMMENT '奖品机会'")
+    private String luckyChance;
+    @Column(nullable = false, columnDefinition = "DATETIME COMMENT '抽奖时间'")
+    private Date drawTime;
+
+    @Column(columnDefinition = "varchar(255) COMMENT '玩家头像'")
+    private String playerHeadImg;
+    @Column(columnDefinition = "varchar(64) COMMENT '玩家混淆昵称'")
+    private String playerBuyerNick;
+    @Column(columnDefinition = "varchar(64) COMMENT '玩家真实昵称'")
+    private String playerZnick;
+
+    @Column(columnDefinition = "varchar(64) COMMENT '奖品Id'")
+    private String awardId;
+    @Column(columnDefinition = "varchar(64) COMMENT '奖品等级'")
+    private String awardLevel;
+    @Column(columnDefinition = "varchar(64) COMMENT '奖品名称'")
+    private String awardName;
+    @Column(columnDefinition = "varchar(255) COMMENT '奖品图片'")
+    private String awardImg;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(20) COMMENT '奖品类型'")
+    private AwardType awardType;
+    @Column(nullable = false, columnDefinition = "int(1) COMMENT '是否中奖'")
+    private Integer isWin;
+    @Column(nullable = false, columnDefinition = "int(1) COMMENT '是否填写地址'")
+    private Integer isFill;
+
+//    @NotBlank(message = "收件人昵称不为空")
+    @Column(columnDefinition = "varchar(64) COMMENT '收件人昵称'")
+    private String receviceName;
+//    @NotBlank(message = "收件人电话不为空")
+    @Column(columnDefinition = "varchar(64) COMMENT '收件人电话'")
+    private String recevicePhone;
+//    @NotBlank(message = "收件人地址 市不为空")
+    @Column(columnDefinition = "varchar(64) COMMENT '收件人地址 市'")
+    private String receviceCity;
+//    @NotBlank(message = "收件人地址 省不为空")
+    @Column(columnDefinition = "varchar(64) COMMENT '收件人地址 省'")
+    private String receviceProvince;
+//    @NotBlank(message = "收件人地址 区不为空")
+    @Column(columnDefinition = "varchar(64) COMMENT '收件人地址 区'")
+    private String receviceDistrict;
+//    @NotBlank(message = "收件人地址 详细地址不为空")
+    @Column(columnDefinition = "varchar(64) COMMENT '收件人地址 详细地址'")
+    private String receviceAddress;
+    @Column(columnDefinition = "DATETIME COMMENT '填写地址时间'")
+    private Date receviceTime;
+    @Column(columnDefinition = "text COMMENT '发奖发送错误信息'")
+    private String sendError;
+
+}

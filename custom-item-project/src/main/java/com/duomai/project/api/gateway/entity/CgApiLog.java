@@ -39,7 +39,7 @@ public class CgApiLog {
     private Integer parType;
     @Column(nullable = false, columnDefinition = "text COMMENT '请求数据'")
     private String requestData;
-    @Column(nullable = false, columnDefinition = "text COMMENT '返回数据'")
+    @Column(columnDefinition = "text COMMENT '返回数据'")
     private String responseData;
     @Column(columnDefinition = "text COMMENT '错误信息'")
     private String errorMsg;

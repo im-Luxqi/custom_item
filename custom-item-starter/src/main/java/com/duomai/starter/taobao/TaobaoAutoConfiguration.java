@@ -5,6 +5,7 @@ import com.taobao.api.DefaultTaobaoClient;
 import lombok.extern.slf4j.Slf4j;
 import net.spy.memcached.AddrUtil;
 import net.spy.memcached.ConnectionFactoryBuilder;
+import net.spy.memcached.DefaultConnectionFactory;
 import net.spy.memcached.MemcachedClient;
 import net.spy.memcached.auth.AuthDescriptor;
 import net.spy.memcached.auth.PlainCallbackHandler;
@@ -29,25 +30,5 @@ public class TaobaoAutoConfiguration {
                 sysProperties.getCustomConfig().getAppkey(),
                 sysProperties.getCustomConfig().getSecretkey());
         return defaultTaobaoClient;
-    }
-
-    @Bean
-    public MemcachedClient createMemcachedClient(SysProperties sysProperties) {
-        String username = sysProperties.getOcsConfig().getUsername();
-        String password = sysProperties.getOcsConfig().getPassword();
-        String host = sysProperties.getOcsConfig().getHost();
-        String port = sysProperties.getOcsConfig().getPort();
-        AuthDescriptor ad = new AuthDescriptor(new String[]{"PLAIN"}, new PlainCallbackHandler(username, password));
-        MemcachedClient cache = null;
-        try {
-            cache = new MemcachedClient(
-                    new ConnectionFactoryBuilder()
-                            .setProtocol(ConnectionFactoryBuilder.Protocol.BINARY)
-                            .setAuthDescriptor(ad).build(), AddrUtil.getAddresses(host + ":" + port));
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.error("ocs client error", e);
-        }
-        return cache;
     }
 }

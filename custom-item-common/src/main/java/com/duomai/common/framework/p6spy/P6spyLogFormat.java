@@ -33,7 +33,7 @@ public class P6spyLogFormat implements MessageFormattingStrategy {
 
     @Override
     public String formatMessage(final int connectionId, final String now, final long elapsed, final String category, final String prepared, final String sql, final String url) {
-        if ("".equals(sql.trim()))
+        if ("".equals(sql.trim()) || "SELECT 1".equals(sql.trim()))
             return "";
         return this.format.format(new Date()) + " | SQL耗时 " + elapsed + "ms  | 连接信息 " + connectionId + "\t\n" +
                 sql

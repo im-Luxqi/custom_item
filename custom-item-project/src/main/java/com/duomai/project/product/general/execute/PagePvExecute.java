@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.api.gateway.tool.ApiTool;
 import com.duomai.project.product.general.entity.SysPagePvLog;
+import com.duomai.project.product.general.enums.PvChannelEnum;
+import com.duomai.project.product.general.enums.PvPageEnum;
 import com.duomai.project.product.general.repository.SysPagePvLogRepository;
+import com.duomai.project.tool.ProjectTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -15,7 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /* 记录pv
- * @description
+ * @description (哪个渠道，页面)
+ * @create by 王星齐
+ * @time 2020-08-26 19:11:50
  **/
 @Component
 public class PagePvExecute implements IApiExecute {
@@ -25,19 +29,20 @@ public class PagePvExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        JSONObject jsonObject = JSONObject.parseObject(sysParm.getApiParameter().getAdmjson().toString());
-        String page = jsonObject.getString("page");
-        String channel = jsonObject.getString("channel");
-        Assert.hasLength(page, "page is not blank");
-        Assert.hasLength(channel, "channel is not blank");
+        /*1.校验必传参数*/
+        JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
+        PvPageEnum page = ProjectTools.enumValueOf(PvPageEnum.class, jsonObjectAdmjson.getString("page"));
+        PvChannelEnum channel = ProjectTools.enumValueOf(PvChannelEnum.class, jsonObjectAdmjson.getString("channel"));
+        Assert.notNull(page, "来源页不能为空");
+        Assert.notNull(channel, "来源渠道不能为空");
 
+        /*2.保存pv*/
         sysPagePvLogRepository.save(new SysPagePvLog()
                 .setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
                 .setCreateTime(sysParm.getRequestStartTime())
                 .setId(sysParm.getApiParameter().getCommomParameter().getIp())
                 .setChannel(channel)
                 .setPage(page));
-
         return YunReturnValue.ok("pv记录成功");
     }
 }

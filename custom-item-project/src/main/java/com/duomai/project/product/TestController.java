@@ -1,16 +1,15 @@
 package com.duomai.project.product;
 
-import com.duomai.project.api.taobao.OcsTemplate;
-import com.duomai.project.product.demo.domain.City;
-import com.duomai.project.product.demo.enums.Sex;
 import com.duomai.project.product.demo.service.ICityService;
+import com.duomai.project.product.general.dto.XyReturn;
+import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
+import com.duomai.project.tool.ProjectHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
-import java.util.List;
 
 /**
  * test
@@ -27,17 +26,22 @@ public class TestController {
     @Autowired
     ICityService cityService;
 
+
     @Autowired
-    OcsTemplate ocsTemplate;
+    ProjectHelper projectHelper;
+
+
+    @Autowired
+    SysLuckyChanceRepository sysLuckyChanceRepository;
+
 
     @GetMapping(value = "wxq")
-    public String test() {
-        City city = new City();
-//        city.setId("1L");
-        city.setCityName("ddddd");
-        city.setSex(Sex.Female);
-        List<City> list = cityService.list();
-        cityService.save(city);
-        return "success";
+    public XyReturn test() {
+        final String orderSn = "1204002036979524301";
+        final String openID = "2088302134043800";
+        sysLuckyChanceRepository.tryReduceOne("t0");
+//        projectHelper.findOrdersByOpenId(System.currentTimeMillis(),openID);
+//        XyReturn orderBySn = projectHelper.findOrderBySn(System.currentTimeMillis(), orderSn);
+        return null;
     }
 }

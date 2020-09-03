@@ -12,6 +12,6 @@ public interface IEnum {
      *
      * @return
      */
-    int getValue();
+    String getValue();
 
 }
