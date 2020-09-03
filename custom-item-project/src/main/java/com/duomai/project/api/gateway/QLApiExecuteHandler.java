@@ -8,6 +8,7 @@ import com.duomai.project.product.general.execute.AuthorizationSuccessExecute;
 import com.duomai.project.product.general.execute.InitAttentionStatusExecute;
 import com.duomai.project.product.general.execute.PagePvExecute;
 import com.duomai.project.product.recycle.IndexLoadExecute;
+import com.duomai.project.product.recycle.LuckyBagLoadExecute;
 import com.duomai.project.product.recycle.LuckyDrawExecute;
 import com.duomai.project.product.recycle.LuckyDrawLoadExecute;
 import com.duomai.project.tool.ApplicationUtils;
@@ -37,6 +38,7 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.adidas.load.index", IndexLoadExecute.class); //首页load, wxq
         map.put("wx.dz.adidas.load.luckydraw", LuckyDrawLoadExecute.class); //抽奖页load, wxq
         map.put("wx.dz.adidas.post.luckydraw", LuckyDrawExecute.class); //抽奖, wxq
+        map.put("wx.dz.adidas.load.luckybag", LuckyBagLoadExecute.class); //我的奖品, wxq
     }
 
 

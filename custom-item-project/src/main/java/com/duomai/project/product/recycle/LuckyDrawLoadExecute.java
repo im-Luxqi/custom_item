@@ -87,6 +87,12 @@ public class LuckyDrawLoadExecute implements IApiExecute {
         result.put("act_base_setting", actBaseSetting);
         //@4.我的奖品
         List<SysLuckyDrawRecord> byPlayerBuyerNickAndIsWin = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndIsWin(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), BooleanConstant.BOOLEAN_YES);
+        byPlayerBuyerNickAndIsWin.forEach((x) -> {
+            x.setId(null);
+            x.setLuckyChance(null);
+            x.setPlayerBuyerNick(null);
+            x.setIsWin(null);
+        });
         result.put("my_lucky_bag", byPlayerBuyerNickAndIsWin);
         return YunReturnValue.ok(result, "玩家成功登陆抽奖页");
     }

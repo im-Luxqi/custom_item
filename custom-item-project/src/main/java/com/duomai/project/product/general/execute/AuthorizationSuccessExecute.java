@@ -5,7 +5,6 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.tool.ProjectTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -27,7 +26,10 @@ public class AuthorizationSuccessExecute implements IApiExecute {
 
         /*1.校验参数*/
         SysCustom sysCustomParam = sysParm.getApiParameter().findBeautyAdmjson(SysCustom.class);
-        ProjectTools.validateParam(sysCustomParam);
+//        ProjectTools.validateParam(sysCustomParam);
+        Assert.hasLength(sysCustomParam.getZnick(), "真实昵称不能为空");
+        Assert.hasLength(sysCustomParam.getHeadImg(), "头像不能为空");
+
 
         /*2.校验玩家*/
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(
