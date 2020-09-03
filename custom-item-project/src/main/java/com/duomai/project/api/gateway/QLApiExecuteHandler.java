@@ -7,10 +7,10 @@ import com.duomai.common.enums.SysErrorEnum;
 import com.duomai.project.product.general.execute.AuthorizationSuccessExecute;
 import com.duomai.project.product.general.execute.InitAttentionStatusExecute;
 import com.duomai.project.product.general.execute.PagePvExecute;
-import com.duomai.project.product.recycle.IndexLoadExecute;
-import com.duomai.project.product.recycle.LuckyBagLoadExecute;
-import com.duomai.project.product.recycle.LuckyDrawExecute;
-import com.duomai.project.product.recycle.LuckyDrawLoadExecute;
+import com.duomai.project.product.recycle.execute.IndexLoadExecute;
+import com.duomai.project.product.recycle.execute.LuckyBagLoadExecute;
+import com.duomai.project.product.recycle.execute.LuckyDrawExecute;
+import com.duomai.project.product.recycle.execute.LuckyDrawLoadExecute;
 import com.duomai.project.tool.ApplicationUtils;
 import org.springframework.context.ApplicationContext;
 

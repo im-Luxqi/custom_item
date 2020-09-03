@@ -1,4 +1,4 @@
-package com.duomai.project.product.recycle;
+package com.duomai.project.product.recycle.execute;
 
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;

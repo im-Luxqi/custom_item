@@ -1,4 +1,4 @@
-package com.duomai.project.product.recycle;
+package com.duomai.project.product.recycle.execute;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.base.execute.IApiExecute;

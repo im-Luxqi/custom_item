@@ -10,6 +10,8 @@ import com.duomai.project.product.general.dto.XyReturn;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysKeyValue;
 import com.duomai.project.product.general.repository.SysKeyValueRepository;
+import com.duomai.project.product.recycle.domain.XyRequest;
+import com.duomai.project.product.recycle.service.IXyRequestService;
 import com.duomai.starter.SysProperties;
 import com.taobao.api.ApiException;
 import org.apache.http.Consts;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,6 +40,8 @@ public class ProjectHelper {
     private SysProperties sysProperties;
     @Autowired
     private SysKeyValueRepository sysKeyValueRepository;
+    @Autowired
+    private IXyRequestService xyRequestService;
 
 
     /* 活动配置--信息获取
@@ -124,13 +129,27 @@ public class ProjectHelper {
      * @time 2020-08-31 16:27:04
      **/
     public XyReturn findOrdersByOpenId(Long timestamp, String openId) {
+
         final String appId = "adidas";
         final String appSecret = "4usEfQ3B5G9TEj*g";
         String format = String.format("appId=%s&appSecret=%s&openId=%s&timestamp=%s", appId, appSecret, openId, timestamp);
         String sign = DigestUtils.md5DigestAsHex(format.getBytes(Consts.UTF_8));
         String s = HttpClientUtil.doGet(String.format("https://vues.dd1x.cn/api/web_orders/get_order_info_by_openid?appId=%s&timestamp=%s&openid=%s&sign=%s"
                 , appId, timestamp, openId, sign));
-        return JSONObject.parseObject(s, XyReturn.class);
+        XyReturn xyReturn = JSONObject.parseObject(s, XyReturn.class);
+
+        Map<String, Object> requestData = new HashMap();
+        requestData.put("appId", appId);
+        requestData.put("appSecret", appSecret);
+        requestData.put("openId", openId);
+        requestData.put("timestamp", timestamp);
+        //todo:数据补全
+        xyRequestService.save(new XyRequest().setBuyerNick("xxxxx").setRequestTime(new Date())
+                .setRequestData(JSONObject.toJSONString(requestData))
+                .setResponseData(JSONObject.toJSONString(xyReturn))
+                .setSuccesss(xyReturn.getCode().equals(0) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO));
+
+        return xyReturn;
     }
 
 
