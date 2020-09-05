@@ -1,5 +1,6 @@
 package com.duomai.project.tool;
 
+import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
@@ -14,10 +15,8 @@ import com.duomai.project.product.recycle.domain.XyRequest;
 import com.duomai.project.product.recycle.service.IXyRequestService;
 import com.duomai.starter.SysProperties;
 import com.taobao.api.ApiException;
-import org.apache.http.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.DigestUtils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -116,7 +115,8 @@ public class ProjectHelper {
         final String appId = "adidas";
         final String appSecret = "4usEfQ3B5G9TEj*g";
         String format = String.format("appId=%s&appSecret=%s&orderSn=%s&timestamp=%s", appId, appSecret, orderSn, timestamp);
-        String sign = DigestUtils.md5DigestAsHex(format.getBytes(Consts.UTF_8));
+        String sign = SecureUtil.md5(format);
+//        String sign = DigestUtils.md5DigestAsHex(format.getBytes(Consts.UTF_8));
         String s = HttpClientUtil.doGet(String.format("https://vues.dd1x.cn/api/web_orders/get_order_info?appId=%s&timestamp=%s&orderSn=%s&sign=%s"
                 , appId, timestamp, orderSn, sign));
         return JSONObject.parseObject(s, XyReturn.class);
@@ -128,14 +128,13 @@ public class ProjectHelper {
      * @create by 王星齐
      * @time 2020-08-31 16:27:04
      **/
-    public XyReturn findOrdersByOpenId(Long timestamp, String openId) {
-
+    public XyReturn findOrdersByOpenId(Long timestamp, String openId, Long startTime, Long endTime, String buyerNick, Date requestTime) {
         final String appId = "adidas";
         final String appSecret = "4usEfQ3B5G9TEj*g";
-        String format = String.format("appId=%s&appSecret=%s&openId=%s&timestamp=%s", appId, appSecret, openId, timestamp);
-        String sign = DigestUtils.md5DigestAsHex(format.getBytes(Consts.UTF_8));
-        String s = HttpClientUtil.doGet(String.format("https://vues.dd1x.cn/api/web_orders/get_order_info_by_openid?appId=%s&timestamp=%s&openid=%s&sign=%s"
-                , appId, timestamp, openId, sign));
+        String format = String.format("appId=%s&appSecret=%s&openid=%s&timestamp=%s", appId, appSecret, openId, timestamp);
+        String sign = SecureUtil.md5(format);
+        String s = HttpClientUtil.doGet(String.format("https://vues.dd1x.cn/api/web_orders/get_order_info_by_openid?appId=%s&timestamp=%s&openid=%s&sign=%s&startTime=%s&endTime=%s"
+                , appId, timestamp, openId, sign, startTime, endTime));
         XyReturn xyReturn = JSONObject.parseObject(s, XyReturn.class);
 
         Map<String, Object> requestData = new HashMap();
@@ -143,12 +142,13 @@ public class ProjectHelper {
         requestData.put("appSecret", appSecret);
         requestData.put("openId", openId);
         requestData.put("timestamp", timestamp);
-        //todo:数据补全
-        xyRequestService.save(new XyRequest().setBuyerNick("xxxxx").setRequestTime(new Date())
+        requestData.put("startTime", startTime);
+        requestData.put("sign", sign);
+        requestData.put("endTime", endTime);
+        xyRequestService.save(new XyRequest().setBuyerNick(buyerNick).setRequestTime(requestTime)
                 .setRequestData(JSONObject.toJSONString(requestData))
                 .setResponseData(JSONObject.toJSONString(xyReturn))
                 .setSuccesss(xyReturn.getCode().equals(0) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO));
-
         return xyReturn;
     }
 

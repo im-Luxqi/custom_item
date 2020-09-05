@@ -1,17 +1,20 @@
 package com.duomai.project.product;
 
+import com.alibaba.fastjson.JSONObject;
 import com.duomai.project.product.demo.service.ICityService;
 import com.duomai.project.product.general.dto.XyReturn;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
+import com.duomai.project.tool.HttpClientUtil;
 import com.duomai.project.tool.ProjectHelper;
+import org.apache.http.Consts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * test
@@ -51,13 +54,12 @@ public class TestController {
     }
     @GetMapping(value = "wxq1")
     public XyReturn test1() {
-        List<String> strings = new ArrayList<>();
-        strings.add("aaaa");
-        strings.add("bbbb");
-        strings.add("cccc");
 
-        strings.contains("aaaa");
+        String format = "appId=adidas&appSecret=4usEfQ3B5G9TEj*g&endTime=1599926399999&openid=AAHimzDHAJzKaWWJ9papdbPs&startTime=1598976000000&timestamp=1599201130042";
+        DigestUtils.md5DigestAsHex(format.getBytes(Consts.UTF_8));
 
+        XyReturn orderBySn = projectHelper.findOrderBySn(System.currentTimeMillis(), "1204002036979524301");
         return null;
     }
+
 }
