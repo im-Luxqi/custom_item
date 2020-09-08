@@ -5,6 +5,7 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.common.enums.SysErrorEnum;
 import com.duomai.project.product.general.execute.AuthorizationSuccessExecute;
+import com.duomai.project.product.general.execute.AwardAddressExecute;
 import com.duomai.project.product.general.execute.InitAttentionStatusExecute;
 import com.duomai.project.product.general.execute.PagePvExecute;
 import com.duomai.project.product.recycle.execute.IndexLoadExecute;
@@ -30,6 +31,7 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.common.pv", PagePvExecute.class);//pv  wxq
         map.put("wx.dz.common.auth.success", AuthorizationSuccessExecute.class);//授权成功后，完善用户信息  wxq
         map.put("wx.dz.common.init.attention", InitAttentionStatusExecute.class); //活动主页--load后，初始化玩家关注状态 wxq
+        map.put("wx.dz.common.award.address", AwardAddressExecute.class); //留资料 wxq
 
 
         /*

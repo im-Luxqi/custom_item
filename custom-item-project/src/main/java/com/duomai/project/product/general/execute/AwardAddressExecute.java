@@ -1,9 +1,10 @@
-package com.duomai.project.product.recycle.execute;
+package com.duomai.project.product.general.execute;
 
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.product.general.dto.AddressInfoFillDto;
 import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import com.duomai.project.tool.ProjectTools;
@@ -30,7 +31,7 @@ public class AwardAddressExecute implements IApiExecute {
 
 
         /*1.校验参数*/
-        SysLuckyDrawRecord beautyAdmjson = sysParm.getApiParameter().findBeautyAdmjson(SysLuckyDrawRecord.class);
+        AddressInfoFillDto beautyAdmjson = sysParm.getApiParameter().findBeautyAdmjson(AddressInfoFillDto.class);
         ProjectTools.validateParam(beautyAdmjson);
 
         Optional<SysLuckyDrawRecord> maybeRecord = sysLuckyDrawRecordRepository.findById(beautyAdmjson.getId());
@@ -39,14 +40,14 @@ public class AwardAddressExecute implements IApiExecute {
         Assert.isTrue(record.getPlayerBuyerNick().equals(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick()), "非法用户");
         Assert.isTrue(record.getIsWin().equals(BooleanConstant.BOOLEAN_YES), "非法填写");
 
-        sysLuckyDrawRecordRepository.save(record).setIsFill(BooleanConstant.BOOLEAN_YES)
-                .setReceviceCity(beautyAdmjson.getReceviceCity())
-                .setReceviceDistrict(beautyAdmjson.getReceviceDistrict())
-                .setReceviceName(beautyAdmjson.getReceviceName())
-                .setRecevicePhone(beautyAdmjson.getRecevicePhone())
-                .setReceviceProvince(beautyAdmjson.getReceviceProvince())
-                .setReceviceTime(beautyAdmjson.getReceviceTime())
-                .setReceviceAddress(beautyAdmjson.getReceviceAddress());
+        sysLuckyDrawRecordRepository.save(record.setIsFill(BooleanConstant.BOOLEAN_YES)
+                        .setReceviceCity(beautyAdmjson.getReceviceCity())
+                        .setReceviceDistrict(beautyAdmjson.getReceviceDistrict())
+                        .setReceviceName(beautyAdmjson.getReceviceName())
+                        .setRecevicePhone(beautyAdmjson.getRecevicePhone())
+                        .setReceviceProvince(beautyAdmjson.getReceviceProvince())
+                        .setReceviceTime(sysParm.getRequestStartTime())
+                        .setReceviceAddress(beautyAdmjson.getReceviceAddress()));
         return YunReturnValue.ok("完善地址成功");
     }
 }

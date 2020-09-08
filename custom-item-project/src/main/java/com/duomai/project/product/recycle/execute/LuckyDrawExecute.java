@@ -73,6 +73,6 @@ public class LuckyDrawExecute implements IApiExecute {
                     .setLuckyValue(null)
                     .setPoolLevel(null);
         }
-        return YunReturnValue.ok(sysAward, "玩家成功登陆抽奖页");
+        return YunReturnValue.ok(result, "玩家成功进行抽奖");
     }
 }
