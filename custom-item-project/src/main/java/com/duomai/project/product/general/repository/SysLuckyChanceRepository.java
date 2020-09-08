@@ -12,18 +12,8 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
 
     long countByBuyerNickAndIsUse(String buyerNick, Integer use);
 
-    long countByTid(String tid);
-
     SysLuckyChance findFirstByBuyerNickAndIsUse(String buyerNick, Integer use);
 
     List<SysLuckyChance> findAllByBuyerNick(String buyerNick);
 
-    @Modifying
-    @Transactional
-    @Query(nativeQuery = true,
-            value = "update sys_award" +
-                    "        set remain_num = remain_num-1,send_num = send_num + 1" +
-                    "    where id = ?1" +
-                    "        and  remain_num >0")
-    int tryReduceOne(String id);
 }

@@ -31,10 +31,8 @@ public class SysCustom {
     private String buyerNick;
     @Column(columnDefinition = "varchar(64) COMMENT '用户openID'")
     private String openId;
-//    @NotBlank(message = "真实昵称不能为空！")
     @Column(columnDefinition = "varchar(64) COMMENT '真实昵称'")
     private String znick;
-//    @NotBlank(message = "头像不能为空！")
     @Column(columnDefinition = "varchar(255) COMMENT '头像'")
     private String headImg;
 

@@ -101,7 +101,7 @@ public class ProjectHelper {
                 .setOldFans(BooleanConstant.BOOLEAN_UNDEFINED)//由于关注权限在前端查询，此处默认未知状态(-1),等待首次更新
                 .setOldMember(taobaoAPIService.isMember(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(),
                         sysProperties.getCustomConfig().getSessionkey()) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO)
-                .setFans(sysCustom.getOldFans().equals(BooleanConstant.BOOLEAN_YES) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO)
+                .setFans(sysCustom.getOldFans())
                 .setMember(sysCustom.getOldMember().equals(BooleanConstant.BOOLEAN_YES) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO);
     }
 
@@ -116,7 +116,6 @@ public class ProjectHelper {
         final String appSecret = "4usEfQ3B5G9TEj*g";
         String format = String.format("appId=%s&appSecret=%s&orderSn=%s&timestamp=%s", appId, appSecret, orderSn, timestamp);
         String sign = SecureUtil.md5(format);
-//        String sign = DigestUtils.md5DigestAsHex(format.getBytes(Consts.UTF_8));
         String s = HttpClientUtil.doGet(String.format("https://vues.dd1x.cn/api/web_orders/get_order_info?appId=%s&timestamp=%s&orderSn=%s&sign=%s"
                 , appId, timestamp, orderSn, sign));
         return JSONObject.parseObject(s, XyReturn.class);

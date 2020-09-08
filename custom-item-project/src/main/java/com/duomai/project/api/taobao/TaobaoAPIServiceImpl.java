@@ -2,6 +2,7 @@ package com.duomai.project.api.taobao;
 
 import com.duomai.project.api.taobao.enums.TaoBaoTradeStatus;
 import com.taobao.api.ApiException;
+import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.AlibabaBenefitSendRequest;
 import com.taobao.api.request.CrmMemberIdentityGetRequest;
@@ -24,8 +25,7 @@ import java.util.List;
 public class TaobaoAPIServiceImpl implements ITaobaoAPIService {
 
     @Autowired
-    @Qualifier(value = "taoBaoClient")
-    private TaobaoClient client;
+    private DefaultTaobaoClient client;
 
 
     public CrmMemberIdentityGetResponse CrmMemberIdentityGet(String buyerNick, String sessionkey) throws ApiException {

@@ -23,7 +23,6 @@ public class SysLuckyDrawRecord {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(length = 64)
-//    @NotBlank(message = "获奖记录不能为空")
     private String id;
     @Column(nullable = false, columnDefinition = "varchar(64) COMMENT '奖品机会'")
     private String luckyChance;
@@ -53,22 +52,16 @@ public class SysLuckyDrawRecord {
     @Column(nullable = false, columnDefinition = "int(1) COMMENT '是否填写地址'")
     private Integer isFill;
 
-//    @NotBlank(message = "收件人昵称不为空")
     @Column(columnDefinition = "varchar(64) COMMENT '收件人昵称'")
     private String receviceName;
-//    @NotBlank(message = "收件人电话不为空")
     @Column(columnDefinition = "varchar(64) COMMENT '收件人电话'")
     private String recevicePhone;
-//    @NotBlank(message = "收件人地址 市不为空")
     @Column(columnDefinition = "varchar(64) COMMENT '收件人地址 市'")
     private String receviceCity;
-//    @NotBlank(message = "收件人地址 省不为空")
     @Column(columnDefinition = "varchar(64) COMMENT '收件人地址 省'")
     private String receviceProvince;
-//    @NotBlank(message = "收件人地址 区不为空")
     @Column(columnDefinition = "varchar(64) COMMENT '收件人地址 区'")
     private String receviceDistrict;
-//    @NotBlank(message = "收件人地址 详细地址不为空")
     @Column(columnDefinition = "varchar(64) COMMENT '收件人地址 详细地址'")
     private String receviceAddress;
     @Column(columnDefinition = "DATETIME COMMENT '填写地址时间'")

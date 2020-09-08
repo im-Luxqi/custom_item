@@ -3,6 +3,8 @@ package com.duomai.project;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
@@ -13,9 +15,12 @@ import java.net.UnknownHostException;
 @Slf4j
 @SpringBootApplication
 @ComponentScan(basePackages = "com.duomai.*.*")
-public class CustomItemProjectApplication {
+public class CustomItemProjectApplication  extends SpringBootServletInitializer {
 
-
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(CustomItemProjectApplication.class);
+    }
     public static void main(String[] args) throws UnknownHostException {
         ConfigurableApplicationContext application = SpringApplication.run(CustomItemProjectApplication.class, args);
         Environment env = application.getEnvironment();

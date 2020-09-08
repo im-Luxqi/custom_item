@@ -10,6 +10,7 @@ import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import com.duomai.project.product.general.enums.AwardType;
 import com.duomai.project.product.general.enums.LuckyChanceFrom;
+import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import com.duomai.starter.SysProperties;
@@ -42,6 +43,8 @@ public class LuckyDrawHelper {
     private SysLuckyChanceRepository sysLuckyChanceRepository;
     @Autowired
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
+    @Autowired
+    private SysAwardRepository sysAwardRepository;
 
     /* 发放游戏机会
      * @description
@@ -150,7 +153,7 @@ public class LuckyDrawHelper {
                 return null;
             }
             //欧皇落泪  尝试扣减奖品库存，库存不够不中奖
-            if (sysLuckyChanceRepository.tryReduceOne(awardThisWin.getId()) != 1) {
+            if (sysAwardRepository.tryReduceOne(awardThisWin.getId()) != 1) {
                 return null;
             }
             //2.如果中的是优惠券，发放优惠券
