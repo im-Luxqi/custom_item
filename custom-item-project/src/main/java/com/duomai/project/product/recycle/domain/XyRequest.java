@@ -47,4 +47,8 @@ public class XyRequest {
      */
     private Integer successs;
 
+
+//
+//    @JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
+//    private Sex sex;
 }

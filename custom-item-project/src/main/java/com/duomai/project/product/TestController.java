@@ -1,6 +1,5 @@
 package com.duomai.project.product;
 
-import com.duomai.project.product.demo.service.ICityService;
 import com.duomai.project.product.general.dto.XyReturn;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.tool.ProjectHelper;
@@ -23,9 +22,6 @@ public class TestController {
 
     @Autowired
     DataSource dataSource;
-
-    @Autowired
-    ICityService cityService;
 
 
     @Autowired

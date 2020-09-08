@@ -48,8 +48,8 @@ public class IndexLoadExecute implements IApiExecute {
         /*3.数据展示*/
         Map result = new HashMap<>();
         result.put("act_base_setting", actBaseSetting);
-        result.put("custom", sysCustom.setFans(null).setId(null)
-                .setCreateTime(null).setUpdateTime(null).setOpenId(null).setMember(null).setOldMember(null));
+        result.put("custom", sysCustom.setId(null)
+                .setCreateTime(null).setUpdateTime(null).setOpenId(null));
         return YunReturnValue.ok(result, "玩家成功登陆活动首页");
     }
 }

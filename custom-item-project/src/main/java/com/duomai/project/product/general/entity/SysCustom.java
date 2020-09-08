@@ -1,12 +1,10 @@
 package com.duomai.project.product.general.entity;
 
-import com.duomai.project.product.demo.enums.Sex;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
