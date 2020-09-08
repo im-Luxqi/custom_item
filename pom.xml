@@ -25,14 +25,12 @@
 
 
     <properties>
-<!--        <java.version>1.9</java.version>-->
+        <java.version>1.8</java.version>
         <alibaba.druid.jdbc.version>1.1.22</alibaba.druid.jdbc.version>
         <baomidou.mp.version>3.1.0</baomidou.mp.version>
         <fastjson.version>1.2.68</fastjson.version>
         <pagehelper.version>5.1.11</pagehelper.version>
-<!--        <httpClient.version>4.4.13</httpClient.version>-->
     </properties>
-
 
     <dependencies>
         <dependency>
@@ -61,15 +59,6 @@
             </exclusions>
         </dependency>
 
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-test</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-
-
-        <!--lombok:1.16.22 解决tomcat8下启动报错-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -77,6 +66,4 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
-
 </project>
