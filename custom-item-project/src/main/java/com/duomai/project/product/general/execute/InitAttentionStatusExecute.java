@@ -40,8 +40,7 @@ public class InitAttentionStatusExecute implements IApiExecute {
         Assert.notNull(sysCustom, "不存在该玩家，或者该玩家已经初始化关注信息");
 
         /*3.初始化玩家关注状态*/
-        sysCustomRepository.save(sysCustom.setOldFans(has_attention ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO)
-                        .setFans(sysCustom.getOldFans()));
+        sysCustomRepository.save(sysCustom.setOldFans(has_attention ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO));
         return YunReturnValue.ok("初始化玩家关注信息成功");
     }
 }

@@ -30,6 +30,15 @@ public interface ITaobaoAPIService {
      **/
     public boolean isMember(String buyerNick, String sessionkey) throws ApiException;
 
+    /*查询是否为店铺粉丝
+     * @description 需要申请权限
+     * @create by 王星齐
+     * @time 2020-08-24 10:14:01
+     * @param buyerNick
+     * @param sessionkey
+     **/
+    public boolean isFans(String buyerNick,String sellernick) throws ApiException;
+
 
     /*查询卖家已卖出的交易数据（商家应用使用）
      * @description   需要申请权限

@@ -9,6 +9,10 @@ import lombok.Data;
 public class CustomConfig {
 
     /**
+     * 例： 阿迪达斯官方旗舰店
+     */
+    private String sellernick;
+    /**
      * 例： 30482173
      */
     private String appkey;

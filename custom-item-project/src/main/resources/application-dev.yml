@@ -21,7 +21,16 @@ sys:
     appkey: 21699045
     secretkey: 20ee7d6400dda1c9622699123af2c2c8
   customConfig:
-    appkey: 30482173
-    secretkey: d572b124d2d70b648a5e7e8790959a70
+    sellernick: adidas官方旗舰店
+    appkey: 31100970
+    secretkey: 4243b70e27862e89a682e7118964ce5a
     appName: promotioncenter-3000000019832114
     sessionkey: 50000000b11gmdOAc0owgha19c51b2cl0hmTCuTgZEar8KW2EoDJnYeSwpGTQ0qoC00
+
+
+
+#    customConfig:
+#      appkey: 30482173
+#      secretkey: d572b124d2d70b648a5e7e8790959a70
+#      appName: promotioncenter-3000000019832114
+#      sessionkey: 50000000b11gmdOAc0owgha19c51b2cl0hmTCuTgZEar8KW2EoDJnYeSwpGTQ0qoC00

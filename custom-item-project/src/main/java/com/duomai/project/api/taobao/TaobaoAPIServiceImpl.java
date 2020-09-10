@@ -7,9 +7,11 @@ import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.AlibabaBenefitSendRequest;
 import com.taobao.api.request.CrmMemberIdentityGetRequest;
 import com.taobao.api.request.OpenTradesSoldGetRequest;
+import com.taobao.api.request.WeitaoFeedIsrelationRequest;
 import com.taobao.api.response.AlibabaBenefitSendResponse;
 import com.taobao.api.response.CrmMemberIdentityGetResponse;
 import com.taobao.api.response.OpenTradesSoldGetResponse;
+import com.taobao.api.response.WeitaoFeedIsrelationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,6 +45,23 @@ public class TaobaoAPIServiceImpl implements ITaobaoAPIService {
                 member.getResult().getMemberInfo().getGrade() > 0L)
             memberOrNot = Boolean.TRUE;
         return memberOrNot;
+    }
+
+    @Override
+    public boolean isFans(String buyerNick,String sellernick) throws ApiException {
+
+        // 判断是否关注
+        WeitaoFeedIsrelationRequest req = new WeitaoFeedIsrelationRequest();
+        req.setFansNick(buyerNick);
+        req.setSellerNick(sellernick);
+        req.putOtherTextParam("top_mix_params", "fans_nick");
+        WeitaoFeedIsrelationResponse response = client.execute(req);
+
+        if (response != null && response.getResult() != null && response.getResult() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
