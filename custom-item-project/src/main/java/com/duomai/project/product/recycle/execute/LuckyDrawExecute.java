@@ -59,7 +59,7 @@ public class LuckyDrawExecute implements IApiExecute {
         List<SysAward> all = sysAwardRepository.findAll();
 
         /*4.抽奖*/
-        SysAward sysAward = luckyDrawHelper.luckyDraw(all, 1, sysCustom, sysParm.getRequestStartTime());
+        SysAward sysAward = luckyDrawHelper.luckyDraw(all, sysCustom, sysParm.getRequestStartTime());
         /*只反馈有效数据*/
         Map result = new HashMap<>();
         result.put("win", sysAward != null);

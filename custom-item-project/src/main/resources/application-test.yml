@@ -1,0 +1,29 @@
+spring:
+  # 数据库访问配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://rm-k2j0f3w284mu8b999.mysql.zhangbei.rds.aliyuncs.com:3306/adidas_huishou?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useServerPrepStmts=true
+    userName: adboxrds
+    password: ad_2020box
+
+
+#系统配置
+sys:
+  genFlag: false
+  ocsConfig:
+    host: m-k2j3c6d9a9b484e4.memcache.zhangbei.rds.aliyuncs.com
+    port: 11211
+    username: m-k2j3c6d9a9b484e4
+    password: 3sKmT2cBxnVFDo9Q
+  druidConfig:
+    monitorUsername: 00096098e2254fe69193da5653200bab
+    monitorPassword: 0010510f513c48beaa06a6b1632e7bfd
+  sysConfig:
+    appkey: 21699045
+    secretkey: 20ee7d6400dda1c9622699123af2c2c8
+  customConfig:
+    sellernick: adidas官方旗舰店
+    appkey: 21699045
+    secretkey: 20ee7d6400dda1c9670e7f997af2c2c8
+    appName: promotioncenter-3000000019832114
+    sessionkey: 620291645775e5cee724481cegc3e25d745a40ca5d496ee446338500

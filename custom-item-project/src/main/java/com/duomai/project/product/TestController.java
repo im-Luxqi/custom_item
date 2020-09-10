@@ -1,7 +1,9 @@
 package com.duomai.project.product;
 
 import com.duomai.project.product.general.dto.XyReturn;
+import com.duomai.project.product.general.enums.LuckyChanceFrom;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
+import com.duomai.project.tool.LuckyDrawHelper;
 import com.duomai.project.tool.ProjectHelper;
 import com.taobao.api.DefaultTaobaoClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,10 @@ public class TestController {
 
 
     @Autowired
+    LuckyDrawHelper luckyDrawHelper;
+
+
+    @Autowired
     DefaultTaobaoClient defaultTaobaoClient;
 
 
@@ -37,6 +43,7 @@ public class TestController {
 
     @GetMapping(value = "wxq")
     public XyReturn test() {
+        luckyDrawHelper.sendLuckyChance("s01bPY6OKAXoXEBLuS0WXELkWL65KSN4Xgj0x2NaS0H3n4=", LuckyChanceFrom.ORDER_FINISH,200,"zhuyajin");
         return null;
     }
 }

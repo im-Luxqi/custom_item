@@ -182,6 +182,12 @@
             </activation>
         </profile>
         <profile>
+            <id>test</id>
+            <properties>
+                <activatedYml>test</activatedYml>
+            </properties>
+        </profile>
+        <profile>
             <id>prod</id>
             <properties>
                 <activatedYml>prod</activatedYml>

@@ -98,8 +98,7 @@ public class LuckyDrawHelper {
      * @param custom 哪个玩家
      **/
     @Transactional
-    public SysAward luckyDraw(List<SysAward> awards, Integer maxWinGoodNum,
-                              SysCustom custom, Date drawTime) throws Exception {
+    public SysAward luckyDraw(List<SysAward> awards, SysCustom custom, Date drawTime) throws Exception {
         SysAward awardThisWin = null;//本次抽中的奖品
 
         /*消耗一次抽奖次数*/
@@ -107,6 +106,7 @@ public class LuckyDrawHelper {
         if (Objects.isNull(thisChance)) {
             throw new Exception("抽奖次数不足");
         }
+
         sysLuckyChanceRepository.save(thisChance.setIsUse(BooleanConstant.BOOLEAN_YES)
                 .setUseTime(drawTime));
 
@@ -133,7 +133,9 @@ public class LuckyDrawHelper {
             final String historySigns = historySignsBuffer.toString();
             Integer historyGoodsHasGet = historyGoodsHasGetAto.get();
 
+
             /*2.开始随机抽奖,模拟选出本次抽奖中的奖品*/
+            Integer maxWinGoodNum = this.findMaxWinGoodNum();
             for (SysAward award : awards) {
                 //1.奖品数量不足;2.本活动最大实物中奖限制；3.已抽中过本奖品
                 if (award.getRemainNum() < 1 ||
@@ -184,6 +186,14 @@ public class LuckyDrawHelper {
         } finally {
             sysLuckyDrawRecordRepository.save(drawRecord);
         }
+    }
+
+    public Integer findMaxWinGoodNum() {
+        String property = ApplicationUtils.getContext().getEnvironment().getProperty("spring.profiles.active");
+        if ("prod".equals(property)) {
+            return 1;
+        }
+        return 999;
     }
 
 }

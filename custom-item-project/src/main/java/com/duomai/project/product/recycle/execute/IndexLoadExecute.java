@@ -1,9 +1,11 @@
 package com.duomai.project.product.recycle.execute;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.dto.ActBaseSetting;
+import com.duomai.project.product.general.dto.XyReturn;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.tool.ProjectHelper;
@@ -45,9 +47,13 @@ public class IndexLoadExecute implements IApiExecute {
             sysCustom = projectHelper.customInit(sysParm);
             sysCustomRepository.save(sysCustom);
         }
+
+        XyReturn ordersByOpenId = projectHelper.findOrdersByOpenId(System.currentTimeMillis(), sysParm.getApiParameter().getYunTokenParameter().getOpenUId(),
+                actBaseSetting.getActStartTime().getTime(), actBaseSetting.getActEndTime().getTime(), sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), sysParm.getRequestStartTime());
         /*3.数据展示*/
         Map result = new HashMap<>();
         result.put("act_base_setting", actBaseSetting);
+        result.put("custom_has_order", ordersByOpenId.getCode().equals(0) && CollectionUtils.isNotEmpty(ordersByOpenId.getData()));
         result.put("custom", sysCustom.setId(null)
                 .setCreateTime(null).setUpdateTime(null).setOpenId(null));
         return YunReturnValue.ok(result, "玩家成功登陆活动首页");
