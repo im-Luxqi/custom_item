@@ -19,7 +19,7 @@ public class AddressInfoFillDto {
     private String receviceName;
     @NotBlank(message = "收件人电话 不能为空")
     private String recevicePhone;
-    @NotBlank(message = "收件人地址 市 不能为空")
+//    @NotBlank(message = "收件人地址 市 不能为空")
     private String receviceCity;
     @NotBlank(message = "收件人地址 省 不能为空")
     private String receviceProvince;

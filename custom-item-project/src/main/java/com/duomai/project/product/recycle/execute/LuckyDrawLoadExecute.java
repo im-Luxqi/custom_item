@@ -18,6 +18,7 @@ import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import com.duomai.project.tool.LuckyDrawHelper;
 import com.duomai.project.tool.ProjectHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -61,27 +62,29 @@ public class LuckyDrawLoadExecute implements IApiExecute {
             return YunReturnValue.fail("不存在该玩家");
         }
         /*3.查询订单是否属实，然后发放翻牌机会*/
-        XyReturn ordersByOpenId = projectHelper.findOrdersByOpenId(System.currentTimeMillis(), sysParm.getApiParameter().getYunTokenParameter().getOpenUId(),
-                actBaseSetting.getActStartTime().getTime(), actBaseSetting.getActEndTime().getTime(), sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), sysParm.getRequestStartTime());
-        if (ordersByOpenId.getCode().equals(0) && CollectionUtils.isNotEmpty(ordersByOpenId.getData())) {
-            List<String> collectDm = new ArrayList<>();
-            List<SysLuckyChance> allByBuyerNick = sysLuckyChanceRepository.findAllByBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
-            if (allByBuyerNick.size() > 0) {
-                collectDm.addAll(allByBuyerNick.stream().map(SysLuckyChance::getTid).collect(Collectors.toList()));
-            }
-            List<String> collectXy = ordersByOpenId.getData().stream().map(XyData::getOrderSn).filter(o -> !collectDm.contains(o)).collect(Collectors.toList());
-            if (collectXy.size() > 0) {
-                Date sendTime = new Date();
-                List<SysLuckyChance> newChances = collectXy.stream().map((tid) -> new SysLuckyChance()
-                        .setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
-                        .setChanceFrom(LuckyChanceFrom.ORDER_COMMIT)
-                        .setGetTime(sendTime)
-                        .setIsUse(BooleanConstant.BOOLEAN_NO)
-                        .setTid(tid)).collect(Collectors.toList());
-                luckyDrawHelper.sendLuckyChance(newChances);
+        if (StringUtils.isNotBlank(sysCustom.getZnick())) {
+            //未授权不查
+            XyReturn ordersByOpenId = projectHelper.findOrdersByOpenId(System.currentTimeMillis(), sysParm.getApiParameter().getYunTokenParameter().getOpenUId(), sysCustom.getZnick(),
+                    actBaseSetting.getActStartTime().getTime(), actBaseSetting.getActEndTime().getTime(), sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), sysParm.getRequestStartTime());
+            if (ordersByOpenId.getCode().equals(0) && CollectionUtils.isNotEmpty(ordersByOpenId.getData())) {
+                List<String> collectDm = new ArrayList<>();
+                List<SysLuckyChance> allByBuyerNick = sysLuckyChanceRepository.findAllByBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
+                if (allByBuyerNick.size() > 0) {
+                    collectDm.addAll(allByBuyerNick.stream().map(SysLuckyChance::getTid).collect(Collectors.toList()));
+                }
+                List<String> collectXy = ordersByOpenId.getData().stream().map(XyData::getOrderSn).filter(o -> !collectDm.contains(o)).collect(Collectors.toList());
+                if (collectXy.size() > 0) {
+                    Date sendTime = new Date();
+                    List<SysLuckyChance> newChances = collectXy.stream().map((tid) -> new SysLuckyChance()
+                            .setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
+                            .setChanceFrom(LuckyChanceFrom.ORDER_COMMIT)
+                            .setGetTime(sendTime)
+                            .setIsUse(BooleanConstant.BOOLEAN_NO)
+                            .setTid(tid)).collect(Collectors.toList());
+                    luckyDrawHelper.sendLuckyChance(newChances);
+                }
             }
         }
-
         /*4.数据展示*/
         Map result = new HashMap<>();
         //@1.未使用的抽奖机会

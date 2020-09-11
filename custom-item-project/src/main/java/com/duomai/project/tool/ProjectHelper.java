@@ -127,19 +127,20 @@ public class ProjectHelper {
      * @create by 王星齐
      * @time 2020-08-31 16:27:04
      **/
-    public XyReturn findOrdersByOpenId(Long timestamp, String openId, Long startTime, Long endTime, String buyerNick, Date requestTime) {
+    public XyReturn findOrdersByOpenId(Long timestamp, String openId, String nick, Long startTime, Long endTime, String buyerNick, Date requestTime) {
         final String appId = "adidas";
         final String appSecret = "4usEfQ3B5G9TEj*g";
         String format = String.format("appId=%s&appSecret=%s&openid=%s&timestamp=%s", appId, appSecret, openId, timestamp);
         String sign = SecureUtil.md5(format);
-        String s = HttpClientUtil.doGet(String.format("https://vues.dd1x.cn/api/web_orders/get_order_info_by_openid?appId=%s&timestamp=%s&openid=%s&sign=%s&startTime=%s&endTime=%s"
-                , appId, timestamp, openId, sign, startTime, endTime));
+        String s = HttpClientUtil.doGet(String.format("https://vues.dd1x.cn/api/web_orders/get_order_info_by_openid?appId=%s&timestamp=%s&openid=%s&nick=%s&sign=%s&startTime=%s&endTime=%s"
+                , appId, timestamp, openId,  nick, sign, startTime, endTime));
         XyReturn xyReturn = JSONObject.parseObject(s, XyReturn.class);
 
         Map<String, Object> requestData = new HashMap();
         requestData.put("appId", appId);
         requestData.put("appSecret", appSecret);
         requestData.put("openId", openId);
+        requestData.put("nick", nick);
         requestData.put("timestamp", timestamp);
         requestData.put("startTime", startTime);
         requestData.put("sign", sign);

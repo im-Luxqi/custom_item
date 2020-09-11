@@ -29,6 +29,13 @@ public class TaobaoAPIServiceImpl implements ITaobaoAPIService {
     @Autowired
     private DefaultTaobaoClient client;
 
+    public void aa(){
+//
+//        NickUnionidGetRequest req = new NickUnionidGetRequest();
+//        req.setNick("某某");
+//        NickUnionidGetResponse rsp = client.execute(req, sessionKey);
+//        System.out.println(rsp.getBody());
+    }
 
     public CrmMemberIdentityGetResponse CrmMemberIdentityGet(String buyerNick, String sessionkey) throws ApiException {
         CrmMemberIdentityGetRequest req = new CrmMemberIdentityGetRequest();
