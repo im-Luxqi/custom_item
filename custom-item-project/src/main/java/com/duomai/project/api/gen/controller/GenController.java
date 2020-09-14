@@ -68,7 +68,7 @@ public class GenController {
      */
     @GetMapping("/table")
     public String table() {
-        Assert.isTrue(sysProperties.isGenFlag(),"暂无权限");
+        Assert.isTrue(sysProperties.isGenFlag(), "暂无权限");
         return "gen/table";
     }
 
@@ -101,7 +101,7 @@ public class GenController {
 
         Page<Object[]> all = genTableRepository.selectDbTableList(tableName, tableComment, PageRequest.of(pageNum - 1, pageSize));
         Map<String, Object> result = new HashMap<>();
-        result.put("total", all.getTotalPages());
+        result.put("total", all.getTotalElements());
         result.put("rows", all.get().map((obj) -> {
             CgGenTable cgGenTable = new CgGenTable();
             cgGenTable.setTableName((String) obj[0]);

@@ -16,6 +16,7 @@ import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import com.duomai.project.tool.CommonDateParseUtil;
 import com.duomai.project.tool.LuckyDrawHelper;
 import com.duomai.project.tool.ProjectHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -62,26 +63,41 @@ public class LuckyDrawLoadExecute implements IApiExecute {
             return YunReturnValue.fail("不存在该玩家");
         }
         /*3.查询订单是否属实，然后发放翻牌机会*/
-        if (StringUtils.isNotBlank(sysCustom.getZnick())) {
-            //未授权不查
-            XyReturn ordersByOpenId = projectHelper.findOrdersByOpenId(System.currentTimeMillis(), sysParm.getApiParameter().getYunTokenParameter().getOpenUId(), sysCustom.getZnick(),
-                    actBaseSetting.getActStartTime().getTime(), actBaseSetting.getActEndTime().getTime(), sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), sysParm.getRequestStartTime());
-            if (ordersByOpenId.getCode().equals(0) && CollectionUtils.isNotEmpty(ordersByOpenId.getData())) {
-                List<String> collectDm = new ArrayList<>();
-                List<SysLuckyChance> allByBuyerNick = sysLuckyChanceRepository.findAllByBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
-                if (allByBuyerNick.size() > 0) {
-                    collectDm.addAll(allByBuyerNick.stream().map(SysLuckyChance::getTid).collect(Collectors.toList()));
-                }
-                List<String> collectXy = ordersByOpenId.getData().stream().map(XyData::getOrderSn).filter(o -> !collectDm.contains(o)).collect(Collectors.toList());
-                if (collectXy.size() > 0) {
-                    Date sendTime = new Date();
-                    List<SysLuckyChance> newChances = collectXy.stream().map((tid) -> new SysLuckyChance()
-                            .setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
-                            .setChanceFrom(LuckyChanceFrom.ORDER_COMMIT)
-                            .setGetTime(sendTime)
-                            .setIsUse(BooleanConstant.BOOLEAN_NO)
-                            .setTid(tid)).collect(Collectors.toList());
-                    luckyDrawHelper.sendLuckyChance(newChances);
+        long todayChance = sysLuckyChanceRepository.countByBuyerNickAndGetTimeBetween(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(),
+                CommonDateParseUtil.getStartTimeOfDay(sysParm.getRequestStartTime()), CommonDateParseUtil.getEndTimeOfDay(sysParm.getRequestStartTime()));
+        if (StringUtils.isNotBlank(sysCustom.getZnick()) && todayChance == 0) {// 每天仅限第一次下单可以抽
+            List<SysLuckyChance> allByBuyerNick = sysLuckyChanceRepository.findAllByBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
+            if (allByBuyerNick.size() < 5) {//活动期内每个用户限抽5次
+                //查询咸鱼接口
+                XyReturn ordersByOpenId = projectHelper.findOrdersByOpenId(System.currentTimeMillis(), sysParm.getApiParameter().getYunTokenParameter().getOpenUId(), sysCustom.getZnick(),
+                        actBaseSetting.getActStartTime().getTime(), actBaseSetting.getActEndTime().getTime(), sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), sysParm.getRequestStartTime());
+                if (ordersByOpenId.getCode().equals(0) && CollectionUtils.isNotEmpty(ordersByOpenId.getData())) {//接口调用成功执行发机会操作
+                    List<String> collectDm = new ArrayList<>();
+                    if (allByBuyerNick.size() > 0) {
+                        collectDm.addAll(allByBuyerNick.stream().map(SysLuckyChance::getTid).collect(Collectors.toList()));
+                    }
+                    //过滤掉已经发送过次数的订单
+                    List<String> collectXy = ordersByOpenId.getData().stream().map(XyData::getOrderSn)
+                            .filter(o -> !collectDm.contains(o)).collect(Collectors.toList());
+                    //活动期内每个用户限抽5次
+                    List<String> shouldSend = new ArrayList<String>();
+                    int size = allByBuyerNick.size();
+                    while (collectXy.size() > 0 && size <= 5) {
+                        shouldSend.add(collectXy.get(collectXy.size() - 1));
+                        collectXy.remove(collectXy.size() - 1);
+                        size++;
+                    }
+                    //发送抽奖机会
+                    if (shouldSend.size() > 0) {
+                        Date sendTime = new Date();
+                        List<SysLuckyChance> newChances = shouldSend.stream().map((tid) -> new SysLuckyChance()
+                                .setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
+                                .setChanceFrom(LuckyChanceFrom.ORDER_COMMIT)
+                                .setGetTime(sendTime)
+                                .setIsUse(BooleanConstant.BOOLEAN_NO)
+                                .setTid(tid)).collect(Collectors.toList());
+                        luckyDrawHelper.sendLuckyChance(newChances);
+                    }
                 }
             }
         }

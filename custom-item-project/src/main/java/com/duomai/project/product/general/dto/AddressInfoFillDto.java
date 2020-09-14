@@ -23,7 +23,7 @@ public class AddressInfoFillDto {
     private String receviceCity;
     @NotBlank(message = "收件人地址 省 不能为空")
     private String receviceProvince;
-    @NotBlank(message = "收件人地址 区 不能为空")
+//    @NotBlank(message = "收件人地址 区 不能为空")
     private String receviceDistrict;
     @NotBlank(message = "收件人地址 详细地址 不能为空")
     private String receviceAddress;
