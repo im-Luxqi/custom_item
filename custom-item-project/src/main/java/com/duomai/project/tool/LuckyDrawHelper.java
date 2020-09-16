@@ -63,6 +63,7 @@ public class LuckyDrawHelper {
                         .setBuyerNick(buyerNick)
                         .setChanceFrom(chanceFrom)
                         .setGetTime(sendTime)
+                        .setTidTime(sendTime)
                         .setIsUse(BooleanConstant.BOOLEAN_NO)
                         .setTid(tid)).collect(Collectors.toList()));
     }
