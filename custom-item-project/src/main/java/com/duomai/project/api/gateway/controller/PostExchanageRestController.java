@@ -11,7 +11,7 @@ import com.duomai.project.api.gateway.QLApiExecuteHandler;
 import com.duomai.project.api.gateway.entity.CgApiLog;
 import com.duomai.project.api.gateway.repository.CgApiLogRepository;
 import com.duomai.project.api.gateway.tool.ApiTool;
-import com.duomai.starter.SysProperties;
+import com.duomai.project.configuration.SysCustomProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -33,7 +33,7 @@ public class PostExchanageRestController extends BaseRestController {
     private CgApiLogRepository cgApiLogRepository;
 
     @Autowired
-    private SysProperties sysProperties;
+    private SysCustomProperties sysCustomProperties;
 
 
     /**
@@ -72,7 +72,7 @@ public class PostExchanageRestController extends BaseRestController {
         apiSysParameter.getApiParameter().getCommomParameter().setIp(cgApiLog.getRequestIp());
         apiSysParameter.getApiParameter().setYunTokenParameter(yunTokenParameter);
         /*2.sign校验*/
-        if (!sysProperties.getSysConfig().getAppkey().equals(apiSysParameter.getApiParameter().getCommomParameter().getAppkey())) {
+        if (!sysCustomProperties.getSysConfig().getAppkey().equals(apiSysParameter.getApiParameter().getCommomParameter().getAppkey())) {
             cgApiLog.setParType(1);
             cgApiLog.setErrorMsg(SysErrorEnum.VALID_APPKEY.getValue());
             return YunReturnValue.fail(SysErrorEnum.VALID_APPKEY);

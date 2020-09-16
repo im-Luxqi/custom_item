@@ -1,6 +1,7 @@
 package com.duomai.project.product.general.entity;
 
 import com.duomai.project.product.general.enums.LuckyChanceFrom;
+import com.duomai.project.tool.CommonDateParseUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
@@ -36,4 +37,7 @@ public class SysLuckyChance {
 
     @Column(columnDefinition = "varchar(64) COMMENT '订单号'")
     private String tid;
+    @Column(columnDefinition = "DATETIME COMMENT '下单时间'")
+    private Date tidTime;
+
 }

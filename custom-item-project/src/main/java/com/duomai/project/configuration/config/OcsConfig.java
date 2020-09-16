@@ -1,4 +1,4 @@
-package com.duomai.starter;
+package com.duomai.project.configuration.config;
 
 import lombok.Data;
 

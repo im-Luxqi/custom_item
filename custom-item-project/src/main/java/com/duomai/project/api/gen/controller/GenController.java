@@ -6,7 +6,7 @@ import com.duomai.project.api.gen.repository.GenTableRepository;
 import com.duomai.project.api.gen.tools.GenUtils;
 import com.duomai.project.api.gen.tools.VelocityInitializer;
 import com.duomai.project.api.gen.tools.VelocityUtils;
-import com.duomai.starter.SysProperties;
+import com.duomai.project.configuration.SysCustomProperties;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
@@ -42,7 +42,7 @@ public class GenController {
     private GenTableRepository genTableRepository;
 
     @Autowired
-    private SysProperties sysProperties;
+    private SysCustomProperties sysCustomProperties;
 
 
     @GetMapping("/list")
@@ -68,7 +68,7 @@ public class GenController {
      */
     @GetMapping("/table")
     public String table() {
-        Assert.isTrue(sysProperties.isGenFlag(), "暂无权限");
+        Assert.isTrue(sysCustomProperties.isGenFlag(), "暂无权限");
         return "gen/table";
     }
 

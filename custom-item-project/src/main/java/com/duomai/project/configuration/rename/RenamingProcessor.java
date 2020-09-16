@@ -1,4 +1,4 @@
-package com.duomai.project.configuration;
+package com.duomai.project.configuration.rename;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.duomai.common.annotation.ParamName;
 import com.duomai.project.tool.ApplicationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;

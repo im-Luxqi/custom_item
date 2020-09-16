@@ -6,8 +6,8 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.util.EncryptUtil;
 import com.duomai.common.util.MD5Utils;
+import com.duomai.project.configuration.SysCustomProperties;
 import com.duomai.project.tool.ApplicationUtils;
-import com.duomai.starter.SysProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -69,7 +69,7 @@ public class ApiTool {
         /**
          *  校验参数是否存在
          */
-        String secretKey = ApplicationUtils.getBean(SysProperties.class).getSysConfig().getSecretkey();
+        String secretKey = ApplicationUtils.getBean(SysCustomProperties.class).getSysConfig().getSecretkey();
         String behindSign;
         try {
             String zhString = secretKey + "admjson"

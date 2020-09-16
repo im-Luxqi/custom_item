@@ -1,9 +1,9 @@
-package com.duomai.starter.jdbc;
+package com.duomai.project.configuration.jdbc;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import com.duomai.starter.SysProperties;
+import com.duomai.project.configuration.SysCustomProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class JdbcConfiguration {
 
     @Autowired
-    private SysProperties sysProperties;
+    private SysCustomProperties sysCustomProperties;
 
     @ConfigurationProperties(prefix = "spring.datasource")
     @Bean
@@ -41,8 +41,8 @@ public class JdbcConfiguration {
         ServletRegistrationBean<StatViewServlet> bean = new ServletRegistrationBean<>(new StatViewServlet(), "/druid/*");
         Map<String, String> map = new HashMap<>();
         //访问的用户名密码
-        map.put(StatViewServlet.PARAM_NAME_USERNAME, sysProperties.getDruidConfig().getMonitorUsername());
-        map.put(StatViewServlet.PARAM_NAME_PASSWORD, sysProperties.getDruidConfig().getMonitorPassword());
+        map.put(StatViewServlet.PARAM_NAME_USERNAME, sysCustomProperties.getDruidConfig().getMonitorUsername());
+        map.put(StatViewServlet.PARAM_NAME_PASSWORD, sysCustomProperties.getDruidConfig().getMonitorPassword());
         //允许访问的ip，默认是所有ip
         map.put(StatViewServlet.PARAM_NAME_ALLOW, "");
         bean.setInitParameters(map);

@@ -2,7 +2,7 @@ package com.duomai.project.api.taobao;
 
 import com.duomai.common.util.MD5Utils;
 import com.duomai.project.tool.ApplicationUtils;
-import com.duomai.starter.SysProperties;
+import com.duomai.project.configuration.SysCustomProperties;
 import net.spy.memcached.AddrUtil;
 import net.spy.memcached.ConnectionFactoryBuilder;
 import net.spy.memcached.ConnectionFactoryBuilder.Protocol;
@@ -22,11 +22,11 @@ public class OcsUtil {
     private static MemcachedClient cache = null;
 
     static {
-        SysProperties sysProperties = ApplicationUtils.getBean(SysProperties.class);
-        String username = sysProperties.getOcsConfig().getUsername();
-        String password = sysProperties.getOcsConfig().getPassword();
-        String host = sysProperties.getOcsConfig().getHost();
-        String port = sysProperties.getOcsConfig().getPort();
+        SysCustomProperties sysCustomProperties = ApplicationUtils.getBean(SysCustomProperties.class);
+        String username = sysCustomProperties.getOcsConfig().getUsername();
+        String password = sysCustomProperties.getOcsConfig().getPassword();
+        String host = sysCustomProperties.getOcsConfig().getHost();
+        String port = sysCustomProperties.getOcsConfig().getPort();
         AuthDescriptor ad = new AuthDescriptor(new String[]{"PLAIN"}, new PlainCallbackHandler(username, password));
         try {
             cache = new MemcachedClient(

@@ -1,6 +1,10 @@
 package com.duomai.project.product.general.dto;
 
+import com.duomai.project.tool.CommonDateParseUtil;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Date;
 
 /**
  * @description
@@ -14,4 +18,13 @@ public class XyData {
     private String username;
     private String tel;
     private String logTime;
+    private String orderTimeYYYYMMDD;
+
+    public void setLogTime(String logTime) {
+        this.logTime = logTime;
+        if (StringUtils.isNotBlank(logTime))
+            this.orderTimeYYYYMMDD = CommonDateParseUtil.date2string(
+                    new Date(Long.parseLong(logTime)),
+                    "yyyy-MM-dd");
+    }
 }

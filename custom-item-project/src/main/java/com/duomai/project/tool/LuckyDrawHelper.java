@@ -13,7 +13,7 @@ import com.duomai.project.product.general.enums.LuckyChanceFrom;
 import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
-import com.duomai.starter.SysProperties;
+import com.duomai.project.configuration.SysCustomProperties;
 import com.taobao.api.response.AlibabaBenefitSendResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,7 +38,7 @@ public class LuckyDrawHelper {
     @Autowired
     private ITaobaoAPIService taobaoAPIService;
     @Autowired
-    private SysProperties sysProperties;
+    private SysCustomProperties sysCustomProperties;
     @Autowired
     private SysLuckyChanceRepository sysLuckyChanceRepository;
     @Autowired
@@ -161,7 +161,7 @@ public class LuckyDrawHelper {
             //2.如果中的是优惠券，发放优惠券
             if (AwardType.COUPON.equals(awardThisWin.getType())) {
                 try {
-                    AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon(custom.getOpenId(), awardThisWin.getEname(), sysProperties.getCustomConfig().getAppName(), sysProperties.getCustomConfig().getSessionkey());
+                    AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon(custom.getOpenId(), awardThisWin.getEname(), sysCustomProperties.getCustomConfig().getAppName(), sysCustomProperties.getCustomConfig().getSessionkey());
                     if (alibabaBenefitSendResponse.getResultSuccess() == null || !alibabaBenefitSendResponse.getResultSuccess()) {
                         //发放失败,算未中奖
                         awardThisWin = null;

@@ -1,4 +1,4 @@
-package com.duomai.project.configuration;
+package com.duomai.project.configuration.rename;
 
 import java.util.Map;
 

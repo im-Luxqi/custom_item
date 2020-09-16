@@ -13,7 +13,7 @@ import com.duomai.project.product.general.entity.SysKeyValue;
 import com.duomai.project.product.general.repository.SysKeyValueRepository;
 import com.duomai.project.product.recycle.domain.XyRequest;
 import com.duomai.project.product.recycle.service.IXyRequestService;
-import com.duomai.starter.SysProperties;
+import com.duomai.project.configuration.SysCustomProperties;
 import com.taobao.api.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,7 +36,7 @@ public class ProjectHelper {
     @Autowired
     private ITaobaoAPIService taobaoAPIService;
     @Autowired
-    private SysProperties sysProperties;
+    private SysCustomProperties sysCustomProperties;
     @Autowired
     private SysKeyValueRepository sysKeyValueRepository;
     @Autowired
@@ -100,7 +100,7 @@ public class ProjectHelper {
                 .setOpenId(sysParm.getApiParameter().getYunTokenParameter().getOpenUId())
                 .setOldFans(BooleanConstant.BOOLEAN_UNDEFINED)//由于关注权限在前端查询，此处默认未知状态(-1),等待首次更新
                 .setOldMember(taobaoAPIService.isMember(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(),
-                        sysProperties.getCustomConfig().getSessionkey()) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO)
+                        sysCustomProperties.getCustomConfig().getSessionkey()) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO)
                 .setFans(sysCustom.getOldFans())
                 .setMember(sysCustom.getOldMember().equals(BooleanConstant.BOOLEAN_YES) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO);
     }
@@ -132,8 +132,8 @@ public class ProjectHelper {
         final String appSecret = "4usEfQ3B5G9TEj*g";
         String format = String.format("appId=%s&appSecret=%s&openid=%s&timestamp=%s", appId, appSecret, openId, timestamp);
         String sign = SecureUtil.md5(format);
-        String s = HttpClientUtil.doGet(String.format("https://vues.dd1x.cn/api/web_orders/get_order_info_by_openid?appId=%s&timestamp=%s&openid=%s&nick=%s&sign=%s&startTime=%s&endTime=%s"
-                , appId, timestamp, openId,  nick, sign, startTime, endTime));
+        String s = HttpClientUtil.doGet(String.format("https://vues.dd1x.cn/api/web_orders/get_order_info_by_openid?page=%s&size=%s&appId=%s&timestamp=%s&openid=%s&nick=%s&sign=%s&startTime=%s&endTime=%s"
+               ,0,999 , appId, timestamp, openId,  nick, sign, startTime, endTime));
         XyReturn xyReturn = JSONObject.parseObject(s, XyReturn.class);
 
         Map<String, Object> requestData = new HashMap();

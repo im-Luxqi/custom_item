@@ -1,4 +1,4 @@
-package com.duomai.starter.mybatis;
+package com.duomai.project.configuration.mybatis;
 
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
 import com.duomai.common.framework.mybatisplus.MybatisPlusSqlInjector;

@@ -1,6 +1,6 @@
 package com.duomai.project.configuration;
 
-import com.duomai.starter.SysProperties;
+import com.duomai.project.configuration.rename.RenamingProcessor;
 import com.taobao.api.DefaultTaobaoClient;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +15,8 @@ import java.util.List;
  * 项目SpringBoot相关配置
  */
 @Configuration
-@EnableConfigurationProperties(SysProperties.class)
-public class SysConfiguration implements WebMvcConfigurer {
+@EnableConfigurationProperties(SysCustomProperties.class)
+public class SysCustomConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -31,11 +31,11 @@ public class SysConfiguration implements WebMvcConfigurer {
 
 
     @Bean
-    public DefaultTaobaoClient connectionSettings(SysProperties sysProperties) {
+    public DefaultTaobaoClient connectionSettings(SysCustomProperties sysCustomProperties) {
         DefaultTaobaoClient defaultTaobaoClient = new DefaultTaobaoClient(
                 "http://gw.api.taobao.com/router/rest",
-                sysProperties.getCustomConfig().getAppkey(),
-                sysProperties.getCustomConfig().getSecretkey());
+                sysCustomProperties.getCustomConfig().getAppkey(),
+                sysCustomProperties.getCustomConfig().getSecretkey());
         return defaultTaobaoClient;
     }
 }
