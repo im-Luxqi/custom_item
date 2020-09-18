@@ -3,6 +3,7 @@ package com.duomai.project.product.recycle.execute;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.api.taobao.OcsUtil;
 import com.duomai.project.product.general.dto.ActBaseSetting;
 import com.duomai.project.product.general.entity.SysAward;
 import com.duomai.project.product.general.entity.SysCustom;
@@ -10,6 +11,7 @@ import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.tool.LuckyDrawHelper;
 import com.duomai.project.tool.ProjectHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,7 @@ import java.util.Objects;
  * @create by 王星齐
  * @time 2020-08-27 16:11:27
  **/
+@Slf4j
 @Component
 public class LuckyDrawExecute implements IApiExecute {
     @Autowired
@@ -41,9 +44,10 @@ public class LuckyDrawExecute implements IApiExecute {
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         /*防止重复提交*/
-//        if (!OcsUtil.add(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + "_lucky_draw_", "lucky", 2))
-//            return YunReturnValue.fail("点太快了，请休息下");
-
+        if (!OcsUtil.add(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + "_lucky_draw_", "lucky", 2)){
+            return YunReturnValue.fail("点太快了，请休息下");
+        }
+        log.info(OcsUtil.getObject(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + "_lucky_draw_").toString()+"-------------------------------");
         /*1.活动配置查询，活动期间才可访问接口*/
         ActBaseSetting actBaseSetting = projectHelper.actBaseSettingFind();
         projectHelper.actTimeValidate(actBaseSetting);
@@ -56,7 +60,7 @@ public class LuckyDrawExecute implements IApiExecute {
         }
 
         /*3.抽奖*/
-        List<SysAward> all = sysAwardRepository.findAll();
+        List<SysAward> all = sysAwardRepository.findAllByOrderByLuckyValue();
 
         /*4.抽奖*/
         SysAward sysAward = luckyDrawHelper.luckyDraw(all, sysCustom, sysParm.getRequestStartTime());

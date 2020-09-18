@@ -185,7 +185,8 @@ public class LuckyDrawHelper {
                     .setAwardType(awardThisWin.getType());
             return awardThisWin;
         } finally {
-            sysLuckyDrawRecordRepository.save(drawRecord);
+            SysLuckyDrawRecord save = sysLuckyDrawRecordRepository.save(drawRecord);
+            awardThisWin.setLogId(save.getId());
         }
     }
 

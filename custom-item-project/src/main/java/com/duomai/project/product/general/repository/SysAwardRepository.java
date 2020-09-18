@@ -11,6 +11,7 @@ import java.util.Map;
 
 public interface SysAwardRepository extends BaseRepository<SysAward, String> {
 
+    List<SysAward> findAllByOrderByLuckyValue();
     @Query(nativeQuery = true,
             value = "select * from " +
                     "(SELECT award_level,award_level_sign,type,name,img,sum(total_num) as total_num" +
@@ -29,4 +30,5 @@ public interface SysAwardRepository extends BaseRepository<SysAward, String> {
                     "    where id = ?1" +
                     "        and  remain_num >0")
     int tryReduceOne(String id);
+
 }

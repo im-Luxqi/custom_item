@@ -11,9 +11,9 @@ spring:
 sys:
   genFlag: false
   ocsConfig:
-    host: m-k2j3c6d9a9b484e4.memcache.zhangbei.rds.aliyuncs.com
+    host: m-k2j118ff490c3844.memcache.zhangbei.rds.aliyuncs.com
     port: 11211
-    username: m-k2j3c6d9a9b484e4
+    username: m-k2j118ff490c3844
     password: 3sKmT2cBxnVFDo9Q
   druidConfig:
     monitorUsername: 00096098e2254fe69193da5653200bab

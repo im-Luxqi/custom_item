@@ -10,7 +10,8 @@ import com.duomai.common.base.enums.IEnum;
  * @date 2020-08-28 11:22
  */
 public enum PvChannelEnum implements IEnum {
-    ADIDAS_SHOP_INDEX("ADIDAS_SHOP_INDEX", "阿迪官方旗舰店首页");
+    ADIDAS_SHOP_INDEX("ADIDAS_SHOP_INDEX", "阿迪官方旗舰店首页"),
+    XIAN_YU("XIAN_YU", "咸鱼");
 
     private final String code;
     private final String descp;

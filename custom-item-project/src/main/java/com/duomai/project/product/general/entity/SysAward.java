@@ -45,4 +45,7 @@ public class SysAward {
     private Integer poolLevel;
     @Column(columnDefinition = "varchar(64) COMMENT '发放优惠券的标识'")
     private String ename;
+
+    @Transient
+    private String logId;
 }

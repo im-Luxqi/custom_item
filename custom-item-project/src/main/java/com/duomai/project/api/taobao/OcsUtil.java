@@ -74,6 +74,30 @@ public class OcsUtil {
         return false;
     }
 
+
+    /**
+     * 根据 key 获取 value值
+     *
+     * @param key
+     * @return
+     */
+    public static Object getObject(String key) throws Exception{
+        if (StringUtils.isNotBlank(key) && cache != null) {
+            String _key = MD5Utils.getMD5(key.getBytes());
+            Object obj = null;
+            try {
+                obj = cache.get(_key);
+                logger.info("ocs get key: " + key + "ocs get value: " + obj);
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.error("ocs error  " + e.getMessage());
+                throw new Exception();
+            }
+            return obj;
+        }
+        return null;
+    }
+
     public static boolean addInTwenty(String key, OcsData data) {
         if (StringUtils.isNotBlank(key)) {
             if (cache == null)
