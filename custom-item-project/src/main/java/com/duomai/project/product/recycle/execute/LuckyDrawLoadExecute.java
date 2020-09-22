@@ -65,10 +65,10 @@ public class LuckyDrawLoadExecute implements IApiExecute {
             sysCustom = projectHelper.customInit(sysParm);
             sysCustomRepository.save(sysCustom);
             first_from_xianyu = true;
-        } else if (StringUtils.isNotBlank(sysCustom.getZnick())) {
+        } else if (StringUtils.isNotBlank(sysParm.getParams().getYunTokenParameter().getUserNick())) {
             /*3.查询订单是否属实，然后发放翻牌机会*/
             //查询咸鱼接口
-            XyReturn ordersByOpenId = projectHelper.findOrdersByOpenId(System.currentTimeMillis(), sysParm.getApiParameter().getYunTokenParameter().getOpenUId(), sysCustom.getZnick(),
+            XyReturn ordersByOpenId = projectHelper.findOrdersByOpenId(System.currentTimeMillis(), sysParm.getApiParameter().getYunTokenParameter().getOpenUId(), sysParm.getParams().getYunTokenParameter().getUserNick(),
                     actBaseSetting.getActStartTime().getTime(), actBaseSetting.getActEndTime().getTime(), sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), sysParm.getRequestStartTime());
             if (ordersByOpenId.getCode().equals(0) && CollectionUtils.isNotEmpty(ordersByOpenId.getData())) {//接口调用成功执行发机会操作
                 Set<String> collectDm_tid = new HashSet<String>();

@@ -19,6 +19,8 @@ public class YunTokenParameter {
     @NotBlank(message = "mix_nick不能为空")
     @ParamName("mix_nick")
     private String buyerNick;
+    @ParamName("user_nick")
+    private String userNick;
     private String dmZNick;
     private String dmAvatar;
 

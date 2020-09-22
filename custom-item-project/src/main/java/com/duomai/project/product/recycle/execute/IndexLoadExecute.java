@@ -9,6 +9,7 @@ import com.duomai.project.product.general.dto.XyReturn;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.tool.ProjectHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ import java.util.Objects;
  * @create by 王星齐
  * @time 2020-07-29 10:24:46
  **/
+@Slf4j
 @Component
 public class IndexLoadExecute implements IApiExecute {
     @Autowired
@@ -50,8 +52,10 @@ public class IndexLoadExecute implements IApiExecute {
         }
 
         Boolean custom_has_order = false;
-        if (StringUtils.isNotBlank(sysCustom.getZnick())) {
-            XyReturn ordersByOpenId = projectHelper.findOrdersByOpenId(System.currentTimeMillis(), sysParm.getApiParameter().getYunTokenParameter().getOpenUId(), sysCustom.getZnick(),
+        log.info("---------------------------------------------------------------yun0------------------------");
+        log.info("-----" + sysParm.getParams().getYunTokenParameter().getUserNick());
+        if (StringUtils.isNotBlank(sysParm.getParams().getYunTokenParameter().getUserNick())) {
+            XyReturn ordersByOpenId = projectHelper.findOrdersByOpenId(System.currentTimeMillis(), sysParm.getApiParameter().getYunTokenParameter().getOpenUId(), sysParm.getParams().getYunTokenParameter().getUserNick(),
                     actBaseSetting.getActStartTime().getTime(), actBaseSetting.getActEndTime().getTime(), sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), sysParm.getRequestStartTime());
             if (ordersByOpenId.getCode().equals(0) && CollectionUtils.isNotEmpty(ordersByOpenId.getData())) {
                 custom_has_order = true;

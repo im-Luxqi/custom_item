@@ -59,7 +59,7 @@ public class TestController {
 //        String buyernick = "t011OKZDdxsgi2BgiM54DcAqE4trS9hcL3O43H6xfPR9tU=";
 //        Date requestTime = new Date();
 //        List<SysAward> all = sysAwardRepository.findAllByOrderByLuckyValue();
-        luckyDrawHelper.sendLuckyChance("t011OKZDdxsgi2BgiM54DcAqE4trS9hcL3O43H6xfPR9tU=", LuckyChanceFrom.ORDER_COMMIT,200,"dongjiejie");
+//        luckyDrawHelper.sendLuckyChance("t011OKZDdxsgi2BgiM54DcAqE4trS9hcL3O43H6xfPR9tU=", LuckyChanceFrom.ORDER_COMMIT,200,"dongjiejie");
 //        XyReturn ordersByOpenId = projectHelper.findOrdersByOpenId(System.currentTimeMillis(), openId,openId,
 //                actBaseSetting.getActStartTime().getTime(), actBaseSetting.getActEndTime().getTime(), buyernick, requestTime);
         return null;

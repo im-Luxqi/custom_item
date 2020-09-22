@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
+import com.duomai.project.configuration.SysCustomProperties;
 import com.duomai.project.product.general.entity.SysAward;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyChance;
@@ -13,7 +14,6 @@ import com.duomai.project.product.general.enums.LuckyChanceFrom;
 import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
-import com.duomai.project.configuration.SysCustomProperties;
 import com.taobao.api.response.AlibabaBenefitSendResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -127,11 +127,11 @@ public class LuckyDrawHelper {
             AtomicReference<Integer> historyGoodsHasGetAto = new AtomicReference<>(0);
             if (CollectionUtils.isNotEmpty(historyWin))
                 historyWin.forEach((record) -> {
-                    historySignsBuffer.append(record.getAwardLevel()).append(",");
+                    historySignsBuffer.append(record.getAwardName()).append(",");
                     if (AwardType.GOODS.equals(record.getAwardType()))//实物
                         historyGoodsHasGetAto.updateAndGet(v -> v + 1);
                 });
-            final String historySigns = historySignsBuffer.toString();
+            final String historySigns_awardName_hasWin = historySignsBuffer.toString();
             Integer historyGoodsHasGet = historyGoodsHasGetAto.get();
 
 
@@ -141,7 +141,7 @@ public class LuckyDrawHelper {
                 //1.奖品数量不足;2.本活动最大实物中奖限制；3.已抽中过本奖品
                 if (award.getRemainNum() < 1 ||
                         (AwardType.GOODS.equals(award.getType()) && historyGoodsHasGet >= maxWinGoodNum) ||
-                        historySigns.contains(award.getAwardLevel()))
+                        historySigns_awardName_hasWin.contains(award.getName()))
                     continue;
                 //奖品中奖概率
                 if (Math.random() < Double.parseDouble(award.getLuckyValue())) {
@@ -155,8 +155,15 @@ public class LuckyDrawHelper {
             if (awardThisWin == null) {
                 return null;
             }
+            drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO)
+                    .setAwardId(awardThisWin.getId())
+                    .setAwardImg(awardThisWin.getImg())
+                    .setAwardLevel(awardThisWin.getAwardLevel())
+                    .setAwardName(awardThisWin.getName())
+                    .setAwardType(awardThisWin.getType());
             //欧皇落泪  尝试扣减奖品库存，库存不够不中奖
             if (sysAwardRepository.tryReduceOne(awardThisWin.getId()) != 1) {
+                drawRecord.setSendError("尝试扣减奖品库存，库存不够不中奖");
                 return null;
             }
             //2.如果中的是优惠券，发放优惠券
@@ -166,27 +173,24 @@ public class LuckyDrawHelper {
                     if (alibabaBenefitSendResponse.getResultSuccess() == null || !alibabaBenefitSendResponse.getResultSuccess()) {
                         //发放失败,算未中奖
                         awardThisWin = null;
-                        drawRecord.setSendError("发放失败：" + JSON.toJSONString(alibabaBenefitSendResponse));
+                        drawRecord.setSendError("发放优惠券失败：" + JSON.toJSONString(alibabaBenefitSendResponse));
                         return null;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                     //发放异常,算未中奖
                     awardThisWin = null;
-                    drawRecord.setSendError("发放异常：" + e.getMessage());
+                    drawRecord.setSendError("发放优惠券异常：" + e.getMessage());
                     return null;
                 }
             }
-            drawRecord.setIsWin(BooleanConstant.BOOLEAN_YES)
-                    .setAwardId(awardThisWin.getId())
-                    .setAwardImg(awardThisWin.getImg())
-                    .setAwardLevel(awardThisWin.getAwardLevel())
-                    .setAwardName(awardThisWin.getName())
-                    .setAwardType(awardThisWin.getType());
+            drawRecord.setIsWin(BooleanConstant.BOOLEAN_YES);
             return awardThisWin;
         } finally {
             SysLuckyDrawRecord save = sysLuckyDrawRecordRepository.save(drawRecord);
-            awardThisWin.setLogId(save.getId());
+            if (awardThisWin != null) {
+                awardThisWin.setLogId(save.getId());
+            }
         }
     }
 
