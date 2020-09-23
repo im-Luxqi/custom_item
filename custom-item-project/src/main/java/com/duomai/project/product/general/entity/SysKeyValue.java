@@ -19,7 +19,7 @@ public class SysKeyValue {
     @Id
     @Column(columnDefinition = "varchar(20) COMMENT '编号'")
     private String k;
-    @Column(columnDefinition = "varchar(20) COMMENT '值'")
+    @Column(columnDefinition = "text COMMENT '值'")
     private String v;
     @Column(columnDefinition = "varchar(20) COMMENT '类'")
     private String type;

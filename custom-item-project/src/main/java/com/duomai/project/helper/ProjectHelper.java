@@ -1,4 +1,4 @@
-package com.duomai.project.tool;
+package com.duomai.project.helper;
 
 import cn.hutool.crypto.SecureUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -14,6 +14,8 @@ import com.duomai.project.product.general.repository.SysKeyValueRepository;
 import com.duomai.project.product.recycle.domain.XyRequest;
 import com.duomai.project.product.recycle.service.IXyRequestService;
 import com.duomai.project.configuration.SysCustomProperties;
+import com.duomai.project.tool.CommonDateParseUtil;
+import com.duomai.project.tool.HttpClientUtil;
 import com.taobao.api.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +27,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * act，customer常规操作
+ * 活动 配置相关  常规操作 service
  *
  * @description
  * @create by 王星齐

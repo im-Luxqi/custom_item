@@ -9,8 +9,8 @@ import com.duomai.project.product.general.entity.SysAward;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.tool.LuckyDrawHelper;
-import com.duomai.project.tool.ProjectHelper;
+import com.duomai.project.helper.LuckyDrawHelper;
+import com.duomai.project.helper.ProjectHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,10 +44,10 @@ public class LuckyDrawExecute implements IApiExecute {
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         /*防止重复提交*/
-//        if (!OcsUtil.add(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + "_lucky_draw_", "lucky", 2)){
-//            return YunReturnValue.fail("点太快了，请休息下");
-//        }
-//        log.info(OcsUtil.getObject(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + "_lucky_draw_").toString()+"-------------------------------");
+        if (!OcsUtil.add(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + "_lucky_draw_", "lucky", 2)){
+            return YunReturnValue.fail("点太快了，请休息下");
+        }
+        log.info(OcsUtil.getObject(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + "_lucky_draw_").toString()+"-------------------------------");
         /*1.活动配置查询，活动期间才可访问接口*/
         ActBaseSetting actBaseSetting = projectHelper.actBaseSettingFind();
         projectHelper.actTimeValidate(actBaseSetting);

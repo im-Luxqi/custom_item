@@ -8,7 +8,7 @@ import com.duomai.project.product.general.dto.ActBaseSetting;
 import com.duomai.project.product.general.dto.XyReturn;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.tool.ProjectHelper;
+import com.duomai.project.helper.ProjectHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

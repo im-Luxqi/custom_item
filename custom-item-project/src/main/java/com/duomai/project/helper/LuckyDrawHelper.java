@@ -1,4 +1,4 @@
-package com.duomai.project.tool;
+package com.duomai.project.helper;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
@@ -14,6 +14,7 @@ import com.duomai.project.product.general.enums.LuckyChanceFrom;
 import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import com.duomai.project.tool.ApplicationUtils;
 import com.taobao.api.response.AlibabaBenefitSendResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * act，customer常规操作
+ * 抽奖辅助 service
  *
  * @description
  * @create by 王星齐
@@ -107,11 +108,10 @@ public class LuckyDrawHelper {
         if (Objects.isNull(thisChance)) {
             throw new Exception("抽奖次数不足");
         }
-
         sysLuckyChanceRepository.save(thisChance.setIsUse(BooleanConstant.BOOLEAN_YES)
                 .setUseTime(drawTime));
 
-
+        /*整理抽奖日志*/
         SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord()
                 .setLuckyChance(thisChance.getId())
                 .setIsWin(BooleanConstant.BOOLEAN_NO)
@@ -120,6 +120,8 @@ public class LuckyDrawHelper {
                 .setPlayerHeadImg(custom.getHeadImg())
                 .setPlayerBuyerNick(custom.getBuyerNick())
                 .setPlayerZnick(custom.getZnick());
+
+
         try {
             /*1.整理历史抽奖记录*/
             List<SysLuckyDrawRecord> historyWin = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndIsWin(custom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
@@ -155,12 +157,15 @@ public class LuckyDrawHelper {
             if (awardThisWin == null) {
                 return null;
             }
+
+            /*已中奖的补充抽奖信息*/
             drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO)
                     .setAwardId(awardThisWin.getId())
                     .setAwardImg(awardThisWin.getImg())
                     .setAwardLevel(awardThisWin.getAwardLevel())
                     .setAwardName(awardThisWin.getName())
                     .setAwardType(awardThisWin.getType());
+
             //欧皇落泪  尝试扣减奖品库存，库存不够不中奖
             if (sysAwardRepository.tryReduceOne(awardThisWin.getId()) != 1) {
                 drawRecord.setSendError("尝试扣减奖品库存，库存不够不中奖");
