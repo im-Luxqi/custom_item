@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
-import com.duomai.project.configuration.SysCustomProperties;
 import com.duomai.project.product.general.entity.SysAward;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyChance;
@@ -38,8 +37,6 @@ import java.util.stream.IntStream;
 public class LuckyDrawHelper {
     @Autowired
     private ITaobaoAPIService taobaoAPIService;
-    @Autowired
-    private SysCustomProperties sysCustomProperties;
     @Autowired
     private SysLuckyChanceRepository sysLuckyChanceRepository;
     @Autowired
@@ -174,7 +171,7 @@ public class LuckyDrawHelper {
             //2.如果中的是优惠券，发放优惠券
             if (AwardType.COUPON.equals(awardThisWin.getType())) {
                 try {
-                    AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon(custom.getOpenId(), awardThisWin.getEname(), sysCustomProperties.getCustomConfig().getAppName(), sysCustomProperties.getCustomConfig().getSessionkey());
+                    AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon(custom.getOpenId(), awardThisWin.getEname());
                     if (alibabaBenefitSendResponse.getResultSuccess() == null || !alibabaBenefitSendResponse.getResultSuccess()) {
                         //发放失败,算未中奖
                         awardThisWin = null;

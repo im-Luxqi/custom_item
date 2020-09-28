@@ -1,20 +1,17 @@
 package com.duomai.project.api.taobao;
 
 import com.duomai.project.api.taobao.enums.TaoBaoTradeStatus;
+import com.duomai.project.configuration.SysCustomProperties;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.AlibabaBenefitSendRequest;
 import com.taobao.api.request.CrmMemberIdentityGetRequest;
 import com.taobao.api.request.OpenTradesSoldGetRequest;
-import com.taobao.api.request.WeitaoFeedIsrelationRequest;
 import com.taobao.api.response.AlibabaBenefitSendResponse;
 import com.taobao.api.response.CrmMemberIdentityGetResponse;
 import com.taobao.api.response.OpenTradesSoldGetResponse;
-import com.taobao.api.response.WeitaoFeedIsrelationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,25 +26,20 @@ public class TaobaoAPIServiceImpl implements ITaobaoAPIService {
     @Autowired
     private DefaultTaobaoClient client;
 
-    public void aa(){
-//
-//        NickUnionidGetRequest req = new NickUnionidGetRequest();
-//        req.setNick("某某");
-//        NickUnionidGetResponse rsp = client.execute(req, sessionKey);
-//        System.out.println(rsp.getBody());
-    }
+    @Autowired
+    private SysCustomProperties sysCustomProperties;
 
-    public CrmMemberIdentityGetResponse CrmMemberIdentityGet(String buyerNick, String sessionkey) throws ApiException {
+    public CrmMemberIdentityGetResponse CrmMemberIdentityGet(String buyerNick) throws ApiException {
         CrmMemberIdentityGetRequest req = new CrmMemberIdentityGetRequest();
         req.setMixNick(buyerNick);
-        CrmMemberIdentityGetResponse rsp = client.execute(req, sessionkey);
+        CrmMemberIdentityGetResponse rsp = client.execute(req, sysCustomProperties.getCustomConfig().getSessionkey());
         return rsp;
     }
 
     @Override
-    public boolean isMember(String buyerNick, String sessionkey) throws ApiException {
+    public boolean isMember(String buyerNick) throws ApiException {
         Boolean memberOrNot = Boolean.FALSE;
-        CrmMemberIdentityGetResponse member = CrmMemberIdentityGet(buyerNick, sessionkey);
+        CrmMemberIdentityGetResponse member = CrmMemberIdentityGet(buyerNick);
         if (member != null && member.getResult() != null && member.getResult().getMemberInfo() != null &&
                 member.getResult().getMemberInfo().getGrade() > 0L)
             memberOrNot = Boolean.TRUE;
@@ -55,24 +47,7 @@ public class TaobaoAPIServiceImpl implements ITaobaoAPIService {
     }
 
     @Override
-    public boolean isFans(String buyerNick,String sellernick) throws ApiException {
-
-        // 判断是否关注
-        WeitaoFeedIsrelationRequest req = new WeitaoFeedIsrelationRequest();
-        req.setFansNick(buyerNick);
-        req.setSellerNick(sellernick);
-        req.putOtherTextParam("top_mix_params", "fans_nick");
-        WeitaoFeedIsrelationResponse response = client.execute(req);
-
-        if (response != null && response.getResult() != null && response.getResult() > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public List<OpenTradesSoldGetResponse.Trade> taobaoOpenTradesSoldGet(String buyer_open_id, String buyer_nick, String sessionKey, TaoBaoTradeStatus status, Date start_created, Date end_created) throws ApiException {
+    public List<OpenTradesSoldGetResponse.Trade> taobaoOpenTradesSoldGet(String buyer_open_id, TaoBaoTradeStatus status, Date start_created, Date end_created) throws ApiException {
 
         OpenTradesSoldGetRequest req = new OpenTradesSoldGetRequest();
         req.setFields("tid,payment,created,status,orders,buyer_rate,pay_time");
@@ -84,8 +59,7 @@ public class TaobaoAPIServiceImpl implements ITaobaoAPIService {
         req.setPageSize(40L);
         req.setUseHasNext(true);
         req.setBuyerOpenId(buyer_open_id);
-//        req.setBuyerNick(buyer_nick);
-        return this.getAllTaobaoOpenTradesSoldGet(new ArrayList<OpenTradesSoldGetResponse.Trade>(100), req, sessionKey);
+        return this.getAllTaobaoOpenTradesSoldGet(new ArrayList<OpenTradesSoldGetResponse.Trade>(100), req, sysCustomProperties.getCustomConfig().getSessionkey());
     }
 
     public List<OpenTradesSoldGetResponse.Trade> getAllTaobaoOpenTradesSoldGet(ArrayList<OpenTradesSoldGetResponse.Trade> trades, OpenTradesSoldGetRequest req, String sessionKey) throws ApiException {
@@ -108,14 +82,14 @@ public class TaobaoAPIServiceImpl implements ITaobaoAPIService {
 
 
     @Override
-    public AlibabaBenefitSendResponse sendTaobaoCoupon(String openId, String ename, String APP_NAME, String SESSION_KEY) throws ApiException {
+    public AlibabaBenefitSendResponse sendTaobaoCoupon(String openId, String ename) throws ApiException {
         AlibabaBenefitSendRequest req = new AlibabaBenefitSendRequest();
         req.setRightEname(ename);//发放的权益(奖品)唯一标识
         req.setReceiverId(openId);//接收奖品的用户openId
         req.setUniqueId(openId + Calendar.getInstance().getTimeInMillis());//幂等校验id，业务重试需要，自定义唯一字段即可
-        req.setAppName(APP_NAME);//商家来源身份标识
+        req.setAppName(sysCustomProperties.getCustomConfig().getAppName());//商家来源身份标识
         req.setUserType("taobao");
         req.setIp("");
-        return client.execute(req, SESSION_KEY);
+        return client.execute(req, sysCustomProperties.getCustomConfig().getSessionkey());
     }
 }

@@ -1,6 +1,8 @@
 package com.duomai.project.product.adidasmusic.domain;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +22,7 @@ public class CusBigWheelLog {
 	/**
 	 * 
 	 */
+	@TableId(value = "id", type = IdType.UUID)
 	private String id;
 	/**
 	 * 混淆昵称

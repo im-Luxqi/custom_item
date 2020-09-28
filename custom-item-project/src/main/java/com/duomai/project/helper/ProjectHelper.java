@@ -3,7 +3,6 @@ package com.duomai.project.helper;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
-import com.duomai.project.configuration.SysCustomProperties;
 import com.duomai.project.product.general.constants.ActSettingConstant;
 import com.duomai.project.product.general.dto.ActBaseSetting;
 import com.duomai.project.product.general.entity.SysCustom;
@@ -30,8 +29,6 @@ import java.util.stream.Collectors;
 public class ProjectHelper {
     @Autowired
     private ITaobaoAPIService taobaoAPIService;
-    @Autowired
-    private SysCustomProperties sysCustomProperties;
     @Autowired
     private SysKeyValueRepository sysKeyValueRepository;
 
@@ -92,8 +89,7 @@ public class ProjectHelper {
                 .setCreateTime(sysParm.getRequestStartTime())
                 .setOpenId(sysParm.getApiParameter().getYunTokenParameter().getOpenUId())
                 .setOldFans(BooleanConstant.BOOLEAN_UNDEFINED)//由于关注权限在前端查询，此处默认未知状态(-1),等待首次更新
-                .setOldMember(taobaoAPIService.isMember(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(),
-                        sysCustomProperties.getCustomConfig().getSessionkey()) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO)
+                .setOldMember(taobaoAPIService.isMember(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick()) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO)
                 .setFans(sysCustom.getOldFans())
                 .setMember(sysCustom.getOldMember().equals(BooleanConstant.BOOLEAN_YES) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO);
     }

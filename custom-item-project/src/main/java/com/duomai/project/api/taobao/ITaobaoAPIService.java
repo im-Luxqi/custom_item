@@ -19,7 +19,7 @@ public interface ITaobaoAPIService {
      * @作者 何佳伟
      * @创建日期 2020-03-05
      */
-    public CrmMemberIdentityGetResponse CrmMemberIdentityGet(String buyerNick, String sessionkey) throws ApiException;
+    public CrmMemberIdentityGetResponse CrmMemberIdentityGet(String buyerNick) throws ApiException;
 
     /*查询是否为店铺会员
      * @description 需要申请权限
@@ -28,16 +28,7 @@ public interface ITaobaoAPIService {
      * @param buyerNick
      * @param sessionkey
      **/
-    public boolean isMember(String buyerNick, String sessionkey) throws ApiException;
-
-    /*查询是否为店铺粉丝
-     * @description 需要申请权限
-     * @create by 王星齐
-     * @time 2020-08-24 10:14:01
-     * @param buyerNick
-     * @param sessionkey
-     **/
-    public boolean isFans(String buyerNick,String sellernick) throws ApiException;
+    public boolean isMember(String buyerNick) throws ApiException;
 
 
     /*查询卖家已卖出的交易数据（商家应用使用）
@@ -49,7 +40,7 @@ public interface ITaobaoAPIService {
      * @param start_created
      * @param end_created
      **/
-    List<OpenTradesSoldGetResponse.Trade> taobaoOpenTradesSoldGet(String buyer_open_id, String buyer_nick, String sessionKey, TaoBaoTradeStatus status, Date start_created, Date end_created) throws ApiException;
+    List<OpenTradesSoldGetResponse.Trade> taobaoOpenTradesSoldGet(String buyer_open_id, TaoBaoTradeStatus status, Date start_created, Date end_created) throws ApiException;
 
 
     /*直发券
@@ -59,5 +50,5 @@ public interface ITaobaoAPIService {
      * @param mixNick
      * @param sessionKey
      **/
-    AlibabaBenefitSendResponse sendTaobaoCoupon(String openId, String ename, String APP_NAME, String SESSION_KEY) throws ApiException;
+    AlibabaBenefitSendResponse sendTaobaoCoupon(String openId, String ename) throws ApiException;
 }
