@@ -1,27 +1,20 @@
 package com.duomai.project.helper;
 
-import cn.hutool.crypto.SecureUtil;
-import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
+import com.duomai.project.configuration.SysCustomProperties;
 import com.duomai.project.product.general.constants.ActSettingConstant;
 import com.duomai.project.product.general.dto.ActBaseSetting;
-import com.duomai.project.product.general.dto.XyReturn;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysKeyValue;
 import com.duomai.project.product.general.repository.SysKeyValueRepository;
-import com.duomai.project.product.recycle.domain.XyRequest;
-import com.duomai.project.product.recycle.service.IXyRequestService;
-import com.duomai.project.configuration.SysCustomProperties;
 import com.duomai.project.tool.CommonDateParseUtil;
-import com.duomai.project.tool.HttpClientUtil;
 import com.taobao.api.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -41,8 +34,6 @@ public class ProjectHelper {
     private SysCustomProperties sysCustomProperties;
     @Autowired
     private SysKeyValueRepository sysKeyValueRepository;
-    @Autowired
-    private IXyRequestService xyRequestService;
 
 
     /* 活动配置--信息获取
@@ -106,53 +97,4 @@ public class ProjectHelper {
                 .setFans(sysCustom.getOldFans())
                 .setMember(sysCustom.getOldMember().equals(BooleanConstant.BOOLEAN_YES) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO);
     }
-
-
-    /* 根据订单号查询订单信息
-     * @description
-     * @create by 王星齐
-     * @time 2020-08-31 16:27:04
-     **/
-    public XyReturn findOrderBySn(Long timestamp, String orderSn) {
-        final String appId = "adidas";
-        final String appSecret = "4usEfQ3B5G9TEj*g";
-        String format = String.format("appId=%s&appSecret=%s&orderSn=%s&timestamp=%s", appId, appSecret, orderSn, timestamp);
-        String sign = SecureUtil.md5(format);
-        String s = HttpClientUtil.doGet(String.format("https://vues.dd1x.cn/api/web_orders/get_order_info?appId=%s&timestamp=%s&orderSn=%s&sign=%s"
-                , appId, timestamp, orderSn, sign));
-        return JSONObject.parseObject(s, XyReturn.class);
-    }
-
-
-    /* 根据用户id查询订单信息
-     * @description
-     * @create by 王星齐
-     * @time 2020-08-31 16:27:04
-     **/
-    public XyReturn findOrdersByOpenId(Long timestamp, String openId, String nick, Long startTime, Long endTime, String buyerNick, Date requestTime) {
-        final String appId = "adidas";
-        final String appSecret = "4usEfQ3B5G9TEj*g";
-        String format = String.format("appId=%s&appSecret=%s&openid=%s&timestamp=%s", appId, appSecret, openId, timestamp);
-        String sign = SecureUtil.md5(format);
-        String s = HttpClientUtil.doGet(String.format("https://vues.dd1x.cn/api/web_orders/get_order_info_by_openid?page=%s&size=%s&appId=%s&timestamp=%s&openid=%s&nick=%s&sign=%s&startTime=%s&endTime=%s"
-               ,0,999 , appId, timestamp, openId,  nick, sign, startTime, endTime));
-        XyReturn xyReturn = JSONObject.parseObject(s, XyReturn.class);
-
-        Map<String, Object> requestData = new HashMap();
-        requestData.put("appId", appId);
-        requestData.put("appSecret", appSecret);
-        requestData.put("openId", openId);
-        requestData.put("nick", nick);
-        requestData.put("timestamp", timestamp);
-        requestData.put("startTime", startTime);
-        requestData.put("sign", sign);
-        requestData.put("endTime", endTime);
-        xyRequestService.save(new XyRequest().setBuyerNick(buyerNick).setRequestTime(requestTime)
-                .setRequestData(JSONObject.toJSONString(requestData))
-                .setResponseData(JSONObject.toJSONString(xyReturn))
-                .setSuccesss(xyReturn.getCode().equals(0) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO));
-        return xyReturn;
-    }
-
-
 }

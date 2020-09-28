@@ -30,7 +30,7 @@ public class SysLuckyChance {
     @Column(nullable = false, columnDefinition = "varchar(47) COMMENT '用户混淆昵称'")
     private String buyerNick;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "varchar(20) COMMENT '订单来源'")
+    @Column(nullable = false, columnDefinition = "varchar(20) COMMENT '机会来源'")
     private LuckyChanceFrom chanceFrom;
     @Column(nullable = false, columnDefinition = "varchar(20) COMMENT '是否使用'")
     private Integer isUse;

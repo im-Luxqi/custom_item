@@ -5,10 +5,6 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.common.enums.SysErrorEnum;
 import com.duomai.project.product.general.execute.*;
-import com.duomai.project.product.recycle.execute.IndexLoadExecute;
-import com.duomai.project.product.recycle.execute.LuckyBagLoadExecute;
-import com.duomai.project.product.recycle.execute.LuckyDrawExecute;
-import com.duomai.project.product.recycle.execute.LuckyDrawLoadExecute;
 import com.duomai.project.tool.ApplicationUtils;
 import org.springframework.context.ApplicationContext;
 
@@ -35,10 +31,6 @@ public class QLApiExecuteHandler {
         /*
          * 定制
          **/
-        map.put("wx.dz.adidas.load.index", IndexLoadExecute.class); //首页load, wxq
-        map.put("wx.dz.adidas.load.luckydraw", LuckyDrawLoadExecute.class); //抽奖页load, wxq
-        map.put("wx.dz.adidas.post.luckydraw", LuckyDrawExecute.class); //抽奖, wxq
-        map.put("wx.dz.adidas.load.luckybag", LuckyBagLoadExecute.class); //我的奖品, wxq
     }
 
 
