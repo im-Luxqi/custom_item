@@ -4,7 +4,7 @@ import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.product.general.constants.ActSettingConstant;
-import com.duomai.project.product.general.dto.ActBaseSetting;
+import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysKeyValue;
 import com.duomai.project.product.general.repository.SysKeyValueRepository;
@@ -38,10 +38,10 @@ public class ProjectHelper {
      * @create by 王星齐
      * @time 2020-08-26 20:03:20
      **/
-    public ActBaseSetting actBaseSettingFind() {
+    public ActBaseSettingDto actBaseSettingFind() {
         List<SysKeyValue> byType = sysKeyValueRepository.findByType(ActSettingConstant.TYPE_ACT_SETTING);
         Map<String, String> collect = byType.stream().collect(Collectors.toMap(SysKeyValue::getK, SysKeyValue::getV));
-        return new ActBaseSetting().setActRule(collect.get(ActSettingConstant.ACT_RULE))
+        return new ActBaseSettingDto().setActRule(collect.get(ActSettingConstant.ACT_RULE))
                 .setActStartTime(CommonDateParseUtil.string2date(collect.get(ActSettingConstant.ACT_START_TIME), CommonDateParseUtil.YYYY_MM_DD))
                 .setActEndTime(CommonDateParseUtil.getEndTimeOfDay(CommonDateParseUtil.string2date(collect.get(ActSettingConstant.ACT_END_TIME), CommonDateParseUtil.YYYY_MM_DD)));
     }
@@ -52,11 +52,11 @@ public class ProjectHelper {
      * @time 2020-08-26 20:11:04
      * @param actBaseSetting
      **/
-    public void actTimeValidate(ActBaseSetting actBaseSetting) throws Exception {
+    public void actTimeValidate(ActBaseSettingDto actBaseSettingDto) throws Exception {
         Date now = new Date();
-        if (now.before(actBaseSetting.getActStartTime()))
+        if (now.before(actBaseSettingDto.getActStartTime()))
             throw new Exception("活动尚未开始，尽情期待！");
-        if (now.after(actBaseSetting.getActEndTime()))
+        if (now.after(actBaseSettingDto.getActEndTime()))
             throw new Exception("活动已结束！");
     }
 
@@ -66,10 +66,10 @@ public class ProjectHelper {
      * @time 2020-08-26 20:11:04
      * @param actBaseSetting
      **/
-    public boolean actTimeValidateFlag(ActBaseSetting actBaseSetting) {
+    public boolean actTimeValidateFlag(ActBaseSettingDto actBaseSettingDto) {
         Date now = new Date();
         boolean liveFlag = true;
-        if (now.before(actBaseSetting.getActStartTime()) || now.after(actBaseSetting.getActEndTime()))
+        if (now.before(actBaseSettingDto.getActStartTime()) || now.after(actBaseSettingDto.getActEndTime()))
             liveFlag = false;
         return liveFlag;
     }

@@ -2,7 +2,7 @@ package com.duomai.project.product.general.repository;
 
 import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.product.general.entity.SysLuckyChance;
-import com.duomai.project.product.general.enums.LuckyChanceFrom;
+import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +13,7 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
 
     SysLuckyChance findFirstByBuyerNickAndIsUse(String buyerNick, Integer use);
 
-    List<SysLuckyChance> findAllByBuyerNickAndChanceFrom(String buyerNick, LuckyChanceFrom from);
+    List<SysLuckyChance> findAllByBuyerNickAndChanceFrom(String buyerNick, LuckyChanceFromEnum from);
     List<SysLuckyChance> findAllByBuyerNick(String buyerNick);
 
     long countByBuyerNickAndGetTimeBetween(String buyerNick, Date startTime, Date endTime);

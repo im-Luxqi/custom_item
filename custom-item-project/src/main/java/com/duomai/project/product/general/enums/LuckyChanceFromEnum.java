@@ -2,17 +2,17 @@ package com.duomai.project.product.general.enums;
 
 import com.duomai.common.base.enums.IEnum;
 
-/* 奖品类型
+/* 抽奖机会来源
  * @description
  * @create by 王星齐
  * @time 2020-08-28 14:28:07
  **/
-public enum AwardType implements IEnum {
-    GOODS("GOODS", "实物"), COUPON("COUPON", "优惠券");;
+public enum LuckyChanceFromEnum implements IEnum {
+    ORDER_COMMIT("ORDER_COMMIT", "订单提交"), ORDER_INVALID("ORDER_INVALID", "无效订单,每天只有第一单订单有效");
     private final String code;
     private final String descp;
 
-    AwardType(String code, String descp) {
+    LuckyChanceFromEnum(String code, String descp) {
         this.code = code;
         this.descp = descp;
     }

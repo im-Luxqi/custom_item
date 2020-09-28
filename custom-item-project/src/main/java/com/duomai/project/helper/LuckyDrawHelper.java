@@ -8,8 +8,8 @@ import com.duomai.project.product.general.entity.SysAward;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
-import com.duomai.project.product.general.enums.AwardType;
-import com.duomai.project.product.general.enums.LuckyChanceFrom;
+import com.duomai.project.product.general.enums.AwardTypeEnum;
+import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
@@ -54,7 +54,7 @@ public class LuckyDrawHelper {
      * @param tid  哪个订单(非必填)
      **/
     @Transactional
-    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFrom chanceFrom, Integer number, String tid) {
+    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, Integer number, String tid) {
         Date sendTime = new Date();
         return sysLuckyChanceRepository.saveAll(
                 IntStream.range(0, number).mapToObj((i) -> new SysLuckyChance()
@@ -127,7 +127,7 @@ public class LuckyDrawHelper {
             if (CollectionUtils.isNotEmpty(historyWin))
                 historyWin.forEach((record) -> {
                     historySignsBuffer.append(record.getAwardName()).append(",");
-                    if (AwardType.GOODS.equals(record.getAwardType()))//实物
+                    if (AwardTypeEnum.GOODS.equals(record.getAwardType()))//实物
                         historyGoodsHasGetAto.updateAndGet(v -> v + 1);
                 });
             final String historySigns_awardName_hasWin = historySignsBuffer.toString();
@@ -139,7 +139,7 @@ public class LuckyDrawHelper {
             for (SysAward award : awards) {
                 //1.奖品数量不足;2.本活动最大实物中奖限制；3.已抽中过本奖品
                 if (award.getRemainNum() < 1 ||
-                        (AwardType.GOODS.equals(award.getType()) && historyGoodsHasGet >= maxWinGoodNum) ||
+                        (AwardTypeEnum.GOODS.equals(award.getType()) && historyGoodsHasGet >= maxWinGoodNum) ||
                         historySigns_awardName_hasWin.contains(award.getName()))
                     continue;
                 //奖品中奖概率
@@ -169,7 +169,7 @@ public class LuckyDrawHelper {
                 return null;
             }
             //2.如果中的是优惠券，发放优惠券
-            if (AwardType.COUPON.equals(awardThisWin.getType())) {
+            if (AwardTypeEnum.COUPON.equals(awardThisWin.getType())) {
                 try {
                     AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon(custom.getOpenId(), awardThisWin.getEname());
                     if (alibabaBenefitSendResponse.getResultSuccess() == null || !alibabaBenefitSendResponse.getResultSuccess()) {

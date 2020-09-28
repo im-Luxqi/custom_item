@@ -1,6 +1,6 @@
 package com.duomai.project.product.general.entity;
 
-import com.duomai.project.product.general.enums.AwardType;
+import com.duomai.project.product.general.enums.AwardTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -25,7 +25,7 @@ public class SysCommodity {
     private String name;
     @Column(columnDefinition = "bigint(20) COMMENT '商品id'")
     private Long numId;
-    private AwardType type;
+    private AwardTypeEnum type;
     @Column(columnDefinition = "varchar(255) COMMENT '商品图片'")
     private String img;
     @Column(columnDefinition = "varchar(64) COMMENT '奖品价格'")

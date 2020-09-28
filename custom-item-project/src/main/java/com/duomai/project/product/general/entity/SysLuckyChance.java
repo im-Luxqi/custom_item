@@ -1,7 +1,6 @@
 package com.duomai.project.product.general.entity;
 
-import com.duomai.project.product.general.enums.LuckyChanceFrom;
-import com.duomai.project.tool.CommonDateParseUtil;
+import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
@@ -31,7 +30,7 @@ public class SysLuckyChance {
     private String buyerNick;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "varchar(20) COMMENT '机会来源'")
-    private LuckyChanceFrom chanceFrom;
+    private LuckyChanceFromEnum chanceFrom;
     @Column(nullable = false, columnDefinition = "varchar(20) COMMENT '是否使用'")
     private Integer isUse;
 

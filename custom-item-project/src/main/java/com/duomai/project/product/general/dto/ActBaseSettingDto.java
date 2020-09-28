@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-public class ActBaseSetting {
+public class ActBaseSettingDto {
     /*
      * 活动规则
      **/

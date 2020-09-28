@@ -4,7 +4,6 @@ import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.configuration.SysCustomProperties;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
-import com.duomai.project.product.general.dto.XyReturn;
 import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.taobao.api.ApiException;
@@ -53,7 +52,7 @@ public class TestController {
     SysLuckyChanceRepository sysLuckyChanceRepository;
 
     @GetMapping(value = "wxq")
-    public XyReturn test() throws ApiException {
-        return null;
+    public String test() throws ApiException {
+        return "success";
     }
 }

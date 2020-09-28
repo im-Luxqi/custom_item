@@ -1,12 +1,11 @@
 package com.duomai.project.product.general.entity;
 
-import com.duomai.project.product.general.enums.AwardType;
+import com.duomai.project.product.general.enums.AwardTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
@@ -46,7 +45,7 @@ public class SysLuckyDrawRecord {
     private String awardImg;
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(20) COMMENT '奖品类型'")
-    private AwardType awardType;
+    private AwardTypeEnum awardType;
     @Column(nullable = false, columnDefinition = "int(1) COMMENT '是否中奖'")
     private Integer isWin;
     @Column(nullable = false, columnDefinition = "int(1) COMMENT '是否填写地址'")
