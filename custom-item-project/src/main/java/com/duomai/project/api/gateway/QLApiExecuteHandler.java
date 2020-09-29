@@ -28,6 +28,7 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.common.member.success", MemberSuccessExecute.class); //入会成功后，完成用户信息 wxq
         map.put("wx.dz.common.init.attention", InitAttentionStatusExecute.class); //活动主页--load后，初始化玩家关注状态 wxq
         map.put("wx.dz.common.award.address", AwardAddressExecute.class); //留资料 wxq
+        map.put("wx.dz.common.award.myluckybag", AwardMyLuckyBagExecute.class); //我的奖品 wxq
 
 
         /*
