@@ -18,7 +18,9 @@ import com.taobao.api.response.AlibabaBenefitSendResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
+import javax.persistence.Transient;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -194,6 +196,40 @@ public class LuckyDrawHelper {
                 awardThisWin.setLogId(save.getId());
             }
         }
+    }
+
+
+    @Transient
+    public void directSendCoupon(SysAward award, SysCustom custom, Date sendTime) {
+        Assert.isTrue(sysAwardRepository.tryReduceOne(award.getId()) > 0, "奖品库存库存不足");
+        /*整理抽奖日志*/
+        SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord()
+                .setIsWin(BooleanConstant.BOOLEAN_NO)
+                .setIsFill(BooleanConstant.BOOLEAN_NO)
+                .setDrawTime(sendTime)
+                .setPlayerHeadImg(custom.getHeadImg())
+                .setPlayerBuyerNick(custom.getBuyerNick())
+                .setPlayerZnick(custom.getZnick())
+                .setIsWin(BooleanConstant.BOOLEAN_NO)
+                .setAwardId(award.getId())
+                .setAwardImg(award.getImg())
+                .setAwardLevel(award.getAwardLevel())
+                .setAwardName(award.getName())
+                .setAwardType(award.getType())
+                .setRemark("邀请三个好友发放优惠券");
+
+        try {
+            AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon(custom.getOpenId(), award.getEname());
+            if (alibabaBenefitSendResponse.getResultSuccess() == null || !alibabaBenefitSendResponse.getResultSuccess()) {
+                //发放失败
+                drawRecord.setSendError("发放优惠券失败：" + JSON.toJSONString(alibabaBenefitSendResponse));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            //发放异常
+            drawRecord.setSendError("发放优惠券异常：" + e.getMessage());
+        }
+        sysLuckyDrawRecordRepository.save(drawRecord);
     }
 
     public Integer findMaxWinGoodNum() {

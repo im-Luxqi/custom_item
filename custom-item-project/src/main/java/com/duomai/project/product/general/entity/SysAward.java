@@ -1,6 +1,7 @@
 package com.duomai.project.product.general.entity;
 
 import com.duomai.project.product.general.enums.AwardTypeEnum;
+import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -18,6 +19,10 @@ public class SysAward {
     @Id
     @Column(length = 64)
     private String id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(20) COMMENT '奖品用途'")
+    private AwardUseWayEnum useWay;
     @Column(columnDefinition = "varchar(47) COMMENT '奖品等级;一等奖、二等奖。。。'")
     private String awardLevel;
     @Column(columnDefinition = "int(2) COMMENT '奖品等级sign'")

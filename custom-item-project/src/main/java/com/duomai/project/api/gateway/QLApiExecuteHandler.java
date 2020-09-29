@@ -4,6 +4,7 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.common.enums.SysErrorEnum;
+import com.duomai.project.product.adidasmusic.execute.IndexSendInviteAwardExecute;
 import com.duomai.project.product.general.execute.*;
 import com.duomai.project.tool.ApplicationUtils;
 import org.springframework.context.ApplicationContext;
@@ -31,6 +32,7 @@ public class QLApiExecuteHandler {
         /*
          * 定制
          **/
+        map.put("wx.dz.index.award.forinvite", IndexSendInviteAwardExecute.class); //首页发送邀请人员的奖励 wxq
     }
 
 

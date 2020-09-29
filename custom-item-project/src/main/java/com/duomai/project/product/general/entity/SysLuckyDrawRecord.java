@@ -67,5 +67,7 @@ public class SysLuckyDrawRecord {
     private Date receviceTime;
     @Column(columnDefinition = "text COMMENT '发奖发送错误信息'")
     private String sendError;
+    @Column(columnDefinition = "text COMMENT '备注'")
+    private String remark;
 
 }
