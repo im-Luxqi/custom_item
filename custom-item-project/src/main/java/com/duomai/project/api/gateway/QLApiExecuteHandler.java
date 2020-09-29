@@ -40,6 +40,9 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.task.finish.load", GeneralTaskLoadExecute.class); // 任务页面load:签到、关注是否完成 lyj
         map.put("wx.dz.task.sign.operate", GeneralTaskSignOperateExecute.class); // 任务页面：完成每日打卡
         map.put("wx.dz.task.follow.operate", GeneralTaskFollowOperateExecute.class); // 任务页面：完成关注店铺
+
+
+        map.put("wx.dz.big.wheel.list",CusBigWheelListExecute.class);
     }
 
 
