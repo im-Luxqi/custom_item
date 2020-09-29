@@ -23,6 +23,7 @@ public class SysAward {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(20) COMMENT '奖品用途'")
     private AwardUseWayEnum useWay;
+
     @Column(columnDefinition = "varchar(47) COMMENT '奖品等级;一等奖、二等奖。。。'")
     private String awardLevel;
     @Column(columnDefinition = "int(2) COMMENT '奖品等级sign'")

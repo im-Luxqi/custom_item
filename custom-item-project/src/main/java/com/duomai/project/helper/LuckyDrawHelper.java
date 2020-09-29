@@ -246,8 +246,8 @@ public class LuckyDrawHelper {
         long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChanceIsNull(sysCustom.getBuyerNick());
         if (l > 0) {
             //todo:等待落实奖池升级规则
-            return sysAwardRepository.findByUseWayAndOrderByLuckyValueAsc(AwardUseWayEnum.POOL);
+            return sysAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.POOL);
         }
-        return sysAwardRepository.findByUseWayAndOrderByLuckyValueAsc(AwardUseWayEnum.FIRSTLUCKY);
+        return sysAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.FIRSTLUCKY);
     }
 }
