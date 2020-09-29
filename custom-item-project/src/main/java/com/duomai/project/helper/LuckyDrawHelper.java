@@ -9,6 +9,7 @@ import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
+import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
@@ -240,4 +241,13 @@ public class LuckyDrawHelper {
         return 999;
     }
 
+    @Transient
+    public List<SysAward> findCustomTimeAwardPool(SysCustom sysCustom) {
+        long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChanceIsNull(sysCustom.getBuyerNick());
+        if (l > 0) {
+            //todo:等待落实奖池升级规则
+            return sysAwardRepository.findByUseWayAndOrderByLuckyValueAsc(AwardUseWayEnum.POOL);
+        }
+        return sysAwardRepository.findByUseWayAndOrderByLuckyValueAsc(AwardUseWayEnum.FIRSTLUCKY);
+    }
 }

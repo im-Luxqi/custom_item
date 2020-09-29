@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDrawRecord, String> {
 
-    List<SysLuckyDrawRecord> findByPlayerBuyerNickAndIsWin(String buyerNick,Integer isWin);
+    List<SysLuckyDrawRecord> findByPlayerBuyerNickAndIsWin(String buyerNick, Integer isWin);
+
+
+    long countByPlayerBuyerNickAndLuckyChanceIsNull(String buyerNick);
 }
