@@ -48,7 +48,7 @@ public class GeneralTaskLoadExecute implements IApiExecute {
         /*2.今日是否签到*/
         Date start = CommonDateParseUtil.getStartTimeOfDay(new Date()); // 一天的开始时间
         Date end = CommonDateParseUtil.getEndTimeOfDay(new Date()); // 一天的结束时间
-        List<SysGeneralTask> signLog = sysGeneralTaskRepository.findByBuyerNickAndTaskTypeAndCreateTimeBetweenAnd(
+        List<SysGeneralTask> signLog = sysGeneralTaskRepository.findByBuyerNickAndTaskTypeAndCreateTimeBetween(
                 buyerNick, TaskTypeEnum.SIGN, start, end);
         if (!signLog.isEmpty()){
             result.put("task_sign",TaskFinishedTypeEnum.FINISHED.getValue());
