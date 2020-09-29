@@ -4,9 +4,7 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.common.enums.SysErrorEnum;
-import com.duomai.project.product.adidasmusic.execute.GeneralTaskLoadExecute;
-import com.duomai.project.product.adidasmusic.execute.IndexLuckyDrawExecute;
-import com.duomai.project.product.adidasmusic.execute.IndexSendInviteAwardExecute;
+import com.duomai.project.product.adidasmusic.execute.*;
 import com.duomai.project.product.general.execute.*;
 import com.duomai.project.tool.ApplicationUtils;
 import org.springframework.context.ApplicationContext;
@@ -39,6 +37,8 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.index.award.luckydraw", IndexLuckyDrawExecute.class); //抽奖 wxq
 
         map.put("wx.dz.task.finish.load", GeneralTaskLoadExecute.class); // 任务页面load:签到、关注是否完成 lyj
+        map.put("wx.dz.task.sign.operate", GeneralTaskSignOperateExecute.class); // 任务页面：完成每日打卡
+        map.put("wx.dz.task.follow.operate", GeneralTaskFollowOperateExecute.class); // 任务页面：完成关注店铺
     }
 
 
