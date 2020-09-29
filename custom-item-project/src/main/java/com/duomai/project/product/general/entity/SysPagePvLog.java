@@ -32,5 +32,5 @@ public class SysPagePvLog {
     private PvPageEnum page;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "varchar(20) COMMENT '哪个渠道而来'")
-    private PvChannelEnum channel;
+    private String channel;
 }

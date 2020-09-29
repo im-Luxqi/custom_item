@@ -5,7 +5,6 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.entity.SysPagePvLog;
-import com.duomai.project.product.general.enums.PvChannelEnum;
 import com.duomai.project.product.general.enums.PvPageEnum;
 import com.duomai.project.product.general.repository.SysPagePvLogRepository;
 import com.duomai.project.tool.ProjectTools;
@@ -32,9 +31,10 @@ public class PagePvExecute implements IApiExecute {
         /*1.校验必传参数*/
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         PvPageEnum page = ProjectTools.enumValueOf(PvPageEnum.class, jsonObjectAdmjson.getString("page"));
-        PvChannelEnum channel = ProjectTools.enumValueOf(PvChannelEnum.class, jsonObjectAdmjson.getString("channel"));
+        String channel = jsonObjectAdmjson.getString("channel");
         Assert.notNull(page, "来源页不能为空");
-        Assert.notNull(channel, "来源渠道不能为空");
+        if (PvPageEnum.PAGE_DAKA.equals(page))
+            Assert.notNull(channel, "来源渠道不能为空");
 
         /*2.保存pv*/
         sysPagePvLogRepository.save(new SysPagePvLog()

@@ -10,8 +10,9 @@ import com.duomai.common.base.enums.IEnum;
  * @date 2020-08-28 11:21
  */
 public enum PvPageEnum implements IEnum {
-    ACT_INDEX("ACT_INDEX", "活动首页"),
-    ACT_LUCKY_DRAW("ACT_LUCKY_DRAW", "活动抽奖页"),
+    PAGE_INDEX("PAGE_INDEX", "活动首页"),
+    PAGE_BROWSE("PAGE_BROWSE", "浏览页面"),
+    PAGE_DAKA("PAGE_DAKA", "大咖专属活动子入口"),
     ;
 
     private final String code;
