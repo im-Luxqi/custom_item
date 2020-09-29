@@ -13,7 +13,6 @@ import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 
 /**
  * @内容：任务页面 关注店铺操作
@@ -33,14 +32,11 @@ public class GeneralTaskFollowOperateExecute implements IApiExecute {
         // 校验玩家是否存在
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
-
         /*保存操作日志*/
         SysGeneralTask folowOpt = new SysGeneralTask();
-//        sysCustomRepository.save(
-//                folowOpt.setId(),
-//                folowOpt.setBuyerNick(buyerNick),
-//                folowOpt.setCreateTime(new Date()),
-//                folowOpt.setTaskType(TaskTypeEnum.FOLLOW));
+        sysGeneralTaskRepository.save(folowOpt.setBuyerNick(buyerNick)
+                .setTaskType(TaskTypeEnum.FOLLOW)
+                .setCreateTime(sysParm.getRequestStartTime()));
         return YunReturnValue.ok("操作成功！");
     }
 }
