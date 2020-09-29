@@ -3,13 +3,13 @@ package com.duomai.project.product.adidasmusic.execute;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.product.general.dto.TaskInfoDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysGeneralTask;
 import com.duomai.project.product.general.enums.TaskFinishedTypeEnum;
 import com.duomai.project.product.general.enums.TaskTypeEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysGeneralTaskRepository;
+import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -24,7 +24,7 @@ import java.util.*;
  * @创建时间：2020.9.29
  * */
 @Component
-public class GeneralTaskLoadFollowExecute implements IApiExecute {
+public class GeneralTaskLoadExecute implements IApiExecute {
     @Autowired
     private SysGeneralTaskRepository sysGeneralTaskRepository;
     @Autowired
@@ -37,22 +37,24 @@ public class GeneralTaskLoadFollowExecute implements IApiExecute {
         // 校验玩家是否存在
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
-        TaskInfoDto dto = null;
+        Map<String,Object> result = new HashMap<>();
         /*1.是否关注*/
-        List<SysGeneralTask> follow = sysGeneralTaskRepository.findSysGeneralTaskByBuyerNickndTaskType(
-                buyerNick,TaskTypeEnum.FOLLOW.getValue());
-        if (!follow.isEmpty()){
-            dto = getTaskInfoDto(TaskTypeEnum.FOLLOW.getValue(), TaskFinishedTypeEnum.FINISHED.getValue());
+        List<SysGeneralTask> followLog = sysGeneralTaskRepository.findByBuyerNickAndTaskType(buyerNick,TaskTypeEnum.FOLLOW);
+        if (!followLog.isEmpty()){
+            result.put("task_follow", TaskFinishedTypeEnum.FINISHED.getValue());
         } else {
-            dto = getTaskInfoDto(TaskTypeEnum.FOLLOW.getValue(), TaskFinishedTypeEnum.FINISHED.getValue());
+            result.put("task_follow", TaskFinishedTypeEnum.NOT_FINISHED.getValue());
         }
-        return YunReturnValue.ok(dto,"关注是否完成");
-    }
-
-    private TaskInfoDto getTaskInfoDto(String taskType, String finish){
-        TaskInfoDto dto = new TaskInfoDto();
-        dto.setTaskInfo(taskType);
-        dto.setIsFinish(finish);
-        return dto;
+        /*2.今日是否签到*/
+        Date start = CommonDateParseUtil.getStartTimeOfDay(new Date()); // 一天的开始时间
+        Date end = CommonDateParseUtil.getEndTimeOfDay(new Date()); // 一天的结束时间
+        List<SysGeneralTask> signLog = sysGeneralTaskRepository.findByBuyerNickAndTaskTypeAndCreateTimeBetweenAnd(
+                buyerNick, TaskTypeEnum.SIGN, start, end);
+        if (!signLog.isEmpty()){
+            result.put("task_sign",TaskFinishedTypeEnum.FINISHED.getValue());
+        } else {
+            result.put("task_sign", TaskFinishedTypeEnum.NOT_FINISHED.getValue());
+        }
+        return YunReturnValue.ok(result,"签到和关注是否完成");
     }
 }
