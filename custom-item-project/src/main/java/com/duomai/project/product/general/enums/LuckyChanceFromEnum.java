@@ -8,7 +8,11 @@ import com.duomai.common.base.enums.IEnum;
  * @time 2020-08-28 14:28:07
  **/
 public enum LuckyChanceFromEnum implements IEnum {
-    ORDER_COMMIT("ORDER_COMMIT", "订单提交"), ORDER_INVALID("ORDER_INVALID", "无效订单,每天只有第一单订单有效");
+    SIGN("SIGN", "每日签到"),
+    FOLLOW("FOLLOW", "关注店铺"),
+    BROWSE("BROWSE", "浏览商品"),
+    DAKA("DAKA", "大咖日历"),
+    ;
     private final String code;
     private final String descp;
 
