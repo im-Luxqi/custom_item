@@ -8,16 +8,16 @@ import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysAward;
 import com.duomai.project.product.general.entity.SysCustom;
-import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.product.general.repository.SysInviteLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*首页抽奖
  * @description
@@ -27,13 +27,9 @@ import java.util.List;
 @Component
 public class IndexLuckyDrawExecute implements IApiExecute {
     @Autowired
-    private SysInviteLogRepository sysInviteLogRepository;
-    @Autowired
     private ProjectHelper projectHelper;
     @Autowired
     private LuckyDrawHelper luckyDrawHelper;
-    @Autowired
-    private SysAwardRepository sysAwardRepository;
     @Autowired
     private SysCustomRepository sysCustomRepository;
 
@@ -52,8 +48,19 @@ public class IndexLuckyDrawExecute implements IApiExecute {
 
         List<SysAward> thisTimeAwardPool = luckyDrawHelper.findCustomTimeAwardPool(sysCustom);
         SysAward sysAward = luckyDrawHelper.luckyDraw(thisTimeAwardPool, sysCustom, sysParm.getRequestStartTime());
-
-
-        return YunReturnValue.ok("成功抽奖");
+        /*只反馈有效数据*/
+        Map result = new HashMap<>();
+        result.put("win", sysAward != null);
+        result.put("award", sysAward);
+        if (sysAward != null) {
+            sysAward.setEname(null)
+                    .setId(null)
+                    .setRemainNum(null)
+                    .setSendNum(null)
+                    .setTotalNum(null)
+                    .setLuckyValue(null)
+                    .setPoolLevel(null);
+        }
+        return YunReturnValue.ok(result, "玩家成功进行抽奖");
     }
 }
