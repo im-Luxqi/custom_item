@@ -11,7 +11,9 @@ import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
+import com.duomai.project.product.general.enums.TaskTypeEnum;
 import com.duomai.project.product.general.repository.SysAwardRepository;
+import com.duomai.project.product.general.repository.SysGeneralTaskRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import com.duomai.project.tool.ApplicationUtils;
@@ -46,6 +48,8 @@ public class LuckyDrawHelper {
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
     @Autowired
     private SysAwardRepository sysAwardRepository;
+    @Autowired
+    private SysGeneralTaskRepository sysGeneralTaskRepository;
 
     /* 发放游戏机会
      * @description
@@ -243,10 +247,18 @@ public class LuckyDrawHelper {
 
     @Transient
     public List<SysAward> findCustomTimeAwardPool(SysCustom sysCustom) {
-        long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChanceIsNull(sysCustom.getBuyerNick());
+        long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndIsWinAndLuckyChanceIsNotNull(sysCustom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
         if (l > 0) {
             //todo:等待落实奖池升级规则
-            return sysAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.POOL);
+            Integer pool_level = 2;
+            long sign_num = sysGeneralTaskRepository.countByBuyerNickAndTaskType(sysCustom.getBuyerNick(), TaskTypeEnum.SIGN);
+            if (sign_num > 2) {
+                ++pool_level;
+            }
+            if (sign_num > 5) {
+                ++pool_level;
+            }
+            return sysAwardRepository.findByUseWayAndPoolLevelBeforeOrderByLuckyValueAsc(AwardUseWayEnum.POOL, pool_level);
         }
         return sysAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.FIRSTLUCKY);
     }

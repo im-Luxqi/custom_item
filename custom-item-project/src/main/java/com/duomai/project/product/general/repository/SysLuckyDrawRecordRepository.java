@@ -10,5 +10,5 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
     List<SysLuckyDrawRecord> findByPlayerBuyerNickAndIsWin(String buyerNick, Integer isWin);
 
 
-    long countByPlayerBuyerNickAndLuckyChanceIsNull(String buyerNick);
+    long countByPlayerBuyerNickAndIsWinAndLuckyChanceIsNotNull(String buyerNick, Integer isWin);
 }
