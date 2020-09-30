@@ -9,6 +9,7 @@ import com.duomai.project.product.general.enums.TaskTypeEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysGeneralTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import java.util.List;
  * @创建人：lyj
  * @创建时间：2020.9.30
  * */
+@Component
 public class GeneralTaskFollowOperateExecute implements IApiExecute {
     @Autowired
     private SysGeneralTaskRepository sysGeneralTaskRepository;
@@ -36,7 +38,7 @@ public class GeneralTaskFollowOperateExecute implements IApiExecute {
         // 校验
         List<SysGeneralTask> followLog = sysGeneralTaskRepository.findByBuyerNickAndTaskType(buyerNick, TaskTypeEnum.FOLLOW);
         if (followLog.size() > 0){
-            Assert.isNull(followLog, "重复操作！");
+            Assert.isNull(followLog, "操作已完成！");
         }
         /*保存操作日志*/
         SysGeneralTask folowOpt = new SysGeneralTask();

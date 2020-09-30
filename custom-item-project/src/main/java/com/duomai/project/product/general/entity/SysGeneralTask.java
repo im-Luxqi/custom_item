@@ -3,6 +3,7 @@ package com.duomai.project.product.general.entity;
 import com.duomai.project.product.general.enums.TaskTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -17,6 +18,8 @@ import java.util.Date;
 @org.hibernate.annotations.Table(appliesTo = "sys_general_task", comment = "入会,关注,签到,日志表")
 public class SysGeneralTask {
     @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(length = 64)
     private String id;
     @Column(columnDefinition = "varchar(47) COMMENT '粉丝混淆昵称'")
