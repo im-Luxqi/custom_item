@@ -3,5 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.duomai.project.product.adidasmusic.mapper.CusBigWheelMapper">
+    <resultMap id="BaseResultMap" type="com.duomai.project.product.adidasmusic.domain.CusBigWheel">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="context" property="context" jdbcType="TEXT" />
+        <result column="img" property="img" jdbcType="VARCHAR" />
+        <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+        <result column="fly_link" property="flyLink" jdbcType="VARCHAR" />
+        <result column="alias" property="alias" jdbcType="VARCHAR" />
+
+
+    </resultMap>
 
 </mapper>

@@ -2,6 +2,12 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.duomai.project.product.adidasmusic.domain.CusBigWheel">
+<mapper namespace="com.duomai.project.product.adidasmusic.domain.CusBigWheelLogMapper">
+    <resultMap id="BaseResultMap" type="com.duomai.project.product.adidasmusic.domain.CusBigWheelLog">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="buyer_nick" property="buyerNick" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="gateway" property="gateway" jdbcType="VARCHAR" />
+    </resultMap>
 
 </mapper>
