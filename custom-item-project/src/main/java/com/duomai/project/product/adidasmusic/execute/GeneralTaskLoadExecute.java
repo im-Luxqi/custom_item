@@ -3,6 +3,7 @@ package com.duomai.project.product.adidasmusic.execute;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysGeneralTask;
 import com.duomai.project.product.general.enums.TaskTypeEnum;
@@ -31,6 +32,8 @@ public class GeneralTaskLoadExecute implements IApiExecute {
     private SysGeneralTaskRepository sysGeneralTaskRepository;
     @Autowired
     private SysCustomRepository sysCustomRepository;
+    @Autowired
+    private ProjectHelper projectHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -39,6 +42,9 @@ public class GeneralTaskLoadExecute implements IApiExecute {
         // 校验玩家是否存在
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
+
+        //预防连点
+        projectHelper.checkoutMultipleCommit(sysParm,this);
 
         Map<String, Object> result = new HashMap<>();
         /*1.是否关注*/

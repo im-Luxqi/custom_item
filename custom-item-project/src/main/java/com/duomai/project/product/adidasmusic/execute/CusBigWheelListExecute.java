@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.adidasmusic.domain.CusBigWheel;
 import com.duomai.project.product.adidasmusic.service.ICusBigWheelService;
 import com.duomai.project.product.general.dto.PageListDto;
@@ -28,12 +29,15 @@ import java.util.List;
 public class CusBigWheelListExecute implements IApiExecute {
     @Autowired
     private ICusBigWheelService iCusBigWheelService;
+    @Autowired
+    private ProjectHelper projectHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 //        //获取参数
 //        JSONObject object = JSONObject.parseObject(sysParm.getApiParameter().getAdmjson().toString());
-
+        //预防连点
+        projectHelper.checkoutMultipleCommit(sysParm,this);
         PageListDto pageListDto = new PageListDto();
         List<CusBigWheel> cusBigWheelList = iCusBigWheelService.listCusBigWheel();
         for (CusBigWheel cusBigWheel : cusBigWheelList){
