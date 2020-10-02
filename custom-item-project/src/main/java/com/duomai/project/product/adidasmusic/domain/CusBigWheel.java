@@ -3,8 +3,10 @@ package com.duomai.project.product.adidasmusic.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.duomai.project.product.general.enums.CusBigWheelStateEnum;
 import lombok.Getter;
 import lombok.Setter;
+import javax.persistence.*;
 
 import java.util.Date;
 
@@ -52,5 +54,8 @@ public class CusBigWheel {
 	 * 别名
 	 */
 	private String alias;
+
+	@Transient
+	private CusBigWheelStateEnum state;
 
 }

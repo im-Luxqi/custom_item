@@ -38,11 +38,12 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.index.award.luckydraw", IndexLuckyDrawExecute.class); //抽奖 wxq
 
         map.put("wx.dz.task.finish.load", GeneralTaskLoadExecute.class); // 任务页面load:签到、关注是否完成 lyj
-        map.put("wx.dz.task.sign.operate", GeneralTaskSignOperateExecute.class); // 任务页面：完成每日打卡
-        map.put("wx.dz.task.follow.operate", GeneralTaskFollowOperateExecute.class); // 任务页面：完成关注店铺
+        map.put("wx.dz.task.sign.operate", GeneralTaskSignOperateExecute.class); // 任务页面：完成每日打卡 lyj
+        map.put("wx.dz.task.follow.operate", GeneralTaskFollowOperateExecute.class); // 任务页面：完成关注店铺 lyj
+        map.put("wx.dz.task.browse.operate", GeneralTaskBrowseOperateExecute.class); // 任务页面：完成浏览 lyj
+        map.put("wx.dz.task.bigWheel.operate",GeneralTaskBigWheelOperateExecute.class); //任务页面：尖货大咖 lyj
 
-
-        map.put("wx.dz.big.wheel.list",CusBigWheelListExecute.class);
+        map.put("wx.dz.big.wheel.list",CusBigWheelListExecute.class); // 尖货大咖秀列表:活动标签 lyj
     }
 
 

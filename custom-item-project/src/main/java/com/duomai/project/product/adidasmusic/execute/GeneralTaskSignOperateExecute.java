@@ -41,7 +41,7 @@ public class GeneralTaskSignOperateExecute implements IApiExecute {
         List<SysGeneralTask> signLog = sysGeneralTaskRepository.findByBuyerNickAndTaskTypeAndCreateTimeBetween(buyerNick,
                 TaskTypeEnum.SIGN, CommonDateParseUtil.getStartTimeOfDay(new Date()), CommonDateParseUtil.getEndTimeOfDay(new Date()));
         if (signLog.size() > 0){
-            Assert.isNull(signLog, "重复操作！");
+            Assert.isNull(signLog, "操作已完成！");
         }
         /*保存操作日志*/
         SysGeneralTask signOpt = new SysGeneralTask();

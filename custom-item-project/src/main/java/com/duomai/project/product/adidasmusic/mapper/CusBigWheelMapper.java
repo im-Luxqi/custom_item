@@ -4,6 +4,8 @@ import com.duomai.common.framework.mybatisplus.mapper.BaseMapper;
 import com.duomai.project.product.adidasmusic.domain.CusBigWheel;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * 【请填写功能名称】 数据层
  *
@@ -11,5 +13,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CusBigWheelMapper extends BaseMapper<CusBigWheel> {
-
+    List<CusBigWheel> listCusBigWheel();
 }
