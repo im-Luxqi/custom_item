@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
     @Autowired
     private SysCustomRepository sysCustomRepository;
+    @Autowired
+    private ProjectHelper projectHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -35,6 +38,8 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         // 校验玩家是否存在
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
+        //预防连点
+        projectHelper.checkoutMultipleCommit(sysParm,this);
 
         return YunReturnValue.ok("操作成功");
     }
