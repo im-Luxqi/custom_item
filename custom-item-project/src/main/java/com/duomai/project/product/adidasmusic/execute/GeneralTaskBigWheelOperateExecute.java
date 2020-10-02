@@ -36,6 +36,6 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
 
-        return null;
+        return YunReturnValue.ok("操作成功");
     }
 }
