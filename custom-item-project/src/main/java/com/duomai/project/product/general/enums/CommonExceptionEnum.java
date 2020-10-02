@@ -45,6 +45,7 @@ public enum CommonExceptionEnum {
     get_Finish_The_Task_Num_error("M00005","系统异常..查询签到日志失败!"),
     COUNT_BY_INVITER_ERROR("M00006","系统异常..查询邀请日志失败!"),
     GET_INVITER_LOG_ERROR("M00007","系统异常..查询邀请日志失败!"),
+    QUERY_LUCKY_DRAW_LOG_ERROR("M00008","系统异常..查询中奖弹幕信息失败!"),
 
     //外接口调用异常
     TAO_BAO_ERROR("B00001","淘宝接口异常!")
