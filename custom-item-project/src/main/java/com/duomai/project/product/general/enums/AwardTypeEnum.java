@@ -8,7 +8,9 @@ import com.duomai.common.base.enums.IEnum;
  * @time 2020-08-28 14:28:07
  **/
 public enum AwardTypeEnum implements IEnum {
-    GOODS("GOODS", "实物"), COUPON("COUPON", "优惠券");;
+    GOODS("GOODS", "实物"),
+    COUPON("COUPON", "优惠券")
+    ;
     private final String code;
     private final String descp;
 
