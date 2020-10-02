@@ -16,7 +16,7 @@ import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysGeneralTaskRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
-import com.duomai.project.tool.ApplicationUtils;
+import com.duomai.project.tool.ProjectTools;
 import com.taobao.api.response.AlibabaBenefitSendResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -142,7 +142,7 @@ public class LuckyDrawHelper {
 
 
             /*2.开始随机抽奖,模拟选出本次抽奖中的奖品*/
-            Integer maxWinGoodNum = this.findMaxWinGoodNum();
+            Integer maxWinGoodNum = ProjectTools.findMaxWinGoodNum();
             for (SysAward award : awards) {
                 //1.奖品数量不足;2.本活动最大实物中奖限制；3.已抽中过本奖品
                 if (award.getRemainNum() < 1 ||
@@ -235,14 +235,6 @@ public class LuckyDrawHelper {
             drawRecord.setSendError("发放优惠券异常：" + e.getMessage());
         }
         sysLuckyDrawRecordRepository.save(drawRecord);
-    }
-
-    public Integer findMaxWinGoodNum() {
-        String property = ApplicationUtils.getContext().getEnvironment().getProperty("spring.profiles.active");
-        if ("prod".equals(property)) {
-            return 1;
-        }
-        return 999;
     }
 
     @Transient

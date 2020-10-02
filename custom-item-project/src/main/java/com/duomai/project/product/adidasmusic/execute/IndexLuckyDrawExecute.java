@@ -36,6 +36,8 @@ public class IndexLuckyDrawExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        //防止连续点击
+        projectHelper.checkoutMultipleCommit(sysParm,this);
         /*校验*/
         //是否在活动期间
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();

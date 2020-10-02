@@ -1,21 +1,27 @@
 package com.duomai.project.helper;
 
+import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
+import com.duomai.project.api.taobao.OcsUtil;
 import com.duomai.project.product.general.constants.ActSettingConstant;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysKeyValue;
 import com.duomai.project.product.general.repository.SysKeyValueRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
+import com.duomai.project.tool.ProjectTools;
 import com.taobao.api.ApiException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -25,6 +31,7 @@ import java.util.stream.Collectors;
  * @create by 王星齐
  * @date 2020-08-26 16:52
  */
+@Slf4j
 @Component
 public class ProjectHelper {
     @Autowired
@@ -32,6 +39,23 @@ public class ProjectHelper {
     @Autowired
     private SysKeyValueRepository sysKeyValueRepository;
 
+
+
+    /* 防连点
+     * @description
+     * @create by 王星齐
+     * @time 2020-09-30 16:59:46
+     * @param sysParm
+     * @param execute
+     **/
+    public void checkoutMultipleCommit(ApiSysParameter sysParm, IApiExecute execute) throws Exception {
+        if (!ProjectTools.hasMemCacheEnvironment())
+            return;
+        String ex = execute.getClass().getName();
+        Assert.isTrue(OcsUtil.add(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + ex, "_commit_", 1)
+                , "点太快了，请休息下");
+        log.info(Objects.requireNonNull(OcsUtil.getObject(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + ex)).toString() + "-------------------------------");
+    }
 
     /* 活动配置--信息获取
      * @description

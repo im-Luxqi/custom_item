@@ -6,6 +6,7 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
+import com.duomai.project.tool.ProjectTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -25,7 +26,7 @@ public class IllegalAccessLuckyChanceExecute implements IApiExecute {
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Assert.isTrue(luckyDrawHelper.findMaxWinGoodNum() > 10, "？？？？？，想屁吃呢");
+        Assert.isTrue(ProjectTools.findMaxWinGoodNum() > 10, "？？？？？，想屁吃呢");
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         String buyerNick = jsonObjectAdmjson.getString("buyerNick");
         Assert.hasLength(buyerNick, "buyernick不能为空");

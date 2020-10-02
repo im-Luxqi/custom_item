@@ -40,6 +40,8 @@ public class IndexSendInviteAwardExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        //防止连续点击
+        projectHelper.checkoutMultipleCommit(sysParm,this);
         /*1.校验*/
         //是否在活动期间
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();

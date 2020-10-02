@@ -61,4 +61,19 @@ public class ProjectTools {
             throw new Exception("必传参数校验，" + constraintViolations.iterator().next().getMessage());
     }
 
+    public static Integer findMaxWinGoodNum() {
+        String property = ApplicationUtils.getContext().getEnvironment().getProperty("spring.profiles.active");
+        if ("prod".equals(property)) {
+            return 1;
+        }
+        return 999;
+    }
+
+    public static boolean hasMemCacheEnvironment() {
+        String property = ApplicationUtils.getContext().getEnvironment().getProperty("spring.profiles.active");
+        if ("dev".equals(property)) {
+            return false;
+        }
+        return true;
+    }
 }
