@@ -123,8 +123,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         if (luckyDrawRecords.size() < 50) {
             for (int i = 0; i < 50 - luckyDrawRecords.size(); i++) {
                 Map map = new HashMap();
-                map.put("playerBuyerNick", CommonHanZiUtil.randomGetUnicodeHanZi() + "***");//粉丝昵称
                 map.put("awardName", "满减优惠券");//奖品默认名称
+                map.put("playerBuyerNick", CommonHanZiUtil.randomGetUnicodeHanZi() + "***");//粉丝昵称
                 luckyDrawRecords.add(map);
             }
         }
