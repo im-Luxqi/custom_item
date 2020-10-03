@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface ICusBigWheelService extends BaseService<CusBigWheel> {
 
-    List<CusBigWheel> listCusBigWheel();
+
 
 }

@@ -34,12 +34,13 @@ public class CusBigWheelListExecute implements IApiExecute {
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        //获取参数
-//        JSONObject object = JSONObject.parseObject(sysParm.getApiParameter().getAdmjson().toString());
+
         //预防连点
         projectHelper.checkoutMultipleCommit(sysParm,this);
-        PageListDto pageListDto = new PageListDto();
-        List<CusBigWheel> cusBigWheelList = iCusBigWheelService.listCusBigWheel();
+
+        PageListDto beautyAdmjson = sysParm.getApiParameter().findBeautyAdmjson(PageListDto.class);
+        beautyAdmjson.startPage();
+        List<CusBigWheel> cusBigWheelList = iCusBigWheelService.query().list();
         for (CusBigWheel cusBigWheel : cusBigWheelList){
             if (cusBigWheel.getStartTime().after(new Date())){  // 开始时间大于当前时间
                 cusBigWheel.setState(CusBigWheelStateEnum.NOT_STARTING);
@@ -51,7 +52,7 @@ public class CusBigWheelListExecute implements IApiExecute {
                 cusBigWheel.setState(CusBigWheelStateEnum.PROGRESSING);
             }
         }
-        pageListDto.setResultList(cusBigWheelList);
-        return YunReturnValue.ok(pageListDto,"尖货大咖记录");
+        beautyAdmjson.setResultList(cusBigWheelList);
+        return YunReturnValue.ok(beautyAdmjson,"尖货大咖记录");
     }
 }

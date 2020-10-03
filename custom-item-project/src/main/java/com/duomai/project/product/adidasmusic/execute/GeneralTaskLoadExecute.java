@@ -38,13 +38,13 @@ public class GeneralTaskLoadExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        //预防连点
+        projectHelper.checkoutMultipleCommit(sysParm,this);
+
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         // 校验玩家是否存在
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
-
-        //预防连点
-        projectHelper.checkoutMultipleCommit(sysParm,this);
 
         Map<String, Object> result = new HashMap<>();
         /*1.是否关注*/
@@ -52,8 +52,9 @@ public class GeneralTaskLoadExecute implements IApiExecute {
         result.put("task_follow", followLog.size() > 0);
 
         /*2.今日是否签到*/
+        Date date = sysParm.getRequestStartTime();
         List<SysGeneralTask> signLog = sysGeneralTaskRepository.findByBuyerNickAndTaskTypeAndCreateTimeBetween(buyerNick,
-                TaskTypeEnum.SIGN, CommonDateParseUtil.getStartTimeOfDay(new Date()), CommonDateParseUtil.getEndTimeOfDay(new Date()));
+                TaskTypeEnum.SIGN, CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
         result.put("task_sign", signLog.size() > 0);
         return YunReturnValue.ok(result, "签到和关注是否完成");
     }

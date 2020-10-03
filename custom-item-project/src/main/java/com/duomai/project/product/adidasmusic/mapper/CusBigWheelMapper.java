@@ -13,5 +13,4 @@ import java.util.List;
  */
 @Mapper
 public interface CusBigWheelMapper extends BaseMapper<CusBigWheel> {
-    List<CusBigWheel> listCusBigWheel();
 }

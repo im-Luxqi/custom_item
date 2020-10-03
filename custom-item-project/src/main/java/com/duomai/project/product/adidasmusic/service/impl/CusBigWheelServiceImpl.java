@@ -19,8 +19,4 @@ public class CusBigWheelServiceImpl extends BaseServiceImpl<CusBigWheelMapper, C
     @Resource
     private CusBigWheelMapper mapper;
 
-    @Override
-    public List<CusBigWheel> listCusBigWheel() {
-        return mapper.listCusBigWheel();
-    }
 }

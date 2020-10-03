@@ -16,7 +16,4 @@
 
 <!--    </resultMap>-->
 
-    <select id="listCusBigWheel" resultType="com.duomai.project.product.adidasmusic.domain.CusBigWheel">
-        SELECT * FROM cus_big_wheel
-    </select>
 </mapper>

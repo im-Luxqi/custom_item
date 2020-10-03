@@ -36,12 +36,14 @@ public class GeneralTaskSignOperateExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        //预防连点
+        projectHelper.checkoutMultipleCommit(sysParm,this);
+
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         // 校验玩家是否存在
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
-        //预防连点
-        projectHelper.checkoutMultipleCommit(sysParm,this);
+
         // 校验
         List<SysGeneralTask> signLog = sysGeneralTaskRepository.findByBuyerNickAndTaskTypeAndCreateTimeBetween(buyerNick,
                 TaskTypeEnum.SIGN, CommonDateParseUtil.getStartTimeOfDay(new Date()), CommonDateParseUtil.getEndTimeOfDay(new Date()));

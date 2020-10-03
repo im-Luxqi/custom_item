@@ -29,6 +29,9 @@ public class GeneralTaskBrowseOperateExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        //预防连点
+        projectHelper.checkoutMultipleCommit(sysParm,this);
+
         //获取参数
         JSONObject object = JSONObject.parseObject(sysParm.getApiParameter().getAdmjson().toString());
         String numId = object.getString("numId");
@@ -38,8 +41,7 @@ public class GeneralTaskBrowseOperateExecute implements IApiExecute {
         // 校验玩家是否存在
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
-        //预防连点
-        projectHelper.checkoutMultipleCommit(sysParm,this);
+
 
         return YunReturnValue.ok("操作成功!");
     }

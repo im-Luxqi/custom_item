@@ -56,13 +56,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
             , HttpServletResponse response) throws Exception {
 
         //校验活动是否在活动时间内
-        ActBaseSettingDto actBaseSettingDto;
-        try {
-            actBaseSettingDto = projectHelper.actBaseSettingFind();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return YunReturnValue.fail(CommonExceptionEnum.ACT_BASE_SETTING_FIND_ERROR.getMsg());
-        }
+        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
+
         projectHelper.actTimeValidate(actBaseSettingDto);
 
         //取参
