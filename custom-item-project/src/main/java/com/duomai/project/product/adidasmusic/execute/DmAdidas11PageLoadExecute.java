@@ -5,21 +5,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.api.taobao.OcsData;
-import com.duomai.project.api.taobao.OcsUtil;
 import com.duomai.project.helper.FinishTheTaskHelper;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.adidasmusic.util.CommonHanZiUtil;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysInviteLog;
-import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysInviteLogRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -27,10 +23,7 @@ import org.springframework.util.Assert;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author cjw
@@ -62,7 +55,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         projectHelper.actTimeValidate(actBaseSettingDto);
 
         //取参
-        JSONObject object = JSONObject.parseObject(sysParm.getApiParameter().getAdmjson().toString());
+        JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         Assert.hasLength(buyerNick, CommonExceptionEnum.BUYER_NICK_ERROR.getMsg());
         //被邀请人昵称
@@ -71,7 +64,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //预防并发
         projectHelper.checkoutMultipleCommit(sysParm, this::ApiExecute);
 
-
         //获取粉丝信息
         SysCustom sysCustom = customRepository.findByBuyerNick(buyerNick);
         //为空初始化粉丝数据
@@ -79,7 +71,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
             sysCustom = projectHelper.customInit(sysParm);
             customRepository.save(sysCustom);
 
-            //todo 是否送抽奖次数
+            //todo 是否送抽奖次数 每天抽奖次数是否刷新
 
         }
 
@@ -121,12 +113,18 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         linkedHashMap.put("signNum", signNum);
 
         //中奖弹幕 展示50条
-        List<SysLuckyDrawRecord> luckyDrawRecords = drawRecordRepository.queryLuckyDrawLog();
+        List<Map> luckyDrawRecords = drawRecordRepository.queryLuckyDrawLog();
 
         //如果没有50条数据，造假数据填补
-        if(luckyDrawRecords.size() < 50){
-
+        if (luckyDrawRecords.size() < 50) {
+            Map map = new HashMap();
+            for (int i = 0; i < 50 - luckyDrawRecords.size(); i++) {
+                map.put("playerBuyerNick",CommonHanZiUtil.randomGetUnicodeHanZi()+"***");//粉丝昵称
+                map.put("awardName","满减优惠券");//奖品默认为
+            }
+            luckyDrawRecords.add(map);
         }
+        linkedHashMap.put("luckyDrawRecords", luckyDrawRecords);
 
 
         return YunReturnValue.ok(linkedHashMap, CommonExceptionEnum.OPERATION_SUCCESS.getMsg());

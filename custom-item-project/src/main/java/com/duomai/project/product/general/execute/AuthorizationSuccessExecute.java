@@ -4,13 +4,19 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysInviteLog;
 import com.duomai.project.product.general.repository.SysCustomRepository;
+import com.duomai.project.product.general.repository.SysInviteLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Optional;
 
 /* 授权成功后，完善用户信息
  * @description  (真实昵称，头像)
@@ -18,8 +24,11 @@ import javax.servlet.http.HttpServletResponse;
  **/
 @Component
 public class AuthorizationSuccessExecute implements IApiExecute {
+
     @Autowired
     private SysCustomRepository sysCustomRepository;
+    @Resource
+    private SysInviteLogRepository inviteLogRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -41,8 +50,14 @@ public class AuthorizationSuccessExecute implements IApiExecute {
                 .setHeadImg(sysCustomParam.getHeadImg())
                 .setUpdateTime(sysParm.getRequestStartTime()));
 
-        //更新
-
+        //更新邀请记录
+        SysInviteLog inviteLog = new SysInviteLog();
+        List<SysInviteLog> inviteLogs = inviteLogRepository.findAll(
+                Example.of(inviteLog.setInvitee(buyerNick)));
+        if (!inviteLogs.isEmpty()) {
+            inviteLogRepository.save(inviteLogs.get(0).setInviteeImg(sysCustomParam.getHeadImg())
+                    .setMixInvitee(sysCustomParam.getZnick()));
+        }
 
 
         return YunReturnValue.ok("完善用户信息成功");
