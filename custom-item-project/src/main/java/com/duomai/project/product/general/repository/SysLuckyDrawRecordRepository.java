@@ -14,7 +14,7 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
 
     //查询最新50条中奖记录 只返回特定字段
     @Query(nativeQuery = true,
-            value = "select award_name,player_buyer_nick from sys_lucky_draw_record " +
+            value = "select award_name as awardName,player_buyer_nick as playerBuyerNick from sys_lucky_draw_record " +
                     "wehre order by draw_time desc limit 50")
     List<Map> queryLuckyDrawLog();
 }

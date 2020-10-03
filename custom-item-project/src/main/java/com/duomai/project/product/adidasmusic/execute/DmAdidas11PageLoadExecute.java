@@ -1,6 +1,5 @@
 package com.duomai.project.product.adidasmusic.execute;
 
-
 import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
@@ -16,6 +15,7 @@ import com.duomai.project.product.general.enums.CommonExceptionEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysInviteLogRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -56,7 +56,10 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
-        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+//        Date date = sysParm.getRequestStartTime();
+        Date date = new Date();
+//        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+        String buyerNick = "南陈";
         Assert.hasLength(buyerNick, CommonExceptionEnum.BUYER_NICK_ERROR.getMsg());
         //被邀请人昵称
         String inviteeNick = object.getString("inviteeNick");
@@ -69,30 +72,31 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //为空初始化粉丝数据
         if (sysCustom == null) {
             sysCustom = projectHelper.customInit(sysParm);
+            sysCustom.setBuyerNick(buyerNick);
             customRepository.save(sysCustom);
 
             //todo 是否送抽奖次数 每天抽奖次数是否刷新
 
         }
 
-        //查询该粉丝是否被人邀请过
-        long inviteLogNum = inviteLogRepository.countByInviter(buyerNick);
-        //为空记录邀请日志
-        List<SysInviteLog> inviteLogs;
-        if (inviteLogNum == 0) {
-            SysInviteLog inviteLog = new SysInviteLog();
-            inviteLogRepository.save(inviteLog.setCreateTime(new Date())
-                    .setInvitee(buyerNick)
-                    .setInviter(inviteeNick)
-            );
-
-            //查询出当前粉丝的邀请记录
-            SysInviteLog log = new SysInviteLog();
-            inviteLogs = inviteLogRepository.findAll(Example.of(log.setInviter(buyerNick)));
-
-        } else {
-            return YunReturnValue.fail(CommonExceptionEnum.HELPED_INVITEE_ERROR.getMsg());
+        //如果邀请人昵称不为空
+        if (StringUtils.isNotBlank(inviteeNick)) {
+            //查询该粉丝是否被人邀请过
+            long inviteLogNum = inviteLogRepository.countByInviter(buyerNick);
+            if (inviteLogNum == 0) {//为空记录邀请日志
+                SysInviteLog inviteLog = new SysInviteLog();
+                inviteLogRepository.save(inviteLog.setCreateTime(date)
+                        .setInvitee(buyerNick)
+                        .setInviter(inviteeNick)
+                );
+            } else {
+                return YunReturnValue.fail(CommonExceptionEnum.HELPED_INVITEE_ERROR.getMsg());
+            }
         }
+        //查询出当前粉丝的邀请记录
+        List<SysInviteLog> inviteLogs;
+        SysInviteLog log = new SysInviteLog();
+        inviteLogs = inviteLogRepository.findAll(Example.of(log.setInviter(buyerNick)));
 
         //返回参数
         LinkedHashMap linkedHashMap = new LinkedHashMap();
@@ -117,12 +121,12 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
         //如果没有50条数据，造假数据填补
         if (luckyDrawRecords.size() < 50) {
-            Map map = new HashMap();
             for (int i = 0; i < 50 - luckyDrawRecords.size(); i++) {
-                map.put("playerBuyerNick",CommonHanZiUtil.randomGetUnicodeHanZi()+"***");//粉丝昵称
-                map.put("awardName","满减优惠券");//奖品默认为
+                Map map = new HashMap();
+                map.put("playerBuyerNick", CommonHanZiUtil.randomGetUnicodeHanZi() + "***");//粉丝昵称
+                map.put("awardName", "满减优惠券");//奖品默认名称
+                luckyDrawRecords.add(map);
             }
-            luckyDrawRecords.add(map);
         }
         linkedHashMap.put("luckyDrawRecords", luckyDrawRecords);
 

@@ -32,7 +32,7 @@ public class QLApiExecuteHandler {
 
 
         /*
-         * 定制
+         * 阿迪2020双十一 定制
          **/
         map.put("wx.dz.index.award.forinvite", IndexSendInviteAwardExecute.class); //首页发送邀请人员的奖励 wxq
         map.put("wx.dz.index.award.luckydraw", IndexLuckyDrawExecute.class); //抽奖 wxq
@@ -44,6 +44,8 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.task.bigWheel.operate",GeneralTaskBigWheelOperateExecute.class); //任务页面：尖货大咖 lyj
 
         map.put("wx.dz.big.wheel.list",CusBigWheelListExecute.class); // 尖货大咖秀列表:活动标签 lyj
+        map.put("wx.dz.page.load",DmAdidas11PageLoadExecute.class); //首页load
+
     }
 
 
