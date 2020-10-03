@@ -2,6 +2,7 @@ package com.duomai.project.product.adidasmusic.execute;
 
 import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
+import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.FinishTheTaskHelper;
@@ -11,10 +12,14 @@ import com.duomai.project.product.adidasmusic.util.CommonHanZiUtil;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysInviteLog;
+import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
+import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysInviteLogRepository;
+import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import com.duomai.project.tool.CommonDateParseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -45,6 +50,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
     private SysInviteLogRepository inviteLogRepository;
     @Resource
     private SysLuckyDrawRecordRepository drawRecordRepository;
+    @Resource
+    private SysLuckyChanceRepository luckyChanceRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request
@@ -73,11 +80,46 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
             customRepository.save(sysCustom);
 
             //todo 是否送抽奖次数 每天抽奖次数是否刷新
+            SysLuckyChance luckyChance = new SysLuckyChance();
+            luckyChanceRepository.save(luckyChance.setIsUse(BooleanConstant.BOOLEAN_NO)
+                    .setChanceFrom(LuckyChanceFromEnum.FIRST)
+                    .setBuyerNick(buyerNick)
+                    .setGetTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD))
+            );
+
+        } else {
+            //查询当天是否送过抽奖机会
+            SysLuckyChance luckyChance = new SysLuckyChance();
+            List<SysLuckyChance> luckyChances = luckyChanceRepository.findAll(Example.of(luckyChance.setBuyerNick(buyerNick)
+                    .setGetTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD))
+                    .setChanceFrom(LuckyChanceFromEnum.FIRST)
+            ));
+
+            //为空送一次抽奖机会
+            if (luckyChances.isEmpty()) {
+                //获取未使用的机会
+                List<SysLuckyChance> ontUses = luckyChanceRepository.findAll(Example.of(luckyChance.setGetTime(null)
+                        .setIsUse(BooleanConstant.BOOLEAN_NO)
+                ));
+                //抹除之前首次未使用的机会
+                ontUses.stream().forEach(o-> o.setIsUse(BooleanConstant.BOOLEAN_YES));
+                luckyChanceRepository.saveAll(ontUses);
+
+                //保存今天首次抽奖机会
+                luckyChanceRepository.save(luckyChance.setIsUse(BooleanConstant.BOOLEAN_NO)
+                        .setGetTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD))
+                );
+            }
 
         }
 
         //如果邀请人昵称不为空
         if (StringUtils.isNotBlank(inviteeNick)) {
+
+            if(inviteeNick.equals(buyerNick)){
+                return YunReturnValue.fail("亲、自己无法邀请自己哦!");
+            }
+
             //查询该粉丝是否被人邀请过
             long inviteLogNum = inviteLogRepository.countByInviter(buyerNick);
             if (inviteLogNum == 0) {//为空记录邀请日志
@@ -89,6 +131,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
             } else {
                 return YunReturnValue.fail(CommonExceptionEnum.HELPED_INVITEE_ERROR.getMsg());
             }
+
         }
         //查询出当前粉丝的邀请记录
         List<SysInviteLog> inviteLogs;

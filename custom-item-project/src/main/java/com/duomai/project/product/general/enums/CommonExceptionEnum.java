@@ -34,7 +34,7 @@ public enum CommonExceptionEnum {
     TRY_SHOP_NOT_FOUND("A0420","试用商品不存在!"),
     BIZ_EXT_STRING_NOT_NULL("A0421","分享参数不能为空!"),
     ACTIVITY_DISPOSE_NOT_NULL_ERROR("A0422","活动配置表信息不能为空哦!"),
-    HELPED_INVITEE_ERROR("A0423","亲、您已经帮助过别人了"),
+    HELPED_INVITEE_ERROR("A0423","亲、您已经帮助过别人了哦!"),
 
 
     //方法级异常

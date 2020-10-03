@@ -858,11 +858,11 @@ public class CommonDateParseUtil {
 //		}catch (Exception e){
 //			e.printStackTrace();
 //		}
-		Date date = new Date();
-		System.out.println(date2string(date,CommonDateParseUtil.YYYY_MM_DD_HH_MM_SS));
+//		Date date = new Date();
+//		System.out.println(date2string(date,CommonDateParseUtil.YYYY_MM_DD_HH_MM_SS));
 //		System.out.println(date.getTime());
-		Date dateFromSourceDate = getDateFromSourceDate(date, 1);
-		System.out.println(date2string(dateFromSourceDate,CommonDateParseUtil.YYYY_MM_DD_HH_MM_SS));
+//		Date dateFromSourceDate = getDateFromSourceDate(date, 1);
+//		System.out.println(date2string(dateFromSourceDate,CommonDateParseUtil.YYYY_MM_DD_HH_MM_SS));
 //		System.out.println(date2timestamp(date));
 //		try {
 //			System.out.println(timeBetween2(date,dateFromSourceDate));
@@ -870,9 +870,8 @@ public class CommonDateParseUtil {
 //		} catch (ParseException e) {
 //			e.printStackTrace();
 //		}
-		long l = (dateFromSourceDate.getTime() - date.getTime()) / 1000;
-		System.out.println(l);
-
+//		long l = (dateFromSourceDate.getTime() - date.getTime()) / 1000;
+//		System.out.println(l);
 	}
 
 	/* 日期加减----天级别

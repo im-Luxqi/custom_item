@@ -12,6 +12,7 @@ public enum LuckyChanceFromEnum implements IEnum {
     FOLLOW("FOLLOW", "关注店铺"),
     BROWSE("BROWSE", "浏览商品"),
     DAKA("DAKA", "大咖日历"),
+    FIRST("FIRST","每天首次"),
     ;
     private final String code;
     private final String descp;

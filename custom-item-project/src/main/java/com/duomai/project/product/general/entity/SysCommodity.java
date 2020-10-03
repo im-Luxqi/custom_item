@@ -4,10 +4,7 @@ import com.duomai.project.product.general.enums.AwardTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * 商品表
@@ -30,4 +27,8 @@ public class SysCommodity {
     private String img;
     @Column(columnDefinition = "varchar(64) COMMENT '奖品价格'")
     private String price;
+
+    //是否浏览 0 未浏览 1 已浏览
+    @Transient
+    private Integer isBrowse = 0;
 }
