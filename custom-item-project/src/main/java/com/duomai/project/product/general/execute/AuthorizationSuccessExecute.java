@@ -32,14 +32,19 @@ public class AuthorizationSuccessExecute implements IApiExecute {
 
 
         /*2.校验玩家*/
-        SysCustom sysCustom = sysCustomRepository.findByBuyerNick(
-                sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
+        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+        SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
 
         /*3.更新用户信息*/
         sysCustomRepository.save(sysCustom.setZnick(sysCustomParam.getZnick())
                 .setHeadImg(sysCustomParam.getHeadImg())
                 .setUpdateTime(sysParm.getRequestStartTime()));
+
+        //更新
+
+
+
         return YunReturnValue.ok("完善用户信息成功");
     }
 }

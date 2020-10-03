@@ -53,15 +53,12 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
     @Resource
     private SysLuckyDrawRecordRepository drawRecordRepository;
 
-    private static Logger logger = LoggerFactory.getLogger(DmAdidas11PageLoadExecute.class);
-
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request
             , HttpServletResponse response) throws Exception {
 
         //校验活动是否在活动时间内
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
-
         projectHelper.actTimeValidate(actBaseSettingDto);
 
         //取参
@@ -72,23 +69,11 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         String inviteeNick = object.getString("inviteeNick");
 
         //预防并发
-        try {
-            projectHelper.checkoutMultipleCommit(sysParm, this::ApiExecute);
-        } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("redis error:" + e.getMessage());
-            return YunReturnValue.fail(CommonExceptionEnum.SYSTEM_ERROR.getMsg());
-        }
+        projectHelper.checkoutMultipleCommit(sysParm, this::ApiExecute);
+
 
         //获取粉丝信息
-        SysCustom sysCustom;
-        try {
-            sysCustom = customRepository.findByBuyerNick(buyerNick);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return YunReturnValue.fail(CommonExceptionEnum.FIND_BY_BUYER_NICK_ERROR.getMsg());
-        }
-
+        SysCustom sysCustom = customRepository.findByBuyerNick(buyerNick);
         //为空初始化粉丝数据
         if (sysCustom == null) {
             sysCustom = projectHelper.customInit(sysParm);
@@ -99,14 +84,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         }
 
         //查询该粉丝是否被人邀请过
-        long inviteLogNum = 0L;
-        try {
-            inviteLogNum = inviteLogRepository.countByInviter(buyerNick);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return YunReturnValue.fail(CommonExceptionEnum.COUNT_BY_INVITER_ERROR.getMsg());
-        }
-
+        long inviteLogNum = inviteLogRepository.countByInviter(buyerNick);
         //为空记录邀请日志
         List<SysInviteLog> inviteLogs;
         if (inviteLogNum == 0) {
@@ -118,12 +96,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
             //查询出当前粉丝的邀请记录
             SysInviteLog log = new SysInviteLog();
-            try {
-                inviteLogs = inviteLogRepository.findAll(Example.of(log.setInviter(buyerNick)));
-            }catch (Exception e){
-                e.printStackTrace();
-                return YunReturnValue.fail(CommonExceptionEnum.GET_INVITER_LOG_ERROR.getMsg());
-            }
+            inviteLogs = inviteLogRepository.findAll(Example.of(log.setInviter(buyerNick)));
+
         } else {
             return YunReturnValue.fail(CommonExceptionEnum.HELPED_INVITEE_ERROR.getMsg());
         }
@@ -138,38 +112,20 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //邀请日志记录
         linkedHashMap.put("inviteLogs", inviteLogs);
 
-        //查询剩余抽奖次数
-        long drawNum = 0L;
-        try {
-            drawNum = drawHelper.unUseLuckyChance(buyerNick);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return YunReturnValue.fail(CommonExceptionEnum.UN_USE_LUCKY_CHANCE_ERROR.getMsg());
-        }
         //获取目前剩余抽奖次数
+        long drawNum = drawHelper.unUseLuckyChance(buyerNick);
         linkedHashMap.put("drawNum", drawNum);
 
-        long signNum = 0L;
-        try {
-            signNum = taskHelper.getFinishTheTaskNum(buyerNick);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return YunReturnValue.fail(CommonExceptionEnum.get_Finish_The_Task_Num_error.getMsg());
-        }
         //获取目前签到次数
+        long signNum = taskHelper.getFinishTheTaskNum(buyerNick);
         linkedHashMap.put("signNum", signNum);
 
         //中奖弹幕 展示50条
-        List<SysLuckyDrawRecord> luckyDrawRecords;
-        try {
-            luckyDrawRecords = drawRecordRepository.queryLuckyDrawLog();
-        }catch (Exception e){
-            e.printStackTrace();
-            return YunReturnValue.fail(CommonExceptionEnum.QUERY_LUCKY_DRAW_LOG_ERROR.getMsg());
-        }
+        List<SysLuckyDrawRecord> luckyDrawRecords = drawRecordRepository.queryLuckyDrawLog();
+
         //如果没有50条数据，造假数据填补
         if(luckyDrawRecords.size() < 50){
-            
+
         }
 
 
