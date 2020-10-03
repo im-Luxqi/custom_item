@@ -70,7 +70,7 @@ public class DmClickToBrowseExecute implements IApiExecute {
         if (num >= 1) {
             SysLuckyChance luckyChance = new SysLuckyChance();
             luckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
-                    .setGetTime(date)
+                    .setGetTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD))
                     .setChanceFrom(LuckyChanceFromEnum.BROWSE)
                     .setIsUse(BooleanConstant.BOOLEAN_NO)
             );
