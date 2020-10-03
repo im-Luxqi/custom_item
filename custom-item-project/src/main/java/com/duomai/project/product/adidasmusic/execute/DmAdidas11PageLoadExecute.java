@@ -56,10 +56,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
-//        Date date = sysParm.getRequestStartTime();
-        Date date = new Date();
-//        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
-        String buyerNick = "南陈";
+        Date date = sysParm.getRequestStartTime();
+        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         Assert.hasLength(buyerNick, CommonExceptionEnum.BUYER_NICK_ERROR.getMsg());
         //被邀请人昵称
         String inviteeNick = object.getString("inviteeNick");
@@ -72,7 +70,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //为空初始化粉丝数据
         if (sysCustom == null) {
             sysCustom = projectHelper.customInit(sysParm);
-            sysCustom.setBuyerNick(buyerNick);
             customRepository.save(sysCustom);
 
             //todo 是否送抽奖次数 每天抽奖次数是否刷新
@@ -129,7 +126,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
             }
         }
         linkedHashMap.put("luckyDrawRecords", luckyDrawRecords);
-
 
         return YunReturnValue.ok(linkedHashMap, CommonExceptionEnum.OPERATION_SUCCESS.getMsg());
     }
