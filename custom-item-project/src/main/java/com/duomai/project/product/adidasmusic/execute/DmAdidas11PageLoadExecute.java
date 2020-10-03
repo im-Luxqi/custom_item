@@ -13,9 +13,11 @@ import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysInviteLog;
+import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysInviteLogRepository;
+import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
@@ -48,6 +50,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
     private SysCustomRepository customRepository;
     @Resource
     private SysInviteLogRepository inviteLogRepository;
+    @Resource
+    private SysLuckyDrawRecordRepository drawRecordRepository;
 
     private static Logger logger = LoggerFactory.getLogger(DmAdidas11PageLoadExecute.class);
 
@@ -154,6 +158,19 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         }
         //获取目前签到次数
         linkedHashMap.put("signNum", signNum);
+
+        //中奖弹幕 展示50条
+        List<SysLuckyDrawRecord> luckyDrawRecords;
+        try {
+            luckyDrawRecords = drawRecordRepository.queryLuckyDrawLog();
+        }catch (Exception e){
+            e.printStackTrace();
+            return YunReturnValue.fail(CommonExceptionEnum.QUERY_LUCKY_DRAW_LOG_ERROR.getMsg());
+        }
+        //如果没有50条数据，造假数据填补
+        if(luckyDrawRecords.size() < 50){
+            
+        }
 
 
         return YunReturnValue.ok(linkedHashMap, CommonExceptionEnum.OPERATION_SUCCESS.getMsg());
