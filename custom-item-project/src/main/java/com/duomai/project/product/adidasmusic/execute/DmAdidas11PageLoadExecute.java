@@ -10,15 +10,11 @@ import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.adidasmusic.util.CommonHanZiUtil;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
-import com.duomai.project.product.general.entity.SysCustom;
-import com.duomai.project.product.general.entity.SysInviteLog;
-import com.duomai.project.product.general.entity.SysLuckyChance;
+import com.duomai.project.product.general.entity.*;
+import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
-import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.product.general.repository.SysInviteLogRepository;
-import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
-import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import com.duomai.project.product.general.repository.*;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Example;
@@ -52,6 +48,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
     private SysLuckyDrawRecordRepository drawRecordRepository;
     @Resource
     private SysLuckyChanceRepository luckyChanceRepository;
+    @Resource
+    private SysAwardRepository awardRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request
@@ -138,6 +136,17 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         SysInviteLog log = new SysInviteLog();
         inviteLogs = inviteLogRepository.findAll(Example.of(log.setInviter(buyerNick)));
 
+        //获取邀请奖品信息
+        SysAward awardInvite = awardRepository.findFirstByUseWay(AwardUseWayEnum.INVITE);
+        //获取该粉丝获取日志
+        SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord();
+        List<SysLuckyDrawRecord> sendLog = drawRecordRepository.findAll(Example.of(drawRecord.setPlayerBuyerNick(buyerNick)
+                .setAwardId(awardInvite.getId())
+        ));
+        if(!sendLog.isEmpty()){
+            awardInvite.setLogId(sendLog.get(0).getId());
+        }
+
         //返回参数
         LinkedHashMap linkedHashMap = new LinkedHashMap();
 
@@ -147,6 +156,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         linkedHashMap.put("sysCustom", sysCustom);
         //邀请日志记录
         linkedHashMap.put("inviteLogs", inviteLogs);
+        //邀请奖品信息
+        linkedHashMap.put("awardInvite", awardInvite);
 
         //获取目前剩余抽奖次数
         long drawNum = drawHelper.unUseLuckyChance(buyerNick);
