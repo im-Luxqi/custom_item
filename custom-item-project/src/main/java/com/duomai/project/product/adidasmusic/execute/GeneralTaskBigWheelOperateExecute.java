@@ -5,6 +5,8 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.adidasmusic.domain.CusBigWheelLog;
+import com.duomai.project.product.adidasmusic.service.ICusBigWheelLogService;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
     @Autowired
     private SysCustomRepository sysCustomRepository;
     @Autowired
+    private ICusBigWheelLogService iCusBigWheelLogService;
+    @Autowired
     private ProjectHelper projectHelper;
 
     @Override
@@ -33,7 +37,7 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         projectHelper.checkoutMultipleCommit(sysParm,this);
 
         //获取参数
-        JSONObject object = JSONObject.parseObject(sysParm.getApiParameter().getAdmjson().toString());
+        JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
         String gateway = object.getString("gateway");
         Assert.hasLength(gateway, "入口不能为空");
 
@@ -42,7 +46,11 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
 
-
+        CusBigWheelLog cusBigWheelLog = new CusBigWheelLog();
+        cusBigWheelLog.setBuyerNick(buyerNick);
+        cusBigWheelLog.setCreateTime(sysParm.getRequestStartTime());
+        cusBigWheelLog.setGateway(gateway);
+        iCusBigWheelLogService.save(cusBigWheelLog);
         return YunReturnValue.ok("操作成功");
     }
 }

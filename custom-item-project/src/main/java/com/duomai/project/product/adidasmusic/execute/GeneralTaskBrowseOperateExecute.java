@@ -5,7 +5,9 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.general.entity.SysBrowseLog;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.repository.SysBrowseLogRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,8 @@ public class GeneralTaskBrowseOperateExecute implements IApiExecute {
     @Autowired
     private SysCustomRepository sysCustomRepository;
     @Autowired
+    private SysBrowseLogRepository sysBrowseLogRepository;
+    @Autowired
     private ProjectHelper projectHelper;
 
     @Override
@@ -33,7 +37,7 @@ public class GeneralTaskBrowseOperateExecute implements IApiExecute {
         projectHelper.checkoutMultipleCommit(sysParm,this);
 
         //获取参数
-        JSONObject object = JSONObject.parseObject(sysParm.getApiParameter().getAdmjson().toString());
+        JSONObject object =sysParm.getApiParameter().findJsonObjectAdmjson();
         String numId = object.getString("numId");
         Assert.notNull(numId, "商品id不能为空");
 
@@ -42,7 +46,10 @@ public class GeneralTaskBrowseOperateExecute implements IApiExecute {
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
 
-
+        SysBrowseLog sysBrowseLog = new SysBrowseLog();
+        sysBrowseLogRepository.save(sysBrowseLog.setBuyerNick(buyerNick)
+                .setCreateTime(sysParm.getRequestStartTime())
+                .setNumId(Long.parseLong(numId)));
         return YunReturnValue.ok("操作成功!");
     }
 }
