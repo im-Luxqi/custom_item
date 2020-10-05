@@ -100,7 +100,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
                         .setIsUse(BooleanConstant.BOOLEAN_NO)
                 ));
                 //抹除之前首次未使用的机会
-                ontUses.stream().forEach(o-> o.setIsUse(BooleanConstant.BOOLEAN_YES));
+                ontUses.stream().forEach(o -> o.setIsUse(BooleanConstant.BOOLEAN_YES));
                 luckyChanceRepository.saveAll(ontUses);
 
                 //保存今天首次抽奖机会
@@ -114,7 +114,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //如果邀请人昵称不为空
         if (StringUtils.isNotBlank(inviteeNick)) {
 
-            if(inviteeNick.equals(buyerNick)){
+            if (inviteeNick.equals(buyerNick)) {
                 return YunReturnValue.fail("亲、自己无法邀请自己哦!");
             }
 
@@ -138,12 +138,12 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
         //获取邀请奖品信息
         SysAward awardInvite = awardRepository.findFirstByUseWay(AwardUseWayEnum.INVITE);
-        //获取该粉丝获取日志
+        //获取该粉丝是否已获得日志
         SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord();
         List<SysLuckyDrawRecord> sendLog = drawRecordRepository.findAll(Example.of(drawRecord.setPlayerBuyerNick(buyerNick)
                 .setAwardId(awardInvite.getId())
         ));
-        if(!sendLog.isEmpty()){
+        if (!sendLog.isEmpty()) {
             awardInvite.setLogId(sendLog.get(0).getId());
         }
 
@@ -166,6 +166,26 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //获取目前签到次数
         long signNum = taskHelper.getFinishTheTaskNum(buyerNick);
         linkedHashMap.put("signNum", signNum);
+        //11天签到完成情况及奖品
+        for (int v = 1; v < 11; v++) {
+            switch (v) {
+                case 3:
+                    //第三天奖品
+                    break;
+                case 5:
+                    //第五天奖品
+                    break;
+                case 7:
+                    //第七天奖品
+                    break;
+                case 9:
+                    //第九天奖品
+                    break;
+                case 11:
+                    //第十一天奖品
+                default:
+            }
+        }
 
         //中奖弹幕 展示50条
         List<Map> luckyDrawRecords = drawRecordRepository.queryLuckyDrawLog();
