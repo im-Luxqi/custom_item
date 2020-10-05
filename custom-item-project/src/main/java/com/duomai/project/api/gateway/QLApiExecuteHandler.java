@@ -45,6 +45,10 @@ public class QLApiExecuteHandler {
 
         map.put("wx.dz.big.wheel.list",CusBigWheelListExecute.class); // 尖货大咖秀列表:活动标签 lyj
         map.put("wx.dz.page.load",DmAdidas11PageLoadExecute.class); //首页load
+        map.put("wx.dz.browseBaby.list.load",DmBrowseBabyListExecute.class); //浏览宝贝列表
+        map.put("wx.dz.clickTo.browse",DmClickToBrowseExecute.class); //浏览宝贝送抽奖次数
+
+
 
     }
 
