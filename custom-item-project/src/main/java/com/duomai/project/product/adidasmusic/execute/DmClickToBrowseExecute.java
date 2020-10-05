@@ -42,8 +42,7 @@ public class DmClickToBrowseExecute implements IApiExecute {
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
         Date date = sysParm.getRequestStartTime();
-//        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
-        String buyerNick = "小明";
+        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         Long numId = object.getLong("numId");
 
         //获取该粉丝当天浏览记录

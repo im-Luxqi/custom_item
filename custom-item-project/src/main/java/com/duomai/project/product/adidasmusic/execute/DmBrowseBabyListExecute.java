@@ -42,8 +42,7 @@ public class DmBrowseBabyListExecute implements IApiExecute {
         PageListDto pageListDto = sysParm.getApiParameter().findBeautyAdmjson(PageListDto.class);
         pageListDto.startPage();
         Date date = sysParm.getRequestStartTime();
-//        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
-        String buyerNick = "小明";
+        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
 
         //获取浏览宝贝实物
         List<SysCommodity> sysCommodities = sysCommodityRepository.queryAllByType(AwardTypeEnum.GOODS);
