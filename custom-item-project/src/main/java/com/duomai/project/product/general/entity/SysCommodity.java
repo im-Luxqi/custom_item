@@ -22,6 +22,8 @@ public class SysCommodity {
     private String name;
     @Column(columnDefinition = "bigint(20) COMMENT '商品id'")
     private Long numId;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(50) COMMENT '商品类型 GOODS 商品 COUPON 优惠券'")
     private AwardTypeEnum type;
     @Column(columnDefinition = "varchar(255) COMMENT '商品图片'")
     private String img;

@@ -36,18 +36,17 @@ public class DmBrowseBabyListExecute implements IApiExecute {
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
-                                     HttpServletResponse response) throws Exception {
+                                     HttpServletResponse response) {
 
         //取参
         PageListDto pageListDto = sysParm.getApiParameter().findBeautyAdmjson(PageListDto.class);
         pageListDto.startPage();
         Date date = sysParm.getRequestStartTime();
-        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+//        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+        String buyerNick = "小明";
 
         //获取浏览宝贝实物
-        SysCommodity commodity = new SysCommodity();
-        List<SysCommodity> sysCommodities = sysCommodityRepository.findAll(
-                            Example.of(commodity.setType(AwardTypeEnum.GOODS)));
+        List<SysCommodity> sysCommodities = sysCommodityRepository.queryAllByType(AwardTypeEnum.GOODS);
 
         //获取该粉丝浏览日志 此处保留根据当天时间查询
         SysBrowseLog browseLog = new SysBrowseLog();

@@ -14,8 +14,12 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
     SysLuckyChance findFirstByBuyerNickAndIsUse(String buyerNick, Integer use);
 
     List<SysLuckyChance> findAllByBuyerNickAndChanceFrom(String buyerNick, LuckyChanceFromEnum from);
+
     List<SysLuckyChance> findAllByBuyerNick(String buyerNick);
 
     long countByBuyerNickAndGetTimeBetween(String buyerNick, Date startTime, Date endTime);
+
+    //获取某个任务当天完成了几次
+    long countByBuyerNickAndChanceFromAndGetTimeBetween(String buyerNick, LuckyChanceFromEnum chanceFrom, Date startTime, Date endTime);
 
 }

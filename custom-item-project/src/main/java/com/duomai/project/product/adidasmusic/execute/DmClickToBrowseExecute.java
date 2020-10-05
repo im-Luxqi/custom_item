@@ -42,7 +42,8 @@ public class DmClickToBrowseExecute implements IApiExecute {
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
         Date date = sysParm.getRequestStartTime();
-        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+//        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+        String buyerNick = "小明";
         Long numId = object.getLong("numId");
 
         //获取该粉丝当天浏览记录
@@ -59,21 +60,34 @@ public class DmClickToBrowseExecute implements IApiExecute {
                 }
             });
             if (isB.get() != 1) {
-                browseLogRepository.save(browseLog.setNumId(numId));
                 num += 1;
+                browseLog.setNumId(numId);
+                browseLogRepository.save(browseLog);
             }
         } else {
-            browseLogRepository.save(browseLog.setNumId(numId));
             num += 1;
+            browseLog.setNumId(numId);
+            browseLogRepository.save(browseLog);
         }
+
+        //查询该粉丝今天获得了几次
+        long luckyNum = luckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeBetween(buyerNick, LuckyChanceFromEnum.BROWSE,
+                CommonDateParseUtil.getStartTimeOfDay(date),CommonDateParseUtil.getEndTimeOfDay(date)
+        );
+        int sendNum = (int) (luckyNum * 2);
+
         //todo 浏览几次送抽签机会？
-        if (num >= 1) {
+        if (num - sendNum >= 2) {
+
             SysLuckyChance luckyChance = new SysLuckyChance();
             luckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
-                    .setGetTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD))
+                    .setGetTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD_HH_MM_SS))
                     .setChanceFrom(LuckyChanceFromEnum.BROWSE)
                     .setIsUse(BooleanConstant.BOOLEAN_NO)
             );
+            //todo 是否有进阶
+
+
         }
         return YunReturnValue.ok(CommonExceptionEnum.OPERATION_SUCCESS.getMsg());
     }
