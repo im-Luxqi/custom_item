@@ -63,8 +63,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
         Date date = sysParm.getRequestStartTime();
-//        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
-        String buyerNick = "小明";
+        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+//        String buyerNick = "小明";
         Assert.hasLength(buyerNick, CommonExceptionEnum.BUYER_NICK_ERROR.getMsg());
         //被邀请人昵称
         String inviteeNick = object.getString("inviteeNick");
@@ -77,7 +77,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //为空初始化粉丝数据
         if (sysCustom == null) {
             sysCustom = projectHelper.customInit(sysParm);
-            sysCustom.setBuyerNick(buyerNick);
+//            sysCustom.setBuyerNick(buyerNick);
             customRepository.save(sysCustom);
 
             //todo 是否送抽奖次数 每天抽奖次数是否刷新
