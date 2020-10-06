@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.product.general.entity.SysCommodity;
-import com.duomai.project.product.general.repository.SysCommodityRepository;
+import com.duomai.project.product.adidasmusic.domain.CusBigWheel;
+import com.duomai.project.product.adidasmusic.service.ICusBigWheelService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * @description 封网准备接口 新增、删除浏览宝贝
+ * @description 封网准备接口 新增、删除尖货大咖活动
  * @author cjw
  * @date 2020-10-06
  */
 @Service
-public class DmBrowseBabySaveDelExecute implements IApiExecute {
+public class DmCusBigWheelSaveDelExecute implements IApiExecute {
 
     @Resource
-    private SysCommodityRepository commodityRepository;
+    private ICusBigWheelService cusBigWheelService;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
@@ -32,20 +32,21 @@ public class DmBrowseBabySaveDelExecute implements IApiExecute {
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
         String ids = object.getString("ids");
-        String sysCommodity = object.getString("sysCommodity");
-        List<SysCommodity> sysCommodity1 = JSONObject.parseArray(sysCommodity,SysCommodity.class);
+        String bigWheel = object.getString("bigWheel");
+        List<CusBigWheel> cusBigWheels = JSONObject.parseArray(bigWheel,CusBigWheel.class);
+
         //ids不为空为删除
         if (StringUtils.isNotBlank(ids)) {
             String[] spl = ids.split(",");
             for (String s : spl) {
-                commodityRepository.deleteById(s);
+                cusBigWheelService.removeById(s);
             }
             return YunReturnValue.ok("操作成功!");
         }
 
-        //sysCommodity1 不为空
-        if(!sysCommodity1.isEmpty()){
-            commodityRepository.saveAll(sysCommodity1);
+        //cusBigWheels 不为空
+        if(!cusBigWheels.isEmpty()){
+            cusBigWheelService.saveBatch(cusBigWheels);
         }
 
         return YunReturnValue.ok("操作成功!");

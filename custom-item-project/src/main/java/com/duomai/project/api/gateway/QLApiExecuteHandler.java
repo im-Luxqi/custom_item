@@ -47,10 +47,8 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.page.load",DmAdidas11PageLoadExecute.class); //首页load cjw
         map.put("wx.dz.browseBaby.list.load",DmBrowseBabyListExecute.class); //浏览宝贝列表 cjw
         map.put("wx.dz.clickTo.browse",DmClickToBrowseExecute.class); //浏览宝贝送抽奖次数 cjw
-        map.put("wx.dz.Tools.browseBaby",DmBrowseBabySaveDelExecute.class); //封网新增删除浏览宝贝接口 cjw
-
-        //
-
+        map.put("wx.dz.tools.browse.baby",DmBrowseBabySaveDelExecute.class); //封网新增删除浏览宝贝接口 cjw
+        map.put("wx.dz.tools.big.wheel.",DmCusBigWheelSaveDelExecute.class); //封网新增删除尖货大咖活动接口 cjw
 
 
     }
