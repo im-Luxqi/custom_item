@@ -4,6 +4,7 @@ import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -17,6 +18,8 @@ import javax.persistence.*;
 @org.hibernate.annotations.Table(appliesTo = "sys_award", comment = "奖品表")
 public class SysAward {
     @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(length = 64)
     private String id;
 

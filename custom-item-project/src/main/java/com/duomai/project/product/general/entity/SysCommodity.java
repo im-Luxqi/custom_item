@@ -3,6 +3,7 @@ package com.duomai.project.product.general.entity;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -16,6 +17,8 @@ import javax.persistence.*;
 @org.hibernate.annotations.Table(appliesTo = "sys_commodity", comment = "商品表")
 public class SysCommodity {
     @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(length = 64)
     private String id;
     @Column(columnDefinition = "varchar(47) COMMENT '商品名称'")

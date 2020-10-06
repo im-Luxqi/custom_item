@@ -1,5 +1,6 @@
 package com.duomai.project.product.adidasmusic.execute;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
@@ -32,9 +33,8 @@ public class DmCusBigWheelSaveDelExecute implements IApiExecute {
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
         String ids = object.getString("ids");
-        String bigWheel = object.getString("bigWheel");
-        List<CusBigWheel> cusBigWheels = JSONObject.parseArray(bigWheel,CusBigWheel.class);
-
+        JSONArray array = object.getJSONArray("bigWheel");
+        List<CusBigWheel> cusBigWheels = array.toJavaList(CusBigWheel.class);
         //ids不为空为删除
         if (StringUtils.isNotBlank(ids)) {
             String[] spl = ids.split(",");
