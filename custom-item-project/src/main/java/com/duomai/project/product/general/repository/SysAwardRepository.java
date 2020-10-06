@@ -35,6 +35,8 @@ public interface SysAwardRepository extends BaseRepository<SysAward, String> {
 
     SysAward findFirstByUseWay(AwardUseWayEnum useWay);
 
+    SysAward queryByUseWay(AwardUseWayEnum useWay);
+
     List<SysAward> findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum useWay);
 
     List<SysAward> findByUseWayAndPoolLevelBeforeOrderByLuckyValueAsc(AwardUseWayEnum useWay, Integer level);

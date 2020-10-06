@@ -10,6 +10,7 @@ import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.adidasmusic.util.CommonHanZiUtil;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
+import com.duomai.project.product.general.dto.SignDto;
 import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
@@ -62,7 +63,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
         Date date = sysParm.getRequestStartTime();
-        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+//        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+        String buyerNick = "小明";
         Assert.hasLength(buyerNick, CommonExceptionEnum.BUYER_NICK_ERROR.getMsg());
         //被邀请人昵称
         String inviteeNick = object.getString("inviteeNick");
@@ -75,6 +77,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //为空初始化粉丝数据
         if (sysCustom == null) {
             sysCustom = projectHelper.customInit(sysParm);
+            sysCustom.setBuyerNick(buyerNick);
             customRepository.save(sysCustom);
 
             //todo 是否送抽奖次数 每天抽奖次数是否刷新
@@ -137,7 +140,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         inviteLogs = inviteLogRepository.findAll(Example.of(log.setInviter(buyerNick)));
 
         //获取邀请奖品信息
-        SysAward awardInvite = awardRepository.findFirstByUseWay(AwardUseWayEnum.INVITE);
+        SysAward awardInvite = awardRepository.queryByUseWay(AwardUseWayEnum.INVITE);
+        Assert.notNull(awardInvite,"未获取到邀请奖品信息!");
         //获取该粉丝是否已获得日志
         SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord();
         List<SysLuckyDrawRecord> sendLog = drawRecordRepository.findAll(Example.of(drawRecord.setPlayerBuyerNick(buyerNick)
@@ -167,6 +171,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         long signNum = taskHelper.getFinishTheTaskNum(buyerNick);
         linkedHashMap.put("signNum", signNum);
         //11天签到完成情况及奖品
+        List<SignDto> dto = new ArrayList<>();
         for (int v = 1; v < 11; v++) {
             switch (v) {
                 case 3:
