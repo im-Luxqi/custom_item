@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * @author cjw
  * @description 阿迪双十一小程序二楼 点击浏览
+ * @author cjw
  * @date 2020-10-03
  */
 @Service

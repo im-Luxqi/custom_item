@@ -27,8 +27,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
- * @author cjw
  * @description 阿迪双十一小程序二楼 活动load
+ * @author cjw
  * @date 2020-10-02
  */
 @Service
