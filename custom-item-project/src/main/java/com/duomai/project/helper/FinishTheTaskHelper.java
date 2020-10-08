@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 
 /**
  * @author cjw
- * @description 活动任务相关工具类
+ * @description 活动任务相关
  * @date 2020-10-02
  */
 @Component
