@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @author cjw
  * @description 封网准备接口 新增、删除尖货大咖活动
- * @date 2020-10-06
+ * @time 2020-10-06
  */
 @Service
 public class DmCusBigWheelSaveDelExecute implements IApiExecute {

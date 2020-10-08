@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * @author cjw
  * @description 阿迪双十一小程序二楼 点击浏览
- * @date 2020-10-03
+ * @time 2020-10-03
  */
 @Service
 public class DmClickToBrowseExecute implements IApiExecute {

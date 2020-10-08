@@ -30,7 +30,7 @@ import java.util.*;
 /**
  * @author cjw
  * @description 阿迪双十一小程序二楼 活动load
- * @date 2020-10-02
+ * @time 2020-10-02
  */
 @Service
 public class DmAdidas11PageLoadExecute implements IApiExecute {
