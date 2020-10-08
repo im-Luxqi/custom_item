@@ -28,8 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 /**
- * @description 阿迪双十一小程序二楼 活动load
  * @author cjw
+ * @description 阿迪双十一小程序二楼 活动load
  * @date 2020-10-02
  */
 @Service
@@ -141,7 +141,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
         //获取邀请奖品信息
         SysAward awardInvite = awardRepository.queryByUseWay(AwardUseWayEnum.INVITE);
-        Assert.notNull(awardInvite,"未获取到邀请奖品信息!");
+        Assert.notNull(awardInvite, "未获取到邀请奖品信息!");
         //获取该粉丝是否已获得日志
         SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord();
         List<SysLuckyDrawRecord> sendLog = drawRecordRepository.findAll(Example.of(drawRecord.setPlayerBuyerNick(buyerNick)
@@ -170,32 +170,22 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //获取目前签到次数
         long signNum = taskHelper.getFinishTheTaskNum(buyerNick);
         linkedHashMap.put("signNum", signNum);
-        //11天签到完成情况及奖品
-        List<SignDto> dto = new ArrayList<>();
+
+        //todo 获取签到奖品
+        List<SysAward> sysAwards = awardRepository.queryAllByUseWay(AwardUseWayEnum.SIGN);
+
+        //todo 获取完成情况
+
+        //11天签到数据
+        List<SignDto> signDtos = new ArrayList<>();
         for (int v = 1; v < 11; v++) {
-            switch (v) {
-                case 3:
-                    //第三天奖品
-
-                    break;
-                case 5:
-                    //第五天奖品
-
-                    break;
-                case 7:
-                    //第七天奖品
-
-                    break;
-                case 9:
-                    //第九天奖品
-
-                    break;
-                case 11:
-                    //第十一天奖品
-
-                default:
-            }
+            SignDto dto = new SignDto();
+            dto.setNum(v);
+            dto.setIsSend(0);
+            dto.setSysAward(null);
+            signDtos.add(dto);
         }
+
 
         //中奖弹幕 展示50条
         List<Map> luckyDrawRecords = drawRecordRepository.queryLuckyDrawLog();

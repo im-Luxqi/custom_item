@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
- * @description 封网准备接口 新增、删除尖货大咖活动
  * @author cjw
+ * @description 封网准备接口 新增、删除尖货大咖活动
  * @date 2020-10-06
  */
 @Service
@@ -45,7 +45,7 @@ public class DmCusBigWheelSaveDelExecute implements IApiExecute {
         }
 
         //cusBigWheels 不为空
-        if(!cusBigWheels.isEmpty()){
+        if (!cusBigWheels.isEmpty()) {
             cusBigWheelService.saveBatch(cusBigWheels);
         }
 

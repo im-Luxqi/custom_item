@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * @description 阿迪双十一小程序二楼 点击浏览
  * @author cjw
+ * @description 阿迪双十一小程序二楼 点击浏览
  * @date 2020-10-03
  */
 @Service
@@ -71,7 +71,7 @@ public class DmClickToBrowseExecute implements IApiExecute {
 
         //查询该粉丝今天获得了几次
         long luckyNum = luckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeBetween(buyerNick, LuckyChanceFromEnum.BROWSE,
-                CommonDateParseUtil.getStartTimeOfDay(date),CommonDateParseUtil.getEndTimeOfDay(date)
+                CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date)
         );
         int sendNum = (int) (luckyNum * 2);
 

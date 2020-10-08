@@ -10,7 +10,8 @@ import com.duomai.common.base.enums.IEnum;
 public enum AwardUseWayEnum implements IEnum {
     POOL("POOL", "奖池抽奖"),
     FIRSTLUCKY("FIRSTLUCKY", "首次抽奖必中"),
-    INVITE("INVITE", "邀请人员直接发放")
+    INVITE("INVITE", "邀请人员直接发放"),
+    SIGN("SIGN", "累计签到奖品"),
     ;
     private final String code;
     private final String descp;

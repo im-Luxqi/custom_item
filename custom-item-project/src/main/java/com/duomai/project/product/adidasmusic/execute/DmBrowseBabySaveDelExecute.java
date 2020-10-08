@@ -48,7 +48,7 @@ public class DmBrowseBabySaveDelExecute implements IApiExecute {
             return YunReturnValue.ok("操作成功!");
         }
 
-        //sysCommodity1 不为空
+        //dtos 不为空
         if (!dtos.isEmpty()) {
             List<SysCommodity> commodities = new ArrayList<>();
             for (AddCommodityDto dto : dtos) {

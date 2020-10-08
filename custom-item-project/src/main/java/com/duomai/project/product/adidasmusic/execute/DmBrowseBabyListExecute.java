@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * @description 阿迪双十一小程序二楼 浏览宝贝
  * @author cjw
+ * @description 阿迪双十一小程序二楼 浏览宝贝
  * @date 2020-10-03
  */
 @Service
@@ -51,16 +51,16 @@ public class DmBrowseBabyListExecute implements IApiExecute {
         SysBrowseLog browseLog = new SysBrowseLog();
         List<SysBrowseLog> browseLogs = browseLogRepository.findAll(
                 Example.of(browseLog.setBuyerNick(buyerNick)
-                        .setCreateTime(CommonDateParseUtil.date2date(date,CommonDateParseUtil.YYYY_MM_DD))));
+                        .setCreateTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD))));
 
         sysCommodities.stream().forEach(o -> {
             AtomicReference<Boolean> fal = new AtomicReference<>(false);
-            browseLogs.stream().forEach(v ->{
-                if(o.getNumId().longValue() == v.getNumId().longValue()){
+            browseLogs.stream().forEach(v -> {
+                if (o.getNumId().longValue() == v.getNumId().longValue()) {
                     fal.set(true);
                 }
             });
-            if(fal.get()){
+            if (fal.get()) {
                 o.setIsBrowse(1);
             }
         });
