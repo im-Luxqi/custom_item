@@ -175,6 +175,13 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         List<SysAward> sysAwards = awardRepository.queryAllByUseWay(AwardUseWayEnum.SIGN);
 
         //todo 获取完成情况
+        List<SysLuckyDrawRecord> drawRecords = drawRecordRepository.findByPlayerBuyerNickAndIsWin(buyerNick, BooleanConstant.BOOLEAN_YES);
+
+//        sysAwards.stream().forEach(z -> drawRecords.stream().forEach(y -> {
+//            if(z.getId().equals(y.getAwardId())){
+//                z.setLogId(y.getId());
+//            }
+//        }));
 
         //11天签到数据
         List<SignDto> signDtos = new ArrayList<>();
@@ -183,6 +190,25 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
             dto.setNum(v);
             dto.setIsSend(0);
             dto.setSysAward(null);
+            switch (v){
+                case 3:
+//                    sysAwards.stream().forEach(o -> {
+//                        if(o.getAwardLevelSign() == 3){
+//                            dto.setIsSend(1);
+//                        }
+//                    });
+                    break;
+                case 5:
+                    break;
+                case 7:
+                    break;
+                case 9:
+                    break;
+                case 11:
+                    break;
+            }
+
+
             signDtos.add(dto);
         }
 
