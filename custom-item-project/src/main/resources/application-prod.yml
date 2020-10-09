@@ -2,7 +2,7 @@ spring:
   # 数据库访问配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://rm-k2j0f3w284mu8b999.mysql.zhangbei.rds.aliyuncs.com:3306/adidas_huishou?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useServerPrepStmts=true
+    url: jdbc:mysql://rm-k2j0f3w284mu8b999.mysql.zhangbei.rds.aliyuncs.com:3306/ad_music?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useServerPrepStmts=true
     userName: adboxrds
     password: ad_2020box
 
