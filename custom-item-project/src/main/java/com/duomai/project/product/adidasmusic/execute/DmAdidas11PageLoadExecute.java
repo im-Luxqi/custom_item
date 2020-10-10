@@ -17,7 +17,6 @@ import com.duomai.project.product.general.enums.CommonExceptionEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.repository.*;
 import com.duomai.project.tool.CommonDateParseUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -67,7 +66,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 //        String buyerNick = "小明";
         Assert.hasLength(buyerNick, CommonExceptionEnum.BUYER_NICK_ERROR.getMsg());
         //被邀请人昵称
-        String inviteeNick = object.getString("inviteeNick");
+//        String inviteeNick = object.getString("inviteeNick");
 
         //预防并发
         projectHelper.checkoutMultipleCommit(sysParm, this::ApiExecute);
@@ -114,26 +113,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
         }
 
-        //如果邀请人昵称不为空
-        if (StringUtils.isNotBlank(inviteeNick)) {
 
-            if (inviteeNick.equals(buyerNick)) {
-                return YunReturnValue.fail("亲、自己无法邀请自己哦!");
-            }
-
-            //查询该粉丝是否被人邀请过
-            long inviteLogNum = inviteLogRepository.countByInviter(buyerNick);
-            if (inviteLogNum == 0) {//为空记录邀请日志
-                SysInviteLog inviteLog = new SysInviteLog();
-                inviteLogRepository.save(inviteLog.setCreateTime(date)
-                        .setInvitee(buyerNick)
-                        .setInviter(inviteeNick)
-                );
-            } else {
-                return YunReturnValue.fail(CommonExceptionEnum.HELPED_INVITEE_ERROR.getMsg());
-            }
-
-        }
         //查询出当前粉丝的邀请记录
         List<SysInviteLog> inviteLogs;
         SysInviteLog log = new SysInviteLog();
