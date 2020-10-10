@@ -7,15 +7,18 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.adidasmusic.domain.CusBigWheelLog;
 import com.duomai.project.product.adidasmusic.service.ICusBigWheelLogService;
+import com.duomai.project.product.general.dto.TaskBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.enums.PvPageEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
+import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  * @内容：任务页面 尖货大咖操作
@@ -37,6 +40,20 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         //预防连点
         projectHelper.checkoutMultipleCommit(sysParm,this);
 
+        Date now = sysParm.getRequestStartTime();
+        // 获取尖货大咖任务开放时间
+        TaskBaseSettingDto taskSeeting = projectHelper.taskBaseSettingFind();
+        Assert.notNull(taskSeeting, "不存在相关配置");
+        // 校验时间
+        Date start = CommonDateParseUtil.getStartTimeOfDay(taskSeeting.getTaskStartTime());
+        Date end = CommonDateParseUtil.getEndTimeOfDay(taskSeeting.getTaskEndTime());
+        if (now.before(start)){
+            return YunReturnValue.fail("任务无法解锁");
+        }
+        if (now.after(end)){
+            return YunReturnValue.fail("过时");
+        }
+
 //        //获取参数
 //        JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
 //        String gateway = object.getString("gateway");
@@ -49,7 +66,7 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
 
         CusBigWheelLog cusBigWheelLog = new CusBigWheelLog();
         cusBigWheelLog.setBuyerNick(buyerNick);
-        cusBigWheelLog.setCreateTime(sysParm.getRequestStartTime());
+        cusBigWheelLog.setCreateTime(now);
         cusBigWheelLog.setGateway(PvPageEnum.PAGE_DAKA.getValue());
         iCusBigWheelLogService.save(cusBigWheelLog);
         return YunReturnValue.ok("操作成功");
