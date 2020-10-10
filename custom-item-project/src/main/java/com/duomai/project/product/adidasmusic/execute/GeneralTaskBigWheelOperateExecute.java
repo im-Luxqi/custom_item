@@ -8,6 +8,7 @@ import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.adidasmusic.domain.CusBigWheelLog;
 import com.duomai.project.product.adidasmusic.service.ICusBigWheelLogService;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.enums.PvPageEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,10 +37,10 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         //预防连点
         projectHelper.checkoutMultipleCommit(sysParm,this);
 
-        //获取参数
-        JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
-        String gateway = object.getString("gateway");
-        Assert.hasLength(gateway, "入口不能为空");
+//        //获取参数
+//        JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
+//        String gateway = object.getString("gateway");
+//        Assert.hasLength(gateway, "入口不能为空");
 
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         // 校验玩家是否存在
@@ -49,7 +50,7 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         CusBigWheelLog cusBigWheelLog = new CusBigWheelLog();
         cusBigWheelLog.setBuyerNick(buyerNick);
         cusBigWheelLog.setCreateTime(sysParm.getRequestStartTime());
-        cusBigWheelLog.setGateway(gateway);
+        cusBigWheelLog.setGateway(PvPageEnum.PAGE_DAKA.getValue());
         iCusBigWheelLogService.save(cusBigWheelLog);
         return YunReturnValue.ok("操作成功");
     }
