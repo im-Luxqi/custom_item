@@ -4,7 +4,6 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.helper.FinishTheTaskHelper;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.adidasmusic.util.CommonHanZiUtil;
@@ -36,8 +35,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
     private ProjectHelper projectHelper;
     @Resource
     private LuckyDrawHelper drawHelper;
-    @Resource
-    private FinishTheTaskHelper taskHelper;
     @Resource
     private SysCustomRepository customRepository;
     @Resource
@@ -72,7 +69,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
             sysCustom = projectHelper.customInit(sysParm);
             customRepository.save(sysCustom);
 
-            //todo 是否送抽奖次数 每天抽奖次数是否刷新
+            //每天送一次抽奖机会
             SysLuckyChance luckyChance = new SysLuckyChance();
             luckyChanceRepository.save(luckyChance.setIsUse(BooleanConstant.BOOLEAN_NO)
                     .setChanceFrom(LuckyChanceFromEnum.FIRST)
@@ -131,8 +128,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         long drawNum = drawHelper.unUseLuckyChance(buyerNick);
         linkedHashMap.put("drawNum", drawNum);
 
-        //todo 获取当前粉丝奖池等级
-
+        //获取当前粉丝奖池等级
+        linkedHashMap.put("signDto",drawHelper.findCurrentPoolLevel(sysCustom));
 
         //中奖弹幕 展示50条
         List<Map> luckyDrawRecords = drawRecordRepository.queryLuckyDrawLog();

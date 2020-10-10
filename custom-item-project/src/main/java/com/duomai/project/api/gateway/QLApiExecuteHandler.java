@@ -55,9 +55,6 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.membership.sys",DmMembershipExecute.class); // 判断当前粉丝是否入会 cjw
         map.put("wx.dz.invite.to.join",DmInviteToJoinExecute.class); // 邀请入会 cjw
 
-
-
-
         map.put("wx.dz.tools.get.order",CusGetOrderExecute.class); //拉取订单 wxq
 
 
