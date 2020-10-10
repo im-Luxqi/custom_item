@@ -47,11 +47,8 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         // 校验时间
         Date start = CommonDateParseUtil.getStartTimeOfDay(taskSeeting.getTaskStartTime());
         Date end = CommonDateParseUtil.getEndTimeOfDay(taskSeeting.getTaskEndTime());
-        if (now.before(start)){
+        if (now.before(start) || now.after(end)){
             return YunReturnValue.fail("任务无法解锁");
-        }
-        if (now.after(end)){
-            return YunReturnValue.fail("过时");
         }
 
 //        //获取参数
