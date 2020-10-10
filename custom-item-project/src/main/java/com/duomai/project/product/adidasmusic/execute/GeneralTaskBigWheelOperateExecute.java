@@ -2,6 +2,7 @@ package com.duomai.project.product.adidasmusic.execute;
 
 import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
+import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.ProjectHelper;
@@ -9,8 +10,11 @@ import com.duomai.project.product.adidasmusic.domain.CusBigWheelLog;
 import com.duomai.project.product.adidasmusic.service.ICusBigWheelLogService;
 import com.duomai.project.product.general.dto.TaskBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysLuckyChance;
+import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.enums.PvPageEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
+import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,6 +35,8 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
     private SysCustomRepository sysCustomRepository;
     @Autowired
     private ICusBigWheelLogService iCusBigWheelLogService;
+    @Autowired
+    private SysLuckyChanceRepository sysLuckyChanceRepository;
     @Autowired
     private ProjectHelper projectHelper;
 
@@ -60,12 +66,18 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         // 校验玩家是否存在
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
-
+        /*保存操作日志*/
         CusBigWheelLog cusBigWheelLog = new CusBigWheelLog();
         cusBigWheelLog.setBuyerNick(buyerNick);
         cusBigWheelLog.setCreateTime(now);
         cusBigWheelLog.setGateway(PvPageEnum.PAGE_DAKA.getValue());
         iCusBigWheelLogService.save(cusBigWheelLog);
+        /*插入一条抽奖机会来源*/
+        SysLuckyChance luckyChance = new SysLuckyChance();
+        sysLuckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
+                .setGetTime(sysParm.getRequestStartTime())
+                .setChanceFrom(LuckyChanceFromEnum.DAKA)
+                .setIsUse(BooleanConstant.BOOLEAN_NO));
         return YunReturnValue.ok("操作成功");
     }
 }
