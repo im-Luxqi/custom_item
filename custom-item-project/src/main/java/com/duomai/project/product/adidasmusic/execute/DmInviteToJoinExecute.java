@@ -40,7 +40,7 @@ public class DmInviteToJoinExecute implements IApiExecute {
         String inviteeNick = object.getString("inviteeNick");
         Assert.hasLength(inviteeNick, "邀请人昵称不能为空!");
 
-        //如果邀请人昵称不为空
+        //check
         if (inviteeNick.equals(buyerNick)) {
             return YunReturnValue.fail("亲、自己无法邀请自己哦!");
         }
