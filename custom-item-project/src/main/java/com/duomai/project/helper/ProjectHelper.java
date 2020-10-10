@@ -49,8 +49,8 @@ public class ProjectHelper {
     public TaskBaseSettingDto taskBaseSettingFind(){
         List<SysKeyValue> taskSetting = sysKeyValueRepository.findByType(ActSettingConstant.TYPE_TASK_DAKA_SETTING);
         Map<String,String> map = taskSetting.stream().collect(Collectors.toMap(SysKeyValue::getK, SysKeyValue::getV));
-        return new TaskBaseSettingDto().setTaskStartTime(CommonDateParseUtil.string2date(map.get(ActSettingConstant.ACT_START_TIME), CommonDateParseUtil.YYYY_MM_DD))
-                .setTaskEndTime(CommonDateParseUtil.string2date(map.get(ActSettingConstant.ACT_END_TIME), CommonDateParseUtil.YYYY_MM_DD));
+        return new TaskBaseSettingDto().setTaskStartTime(CommonDateParseUtil.string2date(map.get(ActSettingConstant.TASK_START_TIME), CommonDateParseUtil.YYYY_MM_DD))
+                .setTaskEndTime(CommonDateParseUtil.string2date(map.get(ActSettingConstant.TASK_END_TIME), CommonDateParseUtil.YYYY_MM_DD));
     }
 
     /* 防连点

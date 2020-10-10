@@ -24,4 +24,14 @@ public interface ActSettingConstant {
      * 活动结束时间
      **/
     String ACT_END_TIME = "act_end_time";
+
+    /*
+     * 任务开始时间
+     **/
+    String TASK_START_TIME = "task_start_time";
+    /*
+     * 任务结束时间
+     **/
+    String TASK_END_TIME = "task_end_time";
+
 }
