@@ -4,9 +4,11 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.general.entity.SysBrowseLog;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysGeneralTask;
 import com.duomai.project.product.general.enums.TaskTypeEnum;
+import com.duomai.project.product.general.repository.SysBrowseLogRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysGeneralTaskRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
@@ -31,6 +33,8 @@ public class GeneralTaskLoadExecute implements IApiExecute {
     @Autowired
     private SysGeneralTaskRepository sysGeneralTaskRepository;
     @Autowired
+    private SysBrowseLogRepository sysBrowseLogRepository;
+    @Autowired
     private SysCustomRepository sysCustomRepository;
     @Autowired
     private ProjectHelper projectHelper;
@@ -46,16 +50,21 @@ public class GeneralTaskLoadExecute implements IApiExecute {
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
 
+        Date date = sysParm.getRequestStartTime();
         Map<String, Object> result = new HashMap<>();
         /*1.是否关注*/
         List<SysGeneralTask> followLog = sysGeneralTaskRepository.findByBuyerNickAndTaskType(buyerNick, TaskTypeEnum.FOLLOW);
         result.put("task_follow", followLog.size() > 0);
 
         /*2.今日是否签到*/
-        Date date = sysParm.getRequestStartTime();
         List<SysGeneralTask> signLog = sysGeneralTaskRepository.findByBuyerNickAndTaskTypeAndCreateTimeBetween(buyerNick,
                 TaskTypeEnum.SIGN, CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
         result.put("task_sign", signLog.size() > 0);
-        return YunReturnValue.ok(result, "签到和关注是否完成");
+
+        /*3.今日是否浏览宝贝*/
+        List<SysBrowseLog> browseLog = sysBrowseLogRepository.findByBuyerNickAndCreateTimeBetween(buyerNick,
+                CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
+        result.put("task_browse",browseLog.size() > 0);
+        return YunReturnValue.ok(result, "签到、关注、浏览宝贝是否完成");
     }
 }
