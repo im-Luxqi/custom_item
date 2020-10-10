@@ -5,6 +5,7 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
+import com.duomai.project.product.general.repository.SysInviteLogRepository;
 import com.taobao.api.ApiException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -23,6 +24,8 @@ public class DmMembershipExecute implements IApiExecute {
 
     @Resource
     private ITaobaoAPIService taobaoAPIService;
+    @Resource
+    private SysInviteLogRepository inviteLogRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,

@@ -1,6 +1,5 @@
 package com.duomai.project.product.adidasmusic.execute;
 
-import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
@@ -10,7 +9,6 @@ import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.adidasmusic.util.CommonHanZiUtil;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
-import com.duomai.project.product.general.dto.SignDto;
 import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
@@ -60,13 +58,9 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         projectHelper.actTimeValidate(actBaseSettingDto);
 
         //取参
-        JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
         Date date = sysParm.getRequestStartTime();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
-//        String buyerNick = "小明";
         Assert.hasLength(buyerNick, CommonExceptionEnum.BUYER_NICK_ERROR.getMsg());
-        //被邀请人昵称
-//        String inviteeNick = object.getString("inviteeNick");
 
         //预防并发
         projectHelper.checkoutMultipleCommit(sysParm, this::ApiExecute);
@@ -76,7 +70,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //为空初始化粉丝数据
         if (sysCustom == null) {
             sysCustom = projectHelper.customInit(sysParm);
-//            sysCustom.setBuyerNick(buyerNick);
             customRepository.save(sysCustom);
 
             //todo 是否送抽奖次数 每天抽奖次数是否刷新
@@ -97,14 +90,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
             //为空送一次抽奖机会
             if (luckyChances.isEmpty()) {
-//                //获取未使用的机会
-//                List<SysLuckyChance> ontUses = luckyChanceRepository.findAll(Example.of(luckyChance.setGetTime(null)
-//                        .setIsUse(BooleanConstant.BOOLEAN_NO)
-//                ));
-//                //抹除之前首次未使用的机会
-//                ontUses.stream().forEach(o -> o.setIsUse(BooleanConstant.BOOLEAN_YES));
-//                luckyChanceRepository.saveAll(ontUses);
-
                 //保存今天首次抽奖机会
                 luckyChanceRepository.save(luckyChance.setIsUse(BooleanConstant.BOOLEAN_NO)
                         .setGetTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD))
@@ -146,38 +131,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         long drawNum = drawHelper.unUseLuckyChance(buyerNick);
         linkedHashMap.put("drawNum", drawNum);
 
-        //获取目前签到次数
-        long signNum = taskHelper.getFinishTheTaskNum(buyerNick);
-        linkedHashMap.put("signNum", signNum);
-
-        //todo 获取签到奖品
-//        List<SysAward> sysAwards = awardRepository.queryAllByUseWay(AwardUseWayEnum.SIGN);
-
-        //todo 获取完成情况
-//        List<SysLuckyDrawRecord> drawRecords = drawRecordRepository.findByPlayerBuyerNickAndIsWin(buyerNick, BooleanConstant.BOOLEAN_YES);
-
-
-        //11天签到数据
-        List<SignDto> signDtos = new ArrayList<>();
-        for (int v = 1; v < 11; v++) {
-            SignDto dto = new SignDto();
-            dto.setNum(v);
-            dto.setIsSend(0);
-            dto.setSysAward(null);
-            switch (v){
-                case 3:
-                    break;
-                case 5:
-                    break;
-                case 7:
-                    break;
-                case 9:
-                    break;
-                case 11:
-                    break;
-            }
-            signDtos.add(dto);
-        }
+        //todo 获取当前粉丝奖池等级
 
 
         //中奖弹幕 展示50条
