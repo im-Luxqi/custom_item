@@ -50,6 +50,9 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.tools.browse.baby",DmBrowseBabySaveDelExecute.class); //封网新增删除浏览宝贝接口 cjw
         map.put("wx.dz.tools.big.wheel",DmCusBigWheelSaveDelExecute.class); //封网新增删除尖货大咖活动接口 cjw
         map.put("wx.dz.tools.sys.award",SysAwardSaveDelExecute.class); // 封网新增删除奖品接口 lyj
+        map.put("wx.dz.membership.sys",DmMembershipExecute.class); // 判断当前粉丝是否入会
+        map.put("wx.dz.invite.to.join",DmInviteToJoinExecute.class); // 邀请入会
+
 
 
     }
