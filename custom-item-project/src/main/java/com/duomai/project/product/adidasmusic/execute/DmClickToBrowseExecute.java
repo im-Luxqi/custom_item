@@ -14,6 +14,7 @@ import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +38,7 @@ public class DmClickToBrowseExecute implements IApiExecute {
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
-                                     HttpServletResponse response) throws Exception {
+                                     HttpServletResponse response) {
 
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
@@ -50,7 +51,6 @@ public class DmClickToBrowseExecute implements IApiExecute {
         List<SysBrowseLog> browseLogs = browseLogRepository.findAll(Example.of(browseLog.setBuyerNick(buyerNick)
                 .setCreateTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD))));
 
-        Integer num = browseLogs.size();
         if (!browseLogs.isEmpty()) {
             AtomicReference<Integer> isB = new AtomicReference<>(0);
             browseLogs.stream().forEach(o -> {
@@ -59,12 +59,10 @@ public class DmClickToBrowseExecute implements IApiExecute {
                 }
             });
             if (isB.get() != 1) {
-                num += 1;
                 browseLog.setNumId(numId);
                 browseLogRepository.save(browseLog);
             }
         } else {
-            num += 1;
             browseLog.setNumId(numId);
             browseLogRepository.save(browseLog);
         }
@@ -73,21 +71,15 @@ public class DmClickToBrowseExecute implements IApiExecute {
         long luckyNum = luckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeBetween(buyerNick, LuckyChanceFromEnum.BROWSE,
                 CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date)
         );
-        int sendNum = (int) (luckyNum * 2);
 
-        //todo 浏览几次送抽签机会？
-        if (num - sendNum >= 2) {
+        Assert.isTrue(luckyNum == 1, "亲，您已经获得过一次抽奖机会了哦!");
 
-            SysLuckyChance luckyChance = new SysLuckyChance();
-            luckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
-                    .setGetTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD_HH_MM_SS))
-                    .setChanceFrom(LuckyChanceFromEnum.BROWSE)
-                    .setIsUse(BooleanConstant.BOOLEAN_NO)
-            );
-            //todo 是否有进阶
-
-
-        }
+        SysLuckyChance luckyChance = new SysLuckyChance();
+        luckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
+                .setGetTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD_HH_MM_SS))
+                .setChanceFrom(LuckyChanceFromEnum.BROWSE)
+                .setIsUse(BooleanConstant.BOOLEAN_NO)
+        );
         return YunReturnValue.ok(CommonExceptionEnum.OPERATION_SUCCESS.getMsg());
     }
 }
