@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
+import com.duomai.project.product.adidasmusic.dto.CustomPlayProgressDto;
 import com.duomai.project.product.adidasmusic.enums.PoolLevelEnum;
 import com.duomai.project.product.adidasmusic.service.ICusOrderInfoService;
 import com.duomai.project.product.general.entity.SysAward;
@@ -246,21 +247,22 @@ public class LuckyDrawHelper {
         long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndIsWinAndLuckyChanceIsNotNull(sysCustom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
         if (l > 0) {
             //todo:等待落实奖池升级规则
-            PoolLevelEnum currentPoolLevel = findCurrentPoolLevel(sysCustom);
+            PoolLevelEnum currentPoolLevel = findCurrentPoolLevel(sysCustom).getCurrentPoolLevel();
             return sysAwardRepository.findByUseWayAndPoolLevelBeforeOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
         }
         return sysAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.FIRSTLUCKY);
     }
 
     @Transactional
-    public PoolLevelEnum findCurrentPoolLevel(SysCustom sysCustom) {
-        PoolLevelEnum level = PoolLevelEnum.LEVEL_0;
+    public CustomPlayProgressDto findCurrentPoolLevel(SysCustom sysCustom) {
+        CustomPlayProgressDto customPlayProgressDto = new CustomPlayProgressDto();
         //累计签到天数
         long sign_num = sysGeneralTaskRepository.countByBuyerNickAndTaskType(sysCustom.getBuyerNick(), TaskTypeEnum.SIGN);
 
         //下单数
         Integer orderNum = cusOrderInfoService.countTidsByBuyerNick(sysCustom.getBuyerNick());
 
+        PoolLevelEnum level = PoolLevelEnum.LEVEL_0;
         if (sign_num >= 1) {
             level = PoolLevelEnum.LEVEL_1;
         }
@@ -276,6 +278,9 @@ public class LuckyDrawHelper {
         if (sign_num >= 11 && orderNum >= 2) {
             level = PoolLevelEnum.LEVEL_5;
         }
-        return level;
+        customPlayProgressDto.setCurrentPoolLevel(level);
+        customPlayProgressDto.setOrderNum(orderNum);
+        customPlayProgressDto.setSignNum((int) sign_num);
+        return customPlayProgressDto;
     }
 }
