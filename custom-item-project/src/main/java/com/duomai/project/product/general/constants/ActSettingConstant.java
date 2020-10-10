@@ -7,6 +7,10 @@ public interface ActSettingConstant {
      **/
     String TYPE_ACT_SETTING = "type_act_setting";
 
+    /*
+     * 类型----指向尖货大咖任务时间设置
+     **/
+    String TYPE_TASK_DAKA_SETTING = "type_task_daka_setting";
 
     /*
      * 活动规则
