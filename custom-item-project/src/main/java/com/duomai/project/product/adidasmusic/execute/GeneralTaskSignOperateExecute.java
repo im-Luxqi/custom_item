@@ -1,14 +1,18 @@
 package com.duomai.project.product.adidasmusic.execute;
 
 import com.duomai.common.base.execute.IApiExecute;
+import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysGeneralTask;
+import com.duomai.project.product.general.entity.SysLuckyChance;
+import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.enums.TaskTypeEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysGeneralTaskRepository;
+import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,6 +35,8 @@ public class GeneralTaskSignOperateExecute implements IApiExecute {
     @Autowired
     private SysCustomRepository sysCustomRepository;
     @Autowired
+    private SysLuckyChanceRepository sysLuckyChanceRepository;
+    @Autowired
     private ProjectHelper projectHelper;
 
     @Override
@@ -44,17 +50,23 @@ public class GeneralTaskSignOperateExecute implements IApiExecute {
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
 
+        Date date = sysParm.getRequestStartTime();
         // 校验
         List<SysGeneralTask> signLog = sysGeneralTaskRepository.findByBuyerNickAndTaskTypeAndCreateTimeBetween(buyerNick,
-                TaskTypeEnum.SIGN, CommonDateParseUtil.getStartTimeOfDay(new Date()), CommonDateParseUtil.getEndTimeOfDay(new Date()));
+                TaskTypeEnum.SIGN, CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
         if (signLog.size() > 0){
             Assert.isNull(signLog, "操作已完成！");
         }
         /*保存操作日志*/
         SysGeneralTask signOpt = new SysGeneralTask();
         sysGeneralTaskRepository.save(signOpt.setBuyerNick(buyerNick)
-                .setCreateTime(sysParm.getRequestStartTime())
+                .setCreateTime(date)
                 .setTaskType(TaskTypeEnum.SIGN));
+        /*插入一条抽奖机会来源*/
+        SysLuckyChance luckyChance = new SysLuckyChance();
+        sysLuckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
+                .setGetTime(date).setChanceFrom(LuckyChanceFromEnum.SIGN)
+                .setIsUse(BooleanConstant.BOOLEAN_NO));
         return YunReturnValue.ok("操作成功！");
     }
 }
