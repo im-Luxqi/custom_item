@@ -113,7 +113,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
         }
 
-
         //查询出当前粉丝的邀请记录
         List<SysInviteLog> inviteLogs;
         SysInviteLog log = new SysInviteLog();
@@ -152,16 +151,11 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         linkedHashMap.put("signNum", signNum);
 
         //todo 获取签到奖品
-        List<SysAward> sysAwards = awardRepository.queryAllByUseWay(AwardUseWayEnum.SIGN);
+//        List<SysAward> sysAwards = awardRepository.queryAllByUseWay(AwardUseWayEnum.SIGN);
 
         //todo 获取完成情况
-        List<SysLuckyDrawRecord> drawRecords = drawRecordRepository.findByPlayerBuyerNickAndIsWin(buyerNick, BooleanConstant.BOOLEAN_YES);
+//        List<SysLuckyDrawRecord> drawRecords = drawRecordRepository.findByPlayerBuyerNickAndIsWin(buyerNick, BooleanConstant.BOOLEAN_YES);
 
-//        sysAwards.stream().forEach(z -> drawRecords.stream().forEach(y -> {
-//            if(z.getId().equals(y.getAwardId())){
-//                z.setLogId(y.getId());
-//            }
-//        }));
 
         //11天签到数据
         List<SignDto> signDtos = new ArrayList<>();
@@ -172,11 +166,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
             dto.setSysAward(null);
             switch (v){
                 case 3:
-//                    sysAwards.stream().forEach(o -> {
-//                        if(o.getAwardLevelSign() == 3){
-//                            dto.setIsSend(1);
-//                        }
-//                    });
                     break;
                 case 5:
                     break;
@@ -187,8 +176,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
                 case 11:
                     break;
             }
-
-
             signDtos.add(dto);
         }
 
