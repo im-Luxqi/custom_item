@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
+import com.duomai.project.product.adidasmusic.enums.PoolLevelEnum;
+import com.duomai.project.product.adidasmusic.service.ICusOrderInfoService;
 import com.duomai.project.product.general.entity.SysAward;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyChance;
@@ -50,6 +52,8 @@ public class LuckyDrawHelper {
     private SysAwardRepository sysAwardRepository;
     @Autowired
     private SysGeneralTaskRepository sysGeneralTaskRepository;
+    @Autowired
+    private ICusOrderInfoService cusOrderInfoService;
 
     /* 发放游戏机会
      * @description
@@ -237,21 +241,41 @@ public class LuckyDrawHelper {
         sysLuckyDrawRecordRepository.save(drawRecord);
     }
 
-    @Transient
+    @Transactional
     public List<SysAward> findCustomTimeAwardPool(SysCustom sysCustom) {
         long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndIsWinAndLuckyChanceIsNotNull(sysCustom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
         if (l > 0) {
             //todo:等待落实奖池升级规则
-            Integer pool_level = 2;
-            long sign_num = sysGeneralTaskRepository.countByBuyerNickAndTaskType(sysCustom.getBuyerNick(), TaskTypeEnum.SIGN);
-            if (sign_num > 2) {
-                ++pool_level;
-            }
-            if (sign_num > 5) {
-                ++pool_level;
-            }
-            return sysAwardRepository.findByUseWayAndPoolLevelBeforeOrderByLuckyValueAsc(AwardUseWayEnum.POOL, pool_level);
+            PoolLevelEnum currentPoolLevel = findCurrentPoolLevel(sysCustom);
+            return sysAwardRepository.findByUseWayAndPoolLevelBeforeOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
         }
         return sysAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.FIRSTLUCKY);
+    }
+
+    @Transactional
+    public PoolLevelEnum findCurrentPoolLevel(SysCustom sysCustom) {
+        PoolLevelEnum level = PoolLevelEnum.LEVEL_0;
+        //累计签到天数
+        long sign_num = sysGeneralTaskRepository.countByBuyerNickAndTaskType(sysCustom.getBuyerNick(), TaskTypeEnum.SIGN);
+
+        //下单数
+        Integer orderNum = cusOrderInfoService.countTidsByBuyerNick(sysCustom.getBuyerNick());
+
+        if (sign_num >= 1) {
+            level = PoolLevelEnum.LEVEL_1;
+        }
+        if (sign_num >= 3) {
+            level = PoolLevelEnum.LEVEL_2;
+        }
+        if (sign_num >= 5 && orderNum >= 1) {
+            level = PoolLevelEnum.LEVEL_3;
+        }
+        if (sign_num >= 7 && orderNum >= 1) {
+            level = PoolLevelEnum.LEVEL_4;
+        }
+        if (sign_num >= 11 && orderNum >= 2) {
+            level = PoolLevelEnum.LEVEL_5;
+        }
+        return level;
     }
 }
