@@ -97,13 +97,13 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
             //为空送一次抽奖机会
             if (luckyChances.isEmpty()) {
-                //获取未使用的机会
-                List<SysLuckyChance> ontUses = luckyChanceRepository.findAll(Example.of(luckyChance.setGetTime(null)
-                        .setIsUse(BooleanConstant.BOOLEAN_NO)
-                ));
-                //抹除之前首次未使用的机会
-                ontUses.stream().forEach(o -> o.setIsUse(BooleanConstant.BOOLEAN_YES));
-                luckyChanceRepository.saveAll(ontUses);
+//                //获取未使用的机会
+//                List<SysLuckyChance> ontUses = luckyChanceRepository.findAll(Example.of(luckyChance.setGetTime(null)
+//                        .setIsUse(BooleanConstant.BOOLEAN_NO)
+//                ));
+//                //抹除之前首次未使用的机会
+//                ontUses.stream().forEach(o -> o.setIsUse(BooleanConstant.BOOLEAN_YES));
+//                luckyChanceRepository.saveAll(ontUses);
 
                 //保存今天首次抽奖机会
                 luckyChanceRepository.save(luckyChance.setIsUse(BooleanConstant.BOOLEAN_NO)
