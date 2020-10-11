@@ -19,6 +19,7 @@ import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysGeneralTaskRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import com.duomai.project.tool.CommonDateParseUtil;
 import com.duomai.project.tool.ProjectTools;
 import com.taobao.api.response.AlibabaBenefitSendResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,11 @@ public class LuckyDrawHelper {
                         .setTid(tid)).collect(Collectors.toList()));
     }
 
+    @Transactional
+    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, Integer number) {
+        return sendLuckyChance(buyerNick, chanceFrom, number, null);
+    }
+
     /* 发放游戏机会
      * @description
      * @create by 王星齐
@@ -97,6 +103,18 @@ public class LuckyDrawHelper {
      **/
     public long unUseLuckyChance(String buyerNick) {
         return sysLuckyChanceRepository.countByBuyerNickAndIsUse(buyerNick, BooleanConstant.BOOLEAN_NO);
+    }
+
+    /* 今日 某个来源 的增送次数
+     * @description
+     * @create by 王星齐
+     * @time 2020-10-10 20:03:49
+     * @param buyerNick
+     **/
+    public long countTodayLuckyChanceFrom(String buyerNick, LuckyChanceFromEnum from) {
+        Date today = new Date();
+        return sysLuckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeBetween(buyerNick, from,
+                CommonDateParseUtil.getStartTimeOfDay(today), CommonDateParseUtil.getEndTimeOfDay(today));
     }
 
 
