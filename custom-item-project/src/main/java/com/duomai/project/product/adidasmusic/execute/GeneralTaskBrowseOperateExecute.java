@@ -56,7 +56,7 @@ public class GeneralTaskBrowseOperateExecute implements IApiExecute {
         Assert.notNull(sysCustom, "不存在该玩家");
 
         Date date = sysParm.getRequestStartTime();
-        // 校验:该商品是否浏览过
+        // 校验
         List<SysBrowseLog> browseLog = sysBrowseLogRepository.findByBuyerNickAndCreateTimeBetween(buyerNick,
                 CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
         if (browseLog.size() > 0){
