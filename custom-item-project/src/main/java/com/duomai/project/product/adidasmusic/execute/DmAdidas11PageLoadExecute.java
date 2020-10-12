@@ -50,6 +50,9 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request
             , HttpServletResponse response) throws Exception {
 
+        //预防并发
+        projectHelper.checkoutMultipleCommit(sysParm, this::ApiExecute);
+
         //校验活动是否在活动时间内
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         projectHelper.actTimeValidate(actBaseSettingDto);
@@ -58,9 +61,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         Date date = sysParm.getRequestStartTime();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         Assert.hasLength(buyerNick, CommonExceptionEnum.BUYER_NICK_ERROR.getMsg());
-
-        //预防并发
-        projectHelper.checkoutMultipleCommit(sysParm, this::ApiExecute);
 
         //获取粉丝信息
         SysCustom sysCustom = customRepository.findByBuyerNick(buyerNick);
@@ -80,13 +80,13 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         } else {
             //查询当天是否送过抽奖机会
             SysLuckyChance luckyChance = new SysLuckyChance();
-            List<SysLuckyChance> luckyChances = luckyChanceRepository.findAll(Example.of(luckyChance.setBuyerNick(buyerNick)
+            long num = luckyChanceRepository.count(Example.of(luckyChance.setBuyerNick(buyerNick)
                     .setGetTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD))
                     .setChanceFrom(LuckyChanceFromEnum.FIRST)
             ));
 
             //为空送一次抽奖机会
-            if (luckyChances.isEmpty()) {
+            if (num == 0) {
                 //保存今天首次抽奖机会
                 luckyChanceRepository.save(luckyChance.setIsUse(BooleanConstant.BOOLEAN_NO)
                         .setGetTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD))
@@ -129,7 +129,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         linkedHashMap.put("drawNum", drawNum);
 
         //获取当前粉丝奖池等级
-        linkedHashMap.put("signDto",drawHelper.findCurrentPoolLevel(sysCustom));
+        linkedHashMap.put("signDto", drawHelper.findCurrentPoolLevel(sysCustom));
 
         //中奖弹幕 展示50条
         List<Map> luckyDrawRecords = drawRecordRepository.queryLuckyDrawLog();
