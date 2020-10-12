@@ -59,7 +59,7 @@ public class TestController {
         return "success";
     }
 
-    @PostMapping(value = "batchSaveBrowseBaby")
+    @GetMapping(value = "batchSaveBrowseBaby")
     public String batchSaveBrowseBaby(List<SysCommodity> list){
         commodityRepository.saveAll(list);
         return "操作成功!";
