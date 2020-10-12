@@ -47,7 +47,7 @@ public class GeneralTaskBrowseOperateExecute implements IApiExecute {
 
         //获取参数
         JSONObject object =sysParm.getApiParameter().findJsonObjectAdmjson();
-        String numId = object.getString("numId");
+        Long numId = object.getLong("numId");
         Assert.notNull(numId, "商品id不能为空");
 
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
@@ -56,7 +56,7 @@ public class GeneralTaskBrowseOperateExecute implements IApiExecute {
         Assert.notNull(sysCustom, "不存在该玩家");
 
         Date date = sysParm.getRequestStartTime();
-        // 校验
+        // 校验:该商品是否浏览过
         List<SysBrowseLog> browseLog = sysBrowseLogRepository.findByBuyerNickAndCreateTimeBetween(buyerNick,
                 CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
         if (browseLog.size() > 0){
@@ -66,7 +66,7 @@ public class GeneralTaskBrowseOperateExecute implements IApiExecute {
         SysBrowseLog sysBrowseLog = new SysBrowseLog();
         sysBrowseLogRepository.save(sysBrowseLog.setBuyerNick(buyerNick)
                 .setCreateTime(sysParm.getRequestStartTime())
-                .setNumId(Long.parseLong(numId)));
+                .setNumId(numId));
         /*插入一条抽奖机会来源*/
         SysLuckyChance luckyChance = new SysLuckyChance();
         sysLuckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)

@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface SysBrowseLogRepository extends BaseRepository<SysBrowseLog, String> {
 
+    List<SysBrowseLog> findByBuyerNickAndCreateTimeBetweenAndNumId(String buyerNick, Date start, Date end, Long numId);
+
     List<SysBrowseLog> findByBuyerNickAndCreateTimeBetween(String buyerNick, Date start, Date end);
 
 }
