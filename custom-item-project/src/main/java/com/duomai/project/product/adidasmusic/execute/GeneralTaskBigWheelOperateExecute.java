@@ -23,6 +23,7 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @内容：任务页面 尖货大咖操作
@@ -48,24 +49,26 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
 
         Date now = sysParm.getRequestStartTime();
         // 获取尖货大咖任务开放时间
-        TaskBaseSettingDto taskSeeting = projectHelper.taskBaseSettingFind();
-        Assert.notNull(taskSeeting, "不存在相关配置");
+//        TaskBaseSettingDto taskSeeting = projectHelper.taskBaseSettingFind();
+//        Assert.notNull(taskSeeting, "不存在相关配置");
         // 校验时间
-        Date start = CommonDateParseUtil.getStartTimeOfDay(taskSeeting.getTaskStartTime());
-        Date end = CommonDateParseUtil.getEndTimeOfDay(taskSeeting.getTaskEndTime());
-        if (now.before(start) || now.after(end)){
-            return YunReturnValue.fail("任务无法解锁");
-        }
-
-//        //获取参数
-//        JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
-//        String gateway = object.getString("gateway");
-//        Assert.hasLength(gateway, "入口不能为空");
-
+//        Date start = CommonDateParseUtil.getStartTimeOfDay(taskSeeting.getTaskStartTime());
+//        Date end = CommonDateParseUtil.getEndTimeOfDay(taskSeeting.getTaskEndTime());
+//        if (now.before(start) || now.after(end)){
+//            return YunReturnValue.fail("任务无法解锁");
+//        }
+        Date date = sysParm.getRequestStartTime();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         // 校验玩家是否存在
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
+        // 校验
+        List<CusBigWheelLog> bigWheelLog = iCusBigWheelLogService.query()
+                .between(CusBigWheelLog::getCreateTime,CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date))
+                .list();
+        if (bigWheelLog.size() > 0){
+            Assert.isNull(bigWheelLog, "操作已完成！");
+        }
         /*保存操作日志*/
         CusBigWheelLog cusBigWheelLog = new CusBigWheelLog();
         cusBigWheelLog.setBuyerNick(buyerNick);

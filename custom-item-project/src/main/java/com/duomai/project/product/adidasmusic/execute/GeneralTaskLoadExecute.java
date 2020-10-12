@@ -4,6 +4,9 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.adidasmusic.domain.CusBigWheel;
+import com.duomai.project.product.adidasmusic.domain.CusBigWheelLog;
+import com.duomai.project.product.adidasmusic.service.ICusBigWheelLogService;
 import com.duomai.project.product.general.entity.SysBrowseLog;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysGeneralTask;
@@ -37,6 +40,8 @@ public class GeneralTaskLoadExecute implements IApiExecute {
     @Autowired
     private SysCustomRepository sysCustomRepository;
     @Autowired
+    private ICusBigWheelLogService iCusBigWheelLogService;
+    @Autowired
     private ProjectHelper projectHelper;
 
     @Override
@@ -65,6 +70,11 @@ public class GeneralTaskLoadExecute implements IApiExecute {
         List<SysBrowseLog> browseLog = sysBrowseLogRepository.findByBuyerNickAndCreateTimeBetween(buyerNick,
                 CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
         result.put("task_browse",browseLog.size() > 0);
-        return YunReturnValue.ok(result, "签到、关注、浏览宝贝是否完成");
+        /*4.今日是否浏览尖货大咖*/
+        List<CusBigWheelLog> cusBigWheelLog = iCusBigWheelLogService.query()
+                .between(CusBigWheelLog::getCreateTime,CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date))
+                .list();
+        result.put("task_bigWheel",cusBigWheelLog.size() > 0);
+        return YunReturnValue.ok(result, "签到、关注、浏览宝贝和尖货大咖是否完成");
     }
 }
