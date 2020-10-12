@@ -62,7 +62,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //取参
         Date date = sysParm.getRequestStartTime();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
-        Assert.hasLength(buyerNick, CommonExceptionEnum.BUYER_NICK_ERROR.getMsg());
 
         //获取粉丝信息
         SysCustom sysCustom = customRepository.findByBuyerNick(buyerNick);
