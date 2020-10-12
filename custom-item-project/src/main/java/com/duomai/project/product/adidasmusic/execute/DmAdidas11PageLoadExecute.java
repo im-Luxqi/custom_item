@@ -50,6 +50,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request
             , HttpServletResponse response) throws Exception {
 
+//        sysParm.getApiParameter().getYunTokenParameter().setBuyerNick("小明");
+
         //预防并发
         projectHelper.checkoutMultipleCommit(sysParm, this::ApiExecute);
 
@@ -110,6 +112,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         ));
         if (!sendLog.isEmpty()) {
             awardInvite.setLogId(sendLog.get(0).getId());
+        } else {
+            awardInvite.setLogId("");
         }
 
         //返回参数
