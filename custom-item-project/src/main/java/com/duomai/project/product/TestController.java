@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.util.List;
 
 /**
  * test
@@ -59,9 +58,9 @@ public class TestController {
         return "success";
     }
 
-    @GetMapping(value = "batchSaveBrowseBaby")
-    public String batchSaveBrowseBaby(List<SysCommodity> list){
-        commodityRepository.saveAll(list);
+    @PostMapping(value = "batchSaveBrowseBaby")
+    public String batchSaveBrowseBaby(@RequestBody SysCommodity list){
+        commodityRepository.save(list);
         return "操作成功!";
     }
 
