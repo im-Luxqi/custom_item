@@ -75,7 +75,7 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         /*插入一条抽奖机会来源*/
         SysLuckyChance luckyChance = new SysLuckyChance();
         sysLuckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
-                .setGetTime(sysParm.getRequestStartTime())
+                .setGetTime(now)
                 .setChanceFrom(LuckyChanceFromEnum.DAKA)
                 .setIsUse(BooleanConstant.BOOLEAN_NO));
         return YunReturnValue.ok("操作成功");
