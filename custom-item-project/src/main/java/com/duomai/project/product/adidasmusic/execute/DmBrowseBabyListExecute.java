@@ -19,6 +19,7 @@ import org.springframework.util.Assert;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -51,22 +52,13 @@ public class DmBrowseBabyListExecute implements IApiExecute {
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         Date finalDate = CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD);
 
-        //获取浏览宝贝实物
-        SysCommodity commodity = new SysCommodity();
-        List<SysCommodity> sysCommodities = sysCommodityRepository.findAll(Example.of(
-                commodity.setType(AwardTypeEnum.GOODS).setCommoditySort(commoditySorE).setCreateTime(date)));
+        //获取源商品
+        List<SysCommodity> commodities = sysCommodityRepository.queryAllByTypeAndAndCommoditySort(AwardTypeEnum.GOODS, commoditySorT);
+        Assert.notEmpty(commodities, "未获取到浏览宝贝信息!");
 
-        //为空随机12个商品
-        if (sysCommodities.isEmpty()) {
-            //获取源商品
-            List<SysCommodity> commodities = sysCommodityRepository.queryAllByTypeAndAndCommoditySort(AwardTypeEnum.GOODS, commoditySorT);
-            Assert.notEmpty(commodities, "未获取到浏览宝贝信息!");
-            //随机取12个宝贝
-            sysCommodities = finishTheTaskHelper.randowList(commodities, sysCommodities, 12);
-            //保存当天宝贝信息
-            sysCommodities.stream().forEach(o -> o.setCommoditySort(commoditySorE).setCreateTime(finalDate).setId(null));
-            sysCommodityRepository.saveAll(sysCommodities);
-        }
+        //随机取12个宝贝
+        List<SysCommodity> sysCommodities = new ArrayList<>();
+        sysCommodities = finishTheTaskHelper.randowList(commodities, sysCommodities, 12);
 
         //获取该粉丝浏览日志 此处保留根据当天时间查询
         SysBrowseLog browseLog = new SysBrowseLog();
@@ -74,7 +66,7 @@ public class DmBrowseBabyListExecute implements IApiExecute {
                 Example.of(browseLog.setBuyerNick(buyerNick)
                         .setCreateTime(finalDate)));
 
-        sysCommodities.stream().forEach(o -> {
+        commodities.stream().forEach(o -> {
             AtomicReference<Boolean> fal = new AtomicReference<>(false);
             browseLogs.stream().forEach(v -> {
                 if (o.getNumId().longValue() == v.getNumId().longValue()) {
