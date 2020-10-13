@@ -48,6 +48,8 @@ public class GeneralTaskSignOperateExecute implements IApiExecute {
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         projectHelper.actTimeValidate(actBaseSettingDto);
 
+
+
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         // 校验玩家是否存在
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);

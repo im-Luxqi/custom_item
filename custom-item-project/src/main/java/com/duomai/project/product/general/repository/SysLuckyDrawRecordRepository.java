@@ -22,6 +22,10 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
     //获取粉丝某个奖品抽奖日志
     SysLuckyDrawRecord findFirstByPlayerBuyerNickAndAwardId(String buyerNick,String awardId);
 
+    List<SysLuckyDrawRecord> findByPlayerBuyerNick(String buyerNick);
+
+    void deleteByPlayerBuyerNick(String buyerNick);
+
 
 
 }
