@@ -54,6 +54,8 @@ public class DmBrowseBabySaveDelExecute implements IApiExecute {
             for (AddCommodityDto dto : dtos) {
                 SysCommodity commodity = new SysCommodity();
                 commodities.add(commodity.setName(dto.getName())
+                        .setCreateTime(dto.getCreateTime())
+                        .setCommoditySort(dto.getCommoditySort())
                         .setPrice(dto.getPrice())
                         .setType(AwardTypeEnum.valueOf(dto.getType()))
                         .setImg(dto.getImg())
