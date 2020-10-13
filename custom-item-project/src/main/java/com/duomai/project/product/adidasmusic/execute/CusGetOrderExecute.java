@@ -4,6 +4,7 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
+import com.duomai.project.api.taobao.OcsUtil;
 import com.duomai.project.api.taobao.enums.TaoBaoTradeStatus;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.adidasmusic.domain.CusOrderInfo;
@@ -11,6 +12,7 @@ import com.duomai.project.product.adidasmusic.service.ICusOrderInfoService;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.taobao.api.response.OpenTradesSoldGetResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -39,9 +41,9 @@ public class CusGetOrderExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
                                      HttpServletResponse response) throws Exception {
-
-
-        projectHelper.checkoutMultipleCommit(sysParm, this);
+        Assert.isTrue(OcsUtil.add(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + "CusGetOrderExecute", "_commit_", 1)
+                , "10秒后重试");
+//        projectHelper.checkoutMultipleCommit(sysParm, this);
         String openUId = sysParm.getApiParameter().getYunTokenParameter().getOpenUId();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         ActBaseSettingDto config = projectHelper.actBaseSettingFind();
