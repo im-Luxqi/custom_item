@@ -70,6 +70,7 @@ public class GeneralTaskLoadExecute implements IApiExecute {
         List<SysBrowseLog> browseLog = sysBrowseLogRepository.findByBuyerNickAndCreateTimeBetween(buyerNick,
                 CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
         result.put("task_browse",browseLog.size() > 0);
+
         /*4.今日是否浏览尖货大咖*/
         List<CusBigWheelLog> cusBigWheelLog = iCusBigWheelLogService.query()
                 .eq(CusBigWheelLog::getBuyerNick,buyerNick)
