@@ -5,10 +5,11 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
+import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysInviteLog;
 import com.duomai.project.product.general.enums.InvitationTypeEnum;
 import com.duomai.project.product.general.repository.SysInviteLogRepository;
-import com.taobao.api.ApiException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -28,10 +29,16 @@ public class DmMembershipExecute implements IApiExecute {
     private ITaobaoAPIService taobaoAPIService;
     @Resource
     private SysInviteLogRepository inviteLogRepository;
+    @Resource
+    private ProjectHelper projectHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
-                                     HttpServletResponse response) throws ApiException {
+                                     HttpServletResponse response) throws Exception {
+
+        //是否在活动期间
+        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
+        projectHelper.actTimeValidate(actBaseSettingDto);
 
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
