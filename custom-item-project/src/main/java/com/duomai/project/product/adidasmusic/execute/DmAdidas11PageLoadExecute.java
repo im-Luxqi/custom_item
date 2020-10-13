@@ -89,10 +89,14 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         ));
         if (!sendLog.isEmpty()) {
             awardInvite.setLogId(sendLog.get(0).getId());
+        }else{
+            awardInvite.setLogId("");
         }
+
 
         //返回参数
         LinkedHashMap linkedHashMap = new LinkedHashMap();
+        linkedHashMap.put("signDto", drawHelper.findCurrentPoolLevel(sysCustom));
         //活动基本信息
         linkedHashMap.put("actBaseSettingDto", actBaseSettingDto);
         //粉丝信息
