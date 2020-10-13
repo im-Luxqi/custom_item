@@ -8,6 +8,7 @@ import java.util.Map;
 
 public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDrawRecord, String> {
 
+    //根据粉丝昵称，是否中奖查询结果集
     List<SysLuckyDrawRecord> findByPlayerBuyerNickAndIsWin(String buyerNick, Integer isWin);
 
     long countByPlayerBuyerNickAndIsWinAndLuckyChanceIsNotNull(String buyerNick, Integer isWin);
@@ -18,6 +19,7 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
                     "wehre order by draw_time desc limit 50")
     List<Map> queryLuckyDrawLog();
 
+    //获取粉丝某个奖品抽奖日志
     SysLuckyDrawRecord findFirstByPlayerBuyerNickAndAwardId(String buyerNick,String awardId);
 
 

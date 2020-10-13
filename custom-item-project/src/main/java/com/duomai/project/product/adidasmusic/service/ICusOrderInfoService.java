@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface ICusOrderInfoService extends BaseService<CusOrderInfo> {
 
+
     List<CusOrderInfo> getTidsByBuyerNick(String buyerNick);
     Integer countTidsByBuyerNick(String buyerNick);
 

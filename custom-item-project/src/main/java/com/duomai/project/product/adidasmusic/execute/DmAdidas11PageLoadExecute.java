@@ -3,7 +3,6 @@ package com.duomai.project.product.adidasmusic.execute;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.helper.FinishTheTaskHelper;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.adidasmusic.util.CommonHanZiUtil;
@@ -40,23 +39,17 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
     @Resource
     private LuckyDrawHelper drawHelper;
     @Resource
-    private FinishTheTaskHelper taskHelper;
-    @Resource
     private SysCustomRepository customRepository;
     @Resource
     private SysInviteLogRepository inviteLogRepository;
     @Resource
     private SysLuckyDrawRecordRepository drawRecordRepository;
     @Resource
-    private SysLuckyChanceRepository luckyChanceRepository;
-    @Resource
     private SysAwardRepository awardRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request
             , HttpServletResponse response) throws Exception {
-
-        sysParm.getApiParameter().getYunTokenParameter().setBuyerNick("南陈");
 
         /*预防并发，校验活动是否在活动时间内*/
         projectHelper.checkoutMultipleCommit(sysParm, this);
@@ -81,7 +74,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         inviteLogs = inviteLogRepository.findAll(Example.of(log.setInviter(sysCustom.getBuyerNick())));
 
         //获取邀请奖品信息
-        SysAward awardInvite = awardRepository.queryByUseWay(AwardUseWayEnum.INVITE);
+        SysAward awardInvite = awardRepository.queryFirstByUseWay(AwardUseWayEnum.INVITE);
         Assert.notNull(awardInvite, "未获取到邀请奖品信息!");
         //获取该粉丝是否已获得日志
         SysLuckyDrawRecord drawRecord = drawRecordRepository.findFirstByPlayerBuyerNickAndAwardId(sysCustom.getBuyerNick(),awardInvite.getId());
