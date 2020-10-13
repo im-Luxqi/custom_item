@@ -8,20 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 public interface SysAwardRepository extends BaseRepository<SysAward, String> {
-
-    List<SysAward> findAllByOrderByLuckyValue();
-
-    @Query(nativeQuery = true,
-            value = "select * from " +
-                    "(SELECT award_level,award_level_sign,type,name,img,sum(total_num) as total_num" +
-                    "      FROM sys_award" +
-                    "      GROUP BY award_level,award_level_sign,type,name,img) tt " +
-                    " order by tt.award_level_sign")
-    List<Map> findAwardInfo();
-
 
     @Modifying
     @Transactional
@@ -32,13 +20,8 @@ public interface SysAwardRepository extends BaseRepository<SysAward, String> {
                     "        and  remain_num >0")
     int tryReduceOne(String id);
 
-
-    SysAward findFirstByUseWay(AwardUseWayEnum useWay);
-
-    //上方方法调试未调通
-    SysAward queryByUseWay(AwardUseWayEnum useWay);
-
-    List<SysAward> queryAllByUseWay(AwardUseWayEnum useWay);
+    //获取单个 某个类型的奖品
+    SysAward queryFirstByUseWay(AwardUseWayEnum useWay);
 
     List<SysAward> findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum useWay);
 

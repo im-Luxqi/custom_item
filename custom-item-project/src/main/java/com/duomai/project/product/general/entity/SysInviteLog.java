@@ -1,5 +1,6 @@
 package com.duomai.project.product.general.entity;
 
+import com.duomai.project.product.general.enums.InvitationTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
@@ -39,5 +40,9 @@ public class SysInviteLog {
 
     @Column(columnDefinition = "varchar(47) COMMENT '被邀请人头像'")
     private String inviteeImg;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "varchar(20) COMMENT '邀请类型 会员阶段：memberStage 邀请阶段：invitationStage'")
+    private InvitationTypeEnum invitationType;
 
 }

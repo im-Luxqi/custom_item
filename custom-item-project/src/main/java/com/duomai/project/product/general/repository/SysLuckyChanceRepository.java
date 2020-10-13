@@ -9,18 +9,16 @@ import java.util.List;
 
 public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance, String> {
 
+    //获取当前粉丝剩余抽奖次数
     long countByBuyerNickAndIsUse(String buyerNick, Integer use);
 
-
+    //获取一条未使用的抽奖机会日志
     SysLuckyChance findFirstByBuyerNickAndIsUse(String buyerNick, Integer use);
-
-    List<SysLuckyChance> findAllByBuyerNickAndChanceFrom(String buyerNick, LuckyChanceFromEnum from);
-
-    List<SysLuckyChance> findAllByBuyerNick(String buyerNick);
-
-    long countByBuyerNickAndGetTimeBetween(String buyerNick, Date startTime, Date endTime);
 
     //获取某个任务当天完成了几次
     long countByBuyerNickAndChanceFromAndGetTimeBetween(String buyerNick, LuckyChanceFromEnum chanceFrom, Date startTime, Date endTime);
+
+    List<SysLuckyChance> findByBuyerNick(String buyerNick);
+
 
 }

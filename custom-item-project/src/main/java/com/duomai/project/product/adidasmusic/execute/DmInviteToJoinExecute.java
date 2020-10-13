@@ -4,8 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysInviteLog;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
+import com.duomai.project.product.general.enums.InvitationTypeEnum;
 import com.duomai.project.product.general.repository.SysInviteLogRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -25,10 +28,18 @@ public class DmInviteToJoinExecute implements IApiExecute {
 
     @Resource
     private SysInviteLogRepository inviteLogRepository;
+    @Resource
+    private ProjectHelper projectHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
-                                     HttpServletResponse response) {
+                                     HttpServletResponse response) throws Exception {
+
+        /*预防并发，校验活动是否在活动时间内*/
+        projectHelper.checkoutMultipleCommit(sysParm, this);
+        //是否在活动期间
+        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
+        projectHelper.actTimeValidate(actBaseSettingDto);
 
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
@@ -44,7 +55,7 @@ public class DmInviteToJoinExecute implements IApiExecute {
         }
 
         //查询该粉丝是否被人邀请过
-        long inviteLogNum = inviteLogRepository.countByInviter(buyerNick);
+        long inviteLogNum = inviteLogRepository.countByInviteeAndInvitationType(buyerNick,InvitationTypeEnum.invitationStage);
         if (inviteLogNum == 0) {//为空记录邀请日志
             SysInviteLog inviteLog = new SysInviteLog();
             inviteLogRepository.save(inviteLog.setCreateTime(date)
@@ -52,6 +63,7 @@ public class DmInviteToJoinExecute implements IApiExecute {
                     .setMixInvitee(sysParm.getApiParameter().getYunTokenParameter().getUserNick())
                     .setInviteeImg(headImg)
                     .setInviter(inviterNick)
+                    .setInvitationType(InvitationTypeEnum.invitationStage)
             );
         } else {
             return YunReturnValue.fail(CommonExceptionEnum.HELPED_INVITEE_ERROR.getMsg());

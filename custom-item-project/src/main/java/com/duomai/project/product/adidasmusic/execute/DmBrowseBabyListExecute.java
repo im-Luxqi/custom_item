@@ -12,7 +12,6 @@ import com.duomai.project.product.general.enums.CommonExceptionEnum;
 import com.duomai.project.product.general.repository.SysBrowseLogRepository;
 import com.duomai.project.product.general.repository.SysCommodityRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -45,17 +44,14 @@ public class DmBrowseBabyListExecute implements IApiExecute {
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
                                      HttpServletResponse response) {
 
-//        sysParm.getApiParameter().getYunTokenParameter().setBuyerNick("小明");
-
         //取参
         PageListDto pageListDto = sysParm.getApiParameter().findBeautyAdmjson(PageListDto.class);
         pageListDto.startPage();
         Date date = sysParm.getRequestStartTime();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
-        Date finalDate = CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD);
 
         //获取源商品
-        List<SysCommodity> commodities = sysCommodityRepository.queryAllByTypeAndAndCommoditySort(AwardTypeEnum.GOODS, commoditySorT);
+        List<SysCommodity> commodities = sysCommodityRepository.queryByTypeAndCommoditySort(AwardTypeEnum.GOODS, commoditySorT);
         Assert.notEmpty(commodities, "未获取到浏览宝贝信息!");
 
         //随机取12个宝贝
@@ -65,10 +61,8 @@ public class DmBrowseBabyListExecute implements IApiExecute {
         sysCommodities.stream().forEach(s -> s.setNames(s.getName().split(",")));
 
         //获取该粉丝浏览日志 此处保留根据当天时间查询
-        SysBrowseLog browseLog = new SysBrowseLog();
-        List<SysBrowseLog> browseLogs = browseLogRepository.findAll(
-                Example.of(browseLog.setBuyerNick(buyerNick)
-                        .setCreateTime(finalDate)));
+        List<SysBrowseLog> browseLogs = browseLogRepository.findByBuyerNickAndCreateTimeBetween(buyerNick,
+                CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
 
         commodities.stream().forEach(o -> {
             AtomicReference<Boolean> fal = new AtomicReference<>(false);

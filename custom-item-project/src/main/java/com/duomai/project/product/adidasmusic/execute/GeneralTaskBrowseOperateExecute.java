@@ -6,6 +6,7 @@ import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysBrowseLog;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyChance;
@@ -44,6 +45,8 @@ public class GeneralTaskBrowseOperateExecute implements IApiExecute {
 
         //预防连点
         projectHelper.checkoutMultipleCommit(sysParm,this);
+        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
+        projectHelper.actTimeValidate(actBaseSettingDto);
 
         //获取参数
         JSONObject object =sysParm.getApiParameter().findJsonObjectAdmjson();

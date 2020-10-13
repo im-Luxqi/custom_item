@@ -5,6 +5,8 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysBrowseLog;
 import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
@@ -12,7 +14,6 @@ import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.repository.SysBrowseLogRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -20,8 +21,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author cjw
@@ -35,10 +34,18 @@ public class DmClickToBrowseExecute implements IApiExecute {
     private SysBrowseLogRepository browseLogRepository;
     @Resource
     private SysLuckyChanceRepository luckyChanceRepository;
+    @Resource
+    private ProjectHelper projectHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
-                                     HttpServletResponse response) {
+                                     HttpServletResponse response) throws Exception {
+
+        /*预防并发，校验活动是否在活动时间内*/
+        projectHelper.checkoutMultipleCommit(sysParm, this);
+        //是否在活动期间
+        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
+        projectHelper.actTimeValidate(actBaseSettingDto);
 
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
@@ -47,24 +54,17 @@ public class DmClickToBrowseExecute implements IApiExecute {
         Long numId = object.getLong("numId");
 
         //获取该粉丝当天浏览记录
-        SysBrowseLog browseLog = new SysBrowseLog();
-        List<SysBrowseLog> browseLogs = browseLogRepository.findAll(Example.of(browseLog.setBuyerNick(buyerNick)
-                .setCreateTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD))));
+        SysBrowseLog browseLogs = browseLogRepository.findFirstByBuyerNickAndCreateTimeBetweenAndNumId(buyerNick,
+                CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date),numId);
 
-        if (!browseLogs.isEmpty()) {
-            AtomicReference<Integer> isB = new AtomicReference<>(0);
-            browseLogs.stream().forEach(o -> {
-                if (o.getNumId().longValue() == numId.longValue()) {
-                    isB.set(1);
-                }
-            });
-            if (isB.get() != 1) {
-                browseLog.setNumId(numId);
-                browseLogRepository.save(browseLog);
-            }
-        } else {
-            browseLog.setNumId(numId);
-            browseLogRepository.save(browseLog);
+        //为空保存浏览日志
+        if(browseLogs == null){
+            browseLogs = new SysBrowseLog();
+            browseLogRepository.save(
+                    browseLogs.setNumId(numId)
+                    .setBuyerNick(buyerNick)
+                    .setCreateTime(date)
+            );
         }
 
         //查询该粉丝今天获得了几次
