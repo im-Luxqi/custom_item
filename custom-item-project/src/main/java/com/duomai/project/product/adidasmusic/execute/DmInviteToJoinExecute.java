@@ -6,6 +6,7 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.entity.SysInviteLog;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
+import com.duomai.project.product.general.enums.InvitationTypeEnum;
 import com.duomai.project.product.general.repository.SysInviteLogRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -44,7 +45,7 @@ public class DmInviteToJoinExecute implements IApiExecute {
         }
 
         //查询该粉丝是否被人邀请过
-        long inviteLogNum = inviteLogRepository.countByInviter(buyerNick);
+        long inviteLogNum = inviteLogRepository.countByInviteeAndInvitationType(buyerNick,InvitationTypeEnum.invitationStage);
         if (inviteLogNum == 0) {//为空记录邀请日志
             SysInviteLog inviteLog = new SysInviteLog();
             inviteLogRepository.save(inviteLog.setCreateTime(date)
@@ -52,6 +53,7 @@ public class DmInviteToJoinExecute implements IApiExecute {
                     .setMixInvitee(sysParm.getApiParameter().getYunTokenParameter().getUserNick())
                     .setInviteeImg(headImg)
                     .setInviter(inviterNick)
+                    .setInvitationType(InvitationTypeEnum.invitationStage)
             );
         } else {
             return YunReturnValue.fail(CommonExceptionEnum.HELPED_INVITEE_ERROR.getMsg());

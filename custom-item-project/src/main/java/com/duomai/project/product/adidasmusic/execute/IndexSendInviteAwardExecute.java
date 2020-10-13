@@ -9,6 +9,7 @@ import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysAward;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
+import com.duomai.project.product.general.enums.InvitationTypeEnum;
 import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysInviteLogRepository;
@@ -52,7 +53,7 @@ public class IndexSendInviteAwardExecute implements IApiExecute {
                 sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
         Assert.notNull(sysCustom, "不存在该玩家");
         //玩家是否已邀请了五位好友
-        long has_invite_num = sysInviteLogRepository.countByInviter(sysCustom.getBuyerNick());
+        long has_invite_num = sysInviteLogRepository.countByInviterAndInvitationType(sysCustom.getBuyerNick(), InvitationTypeEnum.invitationStage);
         Assert.isTrue(has_invite_num > 4, "邀请5位好友才能获得奖品");
 
         //给完成邀请的发放邀请奖励

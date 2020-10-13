@@ -12,6 +12,7 @@ import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
+import com.duomai.project.product.general.enums.InvitationTypeEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.repository.SysAwardRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
@@ -73,10 +74,10 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         SysAward awardInvite = awardRepository.queryFirstByUseWay(AwardUseWayEnum.INVITE);
         Assert.notNull(awardInvite, "未获取到邀请奖品信息!");
         //获取该粉丝是否已获得日志
-        SysLuckyDrawRecord drawRecord = drawRecordRepository.findFirstByPlayerBuyerNickAndAwardId(sysCustom.getBuyerNick(),awardInvite.getId());
+        SysLuckyDrawRecord drawRecord = drawRecordRepository.findFirstByPlayerBuyerNickAndAwardId(sysCustom.getBuyerNick(), awardInvite.getId());
         if (drawRecord != null) {
             awardInvite.setLogId(drawRecord.getId());
-        }else{
+        } else {
             awardInvite.setLogId("");
         }
 
@@ -88,7 +89,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //粉丝信息
         linkedHashMap.put("sysCustom", sysCustom);
         //邀请日志记录
-        linkedHashMap.put("inviteLogs", inviteLogRepository.findByInviter(sysCustom.getBuyerNick()));
+        linkedHashMap.put("inviteLogs", inviteLogRepository.findByInviterAndInvitationType(sysCustom.getBuyerNick(), InvitationTypeEnum.invitationStage));
         //邀请奖品信息
         linkedHashMap.put("awardInvite", awardInvite);
         //获取目前剩余抽奖次数
