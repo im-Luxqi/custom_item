@@ -45,6 +45,8 @@ public class DmBrowseBabyListExecute implements IApiExecute {
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
                                      HttpServletResponse response) {
 
+//        sysParm.getApiParameter().getYunTokenParameter().setBuyerNick("小明");
+
         //取参
         PageListDto pageListDto = sysParm.getApiParameter().findBeautyAdmjson(PageListDto.class);
         pageListDto.startPage();
@@ -59,6 +61,8 @@ public class DmBrowseBabyListExecute implements IApiExecute {
         //随机取12个宝贝
         List<SysCommodity> sysCommodities = new ArrayList<>();
         sysCommodities = finishTheTaskHelper.randowList(commodities, sysCommodities, 12);
+
+        sysCommodities.stream().forEach(s -> s.setNames(s.getName().split(",")));
 
         //获取该粉丝浏览日志 此处保留根据当天时间查询
         SysBrowseLog browseLog = new SysBrowseLog();

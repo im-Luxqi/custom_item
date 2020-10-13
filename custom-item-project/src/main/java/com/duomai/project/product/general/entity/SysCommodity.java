@@ -41,4 +41,8 @@ public class SysCommodity {
     //是否浏览 0 未浏览 1 已浏览
     @Transient
     private Integer isBrowse = 0;
+
+    //商品名称组合
+    @Transient
+    private String[] names;
 }
