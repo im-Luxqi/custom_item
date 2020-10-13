@@ -18,6 +18,8 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
                     "wehre order by draw_time desc limit 50")
     List<Map> queryLuckyDrawLog();
 
+    SysLuckyDrawRecord findFirstByPlayerBuyerNickAndAwardId(String buyerNick,String awardId);
+
 
 
 }

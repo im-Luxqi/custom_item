@@ -55,12 +55,13 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request
             , HttpServletResponse response) throws Exception {
+
+        sysParm.getApiParameter().getYunTokenParameter().setBuyerNick("南陈");
+
         /*预防并发，校验活动是否在活动时间内*/
         projectHelper.checkoutMultipleCommit(sysParm, this);
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         projectHelper.actTimeValidate(actBaseSettingDto);
-
-
 
         /*初始化新粉丝，粉丝每日首次登陆赠送一次抽奖机会*/
         SysCustom sysCustom = customRepository.findByBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
@@ -83,16 +84,12 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         SysAward awardInvite = awardRepository.queryByUseWay(AwardUseWayEnum.INVITE);
         Assert.notNull(awardInvite, "未获取到邀请奖品信息!");
         //获取该粉丝是否已获得日志
-        SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord();
-        List<SysLuckyDrawRecord> sendLog = drawRecordRepository.findAll(Example.of(drawRecord.setPlayerBuyerNick(sysCustom.getBuyerNick())
-                .setAwardId(awardInvite.getId())
-        ));
-        if (!sendLog.isEmpty()) {
-            awardInvite.setLogId(sendLog.get(0).getId());
+        SysLuckyDrawRecord drawRecord = drawRecordRepository.findFirstByPlayerBuyerNickAndAwardId(sysCustom.getBuyerNick(),awardInvite.getId());
+        if (drawRecord != null) {
+            awardInvite.setLogId(drawRecord.getId());
         }else{
             awardInvite.setLogId("");
         }
-
 
         //返回参数
         LinkedHashMap linkedHashMap = new LinkedHashMap();
@@ -107,6 +104,9 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         linkedHashMap.put("awardInvite", awardInvite);
         //获取目前剩余抽奖次数
         linkedHashMap.put("drawNum", drawHelper.unUseLuckyChance(sysCustom.getBuyerNick()));
+        //获取当前粉丝奖池等级
+        linkedHashMap.put("signDto", drawHelper.findCurrentPoolLevel(sysCustom));
+
         //中奖弹幕 展示50条
         List luckyDrawRecords = drawRecordRepository.queryLuckyDrawLog();
         linkedHashMap.put("luckyDrawRecords", luckyDrawRecords.size() > 50 ? luckyDrawRecords : getFakeData());
