@@ -57,7 +57,7 @@ public class IndexSendInviteAwardExecute implements IApiExecute {
         Assert.isTrue(has_invite_num > 4, "邀请5位好友才能获得奖品");
 
         //给完成邀请的发放邀请奖励
-        SysAward awardForInvite = sysAwardRepository.findFirstByUseWay(AwardUseWayEnum.INVITE);
+        SysAward awardForInvite = sysAwardRepository.queryFirstByUseWay(AwardUseWayEnum.INVITE);
         luckyDrawHelper.directSendCoupon(awardForInvite, sysCustom, sysParm.getRequestStartTime());
         return YunReturnValue.ok("完成邀请任务，领取邀请奖励");
     }

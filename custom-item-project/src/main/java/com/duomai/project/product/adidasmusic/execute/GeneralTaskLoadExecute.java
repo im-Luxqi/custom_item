@@ -3,8 +3,6 @@ package com.duomai.project.product.adidasmusic.execute;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.helper.ProjectHelper;
-import com.duomai.project.product.adidasmusic.domain.CusBigWheel;
 import com.duomai.project.product.adidasmusic.domain.CusBigWheelLog;
 import com.duomai.project.product.adidasmusic.service.ICusBigWheelLogService;
 import com.duomai.project.product.general.entity.SysBrowseLog;
@@ -41,14 +39,9 @@ public class GeneralTaskLoadExecute implements IApiExecute {
     private SysCustomRepository sysCustomRepository;
     @Autowired
     private ICusBigWheelLogService iCusBigWheelLogService;
-    @Autowired
-    private ProjectHelper projectHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-        //预防连点
-        projectHelper.checkoutMultipleCommit(sysParm,this);
 
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         // 校验玩家是否存在

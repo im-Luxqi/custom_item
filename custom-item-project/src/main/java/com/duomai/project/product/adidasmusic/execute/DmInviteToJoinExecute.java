@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysInviteLog;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
 import com.duomai.project.product.general.enums.InvitationTypeEnum;
@@ -26,10 +28,18 @@ public class DmInviteToJoinExecute implements IApiExecute {
 
     @Resource
     private SysInviteLogRepository inviteLogRepository;
+    @Resource
+    private ProjectHelper projectHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
-                                     HttpServletResponse response) {
+                                     HttpServletResponse response) throws Exception {
+
+        /*预防并发，校验活动是否在活动时间内*/
+        projectHelper.checkoutMultipleCommit(sysParm, this);
+        //是否在活动期间
+        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
+        projectHelper.actTimeValidate(actBaseSettingDto);
 
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
