@@ -262,13 +262,13 @@ public class LuckyDrawHelper {
 
     @Transactional
     public List<SysAward> findCustomTimeAwardPool(SysCustom sysCustom) {
-        long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndIsWinAndLuckyChanceIsNotNull(sysCustom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
-        if (l > 0) {
-            //todo:等待落实奖池升级规则
-            PoolLevelEnum currentPoolLevel = findCurrentPoolLevel(sysCustom).getCurrentPoolLevel();
-            return sysAwardRepository.findByUseWayAndPoolLevelBeforeOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
-        }
-        return sysAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.FIRSTLUCKY);
+//        long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndIsWinAndLuckyChanceIsNotNull(sysCustom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
+//        if (l > 0) {
+        //todo:等待落实奖池升级规则
+        PoolLevelEnum currentPoolLevel = findCurrentPoolLevel(sysCustom).getCurrentPoolLevel();
+        return sysAwardRepository.findByUseWayAndPoolLevelBeforeOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
+//        }
+//        return sysAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.FIRSTLUCKY);
     }
 
     @Transactional
