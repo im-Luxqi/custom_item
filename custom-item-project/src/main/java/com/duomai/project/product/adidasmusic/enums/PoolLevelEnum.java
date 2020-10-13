@@ -6,7 +6,6 @@ package com.duomai.project.product.adidasmusic.enums;
  * @time 2020-10-10 16:07:46
  **/
 public enum PoolLevelEnum {
-    LEVEL_0(0, "等级0"),
     LEVEL_1(1, "等级1"),
     LEVEL_2(2, "等级2"),
     LEVEL_3(3, "等级3"),

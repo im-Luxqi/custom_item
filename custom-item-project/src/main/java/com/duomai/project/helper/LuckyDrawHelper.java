@@ -128,19 +128,28 @@ public class LuckyDrawHelper {
      **/
     @Transactional
     public SysAward luckyDraw(List<SysAward> awards, SysCustom custom, Date drawTime) throws Exception {
-        SysAward awardThisWin = null;//本次抽中的奖品
+        return luckyDraw(awards, custom, drawTime, false);
+    }
 
-        /*消耗一次抽奖次数*/
-        SysLuckyChance thisChance = sysLuckyChanceRepository.findFirstByBuyerNickAndIsUse(custom.getBuyerNick(), BooleanConstant.BOOLEAN_NO);
-        if (Objects.isNull(thisChance)) {
-            throw new Exception("抽奖次数不足");
+    @Transactional
+    public SysAward luckyDraw(List<SysAward> awards, SysCustom custom, Date drawTime, Boolean freeFlag) throws Exception {
+        SysAward awardThisWin = null;//本次抽中的奖品
+        SysLuckyChance thisChance = null;
+        if (!freeFlag) {
+            /*消耗一次抽奖次数*/
+            thisChance = sysLuckyChanceRepository.findFirstByBuyerNickAndIsUse(custom.getBuyerNick(), BooleanConstant.BOOLEAN_NO);
+            if (Objects.isNull(thisChance)) {
+                throw new Exception("抽奖次数不足");
+            }
+            sysLuckyChanceRepository.save(thisChance.setIsUse(BooleanConstant.BOOLEAN_YES)
+                    .setUseTime(drawTime));
         }
-        sysLuckyChanceRepository.save(thisChance.setIsUse(BooleanConstant.BOOLEAN_YES)
-                .setUseTime(drawTime));
+
+
 
         /*整理抽奖日志*/
         SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord()
-                .setLuckyChance(thisChance.getId())
+                .setLuckyChance(thisChance == null ? null : thisChance.getId())
                 .setIsWin(BooleanConstant.BOOLEAN_NO)
                 .setIsFill(BooleanConstant.BOOLEAN_NO)
                 .setDrawTime(drawTime)
@@ -280,7 +289,7 @@ public class LuckyDrawHelper {
         //下单数
         Integer orderNum = cusOrderInfoService.countTidsByBuyerNick(sysCustom.getBuyerNick());
 
-        PoolLevelEnum level = PoolLevelEnum.LEVEL_0;
+        PoolLevelEnum level = PoolLevelEnum.LEVEL_1;
         if (sign_num >= 1) {
             level = PoolLevelEnum.LEVEL_1;
         }
