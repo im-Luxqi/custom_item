@@ -8,6 +8,7 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.adidasmusic.domain.CusBigWheelLog;
 import com.duomai.project.product.adidasmusic.service.ICusBigWheelLogService;
+import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.dto.TaskBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyChance;
@@ -46,6 +47,8 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
 
         //预防连点
         projectHelper.checkoutMultipleCommit(sysParm,this);
+        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
+        projectHelper.actTimeValidate(actBaseSettingDto);
 
         Date now = sysParm.getRequestStartTime();
         // 获取尖货大咖任务开放时间
