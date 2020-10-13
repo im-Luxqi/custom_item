@@ -1,5 +1,6 @@
 package com.duomai.project.product.adidasmusic.execute;
 
+import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
@@ -50,7 +51,9 @@ public class DzToolsClearLogExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        String buyerNick =sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+//        String buyerNick =sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+        JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
+        String buyerNick = object.getString("buyerNick");
 
         // 签到、关注、入会记录
         List<SysGeneralTask> sysGeneralTasks = sysGeneralTaskRepository.findByBuyerNick(buyerNick);
