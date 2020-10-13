@@ -64,7 +64,7 @@ public class IndexLuckyDrawExecute implements IApiExecute {
             List<SysAward> firstDraws = sysAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.FIRSTLUCKY);
             for (int i = 0; i < firstDraws.size(); i++) {
                 List<SysAward> temp = new ArrayList<>();
-                temp.add(firstDraws.get(0));
+                temp.add(firstDraws.get(i));
                 SysAward w = luckyDrawHelper.luckyDraw(temp, sysCustom, sysParm.getRequestStartTime(), i != 0);
                 if (w != null)
                     winAward.add(w);
