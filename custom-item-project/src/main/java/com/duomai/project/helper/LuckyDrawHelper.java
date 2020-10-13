@@ -244,7 +244,7 @@ public class LuckyDrawHelper {
                 .setAwardLevel(award.getAwardLevel())
                 .setAwardName(award.getName())
                 .setAwardType(award.getType())
-                .setRemark("邀请三个好友发放优惠券");
+                .setRemark("邀请五个好友发放优惠券");
 
         try {
             AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon(custom.getOpenId(), award.getEname());

@@ -33,15 +33,13 @@ public class DmInviteToJoinExecute implements IApiExecute {
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
-        Assert.hasLength(buyerNick, "用户混淆昵称不能为空!");
-
         Date date = sysParm.getRequestStartTime();
-
-        String inviteeNick = object.getString("inviteeNick");
-        Assert.hasLength(inviteeNick, "邀请人昵称不能为空!");
+        String headImg = object.getString("headImg");
+        String inviterNick = object.getString("inviterNick");
+        Assert.hasLength(inviterNick, "邀请人昵称不能为空!");
 
         //check
-        if (inviteeNick.equals(buyerNick)) {
+        if (inviterNick.equals(buyerNick)) {
             return YunReturnValue.fail("亲、自己无法邀请自己哦!");
         }
 
@@ -51,7 +49,9 @@ public class DmInviteToJoinExecute implements IApiExecute {
             SysInviteLog inviteLog = new SysInviteLog();
             inviteLogRepository.save(inviteLog.setCreateTime(date)
                     .setInvitee(buyerNick)
-                    .setInviter(inviteeNick)
+                    .setMixInvitee(sysParm.getApiParameter().getYunTokenParameter().getUserNick())
+                    .setInviteeImg(headImg)
+                    .setInviter(inviterNick)
             );
         } else {
             return YunReturnValue.fail(CommonExceptionEnum.HELPED_INVITEE_ERROR.getMsg());

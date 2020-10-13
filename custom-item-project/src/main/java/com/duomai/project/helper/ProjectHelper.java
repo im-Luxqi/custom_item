@@ -7,6 +7,7 @@ import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.api.taobao.OcsUtil;
 import com.duomai.project.product.general.constants.ActSettingConstant;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
+import com.duomai.project.product.general.dto.TaskBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysKeyValue;
 import com.duomai.project.product.general.repository.SysKeyValueRepository;
@@ -40,6 +41,17 @@ public class ProjectHelper {
     private SysKeyValueRepository sysKeyValueRepository;
 
 
+    /* 任务配置--信息获取
+     * @description
+     * @create by lyj
+     * @time 2020-10-10 16:52:00
+     **/
+    public TaskBaseSettingDto taskBaseSettingFind(){
+        List<SysKeyValue> taskSetting = sysKeyValueRepository.findByType(ActSettingConstant.TYPE_TASK_DAKA_SETTING);
+        Map<String,String> map = taskSetting.stream().collect(Collectors.toMap(SysKeyValue::getK, SysKeyValue::getV));
+        return new TaskBaseSettingDto().setTaskStartTime(CommonDateParseUtil.string2date(map.get(ActSettingConstant.TASK_START_TIME), CommonDateParseUtil.YYYY_MM_DD))
+                .setTaskEndTime(CommonDateParseUtil.string2date(map.get(ActSettingConstant.TASK_END_TIME), CommonDateParseUtil.YYYY_MM_DD));
+    }
 
     /* 防连点
      * @description

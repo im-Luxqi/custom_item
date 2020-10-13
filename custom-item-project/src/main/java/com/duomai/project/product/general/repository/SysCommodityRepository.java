@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface SysCommodityRepository extends BaseRepository<SysCommodity, String> {
 
-    List<SysCommodity> queryAllByType(AwardTypeEnum type);
+    List<SysCommodity> queryAllByTypeAndAndCommoditySort(AwardTypeEnum type,String commoditySort);
 
 }

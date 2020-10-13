@@ -21,6 +21,6 @@ public class SysKeyValue {
     private String k;
     @Column(columnDefinition = "text COMMENT '值'")
     private String v;
-    @Column(columnDefinition = "varchar(20) COMMENT '类'")
+    @Column(columnDefinition = "varchar(30) COMMENT '类'")
     private String type;
 }

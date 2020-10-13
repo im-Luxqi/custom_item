@@ -2,6 +2,8 @@ package com.duomai.project.product.general.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class AddCommodityDto {
 
@@ -10,5 +12,7 @@ public class AddCommodityDto {
     private String type;
     private String img;
     private String price;
+    private Date createTime;
+    private String commoditySort;
 
 }

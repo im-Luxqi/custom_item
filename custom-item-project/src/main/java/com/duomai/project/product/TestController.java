@@ -27,14 +27,11 @@ public class TestController {
     @Autowired
     DataSource dataSource;
 
-
     @Autowired
     ProjectHelper projectHelper;
 
-
     @Autowired
     LuckyDrawHelper luckyDrawHelper;
-
 
     @Autowired
     DefaultTaobaoClient defaultTaobaoClient;
@@ -55,4 +52,5 @@ public class TestController {
     public String test() throws ApiException {
         return "success";
     }
+
 }

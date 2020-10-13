@@ -38,7 +38,8 @@ public class IndexSendInviteAwardExecute implements IApiExecute {
     private SysCustomRepository sysCustomRepository;
 
     @Override
-    public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
+                                     HttpServletResponse response) throws Exception {
 
         //防止连续点击
         projectHelper.checkoutMultipleCommit(sysParm,this);
@@ -50,9 +51,9 @@ public class IndexSendInviteAwardExecute implements IApiExecute {
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(
                 sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
         Assert.notNull(sysCustom, "不存在该玩家");
-        //玩家是否已邀请了三位好友
+        //玩家是否已邀请了五位好友
         long has_invite_num = sysInviteLogRepository.countByInviter(sysCustom.getBuyerNick());
-        Assert.isTrue(has_invite_num > 2, "邀请3位好友才能获得奖品");
+        Assert.isTrue(has_invite_num > 4, "邀请5位好友才能获得奖品");
 
         //给完成邀请的发放邀请奖励
         SysAward awardForInvite = sysAwardRepository.findFirstByUseWay(AwardUseWayEnum.INVITE);
