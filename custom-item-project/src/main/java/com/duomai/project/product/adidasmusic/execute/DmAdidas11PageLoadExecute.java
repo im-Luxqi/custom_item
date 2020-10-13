@@ -9,13 +9,14 @@ import com.duomai.project.product.adidasmusic.util.CommonHanZiUtil;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysAward;
 import com.duomai.project.product.general.entity.SysCustom;
-import com.duomai.project.product.general.entity.SysInviteLog;
 import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
-import com.duomai.project.product.general.repository.*;
-import org.springframework.data.domain.Example;
+import com.duomai.project.product.general.repository.SysAwardRepository;
+import com.duomai.project.product.general.repository.SysCustomRepository;
+import com.duomai.project.product.general.repository.SysInviteLogRepository;
+import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -68,11 +69,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
             }
         }
 
-        //查询出当前粉丝的邀请记录
-        List<SysInviteLog> inviteLogs;
-        SysInviteLog log = new SysInviteLog();
-        inviteLogs = inviteLogRepository.findAll(Example.of(log.setInviter(sysCustom.getBuyerNick())));
-
         //获取邀请奖品信息
         SysAward awardInvite = awardRepository.queryFirstByUseWay(AwardUseWayEnum.INVITE);
         Assert.notNull(awardInvite, "未获取到邀请奖品信息!");
@@ -92,7 +88,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //粉丝信息
         linkedHashMap.put("sysCustom", sysCustom);
         //邀请日志记录
-        linkedHashMap.put("inviteLogs", inviteLogs);
+        linkedHashMap.put("inviteLogs", inviteLogRepository.findByInviter(sysCustom.getBuyerNick()));
         //邀请奖品信息
         linkedHashMap.put("awardInvite", awardInvite);
         //获取目前剩余抽奖次数
