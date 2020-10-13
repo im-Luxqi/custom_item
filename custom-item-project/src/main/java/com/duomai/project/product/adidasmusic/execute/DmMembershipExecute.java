@@ -36,8 +36,6 @@ public class DmMembershipExecute implements IApiExecute {
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
                                      HttpServletResponse response) throws Exception {
 
-        /*预防并发，校验活动是否在活动时间内*/
-        projectHelper.checkoutMultipleCommit(sysParm, this);
         //是否在活动期间
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         projectHelper.actTimeValidate(actBaseSettingDto);
