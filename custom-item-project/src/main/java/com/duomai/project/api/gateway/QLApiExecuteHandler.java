@@ -57,6 +57,8 @@ public class QLApiExecuteHandler {
 
         map.put("wx.dz.tools.get.order",CusGetOrderExecute.class); //拉取订单 wxq
 
+        map.put("wz.dz.tools.clear.log",DzToolsClearLogExecute.class); // 测试：清除记录
+
 
     }
 

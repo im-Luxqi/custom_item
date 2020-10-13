@@ -13,4 +13,9 @@ public interface SysBrowseLogRepository extends BaseRepository<SysBrowseLog, Str
 
     //查询该粉丝在时间内浏览的日志
     List<SysBrowseLog> findByBuyerNickAndCreateTimeBetween(String buyerNick, Date start, Date end);
+
+    // 根据昵称
+    List<SysBrowseLog> findByBuyerNick(String buyerNick);
+
+    void deleteByBuyerNick(String buyerNick);
 }

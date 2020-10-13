@@ -5,6 +5,7 @@ import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 
 import java.util.Date;
+import java.util.List;
 
 public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance, String> {
 
@@ -16,5 +17,9 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
 
     //获取某个任务当天完成了几次
     long countByBuyerNickAndChanceFromAndGetTimeBetween(String buyerNick, LuckyChanceFromEnum chanceFrom, Date startTime, Date endTime);
+
+    List<SysLuckyChance> findByBuyerNick(String buyerNick);
+
+    void deleteByBuyerNick(String buyerNick);
 
 }

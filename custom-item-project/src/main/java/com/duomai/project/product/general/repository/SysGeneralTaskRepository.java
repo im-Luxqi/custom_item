@@ -19,4 +19,10 @@ public interface SysGeneralTaskRepository extends BaseRepository<SysGeneralTask,
     List<SysGeneralTask> findByBuyerNickAndTaskTypeAndCreateTimeBetween(String buyerNick, TaskTypeEnum taskType,
                                                                         Date start, Date end);
 
+    //根据粉丝昵称
+    List<SysGeneralTask> findByBuyerNick(String buyerNick);
+
+    //根据粉丝昵称清除数据
+    void deleteByBuyerNick(String buyerNick);
+
 }
