@@ -9,5 +9,4 @@ public interface SysPagePvLogRepository extends BaseRepository<SysPagePvLog, Str
 
     List<SysPagePvLog> findByBuyerNick(String buyerNick);
 
-    void deleteByBuyerNick(String buyerNick);
 }

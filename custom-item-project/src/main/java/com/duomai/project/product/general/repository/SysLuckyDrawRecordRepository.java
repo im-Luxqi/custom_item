@@ -24,8 +24,5 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
 
     List<SysLuckyDrawRecord> findByPlayerBuyerNick(String buyerNick);
 
-    void deleteByPlayerBuyerNick(String buyerNick);
-
-
 
 }

@@ -20,6 +20,5 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
 
     List<SysLuckyChance> findByBuyerNick(String buyerNick);
 
-    void deleteByBuyerNick(String buyerNick);
 
 }

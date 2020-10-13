@@ -20,7 +20,4 @@ public interface SysInviteLogRepository extends BaseRepository<SysInviteLog, Str
     List<SysInviteLog> findByInviter(String buyerNick);
     List<SysInviteLog> findByInvitee(String buyerNick);
 
-    void deleteByInviter(String buyerNick);
-    void deleteByInvitee(String buyerNick);
-
 }

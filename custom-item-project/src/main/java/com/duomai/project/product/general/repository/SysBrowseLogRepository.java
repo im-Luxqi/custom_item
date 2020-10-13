@@ -17,5 +17,4 @@ public interface SysBrowseLogRepository extends BaseRepository<SysBrowseLog, Str
     // 根据昵称
     List<SysBrowseLog> findByBuyerNick(String buyerNick);
 
-    void deleteByBuyerNick(String buyerNick);
 }
