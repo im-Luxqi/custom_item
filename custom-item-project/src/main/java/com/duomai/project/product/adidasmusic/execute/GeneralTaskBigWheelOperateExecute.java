@@ -64,6 +64,7 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         Assert.notNull(sysCustom, "不存在该玩家");
         // 校验
         List<CusBigWheelLog> bigWheelLog = iCusBigWheelLogService.query()
+                .eq(CusBigWheelLog::getBuyerNick, buyerNick)
                 .between(CusBigWheelLog::getCreateTime,CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date))
                 .list();
         if (bigWheelLog.size() > 0){
