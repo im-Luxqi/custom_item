@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 订单 服务层实现
@@ -39,6 +40,7 @@ public class CusOrderInfoServiceImpl extends BaseServiceImpl<CusOrderInfoMapper,
         newestTrades.forEach((trade) -> {
             for (OpenTradesSoldGetResponse.Order order : trade.getOrders()) {
                 CusOrderInfo cusOrderInfo = new CusOrderInfo();
+                cusOrderInfo.setId(UUID.randomUUID().toString());
                 cusOrderInfo.setCreateTime(requestStartTime);
                 cusOrderInfo.setTitle(order.getTitle());//商品名称
                 cusOrderInfo.setPicUrl(order.getPicPath());//商品图片
