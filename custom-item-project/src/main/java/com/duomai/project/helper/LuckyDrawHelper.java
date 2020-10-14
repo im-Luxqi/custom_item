@@ -247,7 +247,6 @@ public class LuckyDrawHelper {
                 .setPlayerHeadImg(custom.getHeadImg())
                 .setPlayerBuyerNick(custom.getBuyerNick())
                 .setPlayerZnick(custom.getZnick())
-//                .setIsWin(BooleanConstant.BOOLEAN_NO)
                 .setAwardId(award.getId())
                 .setAwardImg(award.getImg())
                 .setAwardLevel(award.getAwardLevel())
