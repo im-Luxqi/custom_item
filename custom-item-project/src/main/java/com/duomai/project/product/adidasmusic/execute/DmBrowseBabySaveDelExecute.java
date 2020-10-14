@@ -35,11 +35,12 @@ public class DmBrowseBabySaveDelExecute implements IApiExecute {
 
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
+        //删除
         String ids = object.getString("ids");
+        //新增、修改
         JSONArray array = object.getJSONArray("sysCommodity");
-        List<AddCommodityDto> dtos = array.toJavaList(AddCommodityDto.class);
+        List<AddCommodityDto> commodityDtoList = array.toJavaList(AddCommodityDto.class);
 
-        //ids不为空为删除
         if (StringUtils.isNotBlank(ids)) {
             String[] spl = ids.split(",");
             for (String s : spl) {
@@ -48,10 +49,9 @@ public class DmBrowseBabySaveDelExecute implements IApiExecute {
             return YunReturnValue.ok("操作成功!");
         }
 
-        //dtos 不为空
-        if (!dtos.isEmpty()) {
+        if (!commodityDtoList.isEmpty()) {
             List<SysCommodity> commodities = new ArrayList<>();
-            for (AddCommodityDto dto : dtos) {
+            for (AddCommodityDto dto : commodityDtoList) {
                 SysCommodity commodity = new SysCommodity();
                 commodities.add(commodity.setName(dto.getName())
                         .setCreateTime(dto.getCreateTime())

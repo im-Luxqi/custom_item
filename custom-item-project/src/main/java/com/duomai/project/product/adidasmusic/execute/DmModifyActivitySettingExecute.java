@@ -32,11 +32,12 @@ public class DmModifyActivitySettingExecute implements IApiExecute {
 
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
+        //删除
         String ids = object.getString("ids");
+        //新增、修改
         JSONArray keyValue = object.getJSONArray("keyValue");
         List<SysKeyValue> keyValues = keyValue.toJavaList(SysKeyValue.class);
 
-        //ids不为空为删除
         if (StringUtils.isNotBlank(ids)) {
             String[] spl = ids.split(",");
             for (String s : spl) {
@@ -45,7 +46,6 @@ public class DmModifyActivitySettingExecute implements IApiExecute {
             return YunReturnValue.ok("操作成功!");
         }
 
-        //SysKeyValue 不为空
         if (!keyValues.isEmpty()) {
             sysKeyValueRepository.saveAll(keyValues);
         }

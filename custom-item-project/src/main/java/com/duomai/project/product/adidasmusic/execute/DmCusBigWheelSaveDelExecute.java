@@ -32,10 +32,12 @@ public class DmCusBigWheelSaveDelExecute implements IApiExecute {
 
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
+        //删除
         String ids = object.getString("ids");
+        //新增、修改
         JSONArray array = object.getJSONArray("bigWheel");
         List<CusBigWheel> cusBigWheels = array.toJavaList(CusBigWheel.class);
-        //ids不为空为删除
+
         if (StringUtils.isNotBlank(ids)) {
             String[] spl = ids.split(",");
             for (String s : spl) {
@@ -44,7 +46,6 @@ public class DmCusBigWheelSaveDelExecute implements IApiExecute {
             return YunReturnValue.ok("操作成功!");
         }
 
-        //cusBigWheels 不为空
         if (!cusBigWheels.isEmpty()) {
             cusBigWheelService.saveBatch(cusBigWheels);
         }
