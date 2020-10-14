@@ -236,7 +236,7 @@ public class LuckyDrawHelper {
     }
 
 
-    @Transient
+    @Transactional
     public void directSendCoupon(SysAward award, SysCustom custom, Date sendTime) {
         Assert.isTrue(sysAwardRepository.tryReduceOne(award.getId()) > 0, "奖品库存库存不足");
         /*整理抽奖日志*/
