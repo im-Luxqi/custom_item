@@ -74,9 +74,9 @@ public class DzToolsClearLogExecute implements IApiExecute {
         List<SysInviteLog> sysInviterLogs = sysInviteLogRepository.findByInviter(buyerNick);
         if (!sysInviterLogs.isEmpty())
             sysInviteLogRepository.deleteInBatch(sysInviterLogs);
-        SysInviteLog inviteLog = sysInviteLogRepository.queryFirstByInvitee(buyerNick);
-        if (inviteLog != null)
-            sysInviteLogRepository.delete(inviteLog);
+        List<SysInviteLog> logs = sysInviteLogRepository.findByInvitee(buyerNick);
+        if (!logs.isEmpty())
+            sysInviteLogRepository.deleteInBatch(logs);
         // 抽奖机会来源
         List<SysLuckyChance> sysLuckyChances = sysLuckyChanceRepository.findByBuyerNick(buyerNick);
         if (!sysLuckyChances.isEmpty())

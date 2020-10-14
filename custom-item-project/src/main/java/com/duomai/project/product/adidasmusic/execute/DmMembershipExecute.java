@@ -52,14 +52,17 @@ public class DmMembershipExecute implements IApiExecute {
             return YunReturnValue.fail("亲、自己无法邀请自己哦!");
         }
 
-        //保存邀请日志
-        SysInviteLog inviteLog = new SysInviteLog();
-        inviteLogRepository.save(
-                inviteLog.setInvitee(buyerNick)
-                .setInviter(inviterNick)
-                .setCreateTime(sysParm.getRequestStartTime())
-                .setInvitationType(InvitationTypeEnum.memberStage)
-        );
+        long i = inviteLogRepository.countByInviteeAndInvitationType(buyerNick,InvitationTypeEnum.memberStage);
+        if(i == 0) {
+            //保存邀请日志
+            SysInviteLog inviteLog = new SysInviteLog();
+            inviteLogRepository.save(
+                    inviteLog.setInvitee(buyerNick)
+                            .setInviter(inviterNick)
+                            .setCreateTime(sysParm.getRequestStartTime())
+                            .setInvitationType(InvitationTypeEnum.memberStage)
+            );
+        }
 
         return YunReturnValue.ok(taobaoAPIService.isMember(buyerNick),"操作成功");
     }
