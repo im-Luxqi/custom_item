@@ -72,10 +72,6 @@ public class GeneralTaskSignOperateExecute implements IApiExecute {
                 .setTaskType(TaskTypeEnum.SIGN));
         /*插入一条抽奖机会来源*/
         luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.SIGN, 1);
-//        SysLuckyChance luckyChance = new SysLuckyChance();
-//        sysLuckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
-//                .setGetTime(date).setChanceFrom(LuckyChanceFromEnum.SIGN)
-//                .setIsUse(BooleanConstant.BOOLEAN_NO));
         return YunReturnValue.ok("操作成功！");
     }
 }
