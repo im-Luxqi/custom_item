@@ -8,6 +8,7 @@ import com.duomai.project.product.adidasmusic.service.ICusOrderInfoService;
 import com.duomai.project.tool.CommonDateParseUtil;
 import com.taobao.api.response.OpenTradesSoldGetResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +32,7 @@ public class CusOrderInfoServiceImpl extends BaseServiceImpl<CusOrderInfoMapper,
         return this.count(Wrappers.<CusOrderInfo>query().select("distinct tid").eq("buyer_nick", buyerNick));
     }
 
+    @Transactional
     @Override
     public void insertTaobaoTradeList(List<OpenTradesSoldGetResponse.Trade> newestTrades, String buyerNick, Date requestStartTime) {
         List<CusOrderInfo> adPreOrderInfoList = new ArrayList<>();
