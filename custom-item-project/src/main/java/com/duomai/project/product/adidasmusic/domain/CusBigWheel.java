@@ -55,7 +55,4 @@ public class CusBigWheel {
 	 */
 	private String alias;
 
-	@Transient
-	private CusBigWheelStateEnum state;
-
 }
