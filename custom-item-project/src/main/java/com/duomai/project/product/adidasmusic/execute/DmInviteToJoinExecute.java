@@ -49,6 +49,7 @@ public class DmInviteToJoinExecute implements IApiExecute {
         String headImg = object.getString("headImg");
         String inviterNick = object.getString("inviterNick");
         Assert.hasLength(inviterNick, "邀请人昵称不能为空!");
+        inviterNick = inviterNick.replaceAll(" ","+");
 
         //check
         if (inviterNick.equals(buyerNick)) {
