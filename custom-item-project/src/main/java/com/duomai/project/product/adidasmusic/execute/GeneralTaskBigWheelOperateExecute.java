@@ -76,7 +76,7 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
                 .list();
         long num = sysLuckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeBetween(buyerNick, LuckyChanceFromEnum.DAKA,
                 CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
-        if (num > 0 && !bigWheelLog.isEmpty()){
+        if (num > 0 && !bigWheelLog.isEmpty()){ // 操作日志记录+获得抽奖机会
             return YunReturnValue.fail("亲，您已经获得过一次抽奖机会了哦!");
         }
         /*保存操作日志*/
