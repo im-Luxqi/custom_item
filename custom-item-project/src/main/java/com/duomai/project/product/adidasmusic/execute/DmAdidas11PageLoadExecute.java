@@ -115,19 +115,18 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         return YunReturnValue.ok(linkedHashMap, CommonExceptionEnum.OPERATION_SUCCESS.getMsg());
     }
 
-
-    static List<SysLuckyDrawRecord> fakeData;
-
-    static List<SysLuckyDrawRecord> getFakeData() {
-        if (fakeData == null) {
-            List<SysLuckyDrawRecord> objects = new ArrayList<>(50);
-            for (int i = 0; i < 50; i++) {
-                objects.add(new SysLuckyDrawRecord()
-                        .setAwardName("满减优惠券")
-                        .setPlayerBuyerNick(CommonHanZiUtil.randomGetUnicodeHanZi() + "***"));
-            }
-            fakeData = objects;
-        }
-        return fakeData;
-    }
+//    static List<SysLuckyDrawRecord> fakeData;
+//
+//    static List<SysLuckyDrawRecord> getFakeData() {
+//        if (fakeData == null) {
+//            List<SysLuckyDrawRecord> objects = new ArrayList<>(50);
+//            for (int i = 0; i < 50; i++) {
+//                objects.add(new SysLuckyDrawRecord()
+//                        .setAwardName("满减优惠券")
+//                        .setPlayerBuyerNick(CommonHanZiUtil.randomGetUnicodeHanZi() + "***"));
+//            }
+//            fakeData = objects;
+//        }
+//        return fakeData;
+//    }
 }
