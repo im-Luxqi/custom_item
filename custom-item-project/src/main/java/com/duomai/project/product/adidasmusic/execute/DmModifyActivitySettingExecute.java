@@ -36,7 +36,6 @@ public class DmModifyActivitySettingExecute implements IApiExecute {
         String ids = object.getString("ids");
         //新增、修改
         JSONArray keyValue = object.getJSONArray("keyValue");
-        List<SysKeyValue> keyValues = keyValue.toJavaList(SysKeyValue.class);
 
         if (StringUtils.isNotBlank(ids)) {
             String[] spl = ids.split(",");
@@ -46,8 +45,11 @@ public class DmModifyActivitySettingExecute implements IApiExecute {
             return YunReturnValue.ok("操作成功!");
         }
 
-        if (!keyValues.isEmpty()) {
-            sysKeyValueRepository.saveAll(keyValues);
+        if(keyValue !=null){
+            List<SysKeyValue> keyValues = keyValue.toJavaList(SysKeyValue.class);
+            if (!keyValues.isEmpty()) {
+                sysKeyValueRepository.saveAll(keyValues);
+            }
         }
         return YunReturnValue.ok("操作成功!");
     }
