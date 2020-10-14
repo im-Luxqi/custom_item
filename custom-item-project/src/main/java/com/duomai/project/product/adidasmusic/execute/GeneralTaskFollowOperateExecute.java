@@ -66,11 +66,6 @@ public class GeneralTaskFollowOperateExecute implements IApiExecute {
                 .setCreateTime(sysParm.getRequestStartTime()));
         /*插入一条抽奖机会来源*/
         luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.FOLLOW, 1);
-//        SysLuckyChance luckyChance = new SysLuckyChance();
-//        sysLuckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
-//                .setGetTime(sysParm.getRequestStartTime())
-//                .setChanceFrom(LuckyChanceFromEnum.FOLLOW)
-//                .setIsUse(BooleanConstant.BOOLEAN_NO));
         return YunReturnValue.ok("操作成功！");
     }
 }
