@@ -73,7 +73,7 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
                 .eq(CusBigWheelLog::getBuyerNick, buyerNick)
                 .between(CusBigWheelLog::getCreateTime,CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date))
                 .list();
-        if (bigWheelLog == null){
+        if (! bigWheelLog.isEmpty()){
             /*保存操作日志*/
             CusBigWheelLog cusBigWheelLog = new CusBigWheelLog();
             cusBigWheelLog.setBuyerNick(buyerNick);
