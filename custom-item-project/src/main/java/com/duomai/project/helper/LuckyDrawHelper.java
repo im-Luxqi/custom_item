@@ -275,7 +275,7 @@ public class LuckyDrawHelper {
 //        if (l > 0) {
         //todo:等待落实奖池升级规则
         PoolLevelEnum currentPoolLevel = findCurrentPoolLevel(sysCustom).getCurrentPoolLevel();
-        return sysAwardRepository.findByUseWayAndPoolLevelBeforeOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
+        return sysAwardRepository.findByUseWayAndPoolLevelOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
 //        }
 //        return sysAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.FIRSTLUCKY);
     }
