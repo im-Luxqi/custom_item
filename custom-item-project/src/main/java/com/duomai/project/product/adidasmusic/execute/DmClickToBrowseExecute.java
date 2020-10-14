@@ -41,8 +41,6 @@ public class DmClickToBrowseExecute implements IApiExecute {
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
                                      HttpServletResponse response) throws Exception {
 
-        sysParm.getApiParameter().getYunTokenParameter().setBuyerNick("小明");
-
         /*预防并发，校验活动是否在活动时间内*/
         projectHelper.checkoutMultipleCommit(sysParm, this);
         //是否在活动期间
