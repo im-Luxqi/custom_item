@@ -24,9 +24,7 @@ import org.springframework.util.Assert;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author cjw
@@ -103,7 +101,16 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
         //中奖弹幕 展示50条
         List luckyDrawRecords = drawRecordRepository.queryLuckyDrawLog();
-        linkedHashMap.put("luckyDrawRecords", luckyDrawRecords.size() > 50 ? luckyDrawRecords : getFakeData());
+        //如果没有50条数据，造假数据填补
+        if (luckyDrawRecords.size() < 50) {
+            for (int i = 0; i < 50 - luckyDrawRecords.size(); i++) {
+                Map map = new HashMap();
+                map.put("awardName", "满减优惠券");//奖品默认名称
+                map.put("playerBuyerNick", CommonHanZiUtil.randomGetUnicodeHanZi() + "***");//粉丝昵称
+                luckyDrawRecords.add(map);
+            }
+        }
+        linkedHashMap.put("luckyDrawRecords", luckyDrawRecords);
 
         return YunReturnValue.ok(linkedHashMap, CommonExceptionEnum.OPERATION_SUCCESS.getMsg());
     }
