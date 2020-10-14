@@ -44,6 +44,7 @@ public class DmInviteToJoinExecute implements IApiExecute {
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+        buyerNick = buyerNick.replaceAll(" ","+");
         Date date = sysParm.getRequestStartTime();
         String headImg = object.getString("headImg");
         String inviterNick = object.getString("inviterNick");
