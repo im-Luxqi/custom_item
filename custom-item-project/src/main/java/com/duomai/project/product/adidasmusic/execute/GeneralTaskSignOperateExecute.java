@@ -4,6 +4,7 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
@@ -39,6 +40,8 @@ public class GeneralTaskSignOperateExecute implements IApiExecute {
     private SysLuckyChanceRepository sysLuckyChanceRepository;
     @Autowired
     private ProjectHelper projectHelper;
+    @Autowired
+    private LuckyDrawHelper luckyDrawHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -68,10 +71,7 @@ public class GeneralTaskSignOperateExecute implements IApiExecute {
                 .setCreateTime(date)
                 .setTaskType(TaskTypeEnum.SIGN));
         /*插入一条抽奖机会来源*/
-        SysLuckyChance luckyChance = new SysLuckyChance();
-        sysLuckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
-                .setGetTime(date).setChanceFrom(LuckyChanceFromEnum.SIGN)
-                .setIsUse(BooleanConstant.BOOLEAN_NO));
+        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.SIGN, 1);
         return YunReturnValue.ok("操作成功！");
     }
 }

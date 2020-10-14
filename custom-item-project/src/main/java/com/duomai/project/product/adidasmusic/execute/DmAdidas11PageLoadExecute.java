@@ -61,11 +61,15 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         /*初始化新粉丝，粉丝每日首次登陆赠送一次抽奖机会*/
         SysCustom sysCustom = customRepository.findByBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
         if (sysCustom == null) {
+            //保存粉丝信息
             sysCustom = customRepository.save(projectHelper.customInit(sysParm));
+            //赠送一次每日抽奖机会
             drawHelper.sendLuckyChance(sysCustom.getBuyerNick(), LuckyChanceFromEnum.FIRST, 1);
         } else {
+            //查询是否赠送过
             long l = drawHelper.countTodayLuckyChanceFrom(sysCustom.getBuyerNick(), LuckyChanceFromEnum.FIRST);
             if (l == 0) {
+                //赠送一次每日抽奖机会
                 drawHelper.sendLuckyChance(sysCustom.getBuyerNick(), LuckyChanceFromEnum.FIRST, 1);
             }
         }

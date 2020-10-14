@@ -39,7 +39,6 @@ public class DmBrowseBabySaveDelExecute implements IApiExecute {
         String ids = object.getString("ids");
         //新增、修改
         JSONArray array = object.getJSONArray("sysCommodity");
-        List<AddCommodityDto> commodityDtoList = array.toJavaList(AddCommodityDto.class);
 
         if (StringUtils.isNotBlank(ids)) {
             String[] spl = ids.split(",");
@@ -49,20 +48,23 @@ public class DmBrowseBabySaveDelExecute implements IApiExecute {
             return YunReturnValue.ok("操作成功!");
         }
 
-        if (!commodityDtoList.isEmpty()) {
-            List<SysCommodity> commodities = new ArrayList<>();
-            for (AddCommodityDto dto : commodityDtoList) {
-                SysCommodity commodity = new SysCommodity();
-                commodities.add(commodity.setName(dto.getName())
-                        .setCreateTime(dto.getCreateTime())
-                        .setCommoditySort(dto.getCommoditySort())
-                        .setPrice(dto.getPrice())
-                        .setType(AwardTypeEnum.valueOf(dto.getType()))
-                        .setImg(dto.getImg())
-                        .setNumId(dto.getNumId())
-                );
+        if(array != null) {
+            List<AddCommodityDto> list = array.toJavaList(AddCommodityDto.class);
+            if (!list.isEmpty()) {
+                List<SysCommodity> commodities = new ArrayList<>();
+                for (AddCommodityDto dto : list) {
+                    SysCommodity commodity = new SysCommodity();
+                    commodities.add(commodity.setName(dto.getName())
+                            .setCreateTime(dto.getCreateTime())
+                            .setCommoditySort(dto.getCommoditySort())
+                            .setPrice(dto.getPrice())
+                            .setType(AwardTypeEnum.valueOf(dto.getType()))
+                            .setImg(dto.getImg())
+                            .setNumId(dto.getNumId())
+                    );
+                }
+                commodityRepository.saveAll(commodities);
             }
-            commodityRepository.saveAll(commodities);
         }
 
         return YunReturnValue.ok("操作成功!");

@@ -241,13 +241,12 @@ public class LuckyDrawHelper {
         Assert.isTrue(sysAwardRepository.tryReduceOne(award.getId()) > 0, "奖品库存库存不足");
         /*整理抽奖日志*/
         SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord()
-                .setIsWin(BooleanConstant.BOOLEAN_NO)
+                .setIsWin(BooleanConstant.BOOLEAN_YES)
                 .setIsFill(BooleanConstant.BOOLEAN_NO)
                 .setDrawTime(sendTime)
                 .setPlayerHeadImg(custom.getHeadImg())
                 .setPlayerBuyerNick(custom.getBuyerNick())
                 .setPlayerZnick(custom.getZnick())
-                .setIsWin(BooleanConstant.BOOLEAN_NO)
                 .setAwardId(award.getId())
                 .setAwardImg(award.getImg())
                 .setAwardLevel(award.getAwardLevel())
@@ -260,10 +259,12 @@ public class LuckyDrawHelper {
             if (alibabaBenefitSendResponse.getResultSuccess() == null || !alibabaBenefitSendResponse.getResultSuccess()) {
                 //发放失败
                 drawRecord.setSendError("发放优惠券失败：" + JSON.toJSONString(alibabaBenefitSendResponse));
+                drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO);
             }
         } catch (Exception e) {
             e.printStackTrace();
             //发放异常
+            drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO);
             drawRecord.setSendError("发放优惠券异常：" + e.getMessage());
         }
         sysLuckyDrawRecordRepository.save(drawRecord);

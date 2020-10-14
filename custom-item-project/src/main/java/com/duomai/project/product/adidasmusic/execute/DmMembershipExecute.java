@@ -43,8 +43,10 @@ public class DmMembershipExecute implements IApiExecute {
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+        buyerNick = buyerNick.replaceAll(" ","+");
         String inviterNick = object.getString("inviterNick");
         Assert.hasLength(inviterNick,"邀请人昵称不能为空!");
+        inviterNick = inviterNick.replaceAll(" ","+");
 
         if (inviterNick.equals(buyerNick)) {
             return YunReturnValue.fail("亲、自己无法邀请自己哦!");

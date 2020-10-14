@@ -35,7 +35,6 @@ public class SysAwardSaveDelExecute implements IApiExecute {
         String ids = object.getString("ids");
         // 用于新增
         JSONArray array = object.getJSONArray("awards");
-        List<SysAward> sysAwards = array.toJavaList(SysAward.class);
 
         if (StringUtils.isNotBlank(ids)){
             String[] sql = ids.split(",");
@@ -45,8 +44,11 @@ public class SysAwardSaveDelExecute implements IApiExecute {
             return YunReturnValue.ok("操作成功！");
         }
 
-        if (!sysAwards.isEmpty()){
-            sysAwardRepository.saveAll(sysAwards);
+        if(array != null) {
+            List<SysAward> sysAwards = array.toJavaList(SysAward.class);
+            if (!sysAwards.isEmpty()) {
+                sysAwardRepository.saveAll(sysAwards);
+            }
         }
         return YunReturnValue.ok("操作成功！");
     }

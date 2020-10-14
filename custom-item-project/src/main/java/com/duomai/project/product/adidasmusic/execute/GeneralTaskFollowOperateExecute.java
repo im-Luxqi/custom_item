@@ -4,6 +4,7 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
@@ -37,6 +38,8 @@ public class GeneralTaskFollowOperateExecute implements IApiExecute {
     private SysLuckyChanceRepository sysLuckyChanceRepository;
     @Autowired
     private ProjectHelper projectHelper;
+    @Autowired
+    private LuckyDrawHelper luckyDrawHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -62,11 +65,7 @@ public class GeneralTaskFollowOperateExecute implements IApiExecute {
                 .setTaskType(TaskTypeEnum.FOLLOW)
                 .setCreateTime(sysParm.getRequestStartTime()));
         /*插入一条抽奖机会来源*/
-        SysLuckyChance luckyChance = new SysLuckyChance();
-        sysLuckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
-                .setGetTime(sysParm.getRequestStartTime())
-                .setChanceFrom(LuckyChanceFromEnum.FOLLOW)
-                .setIsUse(BooleanConstant.BOOLEAN_NO));
+        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.FOLLOW, 1);
         return YunReturnValue.ok("操作成功！");
     }
 }
