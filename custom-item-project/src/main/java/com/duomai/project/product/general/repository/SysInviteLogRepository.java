@@ -17,6 +17,9 @@ public interface SysInviteLogRepository extends BaseRepository<SysInviteLog, Str
     //获取该粉丝邀请记录
     List<SysInviteLog> findByInviterAndInvitationType(String buyerNick, InvitationTypeEnum invitationType);
 
+    //获取被邀请者信息
+    SysInviteLog queryFirstByInviteeAndInvitationType(String buyerNick, InvitationTypeEnum invitationType);
+
 
     //清除数据
     List<SysInviteLog> findByInviter(String buyerNick);

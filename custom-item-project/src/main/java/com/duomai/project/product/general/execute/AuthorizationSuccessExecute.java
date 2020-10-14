@@ -5,6 +5,7 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysInviteLog;
+import com.duomai.project.product.general.enums.InvitationTypeEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysInviteLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,12 +49,11 @@ public class AuthorizationSuccessExecute implements IApiExecute {
                 .setUpdateTime(sysParm.getRequestStartTime()));
 
         //更新邀请记录
-        SysInviteLog inviteLog = inviteLogRepository.queryFirstByInvitee(buyerNick);
+        SysInviteLog inviteLog = inviteLogRepository.queryFirstByInviteeAndInvitationType(buyerNick, InvitationTypeEnum.invitationStage);
         if (inviteLog != null) {
             inviteLogRepository.save(inviteLog.setInviteeImg(sysCustomParam.getHeadImg())
                     .setMixInvitee(sysCustomParam.getZnick()));
         }
-
 
         return YunReturnValue.ok("完善用户信息成功");
     }
