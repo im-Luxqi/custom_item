@@ -5,6 +5,7 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.adidasmusic.domain.CusBigWheelLog;
 import com.duomai.project.product.adidasmusic.service.ICusBigWheelLogService;
@@ -41,6 +42,8 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
     private SysLuckyChanceRepository sysLuckyChanceRepository;
     @Autowired
     private ProjectHelper projectHelper;
+    @Autowired
+    private LuckyDrawHelper luckyDrawHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -65,26 +68,27 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         // 校验玩家是否存在
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
-        // 校验
+
         List<CusBigWheelLog> bigWheelLog = iCusBigWheelLogService.query()
                 .eq(CusBigWheelLog::getBuyerNick, buyerNick)
                 .between(CusBigWheelLog::getCreateTime,CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date))
                 .list();
-        if (bigWheelLog.size() > 0){
-            Assert.isNull(bigWheelLog, "操作已完成！");
+        if (bigWheelLog == null){
+            /*保存操作日志*/
+            CusBigWheelLog cusBigWheelLog = new CusBigWheelLog();
+            cusBigWheelLog.setBuyerNick(buyerNick);
+            cusBigWheelLog.setCreateTime(now);
+            cusBigWheelLog.setGateway(PvPageEnum.PAGE_DAKA.getValue());
+            iCusBigWheelLogService.save(cusBigWheelLog);
         }
-        /*保存操作日志*/
-        CusBigWheelLog cusBigWheelLog = new CusBigWheelLog();
-        cusBigWheelLog.setBuyerNick(buyerNick);
-        cusBigWheelLog.setCreateTime(now);
-        cusBigWheelLog.setGateway(PvPageEnum.PAGE_DAKA.getValue());
-        iCusBigWheelLogService.save(cusBigWheelLog);
+        // 校验
+        long num = sysLuckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeBetween(buyerNick, LuckyChanceFromEnum.DAKA,
+                CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
+        if (num > 0){
+            return YunReturnValue.fail("亲，您已经获得过一次抽奖机会了哦!");
+        }
         /*插入一条抽奖机会来源*/
-        SysLuckyChance luckyChance = new SysLuckyChance();
-        sysLuckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
-                .setGetTime(now)
-                .setChanceFrom(LuckyChanceFromEnum.DAKA)
-                .setIsUse(BooleanConstant.BOOLEAN_NO));
+        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.DAKA, 1);
         return YunReturnValue.ok("操作成功");
     }
 }
