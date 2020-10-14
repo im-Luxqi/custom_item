@@ -71,7 +71,7 @@ public class DmClickToBrowseExecute implements IApiExecute {
         long luckyNum = luckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeBetween(buyerNick, LuckyChanceFromEnum.BROWSE,
                 CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date)
         );
-        Assert.isTrue(luckyNum == 1, "亲，您已经获得过一次抽奖机会了哦!");
+        Assert.isTrue(luckyNum > 0, "亲，您已经获得过一次抽奖机会了哦!");
 
         //赠送抽奖次数
         SysLuckyChance luckyChance = new SysLuckyChance();
