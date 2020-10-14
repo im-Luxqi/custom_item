@@ -1,6 +1,5 @@
 package com.duomai.project.product.general.entity;
 
-import com.duomai.project.product.general.enums.PvChannelEnum;
 import com.duomai.project.product.general.enums.PvPageEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -28,8 +27,8 @@ public class SysPagePvLog {
     @Column(nullable = false, columnDefinition = "varchar(47) COMMENT '用户混淆昵称'")
     private String buyerNick;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "varchar(20) COMMENT '具体的页面标识'")
+    @Column(columnDefinition = "varchar(20) COMMENT '具体的页面标识'")
     private PvPageEnum page;
-    @Column(nullable = false, columnDefinition = "varchar(20) COMMENT '哪个渠道而来'")
+    @Column(columnDefinition = "varchar(20) COMMENT '哪个渠道而来'")
     private String channel;
 }
