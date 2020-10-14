@@ -4,6 +4,8 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.FinishTheTaskHelper;
+import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.dto.PageListDto;
 import com.duomai.project.product.general.entity.SysBrowseLog;
 import com.duomai.project.product.general.entity.SysCommodity;
@@ -37,12 +39,18 @@ public class DmBrowseBabyListExecute implements IApiExecute {
     private SysBrowseLogRepository browseLogRepository;
     @Resource
     private FinishTheTaskHelper finishTheTaskHelper;
-    private static String commoditySorE = "everyDay";
-    private static String commoditySorT = "total";
+    @Resource
+    private ProjectHelper projectHelper;
+    private static String commoditySorT = "total";//源宝贝
+    private static String commoditySorE = "everyDay";//每日随机宝贝
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
-                                     HttpServletResponse response) {
+                                     HttpServletResponse response) throws Exception {
+
+        //是否在活动期间
+        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
+        projectHelper.actTimeValidate(actBaseSettingDto);
 
         //取参
         PageListDto pageListDto = sysParm.getApiParameter().findBeautyAdmjson(PageListDto.class);
