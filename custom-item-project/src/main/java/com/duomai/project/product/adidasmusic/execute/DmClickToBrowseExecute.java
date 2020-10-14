@@ -67,16 +67,16 @@ public class DmClickToBrowseExecute implements IApiExecute {
             );
         }
 
-        //查询该粉丝今天获得了几次
+        //校验是否获取过
         long luckyNum = luckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeBetween(buyerNick, LuckyChanceFromEnum.BROWSE,
                 CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date)
         );
-
         Assert.isTrue(luckyNum == 1, "亲，您已经获得过一次抽奖机会了哦!");
 
+        //赠送抽奖次数
         SysLuckyChance luckyChance = new SysLuckyChance();
         luckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
-                .setGetTime(CommonDateParseUtil.date2date(date, CommonDateParseUtil.YYYY_MM_DD_HH_MM_SS))
+                .setGetTime(date)
                 .setChanceFrom(LuckyChanceFromEnum.BROWSE)
                 .setIsUse(BooleanConstant.BOOLEAN_NO)
         );
