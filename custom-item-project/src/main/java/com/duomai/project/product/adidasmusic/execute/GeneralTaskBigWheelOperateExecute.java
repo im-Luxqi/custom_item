@@ -69,24 +69,22 @@ public class GeneralTaskBigWheelOperateExecute implements IApiExecute {
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(sysCustom, "不存在该玩家");
 
+        // 校验
         List<CusBigWheelLog> bigWheelLog = iCusBigWheelLogService.query()
                 .eq(CusBigWheelLog::getBuyerNick, buyerNick)
                 .between(CusBigWheelLog::getCreateTime,CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date))
                 .list();
-        if (! bigWheelLog.isEmpty()){
-            /*保存操作日志*/
-            CusBigWheelLog cusBigWheelLog = new CusBigWheelLog();
-            cusBigWheelLog.setBuyerNick(buyerNick);
-            cusBigWheelLog.setCreateTime(now);
-            cusBigWheelLog.setGateway(PvPageEnum.PAGE_DAKA.getValue());
-            iCusBigWheelLogService.save(cusBigWheelLog);
-        }
-        // 校验
         long num = sysLuckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeBetween(buyerNick, LuckyChanceFromEnum.DAKA,
                 CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
-        if (num > 0){
+        if (num > 0 && !bigWheelLog.isEmpty()){
             return YunReturnValue.fail("亲，您已经获得过一次抽奖机会了哦!");
         }
+        /*保存操作日志*/
+        CusBigWheelLog cusBigWheelLog = new CusBigWheelLog();
+        cusBigWheelLog.setBuyerNick(buyerNick);
+        cusBigWheelLog.setCreateTime(now);
+        cusBigWheelLog.setGateway(PvPageEnum.PAGE_DAKA.getValue());
+        iCusBigWheelLogService.save(cusBigWheelLog);
         /*插入一条抽奖机会来源*/
         luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.DAKA, 1);
         return YunReturnValue.ok("操作成功");
