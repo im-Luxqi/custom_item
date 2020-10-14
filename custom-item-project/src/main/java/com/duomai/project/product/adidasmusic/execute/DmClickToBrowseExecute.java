@@ -2,20 +2,18 @@ package com.duomai.project.product.adidasmusic.execute;
 
 import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
-import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysBrowseLog;
-import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.enums.CommonExceptionEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.repository.SysBrowseLogRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -36,10 +34,14 @@ public class DmClickToBrowseExecute implements IApiExecute {
     private SysLuckyChanceRepository luckyChanceRepository;
     @Resource
     private ProjectHelper projectHelper;
+    @Resource
+    private LuckyDrawHelper drawHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
                                      HttpServletResponse response) throws Exception {
+
+        sysParm.getApiParameter().getYunTokenParameter().setBuyerNick("小明");
 
         /*预防并发，校验活动是否在活动时间内*/
         projectHelper.checkoutMultipleCommit(sysParm, this);
@@ -71,15 +73,12 @@ public class DmClickToBrowseExecute implements IApiExecute {
         long luckyNum = luckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeBetween(buyerNick, LuckyChanceFromEnum.BROWSE,
                 CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date)
         );
-        Assert.isTrue(luckyNum == 1, "亲，您已经获得过一次抽奖机会了哦!");
+        if(luckyNum > 0){
+            return YunReturnValue.fail("亲，您已经获得过一次抽奖机会了哦!");
+        }
 
         //赠送抽奖次数
-        SysLuckyChance luckyChance = new SysLuckyChance();
-        luckyChanceRepository.save(luckyChance.setBuyerNick(buyerNick)
-                .setGetTime(date)
-                .setChanceFrom(LuckyChanceFromEnum.BROWSE)
-                .setIsUse(BooleanConstant.BOOLEAN_NO)
-        );
+        drawHelper.sendLuckyChance(buyerNick,LuckyChanceFromEnum.BROWSE,1);
         return YunReturnValue.ok(CommonExceptionEnum.OPERATION_SUCCESS.getMsg());
     }
 }
