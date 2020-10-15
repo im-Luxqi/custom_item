@@ -77,11 +77,11 @@ public class PostExchanageRestController extends BaseRestController {
             cgApiLog.setErrorMsg(SysErrorEnum.VALID_APPKEY.getValue());
             return YunReturnValue.fail(SysErrorEnum.VALID_APPKEY);
         }
-//        if (!ApiTool.signCheck(apiSysParameter)) {
-//            cgApiLog.setParType(1);
-//            cgApiLog.setErrorMsg(SysErrorEnum.VALID_SIGN.getValue());
-//            return YunReturnValue.fail(SysErrorEnum.VALID_SIGN);
-//        }
+        if (!ApiTool.signCheck(apiSysParameter)) {
+            cgApiLog.setParType(1);
+            cgApiLog.setErrorMsg(SysErrorEnum.VALID_SIGN.getValue());
+            return YunReturnValue.fail(SysErrorEnum.VALID_SIGN);
+        }
 
         /*3.执行业务逻辑*/
         try {
