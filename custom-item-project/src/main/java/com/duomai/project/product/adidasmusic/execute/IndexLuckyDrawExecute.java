@@ -4,6 +4,7 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
@@ -42,6 +43,8 @@ public class IndexLuckyDrawExecute implements IApiExecute {
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
     @Autowired
     private SysAwardRepository sysAwardRepository;
+    @Autowired
+    private ITaobaoAPIService taobaoAPIService;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -56,8 +59,8 @@ public class IndexLuckyDrawExecute implements IApiExecute {
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(
                 sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
         Assert.notNull(sysCustom, "不存在该玩家");
-
-
+        boolean member = taobaoAPIService.isMember(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
+        Assert.isTrue(member, "请，会员才可参与抽奖");
         List<SysAward> winAward = new ArrayList<>();
         long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndIsWinAndLuckyChanceIsNotNull(sysCustom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
         if (l == 0) {//首次发两张券
