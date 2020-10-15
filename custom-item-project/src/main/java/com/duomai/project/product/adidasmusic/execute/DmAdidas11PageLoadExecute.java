@@ -9,15 +9,11 @@ import com.duomai.project.product.adidasmusic.util.CommonHanZiUtil;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysAward;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysGeneralTask;
 import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
-import com.duomai.project.product.general.enums.AwardUseWayEnum;
-import com.duomai.project.product.general.enums.CommonExceptionEnum;
-import com.duomai.project.product.general.enums.InvitationTypeEnum;
-import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
-import com.duomai.project.product.general.repository.SysAwardRepository;
-import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.product.general.repository.SysInviteLogRepository;
-import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import com.duomai.project.product.general.enums.*;
+import com.duomai.project.product.general.repository.*;
+import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -46,6 +42,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
     private SysLuckyDrawRecordRepository drawRecordRepository;
     @Resource
     private SysAwardRepository awardRepository;
+    @Resource
+    private SysGeneralTaskRepository sysGeneralTaskRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request
@@ -56,10 +54,12 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         projectHelper.actTimeValidate(actBaseSettingDto);
 
+        Date date = sysParm.getRequestStartTime();
+        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
 
         Boolean firstEntry = false;
         /*初始化新粉丝，粉丝每日首次登陆赠送一次抽奖机会*/
-        SysCustom sysCustom = customRepository.findByBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
+        SysCustom sysCustom = customRepository.findByBuyerNick(buyerNick);
         if (sysCustom == null) {
             //保存粉丝信息
             sysCustom = customRepository.save(projectHelper.customInit(sysParm));
@@ -75,6 +75,21 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
                 drawHelper.sendLuckyChance(sysCustom.getBuyerNick(), LuckyChanceFromEnum.FIRST, 1);
             }
         }
+
+        // --------------------------------- 自动签到 ----------------------------------- //
+        // 校验
+        List<SysGeneralTask> signLog = sysGeneralTaskRepository.findByBuyerNickAndTaskTypeAndCreateTimeBetween(buyerNick,
+                TaskTypeEnum.SIGN, CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
+        if (signLog.isEmpty()){
+            /*保存操作日志*/
+            SysGeneralTask signOpt = new SysGeneralTask();
+            sysGeneralTaskRepository.save(signOpt.setBuyerNick(buyerNick)
+                    .setCreateTime(date)
+                    .setTaskType(TaskTypeEnum.SIGN));
+            /*插入一条抽奖机会来源*/
+            drawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.SIGN, 1);
+        }
+        // --------------------------------- 自动签到 ----------------------------------- //
 
         //获取邀请奖品信息
         SysAward awardInvite = awardRepository.queryFirstByUseWay(AwardUseWayEnum.INVITE);
@@ -96,7 +111,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //粉丝信息
         linkedHashMap.put("sysCustom", sysCustom);
         //邀请日志记录
-        linkedHashMap.put("inviteLogs", inviteLogRepository.findByInviterAndInvitationType(sysCustom.getBuyerNick(), InvitationTypeEnum.invitationStage));
+        linkedHashMap.put("inviteLogs", inviteLogRepository.findByInviterAndInvitationTypeOrderByCreateTimeDesc(sysCustom.getBuyerNick(), InvitationTypeEnum.invitationStage));
         //邀请奖品信息
         linkedHashMap.put("awardInvite", awardInvite);
         //获取目前剩余抽奖次数
