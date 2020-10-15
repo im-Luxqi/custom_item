@@ -52,7 +52,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
             , HttpServletResponse response) throws Exception {
 
 
-        sysParm.getApiParameter().getYunTokenParameter().setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick()+CommonHanZiUtil.getRandowZS());
+        sysParm.getApiParameter().getYunTokenParameter().setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + CommonHanZiUtil.getRandowZS()+"");
         /*预防并发，校验活动是否在活动时间内*/
 //        projectHelper.checkoutMultipleCommit(sysParm, this);
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
