@@ -14,6 +14,7 @@ import com.duomai.project.product.general.repository.SysBrowseLogRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +53,8 @@ public class DmClickToBrowseExecute implements IApiExecute {
         Date date = sysParm.getRequestStartTime();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         Long numId = object.getLong("numId");
+
+        Assert.isNull(numId == null,"商品id不能为空!");
 
         //获取该粉丝当天浏览记录
         SysBrowseLog browseLogs = browseLogRepository.findFirstByBuyerNickAndCreateTimeBetweenAndNumId(buyerNick,
