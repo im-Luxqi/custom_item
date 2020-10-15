@@ -2,6 +2,7 @@ package com.duomai.project.product;
 
 import com.duomai.common.util.EncryptUtil;
 import com.duomai.common.util.MD5Utils;
+import com.duomai.project.product.adidasmusic.util.CommonHanZiUtil;
 
 import java.io.UnsupportedEncodingException;
 
@@ -20,7 +21,44 @@ public class Test {
         String newString = MD5Utils.getMD5(zhString.toLowerCase().getBytes("UTF-8"));
         System.out.println(newString);
 
+        for(int i = 0;i<1000;i++){
+            System.out.println("{" +
+                    "    \"requestParams\":{" +
+                    "        \"source_app_id\":\"3000000027082475\"," +
+                    "        \"app_key\":\"31382826\"," +
+                    "        \"mix_nick\":\"丶"+i+"DLM4+FrywmJJjX4wgw0DDqkdTy6q/xxESifFGrAquA0=\"," +
+                    "        \"open_id\":\"AAGJ"+i+"uHTAMeks3ANjnJksaLl\"," +
+                    "        \"mini_app_id\":\"3000000027082475\"," +
+                    "        \"env\":\"test\"," +
+                    "        \"request_id\":\"0b52071d16025039751847264e67f6\"" +
+                    "    }," +
+                    "    \"requestHeader\":{" +
+                    "        \"Content-Type\":\"application/json\"" +
+                    "    }," +
+                    "    \"requestBody\":{" +
+                    "        \"jsonrpc\":\"2.0\"," +
+                    "        \"method\":\"wx.dz.page.load\"," +
+                    "        \"params\":{" +
+                    "            \"admjson\":{" +
+                    "                \"method\":\"wx.dz.page.load\"" +
+                    "            }," +
+                    "            \"commomParameter\":{" +
+                    "                \"appkey\":\"21699045\"," +
+                    "                \"m\":\"POST\"," +
+                    "                \"sign\":\"52F48BAEFD56F9FD5DD5982CACDB4FC3\"," +
+                    "                \"timestamp\":1602640509448" +
+                    "            }" +
+                    "        }" +
+                    "    }," +
+                    "    \"userNick\":\"测试"+i+"\"," +
+                    "    \"accessToken\":\"\"" +
+                    "}".replaceAll(" ",""));
+        }
 
+        String sss = "丶01DLM4+FrywmJJjX4wgw0DDqkdTy6q/xxESifFGrAquA0=";
+        for(int i = 0;i<1000;i++) {
+            System.out.println(sss.replace('丶', CommonHanZiUtil.randomGetUnicodeHanZi()));
+        }
 
     }
 
