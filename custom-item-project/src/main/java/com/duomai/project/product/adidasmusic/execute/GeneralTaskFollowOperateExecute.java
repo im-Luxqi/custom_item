@@ -35,8 +35,6 @@ public class GeneralTaskFollowOperateExecute implements IApiExecute {
     @Autowired
     private SysCustomRepository sysCustomRepository;
     @Autowired
-    private SysLuckyChanceRepository sysLuckyChanceRepository;
-    @Autowired
     private ProjectHelper projectHelper;
     @Autowired
     private LuckyDrawHelper luckyDrawHelper;

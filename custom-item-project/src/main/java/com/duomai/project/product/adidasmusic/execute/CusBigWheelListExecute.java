@@ -1,6 +1,5 @@
 package com.duomai.project.product.adidasmusic.execute;
 
-import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
@@ -10,11 +9,8 @@ import com.duomai.project.product.adidasmusic.dto.CusBigWheelDto;
 import com.duomai.project.product.adidasmusic.service.ICusBigWheelService;
 import com.duomai.project.product.general.dto.PageListDto;
 import com.duomai.project.product.general.enums.CusBigWheelStateEnum;
-import com.duomai.project.product.general.repository.SysCustomRepository;
-import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,32 +34,32 @@ public class CusBigWheelListExecute implements IApiExecute {
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         //预防连点
-        projectHelper.checkoutMultipleCommit(sysParm,this);
+        projectHelper.checkoutMultipleCommit(sysParm, this);
 
         PageListDto beautyAdmjson = sysParm.getApiParameter().findBeautyAdmjson(PageListDto.class);
         beautyAdmjson.startPage();
         List<CusBigWheel> cusBigWheelList = iCusBigWheelService.query().list();
         List<CusBigWheelDto> result = new ArrayList<>();
         Date date = sysParm.getRequestStartTime();
-        for (CusBigWheel cusBigWheel : cusBigWheelList){
+        for (CusBigWheel cusBigWheel : cusBigWheelList) {
             CusBigWheelDto dto = getObject(cusBigWheel);
-            if (cusBigWheel.getStartTime().after(date)){  // 开始时间大于当前时间
+            if (cusBigWheel.getStartTime().after(date)) {  // 开始时间大于当前时间
                 dto.setState(CusBigWheelStateEnum.NOT_STARTING);
             }
-            if (cusBigWheel.getEndTime().before(date)){   // 结束时间小于当前时间
+            if (cusBigWheel.getEndTime().before(date)) {   // 结束时间小于当前时间
                 dto.setState(CusBigWheelStateEnum.STOPPING);
             }
-            if (cusBigWheel.getStartTime().before(date) && cusBigWheel.getEndTime().after(date)){
+            if (cusBigWheel.getStartTime().before(date) && cusBigWheel.getEndTime().after(date)) {
                 dto.setState(CusBigWheelStateEnum.PROGRESSING);
             }
             result.add(dto);
         }
         beautyAdmjson.setResultList(result);
-        return YunReturnValue.ok(beautyAdmjson,"尖货大咖记录");
+        return YunReturnValue.ok(beautyAdmjson, "尖货大咖记录");
     }
 
     // 获取Dto对象
-    private CusBigWheelDto getObject(CusBigWheel cusBigWheel){
+    private CusBigWheelDto getObject(CusBigWheel cusBigWheel) {
         CusBigWheelDto dto = new CusBigWheelDto();
         dto.setTitle(cusBigWheel.getTitle());
         dto.setContext(cusBigWheel.getContext());
