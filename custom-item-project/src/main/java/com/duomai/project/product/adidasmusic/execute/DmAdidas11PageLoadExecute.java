@@ -3,6 +3,7 @@ package com.duomai.project.product.adidasmusic.execute;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.adidasmusic.util.CommonHanZiUtil;
@@ -44,6 +45,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
     private SysAwardRepository awardRepository;
     @Resource
     private SysGeneralTaskRepository sysGeneralTaskRepository;
+    @Resource
+    private ITaobaoAPIService taobaoAPIService;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request
@@ -118,6 +121,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         linkedHashMap.put("drawNum", drawHelper.unUseLuckyChance(sysCustom.getBuyerNick()));
         //获取当前粉丝奖池等级
         linkedHashMap.put("signDto", drawHelper.findCurrentPoolLevel(sysCustom));
+        //当前粉丝是否入会
+        linkedHashMap.put("member",taobaoAPIService.isMember(buyerNick));
 
         //中奖弹幕 展示50条
         List luckyDrawRecords = drawRecordRepository.queryLuckyDrawLog();
