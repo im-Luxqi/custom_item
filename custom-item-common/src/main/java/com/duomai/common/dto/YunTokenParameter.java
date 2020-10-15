@@ -13,10 +13,10 @@ public class YunTokenParameter {
 
     @ParamName("app_key")
     private String appKey;
-    @NotBlank(message = "open_id不能为空")
+//    @NotBlank(message = "open_id不能为空")
     @ParamName("open_id")
     private String openUId;
-    @NotBlank(message = "mix_nick不能为空")
+//    @NotBlank(message = "mix_nick不能为空")
     @ParamName("mix_nick")
     private String buyerNick;
     @ParamName("user_nick")
