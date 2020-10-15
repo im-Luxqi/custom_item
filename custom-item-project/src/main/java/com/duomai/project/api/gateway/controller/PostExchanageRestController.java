@@ -13,6 +13,7 @@ import com.duomai.project.api.gateway.repository.CgApiLogRepository;
 import com.duomai.project.api.gateway.tool.ApiTool;
 import com.duomai.project.configuration.SysCustomProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -84,9 +85,8 @@ public class PostExchanageRestController extends BaseRestController {
 //        }
 
         /*3.执行业务逻辑*/
-        YunReturnValue yunReturnValue = new YunReturnValue();
         try {
-            yunReturnValue = QLApiExecuteHandler.ApiExecute(apiSysParameter, request, response);//执行业务逻辑，并获得返回值rValue
+            YunReturnValue yunReturnValue = QLApiExecuteHandler.ApiExecute(apiSysParameter, request, response);//执行业务逻辑，并获得返回值rValue
             if (yunReturnValue.getData().getStatus().equals(ReturnBaseData.error)) {
                 cgApiLog.setParType(1);
                 cgApiLog.setErrorMsg(yunReturnValue.getData().getMsg());
@@ -99,7 +99,7 @@ public class PostExchanageRestController extends BaseRestController {
             cgApiLog.setErrorMsg(e.getMessage());
             return YunReturnValue.fail(SysErrorEnum.SERVE_INNER, e.getMessage());
         } finally {
-            if (yunReturnValue.getData().getStatus().equals(ReturnBaseData.error)) {
+            if (StringUtils.isNotBlank(cgApiLog.getErrorMsg())) {
                 cgApiLogRepository.save(cgApiLog);
             }
         }
