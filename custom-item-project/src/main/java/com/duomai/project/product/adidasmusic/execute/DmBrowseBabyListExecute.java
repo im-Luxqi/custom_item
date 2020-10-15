@@ -62,12 +62,6 @@ public class DmBrowseBabyListExecute implements IApiExecute {
         List<SysCommodity> commodities = sysCommodityRepository.queryByTypeAndCommoditySort(AwardTypeEnum.GOODS, commoditySorT);
         Assert.notEmpty(commodities, "未获取到浏览宝贝信息!");
 
-        //随机取12个宝贝
-        List<SysCommodity> sysCommodities = new ArrayList<>();
-        sysCommodities = finishTheTaskHelper.randowList(commodities, sysCommodities, 12);
-
-        sysCommodities.stream().forEach(s -> s.setNames(s.getName().split(",")));
-
         //获取该粉丝浏览日志 此处保留根据当天时间查询
         List<SysBrowseLog> browseLogs = browseLogRepository.findByBuyerNickAndCreateTimeBetween(buyerNick,
                 CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
@@ -83,6 +77,12 @@ public class DmBrowseBabyListExecute implements IApiExecute {
                 o.setIsBrowse(1);
             }
         });
+
+        //随机取12个宝贝
+        List<SysCommodity> sysCommodities = new ArrayList<>();
+        sysCommodities = finishTheTaskHelper.randowList(commodities, sysCommodities, 12);
+        sysCommodities.stream().forEach(s -> s.setNames(s.getName().split(",")));
+
         pageListDto.setResultList(sysCommodities);
         return YunReturnValue.ok(pageListDto, CommonExceptionEnum.OPERATION_SUCCESS.getMsg());
     }
