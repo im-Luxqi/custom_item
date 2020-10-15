@@ -59,6 +59,8 @@ public class QLApiExecuteHandler {
 
         map.put("wz.dz.tools.clear.log",DzToolsClearLogExecute.class); // 测试：清除记录
 
+        map.put("wz.dz.tools.award.all",DzToolsAwardFindAllExecute.class); // 获得所有奖品
+
 
     }
 
