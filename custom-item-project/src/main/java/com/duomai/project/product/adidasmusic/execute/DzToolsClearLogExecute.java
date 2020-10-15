@@ -26,27 +26,22 @@ public class DzToolsClearLogExecute implements IApiExecute {
 
     @Autowired
     private SysGeneralTaskRepository sysGeneralTaskRepository;
-
     @Autowired
     private ICusBigWheelLogService iCusBigWheelLogService;
-
     @Autowired
     private SysBrowseLogRepository sysBrowseLogRepository;
-
     @Autowired
     private SysInviteLogRepository sysInviteLogRepository;
-
     @Autowired
     private SysLuckyChanceRepository sysLuckyChanceRepository;
-
     @Autowired
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
-
     @Autowired
     private SysPagePvLogRepository sysPagePvLogRepository;
-
     @Autowired
     private ICusOrderInfoService iCusOrderInfoService;
+    @Autowired
+    private SysCustomRepository sysCustomRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -96,6 +91,10 @@ public class DzToolsClearLogExecute implements IApiExecute {
                 iCusOrderInfoService.removeById(o.getId());
             }
         }
+        // 粉丝数据
+        SysCustom sysCustom = sysCustomRepository.findByBuyerNick(buyerNick);
+        if (sysCustom != null)
+            sysCustomRepository.delete(sysCustom);
         return YunReturnValue.ok("操作成功！");
     }
 }
