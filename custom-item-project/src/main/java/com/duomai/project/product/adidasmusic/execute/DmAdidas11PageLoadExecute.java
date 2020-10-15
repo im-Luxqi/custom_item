@@ -51,8 +51,10 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request
             , HttpServletResponse response) throws Exception {
 
+
+        sysParm.getApiParameter().getYunTokenParameter().setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + CommonHanZiUtil.getRandowZS()+"");
         /*预防并发，校验活动是否在活动时间内*/
-        projectHelper.checkoutMultipleCommit(sysParm, this);
+//        projectHelper.checkoutMultipleCommit(sysParm, this);
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         projectHelper.actTimeValidate(actBaseSettingDto);
 
@@ -129,4 +131,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 //        }
 //        return fakeData;
 //    }
+
+
+
 }
