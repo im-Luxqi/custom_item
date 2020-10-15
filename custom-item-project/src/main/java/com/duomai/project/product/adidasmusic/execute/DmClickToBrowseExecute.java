@@ -53,8 +53,9 @@ public class DmClickToBrowseExecute implements IApiExecute {
         Date date = sysParm.getRequestStartTime();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         Long numId = object.getLong("numId");
-
-        Assert.isNull(numId == null,"商品id不能为空!");
+        if(numId == null){
+            return YunReturnValue.fail("宝贝id不能为空!");
+        }
 
         //获取该粉丝当天浏览记录
         SysBrowseLog browseLogs = browseLogRepository.findFirstByBuyerNickAndCreateTimeBetweenAndNumId(buyerNick,
