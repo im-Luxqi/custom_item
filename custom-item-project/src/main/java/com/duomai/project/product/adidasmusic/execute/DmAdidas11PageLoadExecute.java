@@ -56,6 +56,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         projectHelper.actTimeValidate(actBaseSettingDto);
 
+
+        Boolean firstEntry = false;
         /*初始化新粉丝，粉丝每日首次登陆赠送一次抽奖机会*/
         SysCustom sysCustom = customRepository.findByBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
         if (sysCustom == null) {
@@ -63,6 +65,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
             sysCustom = customRepository.save(projectHelper.customInit(sysParm));
             //赠送一次每日抽奖机会
             drawHelper.sendLuckyChance(sysCustom.getBuyerNick(), LuckyChanceFromEnum.FIRST, 1);
+            //是否第一次进活动
+            firstEntry = true;
         } else {
             //查询是否赠送过
             long l = drawHelper.countTodayLuckyChanceFrom(sysCustom.getBuyerNick(), LuckyChanceFromEnum.FIRST);
@@ -85,7 +89,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
         //返回参数
         LinkedHashMap linkedHashMap = new LinkedHashMap();
-        linkedHashMap.put("signDto", drawHelper.findCurrentPoolLevel(sysCustom));
+
+        linkedHashMap.put("firstEntry",firstEntry);
         //活动基本信息
         linkedHashMap.put("actBaseSettingDto", actBaseSettingDto);
         //粉丝信息
@@ -114,22 +119,5 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
 
         return YunReturnValue.ok(linkedHashMap, CommonExceptionEnum.OPERATION_SUCCESS.getMsg());
     }
-
-//    static List<SysLuckyDrawRecord> fakeData;
-//
-//    static List<SysLuckyDrawRecord> getFakeData() {
-//        if (fakeData == null) {
-//            List<SysLuckyDrawRecord> objects = new ArrayList<>(50);
-//            for (int i = 0; i < 50; i++) {
-//                objects.add(new SysLuckyDrawRecord()
-//                        .setAwardName("满减优惠券")
-//                        .setPlayerBuyerNick(CommonHanZiUtil.randomGetUnicodeHanZi() + "***"));
-//            }
-//            fakeData = objects;
-//        }
-//        return fakeData;
-//    }
-
-
 
 }
