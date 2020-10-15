@@ -60,7 +60,7 @@ public class IndexLuckyDrawExecute implements IApiExecute {
                 sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
         Assert.notNull(sysCustom, "不存在该玩家");
         boolean member = taobaoAPIService.isMember(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
-        Assert.isTrue(member, "请，会员才可参与抽奖");
+        Assert.isTrue(member, "亲，会员才可参与抽奖");
         List<SysAward> winAward = new ArrayList<>();
         long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndIsWinAndLuckyChanceIsNotNull(sysCustom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
         if (l == 0) {//首次发两张券
