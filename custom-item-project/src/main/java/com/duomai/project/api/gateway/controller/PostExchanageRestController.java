@@ -58,7 +58,7 @@ public class PostExchanageRestController extends BaseRestController {
             @Validated YunTokenParameter yunTokenParameter,
             HttpServletRequest request, HttpServletResponse response) {
 
-        apiSysParameter.setRequestStartTime(new Date(Long.parseLong(apiSysParameter.getApiParameter().getCommomParameter().getTimestamp())));
+        apiSysParameter.setRequestStartTime(new Date());
         CgApiLog cgApiLog = new CgApiLog()
                 .setParType(0)
                 .setCreateTime(apiSysParameter.getRequestStartTime())
@@ -98,7 +98,8 @@ public class PostExchanageRestController extends BaseRestController {
             cgApiLog.setErrorMsg(e.getMessage());
             return YunReturnValue.fail(SysErrorEnum.SERVE_INNER, e.getMessage());
         } finally {
-            cgApiLogRepository.save(cgApiLog);
+            if (cgApiLog.getParType() == 1)
+                cgApiLogRepository.save(cgApiLog);
         }
     }
 }
