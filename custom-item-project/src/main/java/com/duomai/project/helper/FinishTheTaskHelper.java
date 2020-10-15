@@ -32,9 +32,6 @@ public class FinishTheTaskHelper {
      * @param nowList 结果容器
      */
     public List randowList(List list,List nowList, int num) {
-        if (list.size() < num) {
-            return list;
-        }
         Random random = new Random();
         int r = random.nextInt(list.size());
         nowList.add(list.get(r));
