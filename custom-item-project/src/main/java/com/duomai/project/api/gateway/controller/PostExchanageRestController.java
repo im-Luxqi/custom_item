@@ -84,8 +84,9 @@ public class PostExchanageRestController extends BaseRestController {
 //        }
 
         /*3.执行业务逻辑*/
+        YunReturnValue yunReturnValue = new YunReturnValue();
         try {
-            YunReturnValue yunReturnValue = QLApiExecuteHandler.ApiExecute(apiSysParameter, request, response);//执行业务逻辑，并获得返回值rValue
+            yunReturnValue = QLApiExecuteHandler.ApiExecute(apiSysParameter, request, response);//执行业务逻辑，并获得返回值rValue
             if (yunReturnValue.getData().getStatus().equals(ReturnBaseData.error)) {
                 cgApiLog.setParType(1);
                 cgApiLog.setErrorMsg(yunReturnValue.getData().getMsg());
@@ -98,7 +99,9 @@ public class PostExchanageRestController extends BaseRestController {
             cgApiLog.setErrorMsg(e.getMessage());
             return YunReturnValue.fail(SysErrorEnum.SERVE_INNER, e.getMessage());
         } finally {
-            cgApiLogRepository.save(cgApiLog);
+            if (yunReturnValue.getData().getStatus().equals(ReturnBaseData.error)) {
+                cgApiLogRepository.save(cgApiLog);
+            }
         }
     }
 }
