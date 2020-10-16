@@ -36,7 +36,7 @@ public class CommonHanZiUtil {
         return stringBuffer.toString();
     }
 
-    public static int getRandowZS(){
+    public static int getRandomZS(){
         //todo  for压测
         Double ran = Math.random()*1000000;
         Integer rand = ran.intValue();
