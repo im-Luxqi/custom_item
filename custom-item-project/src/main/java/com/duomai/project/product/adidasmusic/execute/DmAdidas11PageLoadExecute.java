@@ -57,7 +57,6 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         projectHelper.actTimeValidate(actBaseSettingDto);
 
-        Date date = sysParm.getRequestStartTime();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
 
         Boolean firstEntry = false;
@@ -68,7 +67,7 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
             sysCustom = customRepository.save(projectHelper.customInit(sysParm));
             //赠送一次每日抽奖机会
             drawHelper.sendLuckyChance(sysCustom.getBuyerNick(), LuckyChanceFromEnum.FIRST, 1);
-            //是否第一次进活动
+            //是第一次进活动
             firstEntry = true;
         } else {
             //查询是否赠送过
@@ -82,12 +81,13 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         // --------------------------------- 自动签到 ----------------------------------- //
         // 校验
         List<SysGeneralTask> signLog = sysGeneralTaskRepository.findByBuyerNickAndTaskTypeAndCreateTimeBetween(buyerNick,
-                TaskTypeEnum.SIGN, CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
+                TaskTypeEnum.SIGN, CommonDateParseUtil.getStartTimeOfDay(sysParm.getRequestStartTime()),
+                CommonDateParseUtil.getEndTimeOfDay(sysParm.getRequestStartTime()));
         if (signLog.isEmpty()){
             /*保存操作日志*/
             SysGeneralTask signOpt = new SysGeneralTask();
             sysGeneralTaskRepository.save(signOpt.setBuyerNick(buyerNick)
-                    .setCreateTime(date)
+                    .setCreateTime(sysParm.getRequestStartTime())
                     .setTaskType(TaskTypeEnum.SIGN));
             /*插入一条抽奖机会来源*/
             drawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.SIGN, 1);
@@ -98,7 +98,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         SysAward awardInvite = awardRepository.queryFirstByUseWay(AwardUseWayEnum.INVITE);
         Assert.notNull(awardInvite, "未获取到邀请奖品信息!");
         //获取该粉丝是否已获得日志
-        SysLuckyDrawRecord drawRecord = drawRecordRepository.findFirstByPlayerBuyerNickAndAwardId(sysCustom.getBuyerNick(), awardInvite.getId());
+        SysLuckyDrawRecord drawRecord = drawRecordRepository.findFirstByPlayerBuyerNickAndAwardId(sysCustom.getBuyerNick(),
+                awardInvite.getId());
         if (drawRecord != null) {
             awardInvite.setLogId(drawRecord.getId());
         } else {
@@ -114,7 +115,8 @@ public class DmAdidas11PageLoadExecute implements IApiExecute {
         //粉丝信息
         linkedHashMap.put("sysCustom", sysCustom);
         //邀请日志记录
-        linkedHashMap.put("inviteLogs", inviteLogRepository.findByInviterAndInvitationTypeOrderByCreateTimeDesc(sysCustom.getBuyerNick(), InvitationTypeEnum.invitationStage));
+        linkedHashMap.put("inviteLogs", inviteLogRepository.findByInviterAndInvitationTypeOrderByCreateTimeDesc(sysCustom.getBuyerNick(),
+                InvitationTypeEnum.invitationStage));
         //邀请奖品信息
         linkedHashMap.put("awardInvite", awardInvite);
         //获取目前剩余抽奖次数
