@@ -41,9 +41,9 @@ public class CusGetOrderExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
                                      HttpServletResponse response) throws Exception {
-        Assert.isTrue(OcsUtil.add(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + "CusGetOrderExecute", "_commit_", 5)
-                , "稍后重试");
-//        projectHelper.checkoutMultipleCommit(sysParm, this);
+//        Assert.isTrue(OcsUtil.add(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + "CusGetOrderExecute", "_commit_", 5)
+//                , "稍后重试");
+        projectHelper.checkoutMultipleCommit(sysParm, this);
         String openUId = sysParm.getApiParameter().getYunTokenParameter().getOpenUId();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         ActBaseSettingDto config = projectHelper.actBaseSettingFind();
@@ -60,6 +60,11 @@ public class CusGetOrderExecute implements IApiExecute {
         /*符合条件的最新订单，同步最新订单*/
         List<OpenTradesSoldGetResponse.Trade> newestTrades = new ArrayList<>();
         for (OpenTradesSoldGetResponse.Trade trade : goods) {
+            if (!("WAIT_SELLER_SEND_GOODS".equals(trade.getStatus()) || "SELLER_CONSIGNED_PART".equals(trade.getStatus())
+                    || "WAIT_BUYER_CONFIRM_GOODS".equals(trade.getStatus()) || "TRADE_BUYER_SIGNED".equals(trade.getStatus())
+                    || "TRADE_FINISHED".equals(trade.getStatus())))
+                continue;
+
             if (!hasUpdateTradeIds.toString().contains(trade.getTid()))
                 newestTrades.add(trade);
         }

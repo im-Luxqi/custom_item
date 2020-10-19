@@ -53,7 +53,7 @@ public class TaobaoAPIServiceImpl implements ITaobaoAPIService {
         req.setFields("tid,payment,created,status,orders,buyer_rate,pay_time");
         req.setStartCreated(start_created);
         req.setEndCreated(end_created);
-        req.setStatus(status.getCode());
+//        req.setStatus(status.getCode());
         req.setType("guarantee_trade,auto_delivery,ec,cod,step,tmall_i18n");
         req.setPageNo(1L);
         req.setPageSize(40L);

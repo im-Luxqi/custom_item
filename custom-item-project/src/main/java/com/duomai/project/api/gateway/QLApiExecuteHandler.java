@@ -28,7 +28,7 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.common.init.attention", InitAttentionStatusExecute.class); //活动主页--load后，初始化玩家关注状态 wxq
         map.put("wx.dz.common.award.address", AwardAddressExecute.class); //留资料 wxq
         map.put("wx.dz.common.award.myluckybag", AwardMyLuckyBagExecute.class); //我的奖品 wxq
-        map.put("wx.dz.common.award.illegal", IllegalAccessLuckyChanceExecute.class); //非法获取游戏机会 wxq
+//        map.put("wx.dz.common.award.illegal", IllegalAccessLuckyChanceExecute.class); //非法获取游戏机会 wxq
 
 
         /*
@@ -57,7 +57,7 @@ public class QLApiExecuteHandler {
 
         map.put("wx.dz.tools.get.order",CusGetOrderExecute.class); //拉取订单 wxq
 
-        map.put("wz.dz.tools.clear.log",DzToolsClearLogExecute.class); // 测试：清除记录
+//        map.put("wz.dz.tools.clear.log",DzToolsClearLogExecute.class); // 测试：清除记录
 
         map.put("wz.dz.tools.award.all",DzToolsAwardFindAllExecute.class); // 获得所有奖品
 
