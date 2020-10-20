@@ -37,7 +37,9 @@ public class FinishTheTaskHelper {
         nowList.add(list.get(r));
         list.remove(r);
         if (nowList.size() < num) {
-            randowList(list,nowList,num);
+            if(!list.isEmpty()) {
+                randowList(list, nowList, num);
+            }
         }
         return nowList;
     }
