@@ -41,9 +41,9 @@ public class CusGetOrderExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
                                      HttpServletResponse response) throws Exception {
-//        Assert.isTrue(OcsUtil.add(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + "CusGetOrderExecute", "_commit_", 5)
-//                , "稍后重试");
-        projectHelper.checkoutMultipleCommit(sysParm, this);
+        Assert.isTrue(OcsUtil.add(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + "CusGetOrderExecute", "_commit_", 600)
+                , "稍后重试");
+//        projectHelper.checkoutMultipleCommit(sysParm, this);
         String openUId = sysParm.getApiParameter().getYunTokenParameter().getOpenUId();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         ActBaseSettingDto config = projectHelper.actBaseSettingFind();
