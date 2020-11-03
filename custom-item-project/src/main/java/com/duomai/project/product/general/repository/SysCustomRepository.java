@@ -9,6 +9,6 @@ public interface SysCustomRepository extends BaseRepository<SysCustom, String> {
     SysCustom findByBuyerNick(String buyerNick);
 
     //用于完善是否关注字段查询
-    SysCustom findByBuyerNickAndOldFans(String buyerNick,Integer oldFans);
+    SysCustom findByBuyerNickAndHistoryFollow(String buyerNick,Integer oldFans);
 
 }

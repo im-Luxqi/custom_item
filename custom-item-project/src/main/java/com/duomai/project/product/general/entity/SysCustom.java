@@ -19,7 +19,7 @@ public class SysCustom {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 40)
+    @Column(length = 200)
     private String id;
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '创建时间'")
     private Date createTime;
@@ -37,9 +37,9 @@ public class SysCustom {
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否为会员 0:否1:是'")
     private Integer member;
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否老会员 0:否1:是'")
-    private Integer oldMember;
-    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否粉丝 0:否1:是'")
-    private Integer fans;
+    private Integer historyMember;
+    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否粉丝(关注店铺) 0:否1:是'")
+    private Integer follow;
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否老粉丝 0:否1:是'")
-    private Integer oldFans;
+    private Integer historyFollow;
 }

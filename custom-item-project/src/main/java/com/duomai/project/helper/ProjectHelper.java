@@ -120,7 +120,6 @@ public class ProjectHelper {
      **/
     public SysCustom customInit(ApiSysParameter sysParm) throws ApiException {
         SysCustom sysCustom = new SysCustom();
-
         return sysCustom.setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
                 .setCreateTime(sysParm.getRequestStartTime())
                 .setOpenId(sysParm.getApiParameter().getYunTokenParameter().getOpenUId())
