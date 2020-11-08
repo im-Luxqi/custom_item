@@ -64,7 +64,7 @@ public class LuckyDrawHelper {
      * @param buyerNick  发给哪个玩家(必填)
      * @param chanceFrom  什么原因发的(必填)
      * @param number  发几个(必填)
-     * @param tid  哪个订单(非必填)
+     * @param tid  如果是来自于订单，哪个订单(非必填)
      **/
     @Transactional
     public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, Integer number, String tid) {
@@ -84,11 +84,6 @@ public class LuckyDrawHelper {
         return sendLuckyChance(buyerNick, chanceFrom, number, null);
     }
 
-    /* 发放游戏机会
-     * @description
-     * @create by 王星齐
-     * @time 2020-08-28 16:13:28
-     **/
     @Transactional
     public List<SysLuckyChance> sendLuckyChance(List<SysLuckyChance> sysLuckyChances) {
         return sysLuckyChanceRepository.saveAll(sysLuckyChances);
@@ -105,7 +100,7 @@ public class LuckyDrawHelper {
         return sysLuckyChanceRepository.countByBuyerNickAndIsUse(buyerNick, BooleanConstant.BOOLEAN_NO);
     }
 
-    /* 今日 某个来源 的增送次数
+    /* 今日某个来源的赠送次数
      * @description
      * @create by 王星齐
      * @time 2020-10-10 20:03:49
@@ -145,8 +140,6 @@ public class LuckyDrawHelper {
                     .setUseTime(drawTime));
         }
 
-
-
         /*整理抽奖日志*/
         SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord()
                 .setLuckyChance(thisChance == null ? null : thisChance.getId())
@@ -156,7 +149,6 @@ public class LuckyDrawHelper {
                 .setPlayerHeadImg(custom.getHeadImg())
                 .setPlayerBuyerNick(custom.getBuyerNick())
                 .setPlayerZnick(custom.getZnick());
-
 
         try {
             /*1.整理历史抽奖记录*/
@@ -272,13 +264,9 @@ public class LuckyDrawHelper {
 
     @Transactional
     public List<SysAward> findCustomTimeAwardPool(SysCustom sysCustom) {
-//        long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndIsWinAndLuckyChanceIsNotNull(sysCustom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
-//        if (l > 0) {
         //todo:等待落实奖池升级规则
         PoolLevelEnum currentPoolLevel = findCurrentPoolLevel(sysCustom).getCurrentPoolLevel();
         return sysAwardRepository.findByUseWayAndPoolLevelOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
-//        }
-//        return sysAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.FIRSTLUCKY);
     }
 
     @Transactional

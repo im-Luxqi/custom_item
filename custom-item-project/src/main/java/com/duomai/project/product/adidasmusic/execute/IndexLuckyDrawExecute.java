@@ -54,7 +54,7 @@ public class IndexLuckyDrawExecute implements IApiExecute {
         /*校验*/
         //是否在活动期间
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
-        projectHelper.actTimeValidate(actBaseSettingDto);
+         projectHelper.actTimeValidate();
         //玩家是否存在
         SysCustom sysCustom = sysCustomRepository.findByBuyerNick(
                 sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());

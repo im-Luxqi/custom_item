@@ -55,7 +55,7 @@
 //        /*预防并发，校验活动是否在活动时间内*/
 //
 //        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
-//        projectHelper.actTimeValidate(actBaseSettingDto);
+//         projectHelper.actTimeValidate();
 //
 //        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
 //

@@ -50,11 +50,11 @@ public class DmBrowseBabyListExecute implements IApiExecute {
 
         //是否在活动期间
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
-        projectHelper.actTimeValidate(actBaseSettingDto);
+         projectHelper.actTimeValidate();
 
         //取参
         PageListDto pageListDto = sysParm.getApiParameter().findBeautyAdmjson(PageListDto.class);
-        pageListDto.startPage();
+        pageListDto.startMybatisPage();
         Date date = sysParm.getRequestStartTime();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
 

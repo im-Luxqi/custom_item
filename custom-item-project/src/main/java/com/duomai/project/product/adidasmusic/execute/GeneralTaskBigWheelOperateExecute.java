@@ -51,7 +51,7 @@
 //        //预防连点
 //        projectHelper.checkoutMultipleCommit(sysParm,this);
 //        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
-//        projectHelper.actTimeValidate(actBaseSettingDto);
+//         projectHelper.actTimeValidate();
 //
 //        Date now = sysParm.getRequestStartTime();
 //        // 获取尖货大咖任务开放时间

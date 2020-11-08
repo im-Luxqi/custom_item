@@ -2,7 +2,6 @@ package com.duomai.project.helper;
 
 import com.duomai.project.configuration.annotation.JoinMemcache;
 import com.duomai.project.helper.constants.ActSettingConstant;
-import com.duomai.project.helper.constants.MemcachePublicKeyConstant;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.dto.TaskBaseSettingDto;
 import com.duomai.project.product.general.entity.SysKeyValue;
@@ -36,6 +35,7 @@ public class ProjectHelper {
      * @create by lyj
      * @time 2020-10-10 16:52:00
      **/
+    @JoinMemcache
     public TaskBaseSettingDto taskBaseSettingFind() {
         List<SysKeyValue> taskSetting = sysKeyValueRepository.findByType(ActSettingConstant.TYPE_TASK_DAKA_SETTING);
         Map<String, String> map = taskSetting.stream().collect(Collectors.toMap(SysKeyValue::getK, SysKeyValue::getV));
@@ -63,9 +63,9 @@ public class ProjectHelper {
      *   使用场景-------->post请求
      * @create by 王星齐
      * @time 2020-08-26 20:11:04
-     * @param actBaseSetting
      **/
-    public void actTimeValidate(ActBaseSettingDto actBaseSettingDto) throws Exception {
+    public void actTimeValidate() throws Exception {
+        ActBaseSettingDto actBaseSettingDto = this.actBaseSettingFind();
         Date now = new Date();
         if (now.before(actBaseSettingDto.getActStartTime()))
             throw new Exception("活动尚未开始，尽情期待！");
@@ -78,9 +78,9 @@ public class ProjectHelper {
      *      使用场景-------->load请求
      * @create by 王星齐
      * @time 2020-08-26 20:11:04
-     * @param actBaseSetting
      **/
-    public boolean actTimeValidateFlag(ActBaseSettingDto actBaseSettingDto) {
+    public boolean actTimeValidateFlag() {
+        ActBaseSettingDto actBaseSettingDto = this.actBaseSettingFind();
         Date now = new Date();
         boolean liveFlag = true;
         if (now.before(actBaseSettingDto.getActStartTime()) || now.after(actBaseSettingDto.getActEndTime()))

@@ -46,7 +46,7 @@
 //        //预防连点
 //        projectHelper.checkoutMultipleCommit(sysParm,this);
 //        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
-//        projectHelper.actTimeValidate(actBaseSettingDto);
+//         projectHelper.actTimeValidate();
 //
 //        //获取参数
 //        JSONObject object =sysParm.getApiParameter().findJsonObjectAdmjson();

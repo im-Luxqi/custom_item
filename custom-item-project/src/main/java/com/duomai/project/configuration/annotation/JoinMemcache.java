@@ -15,13 +15,12 @@ public @interface JoinMemcache {
 
 
     /**
-     * memcache中key值,
-     * 不设置默认：类名+方法名
+     * memcache中key值,默认：类名+方法名
      */
     String key() default "";
     /**
-     * 刷新时间
-     * 时间按秒算
+     * 刷新时间，按秒算,默认5秒
+     * 不得小于2
      */
     int refreshTime() default 5;
 

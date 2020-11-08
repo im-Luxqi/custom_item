@@ -37,7 +37,7 @@ public class CusBigWheelListExecute implements IApiExecute {
 
 
         PageListDto beautyAdmjson = sysParm.getApiParameter().findBeautyAdmjson(PageListDto.class);
-        beautyAdmjson.startPage();
+        beautyAdmjson.startMybatisPage();
         List<CusBigWheel> cusBigWheelList = iCusBigWheelService.query().list();
         List<CusBigWheelDto> result = new ArrayList<>();
         Date date = sysParm.getRequestStartTime();

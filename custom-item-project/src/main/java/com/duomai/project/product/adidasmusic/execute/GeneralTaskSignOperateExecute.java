@@ -47,7 +47,7 @@
 //        //预防连点
 //        projectHelper.checkoutMultipleCommit(sysParm,this);
 //        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
-//        projectHelper.actTimeValidate(actBaseSettingDto);
+//         projectHelper.actTimeValidate();
 //
 //
 //

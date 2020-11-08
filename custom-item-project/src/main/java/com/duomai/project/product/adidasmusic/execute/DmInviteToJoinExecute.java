@@ -39,7 +39,7 @@ public class DmInviteToJoinExecute implements IApiExecute {
 
         //是否在活动期间
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
-        projectHelper.actTimeValidate(actBaseSettingDto);
+         projectHelper.actTimeValidate();
 
         //取参
         JSONObject object = sysParm.getApiParameter().findJsonObjectAdmjson();

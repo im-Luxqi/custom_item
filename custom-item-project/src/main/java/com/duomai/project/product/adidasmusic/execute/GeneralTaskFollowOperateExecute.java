@@ -45,7 +45,7 @@
 //        //预防连点
 //        projectHelper.checkoutMultipleCommit(sysParm,this);
 //        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
-//        projectHelper.actTimeValidate(actBaseSettingDto);
+//         projectHelper.actTimeValidate();
 //
 //        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
 //        // 校验玩家是否存在
