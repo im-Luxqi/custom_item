@@ -17,9 +17,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 活动 配置相关  常规操作 service
- *
- * @description
+ * 活动Helper 常规操作
+ * @description 【帮助类目录】
+ *      1.任务配置--信息获取
+ *      2.活动配置--信息获取
+ *      3.检验时候为活动期间
  * @create by 王星齐
  * @date 2020-08-26 16:52
  */
@@ -30,11 +32,11 @@ public class ProjectHelper {
     private SysKeyValueRepository sysKeyValueRepository;
 
 
-    /* 任务配置--信息获取
+    /** 1.任务配置--信息获取
      * @description
      * @create by lyj
      * @time 2020-10-10 16:52:00
-     **/
+     */
     @JoinMemcache
     public TaskBaseSettingDto taskBaseSettingFind() {
         List<SysKeyValue> taskSetting = sysKeyValueRepository.findByType(ActSettingConstant.TYPE_TASK_DAKA_SETTING);
@@ -44,11 +46,11 @@ public class ProjectHelper {
     }
 
 
-    /* 活动配置--信息获取
+    /** 2.活动配置--信息获取
      * @description
      * @create by 王星齐
      * @time 2020-08-26 20:03:20
-     **/
+     */
     @JoinMemcache(refreshTime = 10)
     public ActBaseSettingDto actBaseSettingFind() {
         List<SysKeyValue> byType = sysKeyValueRepository.findByType(ActSettingConstant.TYPE_ACT_SETTING);
@@ -58,7 +60,7 @@ public class ProjectHelper {
                 .setActEndTime(CommonDateParseUtil.getEndTimeOfDay(CommonDateParseUtil.string2date(collect.get(ActSettingConstant.ACT_END_TIME), CommonDateParseUtil.YYYY_MM_DD)));
     }
 
-    /* 活动配置--检验时候为活动期间
+    /* 3.检验时候为活动期间
      * @description
      *   使用场景-------->post请求
      * @create by 王星齐
@@ -73,12 +75,12 @@ public class ProjectHelper {
             throw new Exception("活动已结束！");
     }
 
-    /* 活动配置--检验时候为活动期间
+    /** 3.检验时候为活动期间
      * @description
      *      使用场景-------->load请求
      * @create by 王星齐
      * @time 2020-08-26 20:11:04
-     **/
+     */
     public boolean actTimeValidateFlag() {
         ActBaseSettingDto actBaseSettingDto = this.actBaseSettingFind();
         Date now = new Date();

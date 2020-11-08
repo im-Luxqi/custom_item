@@ -36,9 +36,15 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * 抽奖辅助 service
- *
- * @description
+ * 抽奖Helper 常规操作
+ * @description 【帮助类目录】
+ *      1.发放游戏机会
+ *      2.剩余抽奖次数
+ *      3.今日某个来源的赠送次数
+ *      4.抽奖
+ *      5.直接发放指定优惠券奖品
+ *      6.获取当前奖池中，奖品
+ *      7.当前奖池等级
  * @create by 王星齐
  * @date 2020-08-26 16:52
  */
@@ -57,7 +63,7 @@ public class LuckyDrawHelper {
     @Autowired
     private ICusOrderInfoService cusOrderInfoService;
 
-    /* 发放游戏机会
+    /** 1.发放游戏机会
      * @description
      * @create by 王星齐
      * @time 2020-08-28 16:13:28
@@ -65,7 +71,7 @@ public class LuckyDrawHelper {
      * @param chanceFrom  什么原因发的(必填)
      * @param number  发几个(必填)
      * @param tid  如果是来自于订单，哪个订单(非必填)
-     **/
+     */
     @Transactional
     public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, Integer number, String tid) {
         Date sendTime = new Date();
@@ -90,22 +96,22 @@ public class LuckyDrawHelper {
     }
 
 
-    /* 剩余抽奖次数
+    /** 2.剩余抽奖次数
      * @description
      * @create by 王星齐
      * @time 2020-08-28 19:31:12
      * @param buyerNick
-     **/
+     */
     public long unUseLuckyChance(String buyerNick) {
         return sysLuckyChanceRepository.countByBuyerNickAndIsUse(buyerNick, BooleanConstant.BOOLEAN_NO);
     }
 
-    /* 今日某个来源的赠送次数
+    /** 3.今日某个来源的赠送次数
      * @description
      * @create by 王星齐
      * @time 2020-10-10 20:03:49
      * @param buyerNick
-     **/
+     */
     public long countTodayLuckyChanceFrom(String buyerNick, LuckyChanceFromEnum from) {
         Date today = new Date();
         return sysLuckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeBetween(buyerNick, from,
@@ -113,14 +119,14 @@ public class LuckyDrawHelper {
     }
 
 
-    /* 抽奖
+    /**4.抽奖
      * @description
      * @create by 王星齐
      * @time 2020-08-28 17:04:19
      * @param awards  当前奖池奖品
-     * @param maxWinGoodNum 玩家最大实物中奖数
      * @param custom 哪个玩家
-     **/
+     * @param drawTime 抽象时间
+     */
     @Transactional
     public SysAward luckyDraw(List<SysAward> awards, SysCustom custom, Date drawTime) throws Exception {
         return luckyDraw(awards, custom, drawTime, false);
@@ -228,6 +234,14 @@ public class LuckyDrawHelper {
     }
 
 
+    /** 5.直接发放指定优惠券奖品
+     * @description
+     * @create by 王星齐
+     * @time 2020-11-08 19:13:48
+     * @param award  奖品
+     * @param custom  发给谁
+     * @param sendTime  发放时间
+     */
     @Transactional
     public void directSendCoupon(SysAward award, SysCustom custom, Date sendTime) {
         Assert.isTrue(sysAwardRepository.tryReduceOne(award.getId()) > 0, "奖品库存库存不足");
@@ -262,13 +276,24 @@ public class LuckyDrawHelper {
         sysLuckyDrawRecordRepository.save(drawRecord);
     }
 
+    /** 6.获取当前奖池中，奖品
+     * @description
+     * @create by 王星齐
+     * @time 2020-11-08 19:13:22
+     * @param sysCustom
+     */
     @Transactional
     public List<SysAward> findCustomTimeAwardPool(SysCustom sysCustom) {
-        //todo:等待落实奖池升级规则
         PoolLevelEnum currentPoolLevel = findCurrentPoolLevel(sysCustom).getCurrentPoolLevel();
-        return sysAwardRepository.findByUseWayAndPoolLevelOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
+        return sysAwardRepository.findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
     }
 
+    /** 7.当前奖池等级
+     * @description todo:等待落实奖池升级规则
+     * @create by 王星齐
+     * @time 2020-11-08 19:12:41
+     * @param sysCustom
+     */
     @Transactional
     public CustomPlayProgressDto findCurrentPoolLevel(SysCustom sysCustom) {
         CustomPlayProgressDto customPlayProgressDto = new CustomPlayProgressDto();
