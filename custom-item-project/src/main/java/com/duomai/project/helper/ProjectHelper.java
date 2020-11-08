@@ -110,22 +110,4 @@ public class ProjectHelper {
         return liveFlag;
     }
 
-
-    /* 客户--信息初始化
-     * @description
-     * @create by 王星齐
-     * @time 2020-08-26 17:15:05
-     * @param sysParm  系统参数
-     * @param hasAttention  是否已关注店铺（因为是否老粉丝由前端查询）
-     **/
-    public SysCustom customInit(ApiSysParameter sysParm) throws ApiException {
-        SysCustom sysCustom = new SysCustom();
-        return sysCustom.setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
-                .setCreateTime(sysParm.getRequestStartTime())
-                .setOpenId(sysParm.getApiParameter().getYunTokenParameter().getOpenUId())
-                .setOldFans(BooleanConstant.BOOLEAN_UNDEFINED)//由于关注权限在前端查询，此处默认未知状态(-1),等待首次更新
-                .setOldMember(taobaoAPIService.isMember(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick()) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO)
-                .setFans(sysCustom.getOldFans())
-                .setMember(sysCustom.getOldMember().equals(BooleanConstant.BOOLEAN_YES) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO);
-    }
 }

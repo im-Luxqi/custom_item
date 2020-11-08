@@ -15,13 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/* 我的奖品
+/* 抽中的 奖品
  * @description
  * @create by 王星齐
  * @time 2020-09-29 14:52:42
  **/
 @Component
-public class AwardMyLuckyBagExecute implements IApiExecute {
+public class LuckyBagAllWinExecute implements IApiExecute {
     @Autowired
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
 

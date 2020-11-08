@@ -16,13 +16,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-/*完善地址信息
+/*对于抽中的实物奖品，完善地址信息
  * @description
  * @create by 王星齐
  * @time 2020-07-31 10:30:29
  **/
 @Component
-public class AwardAddressExecute implements IApiExecute {
+public class LuckyBagFillAwardAddressExecute implements IApiExecute {
     @Autowired
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
 

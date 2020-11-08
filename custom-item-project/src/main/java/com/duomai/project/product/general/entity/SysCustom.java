@@ -42,4 +42,7 @@ public class SysCustom {
     private Integer follow;
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否老粉丝 0:否1:是'")
     private Integer historyFollow;
+    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否授权 0:否1:是'")
+    private Integer haveAuthorization;
+
 }

@@ -1,11 +1,10 @@
 package com.duomai.project.product.general.execute;
 
 import com.duomai.common.base.execute.IApiExecute;
+import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.entity.SysCustom;
-import com.duomai.project.product.general.entity.SysInviteLog;
-import com.duomai.project.product.general.enums.InvitationTypeEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysInviteLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * @create by 王星齐
  **/
 @Component
-public class AuthorizationSuccessExecute implements IApiExecute {
+public class PlayerInfoFillForAfterAuthorizationExecute implements IApiExecute {
 
     @Autowired
     private SysCustomRepository sysCustomRepository;
@@ -33,9 +32,8 @@ public class AuthorizationSuccessExecute implements IApiExecute {
 
         /*1.校验参数*/
         SysCustom sysCustomParam = sysParm.getApiParameter().findBeautyAdmjson(SysCustom.class);
-//        ProjectTools.validateParam(sysCustomParam);
-        Assert.hasLength(sysCustomParam.getZnick(), "真实昵称不能为空");
-        Assert.hasLength(sysCustomParam.getHeadImg(), "头像不能为空");
+        Assert.hasLength(sysCustomParam.getZnick(), "真实昵称不能为空(demo:->{'znick':'王小明'})");
+        Assert.hasLength(sysCustomParam.getHeadImg(), "头像不能为空(demo:->{'headImg':'http://tuchuang.wangxiaoming.png'})");
 
 
         /*2.校验玩家*/
@@ -46,14 +44,8 @@ public class AuthorizationSuccessExecute implements IApiExecute {
         /*3.更新用户信息*/
         sysCustomRepository.save(sysCustom.setZnick(sysCustomParam.getZnick())
                 .setHeadImg(sysCustomParam.getHeadImg())
+                .setHaveAuthorization(BooleanConstant.BOOLEAN_YES)
                 .setUpdateTime(sysParm.getRequestStartTime()));
-
-        //更新邀请记录
-        SysInviteLog inviteLog = inviteLogRepository.queryFirstByInviteeAndInvitationType(buyerNick, InvitationTypeEnum.invitationStage);
-        if (inviteLog != null) {
-            inviteLogRepository.save(inviteLog.setInviteeImg(sysCustomParam.getHeadImg())
-                    .setMixInvitee(sysCustomParam.getZnick()));
-        }
 
         return YunReturnValue.ok("完善用户信息成功");
     }

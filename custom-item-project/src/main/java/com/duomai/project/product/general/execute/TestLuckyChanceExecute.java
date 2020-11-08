@@ -20,16 +20,16 @@ import javax.servlet.http.HttpServletResponse;
  * @time 2020-08-26 19:11:50
  **/
 @Component
-public class IllegalAccessLuckyChanceExecute implements IApiExecute {
+public class TestLuckyChanceExecute implements IApiExecute {
     @Autowired
     private LuckyDrawHelper luckyDrawHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Assert.isTrue(ProjectTools.findMaxWinGoodNum() > 10, "？？？？？，想屁吃呢");
+        Assert.isTrue(ProjectTools.findMaxWinGoodNum() > 10, "测试专用~~");
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         String buyerNick = jsonObjectAdmjson.getString("buyerNick");
-        Assert.hasLength(buyerNick, "buyernick不能为空");
+        Assert.hasLength(buyerNick, "buyerNick不能为空");
         luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.DAKA, 30, null);
         return YunReturnValue.ok("恭喜【" + buyerNick + "】获取30次抽奖机会");
     }
