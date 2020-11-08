@@ -49,7 +49,7 @@ public class ProjectHelper {
      * @create by 王星齐
      * @time 2020-08-26 20:03:20
      **/
-    @JoinMemcache(key = MemcachePublicKeyConstant.memcache_act_setting,refreshTime = 10)
+    @JoinMemcache(refreshTime = 10)
     public ActBaseSettingDto actBaseSettingFind() {
         List<SysKeyValue> byType = sysKeyValueRepository.findByType(ActSettingConstant.TYPE_ACT_SETTING);
         Map<String, String> collect = byType.stream().collect(Collectors.toMap(SysKeyValue::getK, SysKeyValue::getV));
@@ -59,7 +59,8 @@ public class ProjectHelper {
     }
 
     /* 活动配置--检验时候为活动期间
-     * @description ，不在活动范围，抛出异常不往下执行
+     * @description
+     *   使用场景-------->post请求
      * @create by 王星齐
      * @time 2020-08-26 20:11:04
      * @param actBaseSetting
@@ -73,7 +74,8 @@ public class ProjectHelper {
     }
 
     /* 活动配置--检验时候为活动期间
-     * @description ，处于活动期间返回true
+     * @description
+     *      使用场景-------->load请求
      * @create by 王星齐
      * @time 2020-08-26 20:11:04
      * @param actBaseSetting
