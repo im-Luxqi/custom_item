@@ -4,10 +4,13 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.common.enums.SysErrorEnum;
+import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.product.adidasmusic.execute.*;
 import com.duomai.project.product.general.execute.*;
 import com.duomai.project.tool.ApplicationUtils;
+import com.duomai.project.tool.ProjectTools;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +25,7 @@ public class QLApiExecuteHandler {
         /*
          * 通用
          **/
+        map.put("wx.dz.common.test", TestExecute.class); //测试阶段专用  wxq
         map.put("wx.dz.common.test.luckyChance", TestLuckyChanceExecute.class); //测试阶段专用 --增加指定玩家30次抽奖次数 wxq
 
         map.put("wx.dz.common.playerInfo.scan", PlayerInfoScanOrInitExecute.class);//玩家信息扫描，首次完成初始化操作 wxq
@@ -37,7 +41,7 @@ public class QLApiExecuteHandler {
         /*
          * 阿迪2020双十一 定制
          **/
-        map.put("wx.dz.index.award.forinvite", IndexSendInviteAwardExecute.class); //首页发送邀请人员的奖励 wxq
+    /*    map.put("wx.dz.index.award.forinvite", IndexSendInviteAwardExecute.class); //首页发送邀请人员的奖励 wxq
         map.put("wx.dz.index.award.luckydraw", IndexLuckyDrawExecute.class); //抽奖 wxq
 
         map.put("wx.dz.task.finish.load", GeneralTaskLoadExecute.class); // 任务页面load:签到、关注是否完成 lyj
@@ -62,7 +66,7 @@ public class QLApiExecuteHandler {
 
 //        map.put("wz.dz.tools.clear.log",DzToolsClearLogExecute.class); // 测试：清除记录
 
-        map.put("wz.dz.tools.award.all", DzToolsAwardFindAllExecute.class); // 获得所有奖品
+        map.put("wz.dz.tools.award.all", DzToolsAwardFindAllExecute.class); // 获得所有奖品*/
 
 
     }
@@ -79,6 +83,12 @@ public class QLApiExecuteHandler {
         }
         if (sendApiExecute == null) {
             return YunReturnValue.fail(SysErrorEnum.VALID_EXECUTE);
+        }
+
+        //防连点
+        if (ProjectTools.hasMemCacheEnvironment()) {
+            Assert.isTrue(MemcacheTools.add("_checkoutMultipleCommit_" + sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + sendApiExecute.getClass().getName())
+                    , "点太快了，请休息下");
         }
         return sendApiExecute.ApiExecute(sysParm, request, response);
     }

@@ -34,7 +34,7 @@ public class CusBigWheelListExecute implements IApiExecute {
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         //预防连点
-        projectHelper.checkoutMultipleCommit(sysParm, this);
+
 
         PageListDto beautyAdmjson = sysParm.getApiParameter().findBeautyAdmjson(PageListDto.class);
         beautyAdmjson.startPage();

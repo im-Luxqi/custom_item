@@ -1,4 +1,4 @@
-package com.duomai.project.product.general.constants;
+package com.duomai.project.helper.constants;
 
 public interface ActSettingConstant {
 

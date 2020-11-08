@@ -1,28 +1,20 @@
 package com.duomai.project.helper;
 
-import com.duomai.common.base.execute.IApiExecute;
-import com.duomai.common.constants.BooleanConstant;
-import com.duomai.common.dto.ApiSysParameter;
-import com.duomai.project.api.taobao.ITaobaoAPIService;
-import com.duomai.project.api.taobao.OcsUtil;
-import com.duomai.project.product.general.constants.ActSettingConstant;
+import com.duomai.project.configuration.annotation.JoinMemcache;
+import com.duomai.project.helper.constants.ActSettingConstant;
+import com.duomai.project.helper.constants.MemcachePublicKeyConstant;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.dto.TaskBaseSettingDto;
-import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysKeyValue;
 import com.duomai.project.product.general.repository.SysKeyValueRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
-import com.duomai.project.tool.ProjectTools;
-import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -36,8 +28,6 @@ import java.util.stream.Collectors;
 @Component
 public class ProjectHelper {
     @Autowired
-    private ITaobaoAPIService taobaoAPIService;
-    @Autowired
     private SysKeyValueRepository sysKeyValueRepository;
 
 
@@ -46,34 +36,20 @@ public class ProjectHelper {
      * @create by lyj
      * @time 2020-10-10 16:52:00
      **/
-    public TaskBaseSettingDto taskBaseSettingFind(){
+    public TaskBaseSettingDto taskBaseSettingFind() {
         List<SysKeyValue> taskSetting = sysKeyValueRepository.findByType(ActSettingConstant.TYPE_TASK_DAKA_SETTING);
-        Map<String,String> map = taskSetting.stream().collect(Collectors.toMap(SysKeyValue::getK, SysKeyValue::getV));
+        Map<String, String> map = taskSetting.stream().collect(Collectors.toMap(SysKeyValue::getK, SysKeyValue::getV));
         return new TaskBaseSettingDto().setTaskStartTime(CommonDateParseUtil.string2date(map.get(ActSettingConstant.TASK_START_TIME), CommonDateParseUtil.YYYY_MM_DD))
                 .setTaskEndTime(CommonDateParseUtil.string2date(map.get(ActSettingConstant.TASK_END_TIME), CommonDateParseUtil.YYYY_MM_DD));
     }
 
-    /* 防连点
-     * @description
-     * @create by 王星齐
-     * @time 2020-09-30 16:59:46
-     * @param sysParm
-     * @param execute
-     **/
-    public void checkoutMultipleCommit(ApiSysParameter sysParm, IApiExecute execute) throws Exception {
-        if (!ProjectTools.hasMemCacheEnvironment())
-            return;
-        String ex = execute.getClass().getName();
-        Assert.isTrue(OcsUtil.add(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + ex, "_commit_", 1)
-                , "点太快了，请休息下");
-        log.info(Objects.requireNonNull(OcsUtil.getObject(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + ex)).toString() + "-------------------------------");
-    }
 
     /* 活动配置--信息获取
      * @description
      * @create by 王星齐
      * @time 2020-08-26 20:03:20
      **/
+    @JoinMemcache(key = MemcachePublicKeyConstant.memcache_act_setting,refreshTime = 10)
     public ActBaseSettingDto actBaseSettingFind() {
         List<SysKeyValue> byType = sysKeyValueRepository.findByType(ActSettingConstant.TYPE_ACT_SETTING);
         Map<String, String> collect = byType.stream().collect(Collectors.toMap(SysKeyValue::getK, SysKeyValue::getV));
@@ -109,5 +85,4 @@ public class ProjectHelper {
             liveFlag = false;
         return liveFlag;
     }
-
 }
