@@ -212,7 +212,8 @@ public class LuckyDrawHelper {
                     if (alibabaBenefitSendResponse.getResultSuccess() == null || !alibabaBenefitSendResponse.getResultSuccess()) {
                         //发放失败,算未中奖
                         awardThisWin = null;
-                        drawRecord.setSendError("发放优惠券失败：" + JSON.toJSONString(alibabaBenefitSendResponse));
+
+                        drawRecord.setSendError("发放优惠券失败：-->" + alibabaBenefitSendResponse.getResultCode()+":-->"+alibabaBenefitSendResponse.getResultMsg());
                         return null;
                     }
                 } catch (Exception e) {
@@ -264,7 +265,7 @@ public class LuckyDrawHelper {
             AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon(custom.getOpenId(), award.getEname());
             if (alibabaBenefitSendResponse.getResultSuccess() == null || !alibabaBenefitSendResponse.getResultSuccess()) {
                 //发放失败
-                drawRecord.setSendError("发放优惠券失败：" + JSON.toJSONString(alibabaBenefitSendResponse));
+                drawRecord.setSendError("发放优惠券失败：-->" + alibabaBenefitSendResponse.getResultCode()+":-->"+alibabaBenefitSendResponse.getResultMsg());
                 drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO);
             }
         } catch (Exception e) {
