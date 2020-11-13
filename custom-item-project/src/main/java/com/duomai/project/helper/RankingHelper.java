@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 /**
- * 排行榜Helper 常规操作
+ * 排行榜 常规操作
  * @description 【帮助类目录】
  *      1.查询排行榜
  *      2.实时查询，当前玩家在本次排行榜活动中的排名

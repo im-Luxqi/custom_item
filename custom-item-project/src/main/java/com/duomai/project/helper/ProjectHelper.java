@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * 活动Helper 常规操作
+ * 活动 常规操作
  * @description 【帮助类目录】
  *      1.任务配置--信息获取
  *      2.活动配置--信息获取

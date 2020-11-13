@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * 抽奖Helper 常规操作
+ * 抽奖 常规操作
  * @description 【帮助类目录】
  *      1.发放游戏机会
  *      2.剩余抽奖次数
