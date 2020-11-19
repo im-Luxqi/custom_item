@@ -116,8 +116,9 @@ public class QLApiExecuteHandler {
 
         //防连点
         if (ProjectTools.hasMemCacheEnvironment()) {
-            Assert.isTrue(MemcacheTools.add("_checkoutMultipleCommit_" + sysParm.getApiParameter().getYunTokenParameter().getBuyerNick() + sendApiExecute.getClass().getName())
-                    , "点太快了，请休息下");
+            Assert.isTrue(MemcacheTools.add("_checkoutMultipleCommit_"
+                            + sysParm.getApiParameter().getYunTokenParameter().getBuyerNick()
+                            + sendApiExecute.getClass().getName()), "点太快了，请休息下");
         }
         return sendApiExecute.ApiExecute(sysParm, request, response);
     }

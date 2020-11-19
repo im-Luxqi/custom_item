@@ -26,17 +26,30 @@ public class SysLuckyChance {
     private Date getTime;
     @Column(columnDefinition = "DATETIME COMMENT '消耗时间'")
     private Date useTime;
-    @Column(nullable = false, columnDefinition = "varchar(47) COMMENT '用户混淆昵称'")
+    @Column(nullable = false, columnDefinition = "varchar(100) COMMENT '用户混淆昵称'")
     private String buyerNick;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "varchar(20) COMMENT '机会来源'")
     private LuckyChanceFromEnum chanceFrom;
-    @Column(nullable = false, columnDefinition = "varchar(20) COMMENT '是否使用'")
+    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否使用'")
     private Integer isUse;
+
+
+
+
 
     @Column(columnDefinition = "varchar(64) COMMENT '订单号'")
     private String tid;
     @Column(columnDefinition = "DATETIME COMMENT '下单时间'")
     private Date tidTime;
+
+
+
+    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否已通知'")
+    private Integer haveNotification;
+    @Column(columnDefinition = "varchar(100)   COMMENT '消息标题'")
+    private String notificationTitle;
+    @Column(columnDefinition = "varchar(100)  COMMENT '消息内容'")
+    private String notificationContent;
 
 }

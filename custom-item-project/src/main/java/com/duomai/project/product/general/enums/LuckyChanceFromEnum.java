@@ -8,11 +8,13 @@ import com.duomai.common.base.enums.IEnum;
  * @time 2020-08-28 14:28:07
  **/
 public enum LuckyChanceFromEnum implements IEnum {
+    FREE("FREE","首次进游戏免费送"),
+    INVITE_MEMBER("INVITE_MEMBER", "邀请入会"),
+    SHARE("SHARE", "分享"),
     SIGN("SIGN", "每日签到"),
     FOLLOW("FOLLOW", "关注店铺"),
     BROWSE("BROWSE", "浏览商品"),
     DAKA("DAKA", "大咖日历"),
-    FIRST("FIRST","每天首次"),
     ;
     private final String code;
     private final String descp;

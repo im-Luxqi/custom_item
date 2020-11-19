@@ -80,7 +80,7 @@ public class DmClickToBrowseExecute implements IApiExecute {
         }
 
         //赠送抽奖次数
-        drawHelper.sendLuckyChance(buyerNick,LuckyChanceFromEnum.BROWSE,1);
+        drawHelper.sendLuckyChance(buyerNick,LuckyChanceFromEnum.BROWSE,1,"首次登陆","");
         return YunReturnValue.ok(CommonExceptionEnum.OPERATION_SUCCESS.getMsg());
     }
 }

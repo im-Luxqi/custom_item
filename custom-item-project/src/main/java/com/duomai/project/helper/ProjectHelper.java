@@ -51,7 +51,7 @@ public class ProjectHelper {
      * @create by 王星齐
      * @time 2020-08-26 20:03:20
      */
-    @JoinMemcache(refreshTime = 10)
+    @JoinMemcache()
     public ActBaseSettingDto actBaseSettingFind() {
         List<SysKeyValue> byType = sysKeyValueRepository.findByType(ActSettingConstant.TYPE_ACT_SETTING);
         Map<String, String> collect = byType.stream().collect(Collectors.toMap(SysKeyValue::getK, SysKeyValue::getV));

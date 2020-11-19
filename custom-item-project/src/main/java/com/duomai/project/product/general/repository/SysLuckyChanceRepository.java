@@ -21,4 +21,5 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
     List<SysLuckyChance> findByBuyerNick(String buyerNick);
 
 
+    long countByBuyerNickAndChanceFrom(String buyerNick, LuckyChanceFromEnum from);
 }
