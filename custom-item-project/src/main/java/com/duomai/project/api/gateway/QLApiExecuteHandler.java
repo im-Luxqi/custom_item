@@ -7,6 +7,7 @@ import com.duomai.common.enums.SysErrorEnum;
 import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.product.adidasmusic.execute.*;
 import com.duomai.project.product.general.execute.*;
+import com.duomai.project.product.mengniuwawaji.execute.GameIndexLoadExecute;
 import com.duomai.project.tool.ApplicationUtils;
 import com.duomai.project.tool.ProjectTools;
 import org.springframework.context.ApplicationContext;
@@ -22,18 +23,46 @@ public class QLApiExecuteHandler {
     public static Map map = new HashMap<>();
 
     static {
-        /*
+        /**
          * 通用
-         **/
-        map.put("wx.dz.common.test", TestExecute.class); //测试阶段专用  wxq
-        map.put("wx.dz.common.test.luckyChance", TestLuckyChanceExecute.class); //测试阶段专用 --增加指定玩家30次抽奖次数 wxq
+         */
+        //测试阶段专用  wxq
+        map.put("wx.dz.common.test", TestExecute.class);
+        //测试阶段专用 --增加指定玩家30次抽奖次数 wxq
+        map.put("wx.dz.common.test.luckyChance", TestLuckyChanceExecute.class);
 
-        map.put("wx.dz.common.playerInfo.scan", PlayerInfoScanOrInitExecute.class);//玩家信息扫描，首次完成初始化操作 wxq
-        map.put("wx.dz.common.playerInfo.fill.historyFollow", PlayerInfoFillForHistroyFollowExecute.class);//补全字段history_follow  wxq
-        map.put("wx.dz.common.playerInfo.fill.afterAuthorization", PlayerInfoFillForAfterAuthorizationExecute.class);//授权成功后，完善用户信息 wxq
 
-        map.put("wx.dz.common.luckyBag.allWin", LuckyBagAllWinExecute.class); //我的奖品 wxq
-        map.put("wx.dz.common.luckyBag.fill.awardAddress", LuckyBagFillAwardAddressExecute.class); //留资料 wxq
+        //玩家信息扫描，首次完成初始化操作 wxq
+        map.put("wx.dz.common.playerInfo.scan", PlayerInfoScanOrInitExecute.class);
+        //补全字段history_follow  wxq
+        map.put("wx.dz.common.playerInfo.fill.historyFollow", PlayerInfoFillForHistroyFollowExecute.class);
+        //授权成功后，完善用户信息 wxq
+        map.put("wx.dz.common.playerInfo.fill.afterAuthorization", PlayerInfoFillForAfterAuthorizationExecute.class);
+
+
+
+        /**
+         * 首页
+         */
+        //游戏首页 加载
+        map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
+
+
+
+
+
+
+        //我的奖品 wxq
+        map.put("wx.dz.common.luckyBag.allWin", LuckyBagAllWinExecute.class);
+        //留资料 wxq
+        map.put("wx.dz.common.luckyBag.fill.awardAddress", LuckyBagFillAwardAddressExecute.class);
+
+
+
+
+
+
+
 //
 //        map.put("wx.dz.common.pv", PagePvExecute.class);//pv  wxq
 

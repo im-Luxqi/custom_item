@@ -6,6 +6,7 @@ import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.enums.FollowWayFromEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,10 +14,13 @@ import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 
-/** 补全字段history_follow
- * @description  由于后台没有相关权限接口（查询玩家是否关注店铺）
- * @create by 王星齐
+/**
+ * 补全字段history_follow
+ *
+ * @author im-luxqi
+ * @description 由于后台没有相关权限接口（查询玩家是否关注店铺）
  **/
 @Component
 public class PlayerInfoFillForHistroyFollowExecute implements IApiExecute {
@@ -35,10 +39,11 @@ public class PlayerInfoFillForHistroyFollowExecute implements IApiExecute {
         /*2.查找到指定玩家*/
         SysCustom sysCustom = sysCustomRepository.findByBuyerNickAndHistoryFollow(
                 sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), BooleanConstant.BOOLEAN_UNDEFINED);
-        Assert.notNull(sysCustom, "不存在该玩家，或者该玩家已经初始化关注信息");
 
-        /*3.初始化玩家关注状态*/
-        sysCustomRepository.save(sysCustom.setHistoryFollow(has_follow ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO));
+        if (!Objects.isNull(sysCustom)) {
+            /*3.初始化玩家关注状态*/
+            sysCustomRepository.save(sysCustom.setFollowWayFromEnum(has_follow ? FollowWayFromEnum.HISTROY_FOLLOW : FollowWayFromEnum.NON_FOLLOW));
+        }
         return YunReturnValue.ok("初始化玩家关注信息成功");
     }
 }

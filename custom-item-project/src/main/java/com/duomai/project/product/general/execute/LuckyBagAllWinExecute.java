@@ -15,11 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/* 抽中的 奖品
+/** 抽中的 奖品
+ * @author im-luxqi
  * @description
  * @create by 王星齐
  * @time 2020-09-29 14:52:42
- **/
+ */
 @Component
 public class LuckyBagAllWinExecute implements IApiExecute {
     @Autowired
