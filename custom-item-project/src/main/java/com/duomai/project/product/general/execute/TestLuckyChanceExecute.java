@@ -14,9 +14,11 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** 非法获取抽奖次数
+/**
+ * 非法获取抽奖次数
+ *
  * @author im-luxqi
- * @description (哪个渠道，页面)
+ * @description (哪个渠道 ， 页面)
  * @create by 王星齐
  * @time 2020-08-26 19:11:50
  */
@@ -31,7 +33,7 @@ public class TestLuckyChanceExecute implements IApiExecute {
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         String buyerNick = jsonObjectAdmjson.getString("buyerNick");
         Assert.hasLength(buyerNick, "buyerNick不能为空");
-        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.DAKA, 30, null);
+        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.DAKA, 30, null,"非法获取抽奖次数", "非法获取抽奖次数30次");
         return YunReturnValue.ok("恭喜【" + buyerNick + "】获取30次抽奖机会");
     }
 }

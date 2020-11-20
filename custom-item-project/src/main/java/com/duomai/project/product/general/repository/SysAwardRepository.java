@@ -20,12 +20,20 @@ public interface SysAwardRepository extends BaseRepository<SysAward, String> {
                     "        and  remain_num >0")
     int tryReduceOne(String id);
 
-    //获取单个 某个类型的奖品
-    SysAward queryFirstByUseWay(AwardUseWayEnum useWay);
+
+
+
+    /**
+     * 获取单个 某个类型的奖品
+     * @param useWay
+     * @return
+     */
+    SysAward findFirstByUseWay(AwardUseWayEnum useWay);
+
+    List<SysAward> findByUseWay(AwardUseWayEnum useWay);
 
     List<SysAward> findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum useWay);
 
-    List<SysAward> findByUseWayAndPoolLevelOrderByLuckyValueAsc(AwardUseWayEnum useWay, Integer level);
 
     List<SysAward> findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum useWay, Integer level);
 }

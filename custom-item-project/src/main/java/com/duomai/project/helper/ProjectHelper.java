@@ -32,20 +32,6 @@ public class ProjectHelper {
     private SysKeyValueRepository sysKeyValueRepository;
 
 
-    /** 1.任务配置--信息获取
-     * @description
-     * @create by lyj
-     * @time 2020-10-10 16:52:00
-     */
-    @JoinMemcache
-    public TaskBaseSettingDto taskBaseSettingFind() {
-        List<SysKeyValue> taskSetting = sysKeyValueRepository.findByType(ActSettingConstant.TYPE_TASK_DAKA_SETTING);
-        Map<String, String> map = taskSetting.stream().collect(Collectors.toMap(SysKeyValue::getK, SysKeyValue::getV));
-        return new TaskBaseSettingDto().setTaskStartTime(CommonDateParseUtil.string2date(map.get(ActSettingConstant.TASK_START_TIME), CommonDateParseUtil.YYYY_MM_DD))
-                .setTaskEndTime(CommonDateParseUtil.string2date(map.get(ActSettingConstant.TASK_END_TIME), CommonDateParseUtil.YYYY_MM_DD));
-    }
-
-
     /** 2.活动配置--信息获取
      * @description
      * @create by 王星齐
@@ -57,7 +43,9 @@ public class ProjectHelper {
         Map<String, String> collect = byType.stream().collect(Collectors.toMap(SysKeyValue::getK, SysKeyValue::getV));
         return new ActBaseSettingDto().setActRule(collect.get(ActSettingConstant.ACT_RULE))
                 .setActStartTime(CommonDateParseUtil.string2date(collect.get(ActSettingConstant.ACT_START_TIME), CommonDateParseUtil.YYYY_MM_DD))
-                .setActEndTime(CommonDateParseUtil.getEndTimeOfDay(CommonDateParseUtil.string2date(collect.get(ActSettingConstant.ACT_END_TIME), CommonDateParseUtil.YYYY_MM_DD)));
+                .setActEndTime(CommonDateParseUtil.getEndTimeOfDay(CommonDateParseUtil.string2date(collect.get(ActSettingConstant.ACT_END_TIME), CommonDateParseUtil.YYYY_MM_DD)))
+                .setDrawCouponNum(Integer.valueOf(collect.get(ActSettingConstant.DRAW_COUPON_NUM)))
+                ;
     }
 
     /* 3.检验时候为活动期间

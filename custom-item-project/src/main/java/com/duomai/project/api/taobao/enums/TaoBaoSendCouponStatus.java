@@ -1,6 +1,6 @@
 package com.duomai.project.api.taobao.enums;
 
-/* alibaba.benefit.query奖池信息查询，常见错误码
+/** alibaba.benefit.query奖池信息查询，常见错误码
  * @description
  * 应用所有超过限制的网络计数  APPLY_ALL_NETWORK_COUNT_EXCEED_LIMIT
  * 应用并发锁 APPLY_CONCURRENT_LOCKED
@@ -8,7 +8,7 @@ package com.duomai.project.api.taobao.enums;
  * 适用一卖家计数超过限额 NO_RIGHT_QUANTITY
  * @create by 王星齐
  * @time 2020-08-24 10:06:25
- **/
+ */
 public enum TaoBaoSendCouponStatus {
     COUPON_INVALID_OR_DELETED("COUPON_INVALID_OR_DELETED", "等待买家付款"),
     APPLY_OWNSELF_COUPON("APPLY_OWNSELF_COUPON", "商家不能把自己的权益发给自己的帐号"),
@@ -24,7 +24,7 @@ public enum TaoBaoSendCouponStatus {
     ;
 
 
-    private final String code;
+    private  final  String code;
     private final String info;
 
     TaoBaoSendCouponStatus(String code, String info) {

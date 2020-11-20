@@ -32,4 +32,13 @@ public class ActBaseSettingDto {
     private Date actEndTime;
 
 
+
+    /**
+     * 优惠券一人可以抽几张
+     */
+    private Integer  drawCouponNum ;
+
+
+
+
 }

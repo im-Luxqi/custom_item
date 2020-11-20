@@ -3,21 +3,15 @@ package com.duomai.project.helper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
+import com.duomai.project.api.taobao.enums.TaoBaoSendCouponStatus;
 import com.duomai.project.product.adidasmusic.dto.CustomPlayProgressDto;
 import com.duomai.project.product.adidasmusic.enums.PoolLevelEnum;
 import com.duomai.project.product.adidasmusic.service.ICusOrderInfoService;
-import com.duomai.project.product.general.entity.SysAward;
-import com.duomai.project.product.general.entity.SysCustom;
-import com.duomai.project.product.general.entity.SysLuckyChance;
-import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
+import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
-import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.enums.TaskTypeEnum;
-import com.duomai.project.product.general.repository.SysAwardRepository;
-import com.duomai.project.product.general.repository.SysGeneralTaskRepository;
-import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
-import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import com.duomai.project.product.general.repository.*;
 import com.duomai.project.tool.CommonDateParseUtil;
 import com.duomai.project.tool.ProjectTools;
 import com.taobao.api.response.AlibabaBenefitSendResponse;
@@ -26,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -62,6 +57,9 @@ public class LuckyDrawHelper {
     private SysGeneralTaskRepository sysGeneralTaskRepository;
     @Autowired
     private ICusOrderInfoService cusOrderInfoService;
+    @Autowired
+    private SysExchangeLogRepository sysExchangeLogRepository;
+
 
     /**
      * 1.发放游戏机会
@@ -98,7 +96,7 @@ public class LuckyDrawHelper {
 
     @Transactional
     public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, Integer number, String messageTitle, String messageContent) {
-        return sendLuckyChance(buyerNick, chanceFrom, number, null,messageTitle,messageContent);
+        return sendLuckyChance(buyerNick, chanceFrom, number, null, messageTitle, messageContent);
     }
 
     @Transactional
@@ -163,7 +161,8 @@ public class LuckyDrawHelper {
 
     @Transactional
     public SysAward luckyDraw(List<SysAward> awards, SysCustom custom, Date drawTime, Boolean freeFlag) throws Exception {
-        SysAward awardThisWin = null;//本次抽中的奖品
+        //本次抽中的奖品
+        SysAward awardThisWin = null;
         SysLuckyChance thisChance = null;
         if (!freeFlag) {
             /*消耗一次抽奖次数*/
@@ -180,22 +179,31 @@ public class LuckyDrawHelper {
                 .setLuckyChance(thisChance == null ? null : thisChance.getId())
                 .setIsWin(BooleanConstant.BOOLEAN_NO)
                 .setIsFill(BooleanConstant.BOOLEAN_NO)
+                .setHaveExchange(BooleanConstant.BOOLEAN_NO)
                 .setDrawTime(drawTime)
                 .setPlayerHeadImg(custom.getHeadImg())
                 .setPlayerBuyerNick(custom.getBuyerNick())
                 .setPlayerZnick(custom.getZnick());
 
         try {
+
             /*1.整理历史抽奖记录*/
             List<SysLuckyDrawRecord> historyWin = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndIsWin(custom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
             StringBuffer historySignsBuffer = new StringBuffer();
             AtomicReference<Integer> historyGoodsHasGetAto = new AtomicReference<>(0);
-            if (CollectionUtils.isNotEmpty(historyWin))
+            if (CollectionUtils.isNotEmpty(historyWin)) {
                 historyWin.forEach((record) -> {
-                    historySignsBuffer.append(record.getAwardName()).append(",");
-                    if (AwardTypeEnum.GOODS.equals(record.getAwardType()))//实物
+                    //非虚拟
+                    if (!AwardTypeEnum.EXCHANGE.equals(record.getAwardType())) {
+                        historySignsBuffer.append(record.getAwardName()).append(",");
+                    }
+                    //实物
+                    if (AwardTypeEnum.GOODS.equals(record.getAwardType())) {
                         historyGoodsHasGetAto.updateAndGet(v -> v + 1);
+                    }
                 });
+            }
+
             final String historySigns_awardName_hasWin = historySignsBuffer.toString();
             Integer historyGoodsHasGet = historyGoodsHasGetAto.get();
 
@@ -206,8 +214,9 @@ public class LuckyDrawHelper {
                 //1.奖品数量不足;2.本活动最大实物中奖限制；3.已抽中过本奖品
                 if (award.getRemainNum() < 1 ||
                         (AwardTypeEnum.GOODS.equals(award.getType()) && historyGoodsHasGet >= maxWinGoodNum) ||
-                        historySigns_awardName_hasWin.contains(award.getName()))
+                        historySigns_awardName_hasWin.contains(award.getName())) {
                     continue;
+                }
                 //奖品中奖概率
                 if (Math.random() < Double.parseDouble(award.getLuckyValue())) {
                     awardThisWin = award;
@@ -242,7 +251,45 @@ public class LuckyDrawHelper {
                         //发放失败,算未中奖
                         awardThisWin = null;
 
-                        drawRecord.setSendError("发放优惠券失败：-->" + alibabaBenefitSendResponse.getResultCode() + ":-->" + alibabaBenefitSendResponse.getResultMsg());
+                        //发放失败
+                        switch (alibabaBenefitSendResponse.getResultCode()) {
+                            case "COUPON_INVALID_OR_DELETED":
+                                drawRecord.setSendError(TaoBaoSendCouponStatus.COUPON_INVALID_OR_DELETED.getInfo());
+                                break;
+                            case "APPLY_OWNSELF_COUPON":
+                                drawRecord.setSendError(TaoBaoSendCouponStatus.APPLY_OWNSELF_COUPON.getInfo());
+                                break;
+                            case "APPLY_SINGLE_COUPON_COUNT_EXCEED_LIMIT":
+                                drawRecord.setSendError(TaoBaoSendCouponStatus.APPLY_SINGLE_COUPON_COUNT_EXCEED_LIMIT.getInfo());
+                                break;
+                            case "权益已下线":
+                                drawRecord.setSendError(TaoBaoSendCouponStatus.OFF_LINE.getInfo());
+                                break;
+                            case "311权益已经被锁定":
+                                drawRecord.setSendError(TaoBaoSendCouponStatus.LOCK311.getInfo());
+                                break;
+                            case "APPLY_ONE_SELLER_COUNT_EXCEED_LIMIT":
+                                drawRecord.setSendError(TaoBaoSendCouponStatus.APPLY_ONE_SELLER_COUNT_EXCEED_LIMIT.getInfo());
+                                break;
+                            case "ERRORserver-invoke-mtee-exception":
+                                drawRecord.setSendError(TaoBaoSendCouponStatus.ERRORSERVER_INVOKE_MTEE_EXCEPTION.getInfo());
+                                break;
+                            case "NO_RIGHT_QUANTITY":
+                                drawRecord.setSendError(TaoBaoSendCouponStatus.NO_RIGHT_QUANTITY.getInfo());
+                                break;
+                            case "ERROR A_3_567":
+                                drawRecord.setSendError(TaoBaoSendCouponStatus.ERRORA_3_567.getInfo());
+                                break;
+                            case "ERROR A_3_00_005":
+                                drawRecord.setSendError(TaoBaoSendCouponStatus.ERRORA_3_00_005.getInfo());
+                                break;
+                            case "ERROR A_3_00_002":
+                                drawRecord.setSendError(TaoBaoSendCouponStatus.ERRORA_3_00_002.getInfo());
+                                break;
+                            default:
+                                drawRecord.setSendError("发放优惠券失败：-->" + alibabaBenefitSendResponse.getResultCode() + ":-->" + alibabaBenefitSendResponse.getResultMsg());
+                        }
+                        drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO);
                         return null;
                     }
                 } catch (Exception e) {
@@ -259,6 +306,16 @@ public class LuckyDrawHelper {
             SysLuckyDrawRecord save = sysLuckyDrawRecordRepository.save(drawRecord);
             if (awardThisWin != null) {
                 awardThisWin.setLogId(save.getId());
+                if (AwardTypeEnum.EXCHANGE.equals(awardThisWin.getType())) {
+                    SysExchangeLog sysExchangeLog = new SysExchangeLog()
+                            .setAwardId(awardThisWin.getId())
+                            .setAwardImg(awardThisWin.getImg())
+                            .setAwardName(awardThisWin.getName())
+                            .setCreateTime(drawTime)
+                            .setBuyerNick(custom.getBuyerNick())
+                            .setWinOrUse(BooleanConstant.BOOLEAN_YES);
+                    sysExchangeLogRepository.save(sysExchangeLog);
+                }
             }
         }
     }
@@ -316,11 +373,11 @@ public class LuckyDrawHelper {
      * @create by 王星齐
      * @time 2020-11-08 19:13:22
      */
-    @Transactional
-    public List<SysAward> findCustomTimeAwardPool(SysCustom sysCustom) {
-        PoolLevelEnum currentPoolLevel = findCurrentPoolLevel(sysCustom).getCurrentPoolLevel();
-        return sysAwardRepository.findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
-    }
+//    @Transactional
+//    public List<SysAward> findCustomTimeAwardPool(SysCustom sysCustom) {
+//        PoolLevelEnum currentPoolLevel = findCurrentPoolLevel(sysCustom).getCurrentPoolLevel();
+//        return sysAwardRepository.findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
+//    }
 
     /**
      * 7.当前奖池等级
@@ -359,5 +416,109 @@ public class LuckyDrawHelper {
         customPlayProgressDto.setOrderNum(orderNum);
         customPlayProgressDto.setSignNum((int) sign_num);
         return customPlayProgressDto;
+    }
+
+
+    /**
+     * @param unUseBattles
+     * @param custom
+     * @param award
+     * @param sendTime
+     */
+    @Transactional
+    public SysLuckyDrawRecord directExchangeAward(List<SysLuckyDrawRecord> unUseBattles, SysCustom custom, SysAward award, Date sendTime) {
+        Assert.isTrue(sysAwardRepository.tryReduceOne(award.getId()) > 0, "奖品库存库存不足");
+
+        StringBuffer stringBuffer = new StringBuffer();
+        unUseBattles.forEach(x -> {
+            stringBuffer.append(x.getId()).append(",");
+        });
+
+        /*整理抽奖日志*/
+        SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord()
+                .setIsWin(BooleanConstant.BOOLEAN_YES)
+                .setIsFill(BooleanConstant.BOOLEAN_NO)
+                .setDrawTime(sendTime)
+                .setHaveExchange(BooleanConstant.BOOLEAN_NO)
+                .setExchangeTime(sendTime)
+                .setPlayerHeadImg(custom.getHeadImg())
+                .setPlayerBuyerNick(custom.getBuyerNick())
+                .setPlayerZnick(custom.getZnick())
+                .setAwardId(award.getId())
+                .setAwardImg(award.getImg())
+                .setAwardLevel(award.getAwardLevel())
+                .setAwardName(award.getName())
+                .setAwardType(award.getType())
+                .setRemark("消耗:" + stringBuffer.toString() + "兑换:" + award.getName());
+
+        if (AwardTypeEnum.COUPON.equals(award.getType())) {
+            try {
+                AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon(custom.getOpenId(), award.getEname());
+                if (alibabaBenefitSendResponse.getResultSuccess() == null || !alibabaBenefitSendResponse.getResultSuccess()) {
+                    //发放失败
+                    switch (alibabaBenefitSendResponse.getResultCode()) {
+                        case "COUPON_INVALID_OR_DELETED":
+                            drawRecord.setSendError(TaoBaoSendCouponStatus.COUPON_INVALID_OR_DELETED.getInfo());
+                            break;
+                        case "APPLY_OWNSELF_COUPON":
+                            drawRecord.setSendError(TaoBaoSendCouponStatus.APPLY_OWNSELF_COUPON.getInfo());
+                            break;
+                        case "APPLY_SINGLE_COUPON_COUNT_EXCEED_LIMIT":
+                            drawRecord.setSendError(TaoBaoSendCouponStatus.APPLY_SINGLE_COUPON_COUNT_EXCEED_LIMIT.getInfo());
+                            break;
+                        case "权益已下线":
+                            drawRecord.setSendError(TaoBaoSendCouponStatus.OFF_LINE.getInfo());
+                            break;
+                        case "311权益已经被锁定":
+                            drawRecord.setSendError(TaoBaoSendCouponStatus.LOCK311.getInfo());
+                            break;
+                        case "APPLY_ONE_SELLER_COUNT_EXCEED_LIMIT":
+                            drawRecord.setSendError(TaoBaoSendCouponStatus.APPLY_ONE_SELLER_COUNT_EXCEED_LIMIT.getInfo());
+                            break;
+                        case "ERRORserver-invoke-mtee-exception":
+                            drawRecord.setSendError(TaoBaoSendCouponStatus.ERRORSERVER_INVOKE_MTEE_EXCEPTION.getInfo());
+                            break;
+                        case "NO_RIGHT_QUANTITY":
+                            drawRecord.setSendError(TaoBaoSendCouponStatus.NO_RIGHT_QUANTITY.getInfo());
+                            break;
+                        case "ERROR A_3_567":
+                            drawRecord.setSendError(TaoBaoSendCouponStatus.ERRORA_3_567.getInfo());
+                            break;
+                        case "ERROR A_3_00_005":
+                            drawRecord.setSendError(TaoBaoSendCouponStatus.ERRORA_3_00_005.getInfo());
+                            break;
+                        case "ERROR A_3_00_002":
+                            drawRecord.setSendError(TaoBaoSendCouponStatus.ERRORA_3_00_002.getInfo());
+                            break;
+                        default:
+                            drawRecord.setSendError("发放优惠券失败：-->" + alibabaBenefitSendResponse.getResultCode() + ":-->" + alibabaBenefitSendResponse.getResultMsg());
+                    }
+                    drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                //发放异常
+                drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO);
+                drawRecord.setSendError("发放优惠券异常：" + e.getMessage());
+            }
+        }
+
+        if (BooleanConstant.BOOLEAN_YES.equals(drawRecord.getIsWin())) {
+            //标记已兑换的瓶子
+            sysLuckyDrawRecordRepository.exchangeAward(Arrays.asList(stringBuffer.toString().split(",")), sendTime);
+
+            //记录瓶子兑换日志
+            List<SysExchangeLog> collect = unUseBattles.stream().map(x -> new SysExchangeLog()
+                    .setAwardId(x.getAwardId())
+                    .setAwardImg(x.getAwardImg())
+                    .setAwardName(x.getAwardName())
+                    .setCreateTime(sendTime)
+                    .setBuyerNick(custom.getBuyerNick())
+                    .setWinOrUse(BooleanConstant.BOOLEAN_NO)).collect(Collectors.toList());
+            sysExchangeLogRepository.saveAll(collect);
+        }
+        //保存兑换记录
+        sysLuckyDrawRecordRepository.save(drawRecord);
+        return drawRecord;
     }
 }

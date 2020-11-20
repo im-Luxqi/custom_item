@@ -10,11 +10,14 @@ import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysInviteLog;
+import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import com.duomai.project.product.general.entity.SysShareLog;
+import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.enums.MemberWayFromEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysInviteLogRepository;
+import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import com.duomai.project.product.general.repository.SysShareLogRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * 游戏首页 加载
@@ -44,6 +48,10 @@ public class GameIndexLoadExecute implements IApiExecute {
     private SysShareLogRepository sysShareLogRepository;
 
     @Autowired
+    private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
+
+
+    @Autowired
     private LuckyDrawHelper luckyDrawHelper;
 
     @Autowired
@@ -54,9 +62,6 @@ public class GameIndexLoadExecute implements IApiExecute {
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         resultMap.put("alter_for_shared_flag", false);
         resultMap.put("alter_for_invitee_flag", false);
-
-
-
 
 
         /*1.校验是否存在玩家*/
@@ -123,6 +128,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                 //记录邀请日志，成功发放抽奖机会
                 sysInviteLogRepository.save(sysInviteLog);
                 if (BooleanConstant.BOOLEAN_YES.equals(sysInviteLog.getHaveSuccess())) {
+                    sysCustomRepository.save(syscustom.setMemberWayFrom(MemberWayFromEnum.INVITEE_JOIN_MEMBER));
                     luckyDrawHelper.sendLuckyChance(inviterCustom.getBuyerNick(), LuckyChanceFromEnum.INVITE_MEMBER, 1,
                             "邀请入会" + syscustom.getZnick(), "任务完成,获取" + 1 + "次机会");
                 }
@@ -145,11 +151,28 @@ public class GameIndexLoadExecute implements IApiExecute {
         resultMap.put("game_rule", projectHelper.actBaseSettingFind());
         //2.抓娃娃机会次数
         resultMap.put("lucky_chance_num", luckyDrawHelper.unUseLuckyChance(buyerNick));
-        //todo:3.我的战利品
-        resultMap.put("lucky_win_bottle", "");
-        //todo:4.兑换弹幕
-        resultMap.put("lucky_exchange_barrage", "");
-        return null;
+        List<SysLuckyDrawRecord> unUseBattles = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndAwardTypeAndIsWinAndHaveExchange(buyerNick, AwardTypeEnum.EXCHANGE,
+                BooleanConstant.BOOLEAN_YES, BooleanConstant.BOOLEAN_NO);
+        unUseBattles.forEach((x) -> {
+            x.setId(null);
+            x.setLuckyChance(null);
+            x.setDrawTime(null);
+            x.setPlayerHeadImg(null);
+            x.setPlayerBuyerNick(null);
+            x.setPlayerZnick(null);
+            x.setAwardId(null);
+            x.setAwardLevel(null);
+            x.setAwardType(null);
+            x.setIsWin(null);
+            x.setIsFill(null);
+            x.setHaveExchange(null);
+        });
+        //3.我的战利品
+        resultMap.put("lucky_win_bottle", unUseBattles);
+        //4.兑换弹幕
+        resultMap.put("lucky_exchange_barrage", sysLuckyDrawRecordRepository.queryExchangeLog());
+
+        return YunReturnValue.ok(resultMap, "游戏首页");
     }
 }
 

@@ -23,4 +23,7 @@ public class SysKeyValue {
     private String v;
     @Column(columnDefinition = "varchar(30) COMMENT '类'")
     private String type;
+
+    @Column(columnDefinition = "varchar(50) COMMENT '说明'")
+    private String remark;
 }

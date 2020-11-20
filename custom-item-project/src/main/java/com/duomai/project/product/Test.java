@@ -1,11 +1,10 @@
 package com.duomai.project.product;
 
-import com.duomai.common.util.EncryptUtil;
-import com.duomai.common.util.MD5Utils;
-import com.duomai.project.product.adidasmusic.util.CommonHanZiUtil;
+import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Test {
 
@@ -13,7 +12,7 @@ public class Test {
 
         //生成sign
 //        String a = "{\"method\":\"wx.dz.tools.browse.baby\",\"sysCommodity\":[{\"name\":\"NITE JOGGER EF5402,男女经典运动鞋\",\"numId\":611446977762,\"type\":\"GOODS\",\"img\":\"https://img.alicdn.com/imgextra/i1/446338500/O1CN01okCPJC2Cf3AOCXFUv-446338500.jpg_430x430q90.jpg\",\"price\":1299,\"createTime\":\"2020-10-13 00:00:00\",\"commoditySort\":\"total\"},{\"name\":\"MICROPACER_R1 G27934,男鞋经典运动鞋\",\"numId\":591916480352,\"type\":\"GOODS\",\"img\":\"https://img.alicdn.com/imgextra/i4/6000000000093/O1CN01tByuOx1CYdPNrhOU6_!!6000000000093-0-tbvideo.jpg_600x600.jpg\",\"price\":1799,\"createTime\":\"2020-10-13 00:00:00\",\"commoditySort\":\"total\"},{\"name\":\"PW SOLAR HU NMD,男女经典运动鞋\",\"numId\":579198018067,\"type\":\"GOODS\",\"img\":\"https://img.alicdn.com/imgextra/i2/6000000005917/O1CN01SLElwj1ta26jnhBrc_!!6000000005917-0-tbvideo.jpg_600x600.jpg\",\"price\":1899,\"createTime\":\"2020-10-13 00:00:00\",\"commoditySort\":\"total\"}]}";
-        
+
 //        String b = "{\"method\": \"wx.dz.page.load\"}";
 //        String c = b.replaceAll(" ","");
 //        String zhString = "20ee7d6400dda1c9622699123af2c2c8"+"admjson"+
@@ -27,12 +26,59 @@ public class Test {
 //            System.out.println(sss.replace('丶', CommonHanZiUtil.randomGetUnicodeHanZi()));
 //        }
 
-        String aaa = "qwqweqweqweqwe";
-        for(int i =0;i<1000;i++){
-            Double ran = Math.random()*1000000;
-            Integer rand = ran.intValue();
-            System.out.println(aaa+rand);
+//        String aaa = "qwqweqweqweqwe";
+//        for(int i =0;i<1000;i++){
+//            Double ran = Math.random()*1000000;
+//            Integer rand = ran.intValue();
+//            System.out.println(aaa+rand);
+//        }
+
+        List<SysLuckyDrawRecord> commonBattles = new ArrayList<>();
+        commonBattles.add(new SysLuckyDrawRecord("1004"));
+        commonBattles.add(new SysLuckyDrawRecord("1002"));
+        commonBattles.add(new SysLuckyDrawRecord("1003"));
+        commonBattles.add(new SysLuckyDrawRecord("1004"));
+        commonBattles.add(new SysLuckyDrawRecord("1001"));
+        commonBattles.add(new SysLuckyDrawRecord("1002"));
+        commonBattles.add(new SysLuckyDrawRecord("1003"));
+
+
+        List<SysLuckyDrawRecord> shouldCost = new ArrayList<SysLuckyDrawRecord>();
+        Map<String, List<SysLuckyDrawRecord>> collect = commonBattles.stream()
+                .collect(Collectors.groupingBy(SysLuckyDrawRecord::getAwardId));
+
+        Map<String, List<SysLuckyDrawRecord>> sortMap = new TreeMap<>(String::compareTo);
+        sortMap.putAll(collect);
+
+
+
+        boolean mulValue;
+        while (shouldCost.size() < 3) {
+            mulValue = false;
+            for (String key : sortMap.keySet()) {
+                if (sortMap.get(key).size() > 1) {
+                    mulValue = true;
+                }
+            }
+
+            for (String key : sortMap.keySet()) {
+                if (shouldCost.size() >= 3) {
+                    break;
+                }
+                List<SysLuckyDrawRecord> sysLuckyDrawRecords = sortMap.get(key);
+                if (mulValue && sysLuckyDrawRecords.size() > 1) {
+                    shouldCost.add(sysLuckyDrawRecords.get(0));
+                    sysLuckyDrawRecords.remove(0);
+                } else if (!mulValue) {
+                    shouldCost.add(sysLuckyDrawRecords.get(0));
+                    sysLuckyDrawRecords.remove(0);
+                }
+            }
         }
+
+        shouldCost.forEach(x -> {
+            System.out.println(x.getAwardId());
+        });
 
     }
 

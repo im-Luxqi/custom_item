@@ -28,10 +28,14 @@ public class LuckyBagAllWinExecute implements IApiExecute {
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
+
         /*.数据展示*/
         Map result = new HashMap<>();
         //@1.我的奖品
-        List<SysLuckyDrawRecord> byPlayerBuyerNickAndIsWin = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndIsWin(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), BooleanConstant.BOOLEAN_YES);
+//        List<SysLuckyDrawRecord> byPlayerBuyerNickAndIsWin = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndIsWin(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), BooleanConstant.BOOLEAN_YES);
+        List<SysLuckyDrawRecord> byPlayerBuyerNickAndIsWin = sysLuckyDrawRecordRepository.queryMybag(buyerNick);
         byPlayerBuyerNickAndIsWin.forEach((x)->{
             x.setLuckyChance(null);
             x.setPlayerBuyerNick(null);

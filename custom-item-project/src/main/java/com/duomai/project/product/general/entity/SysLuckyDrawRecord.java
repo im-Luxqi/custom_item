@@ -23,7 +23,7 @@ public class SysLuckyDrawRecord {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(length = 64)
     private String id;
-    @Column( columnDefinition = "varchar(64) COMMENT '奖品机会'")
+    @Column(columnDefinition = "varchar(64) COMMENT '奖品机会'")
     private String luckyChance;
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '抽奖时间'")
     private Date drawTime;
@@ -70,4 +70,18 @@ public class SysLuckyDrawRecord {
     @Column(columnDefinition = "text COMMENT '备注'")
     private String remark;
 
+    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '虚拟奖品是否兑换 0:否1:是'")
+    private Integer haveExchange;
+
+    @Column(columnDefinition = "DATETIME COMMENT '兑换时间'")
+    private Date exchangeTime;
+
+
+
+    public SysLuckyDrawRecord() {
+    }
+
+    public SysLuckyDrawRecord(String s) {
+        this.awardId = s;
+    }
 }
