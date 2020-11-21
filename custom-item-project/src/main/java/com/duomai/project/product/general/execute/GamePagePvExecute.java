@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * @time 2020-08-26 19:11:50
  **/
 @Component
-public class PagePvExecute implements IApiExecute {
+public class GamePagePvExecute implements IApiExecute {
     @Autowired
     private SysPagePvLogRepository sysPagePvLogRepository;
 

@@ -1,6 +1,5 @@
 package com.duomai.project.product.general.entity;
 
-import com.duomai.project.product.general.enums.TaskTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
@@ -9,14 +8,14 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * 入会,关注,签到,日志表
+ * 签到,日志表
  */
 @Data
 @Entity
 @Accessors(chain = true)
-@Table(name = "sys_general_task")
-@org.hibernate.annotations.Table(appliesTo = "sys_general_task", comment = "入会,关注,签到,日志表")
-public class SysGeneralTask {
+@Table(name = "sys_task_sign_log")
+@org.hibernate.annotations.Table(appliesTo = "sys_task_sign_log", comment = "签到日志表")
+public class SysTaskSignLog {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
@@ -27,8 +26,13 @@ public class SysGeneralTask {
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '创建时间'")
     private Date createTime;
 
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(20) COMMENT '任务类型'")
-    private TaskTypeEnum taskType;
+
+    @Column(columnDefinition = "varchar(10) COMMENT '签到时间，yyyy-MM-dd格式'")
+    private String signTime;
+    @Column(columnDefinition = "int(11) COMMENT '累计签到'")
+    private Integer totalNum;
+    @Column(columnDefinition = "int(11) COMMENT '连续签到天数'")
+    private Integer continuousNum;
+
 
 }

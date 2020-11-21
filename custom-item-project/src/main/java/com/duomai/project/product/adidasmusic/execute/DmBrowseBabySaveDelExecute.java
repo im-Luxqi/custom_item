@@ -6,9 +6,9 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.dto.AddCommodityDto;
-import com.duomai.project.product.general.entity.SysCommodity;
+import com.duomai.project.product.general.entity.SysSettingCommodity;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
-import com.duomai.project.product.general.repository.SysCommodityRepository;
+import com.duomai.project.product.general.repository.SysSettingCommodityRepository;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ import java.util.List;
 public class DmBrowseBabySaveDelExecute implements IApiExecute {
 
     @Resource
-    private SysCommodityRepository commodityRepository;
+    private SysSettingCommodityRepository commodityRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
@@ -51,9 +51,9 @@ public class DmBrowseBabySaveDelExecute implements IApiExecute {
         if(array != null) {
             List<AddCommodityDto> list = array.toJavaList(AddCommodityDto.class);
             if (!list.isEmpty()) {
-                List<SysCommodity> commodities = new ArrayList<>();
+                List<SysSettingCommodity> commodities = new ArrayList<>();
                 for (AddCommodityDto dto : list) {
-                    SysCommodity commodity = new SysCommodity();
+                    SysSettingCommodity commodity = new SysSettingCommodity();
                     commodities.add(commodity.setName(dto.getName())
                             .setCreateTime(dto.getCreateTime())
                             .setCommoditySort(dto.getCommoditySort())

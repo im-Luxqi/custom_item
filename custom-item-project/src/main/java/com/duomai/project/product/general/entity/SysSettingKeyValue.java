@@ -9,13 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 粉丝参与表
+ * 配置表
  */
 @Data
 @Entity
-@Table(name = "sys_key_value")
-@org.hibernate.annotations.Table(appliesTo = "sys_key_value", comment = "键值对表")
-public class SysKeyValue {
+@Table(name = "sys_setting_key_value")
+@org.hibernate.annotations.Table(appliesTo = "sys_setting_key_value", comment = "配置表")
+public class SysSettingKeyValue {
     @Id
     @Column(columnDefinition = "varchar(20) COMMENT '编号'")
     private String k;

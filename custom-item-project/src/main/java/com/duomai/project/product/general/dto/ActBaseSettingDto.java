@@ -2,7 +2,6 @@ package com.duomai.project.product.general.dto;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -32,13 +31,27 @@ public class ActBaseSettingDto {
     private Date actEndTime;
 
 
-
     /**
      * 优惠券一人可以抽几张
      */
-    private Integer  drawCouponNum ;
+    private Integer drawCouponNum;
 
 
+    /**
+     * 每连续签到几天,有额外奖励
+     */
+    private Integer taskSignContinuous;
+
+
+    /**
+     * 每连续签到几天,那天的奖励（默认一次）
+     */
+    private Integer taskSignContinuousPayment;
+
+    /**
+     * 完成浏览任务，需要浏览几个商品
+     */
+    private Integer taskBrowseShouldSee;
 
 
 }

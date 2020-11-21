@@ -9,16 +9,16 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.entity.SysCustom;
-import com.duomai.project.product.general.entity.SysInviteLog;
+import com.duomai.project.product.general.entity.SysTaskInviteLog;
 import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
-import com.duomai.project.product.general.entity.SysShareLog;
+import com.duomai.project.product.general.entity.SysTaskShareLog;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.enums.MemberWayFromEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.product.general.repository.SysInviteLogRepository;
+import com.duomai.project.product.general.repository.SysTaskInviteLogRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
-import com.duomai.project.product.general.repository.SysShareLogRepository;
+import com.duomai.project.product.general.repository.SysTaskShareLogRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +42,10 @@ public class GameIndexLoadExecute implements IApiExecute {
 
 
     @Autowired
-    private SysInviteLogRepository sysInviteLogRepository;
+    private SysTaskInviteLogRepository sysTaskInviteLogRepository;
 
     @Autowired
-    private SysShareLogRepository sysShareLogRepository;
+    private SysTaskShareLogRepository sysTaskShareLogRepository;
 
     @Autowired
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
@@ -82,7 +82,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                 SysCustom sharerCustom = sysCustomRepository.findByBuyerNick(sharer);
                 Assert.notNull(sharerCustom, "无效的分享者");
 
-                SysShareLog sysInviteLog = new SysShareLog().setCreateTime(sysParm.getRequestStartTime())
+                SysTaskShareLog sysInviteLog = new SysTaskShareLog().setCreateTime(sysParm.getRequestStartTime())
                         .setHaveSuccess(BooleanConstant.BOOLEAN_YES)
                         .setMixShareder(syscustom.getBuyerNick())
                         .setShareder(syscustom.getZnick())
@@ -90,7 +90,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                         .setMixSharer(sharerCustom.getBuyerNick())
                         .setSharer(sharerCustom.getZnick())
                         .setSharerImg(sharerCustom.getHeadImg());
-                long today_has_help = sysShareLogRepository.countByMixSharederAndCreateTimeBetween(syscustom.getBuyerNick(),
+                long today_has_help = sysTaskShareLogRepository.countByMixSharederAndCreateTimeBetween(syscustom.getBuyerNick(),
                         CommonDateParseUtil.getStartTimeOfDay(sysParm.getRequestStartTime()), CommonDateParseUtil.getEndTimeOfDay(sysParm.getRequestStartTime()));
                 if (today_has_help > 0) {
                     resultMap.put("alter_for_shared_flag", true);
@@ -98,7 +98,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                     sysInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
                 }
 
-                sysShareLogRepository.save(sysInviteLog);
+                sysTaskShareLogRepository.save(sysInviteLog);
                 if (BooleanConstant.BOOLEAN_YES.equals(sysInviteLog.getHaveSuccess())) {
                     luckyDrawHelper.sendLuckyChance(sharerCustom.getBuyerNick(), LuckyChanceFromEnum.SHARE, 1,
                             "分享" + syscustom.getZnick(), "任务完成,获取" + 1 + "次机会");
@@ -111,7 +111,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                 SysCustom inviterCustom = sysCustomRepository.findByBuyerNick(inviter);
                 Assert.notNull(inviterCustom, "无效的邀请者");
 
-                SysInviteLog sysInviteLog = new SysInviteLog().setCreateTime(sysParm.getRequestStartTime())
+                SysTaskInviteLog sysTaskInviteLog = new SysTaskInviteLog().setCreateTime(sysParm.getRequestStartTime())
                         .setHaveSuccess(BooleanConstant.BOOLEAN_YES)
                         .setMixInvitee(syscustom.getBuyerNick())
                         .setInvitee(syscustom.getZnick())
@@ -123,11 +123,11 @@ public class GameIndexLoadExecute implements IApiExecute {
                 if (!MemberWayFromEnum.NON_MEMBER.equals(syscustom.getMemberWayFrom())) {
                     resultMap.put("alter_for_invitee_flag", true);
                     resultMap.put("alter_for_invitee_msg", "您已是店铺会员，无法为好友助力");
-                    sysInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
+                    sysTaskInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
                 }
                 //记录邀请日志，成功发放抽奖机会
-                sysInviteLogRepository.save(sysInviteLog);
-                if (BooleanConstant.BOOLEAN_YES.equals(sysInviteLog.getHaveSuccess())) {
+                sysTaskInviteLogRepository.save(sysTaskInviteLog);
+                if (BooleanConstant.BOOLEAN_YES.equals(sysTaskInviteLog.getHaveSuccess())) {
                     sysCustomRepository.save(syscustom.setMemberWayFrom(MemberWayFromEnum.INVITEE_JOIN_MEMBER));
                     luckyDrawHelper.sendLuckyChance(inviterCustom.getBuyerNick(), LuckyChanceFromEnum.INVITE_MEMBER, 1,
                             "邀请入会" + syscustom.getZnick(), "任务完成,获取" + 1 + "次机会");

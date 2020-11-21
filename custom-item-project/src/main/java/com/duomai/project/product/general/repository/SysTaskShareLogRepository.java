@@ -1,12 +1,11 @@
 package com.duomai.project.product.general.repository;
 
 import com.duomai.common.framework.jpa.BaseRepository;
-import com.duomai.project.product.general.entity.SysShareLog;
+import com.duomai.project.product.general.entity.SysTaskShareLog;
 
 import java.util.Date;
-import java.util.List;
 
-public interface SysShareLogRepository extends BaseRepository<SysShareLog, String> {
+public interface SysTaskShareLogRepository extends BaseRepository<SysTaskShareLog, String> {
 
     long countByMixSharederAndCreateTimeBetween(String mixShareder, Date start, Date end);
 }

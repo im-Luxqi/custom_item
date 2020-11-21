@@ -10,7 +10,6 @@ import com.duomai.project.product.adidasmusic.service.ICusOrderInfoService;
 import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
-import com.duomai.project.product.general.enums.TaskTypeEnum;
 import com.duomai.project.product.general.repository.*;
 import com.duomai.project.tool.CommonDateParseUtil;
 import com.duomai.project.tool.ProjectTools;
@@ -52,9 +51,9 @@ public class LuckyDrawHelper {
     @Autowired
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
     @Autowired
-    private SysAwardRepository sysAwardRepository;
+    private SysSettingAwardRepository sysSettingAwardRepository;
     @Autowired
-    private SysGeneralTaskRepository sysGeneralTaskRepository;
+    private SysTaskMemberOrFollowRepository sysTaskMemberOrFollowRepository;
     @Autowired
     private ICusOrderInfoService cusOrderInfoService;
     @Autowired
@@ -155,14 +154,14 @@ public class LuckyDrawHelper {
      * @time 2020-08-28 17:04:19
      */
     @Transactional
-    public SysAward luckyDraw(List<SysAward> awards, SysCustom custom, Date drawTime) throws Exception {
+    public SysSettingAward luckyDraw(List<SysSettingAward> awards, SysCustom custom, Date drawTime) throws Exception {
         return luckyDraw(awards, custom, drawTime, false);
     }
 
     @Transactional
-    public SysAward luckyDraw(List<SysAward> awards, SysCustom custom, Date drawTime, Boolean freeFlag) throws Exception {
+    public SysSettingAward luckyDraw(List<SysSettingAward> awards, SysCustom custom, Date drawTime, Boolean freeFlag) throws Exception {
         //本次抽中的奖品
-        SysAward awardThisWin = null;
+        SysSettingAward awardThisWin = null;
         SysLuckyChance thisChance = null;
         if (!freeFlag) {
             /*消耗一次抽奖次数*/
@@ -210,7 +209,7 @@ public class LuckyDrawHelper {
 
             /*2.开始随机抽奖,模拟选出本次抽奖中的奖品*/
             Integer maxWinGoodNum = ProjectTools.findMaxWinGoodNum();
-            for (SysAward award : awards) {
+            for (SysSettingAward award : awards) {
                 //1.奖品数量不足;2.本活动最大实物中奖限制；3.已抽中过本奖品
                 if (award.getRemainNum() < 1 ||
                         (AwardTypeEnum.GOODS.equals(award.getType()) && historyGoodsHasGet >= maxWinGoodNum) ||
@@ -239,7 +238,7 @@ public class LuckyDrawHelper {
                     .setAwardType(awardThisWin.getType());
 
             //欧皇落泪  尝试扣减奖品库存，库存不够不中奖
-            if (sysAwardRepository.tryReduceOne(awardThisWin.getId()) != 1) {
+            if (sysSettingAwardRepository.tryReduceOne(awardThisWin.getId()) != 1) {
                 drawRecord.setSendError("尝试扣减奖品库存，库存不够不中奖");
                 return null;
             }
@@ -307,14 +306,14 @@ public class LuckyDrawHelper {
             if (awardThisWin != null) {
                 awardThisWin.setLogId(save.getId());
                 if (AwardTypeEnum.EXCHANGE.equals(awardThisWin.getType())) {
-                    SysExchangeLog sysExchangeLog = new SysExchangeLog()
+                    SysLuckyExchangeLog sysLuckyExchangeLog = new SysLuckyExchangeLog()
                             .setAwardId(awardThisWin.getId())
                             .setAwardImg(awardThisWin.getImg())
                             .setAwardName(awardThisWin.getName())
                             .setCreateTime(drawTime)
                             .setBuyerNick(custom.getBuyerNick())
                             .setWinOrUse(BooleanConstant.BOOLEAN_YES);
-                    sysExchangeLogRepository.save(sysExchangeLog);
+                    sysExchangeLogRepository.save(sysLuckyExchangeLog);
                 }
             }
         }
@@ -332,8 +331,8 @@ public class LuckyDrawHelper {
      * @time 2020-11-08 19:13:48
      */
     @Transactional
-    public void directSendCoupon(SysAward award, SysCustom custom, Date sendTime) {
-        Assert.isTrue(sysAwardRepository.tryReduceOne(award.getId()) > 0, "奖品库存库存不足");
+    public void directSendCoupon(SysSettingAward award, SysCustom custom, Date sendTime) {
+        Assert.isTrue(sysSettingAwardRepository.tryReduceOne(award.getId()) > 0, "奖品库存库存不足");
         /*整理抽奖日志*/
         SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord()
                 .setIsWin(BooleanConstant.BOOLEAN_YES)
@@ -391,7 +390,8 @@ public class LuckyDrawHelper {
     public CustomPlayProgressDto findCurrentPoolLevel(SysCustom sysCustom) {
         CustomPlayProgressDto customPlayProgressDto = new CustomPlayProgressDto();
         //累计签到天数
-        long sign_num = sysGeneralTaskRepository.countByBuyerNickAndTaskType(sysCustom.getBuyerNick(), TaskTypeEnum.SIGN);
+        long sign_num = 0;
+//        long sign_num = sysTaskMemberOrFollowRepository.countByBuyerNickAndTaskType(sysCustom.getBuyerNick(), TaskTypeEnum.SIGN);
 
         //下单数
         Integer orderNum = cusOrderInfoService.countTidsByBuyerNick(sysCustom.getBuyerNick());
@@ -426,8 +426,8 @@ public class LuckyDrawHelper {
      * @param sendTime
      */
     @Transactional
-    public SysLuckyDrawRecord directExchangeAward(List<SysLuckyDrawRecord> unUseBattles, SysCustom custom, SysAward award, Date sendTime) {
-        Assert.isTrue(sysAwardRepository.tryReduceOne(award.getId()) > 0, "奖品库存库存不足");
+    public SysLuckyDrawRecord directExchangeAward(List<SysLuckyDrawRecord> unUseBattles, SysCustom custom, SysSettingAward award, Date sendTime) {
+        Assert.isTrue(sysSettingAwardRepository.tryReduceOne(award.getId()) > 0, "奖品库存库存不足");
 
         StringBuffer stringBuffer = new StringBuffer();
         unUseBattles.forEach(x -> {
@@ -508,7 +508,7 @@ public class LuckyDrawHelper {
             sysLuckyDrawRecordRepository.exchangeAward(Arrays.asList(stringBuffer.toString().split(",")), sendTime);
 
             //记录瓶子兑换日志
-            List<SysExchangeLog> collect = unUseBattles.stream().map(x -> new SysExchangeLog()
+            List<SysLuckyExchangeLog> collect = unUseBattles.stream().map(x -> new SysLuckyExchangeLog()
                     .setAwardId(x.getAwardId())
                     .setAwardImg(x.getAwardImg())
                     .setAwardName(x.getAwardName())

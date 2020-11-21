@@ -7,12 +7,12 @@ import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.LuckyDrawHelper;
-import com.duomai.project.product.general.entity.SysAward;
+import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.BottleTypeEnum;
-import com.duomai.project.product.general.repository.SysAwardRepository;
+import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
@@ -36,7 +36,7 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
     @Autowired
     private LuckyDrawHelper luckyDrawHelper;
     @Autowired
-    private SysAwardRepository sysAwardRepository;
+    private SysSettingAwardRepository sysSettingAwardRepository;
     @Autowired
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
 
@@ -63,9 +63,9 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
         Assert.isTrue(todayHasDraw < 15, "今日抽奖次数已达到上限，明天再来看吧");
         //抽6号瓶子需要先抽5号瓶子
         if (BottleTypeEnum.SPECIAL_SIX.equals(bottle)) {
-            List<SysAward> byUseWay = sysAwardRepository.findByUseWay(AwardUseWayEnum.SPECIAL_FIVE);
-            SysAward firstSysAward = byUseWay.get(0);
-            long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndAwardTypeAndIsWinAndHaveExchangeAndAwardId(buyerNick, firstSysAward.getType(), BooleanConstant.BOOLEAN_YES, BooleanConstant.BOOLEAN_NO, firstSysAward.getId());
+            List<SysSettingAward> byUseWay = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.SPECIAL_FIVE);
+            SysSettingAward firstSysSettingAward = byUseWay.get(0);
+            long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndAwardTypeAndIsWinAndHaveExchangeAndAwardId(buyerNick, firstSysSettingAward.getType(), BooleanConstant.BOOLEAN_YES, BooleanConstant.BOOLEAN_NO, firstSysSettingAward.getId());
             if (l == 0) {
                 LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
                 resultMap.put("win", false);
@@ -75,8 +75,8 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
         }
 
 
-        List<SysAward> thisTimeAwardPool = sysAwardRepository.findByUseWay(ProjectTools.enumValueOf(AwardUseWayEnum.class, bottle.getValue()));
-        SysAward winAward = luckyDrawHelper.luckyDraw(thisTimeAwardPool, syscustom, sysParm.getRequestStartTime());
+        List<SysSettingAward> thisTimeAwardPool = sysSettingAwardRepository.findByUseWay(ProjectTools.enumValueOf(AwardUseWayEnum.class, bottle.getValue()));
+        SysSettingAward winAward = luckyDrawHelper.luckyDraw(thisTimeAwardPool, syscustom, sysParm.getRequestStartTime());
 
         /*只反馈有效数据*/
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();

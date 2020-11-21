@@ -6,7 +6,7 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.product.general.repository.SysInviteLogRepository;
+import com.duomai.project.product.general.repository.SysTaskInviteLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -27,7 +27,7 @@ public class PlayerInfoFillForAfterAuthorizationExecute implements IApiExecute {
     @Autowired
     private SysCustomRepository sysCustomRepository;
     @Resource
-    private SysInviteLogRepository inviteLogRepository;
+    private SysTaskInviteLogRepository inviteLogRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {

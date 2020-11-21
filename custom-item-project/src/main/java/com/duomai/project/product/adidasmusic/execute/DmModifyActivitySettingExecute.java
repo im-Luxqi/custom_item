@@ -5,8 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.product.general.entity.SysKeyValue;
-import com.duomai.project.product.general.repository.SysKeyValueRepository;
+import com.duomai.project.product.general.entity.SysSettingKeyValue;
+import com.duomai.project.product.general.repository.SysSettingKeyValueRepository;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ import java.util.List;
 public class DmModifyActivitySettingExecute implements IApiExecute {
 
     @Resource
-    private SysKeyValueRepository sysKeyValueRepository;
+    private SysSettingKeyValueRepository sysSettingKeyValueRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request,
@@ -40,15 +40,15 @@ public class DmModifyActivitySettingExecute implements IApiExecute {
         if (StringUtils.isNotBlank(ids)) {
             String[] spl = ids.split(",");
             for (String s : spl) {
-                sysKeyValueRepository.deleteById(s);
+                sysSettingKeyValueRepository.deleteById(s);
             }
             return YunReturnValue.ok("操作成功!");
         }
 
         if(keyValue !=null){
-            List<SysKeyValue> keyValues = keyValue.toJavaList(SysKeyValue.class);
+            List<SysSettingKeyValue> keyValues = keyValue.toJavaList(SysSettingKeyValue.class);
             if (!keyValues.isEmpty()) {
-                sysKeyValueRepository.saveAll(keyValues);
+                sysSettingKeyValueRepository.saveAll(keyValues);
             }
         }
         return YunReturnValue.ok("操作成功!");

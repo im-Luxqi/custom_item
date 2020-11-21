@@ -5,8 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.product.general.entity.SysAward;
-import com.duomai.project.product.general.repository.SysAwardRepository;
+import com.duomai.project.product.general.entity.SysSettingAward;
+import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ import java.util.List;
 public class SysAwardSaveDelExecute implements IApiExecute {
 
     @Resource
-    private SysAwardRepository sysAwardRepository;
+    private SysSettingAwardRepository sysSettingAwardRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -39,15 +39,15 @@ public class SysAwardSaveDelExecute implements IApiExecute {
         if (StringUtils.isNotBlank(ids)){
             String[] sql = ids.split(",");
             for (String s : sql){
-                sysAwardRepository.deleteById(s);
+                sysSettingAwardRepository.deleteById(s);
             }
             return YunReturnValue.ok("操作成功！");
         }
 
         if(array != null) {
-            List<SysAward> sysAwards = array.toJavaList(SysAward.class);
-            if (!sysAwards.isEmpty()) {
-                sysAwardRepository.saveAll(sysAwards);
+            List<SysSettingAward> sysSettingAwards = array.toJavaList(SysSettingAward.class);
+            if (!sysSettingAwards.isEmpty()) {
+                sysSettingAwardRepository.saveAll(sysSettingAwards);
             }
         }
         return YunReturnValue.ok("操作成功！");

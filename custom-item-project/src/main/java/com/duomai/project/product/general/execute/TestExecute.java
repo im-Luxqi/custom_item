@@ -3,9 +3,8 @@ package com.duomai.project.product.general.execute;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
-import com.duomai.project.product.general.repository.SysAwardRepository;
+import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class TestExecute implements IApiExecute {
     @Autowired
-    private SysAwardRepository sysAwardRepository;
+    private SysSettingAwardRepository sysSettingAwardRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        sysAwardRepository.findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum.POOL, 5);
+        sysSettingAwardRepository.findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum.POOL, 5);
         return YunReturnValue.ok("");
     }
 }

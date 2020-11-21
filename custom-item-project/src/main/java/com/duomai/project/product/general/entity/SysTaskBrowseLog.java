@@ -13,9 +13,9 @@ import java.util.Date;
 @Data
 @Entity
 @Accessors(chain = true)
-@Table(name = "sys_browse_log")
-@org.hibernate.annotations.Table(appliesTo = "sys_browse_log", comment = "浏览日志表")
-public class SysBrowseLog {
+@Table(name = "sys_task_browse_log")
+@org.hibernate.annotations.Table(appliesTo = "sys_task_browse_log", comment = "浏览日志表")
+public class SysTaskBrowseLog {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
@@ -25,7 +25,11 @@ public class SysBrowseLog {
     private String buyerNick;
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '创建时间'")
     private Date createTime;
+
+
+
+    @Column(columnDefinition = "varchar(10) COMMENT '浏览时间，yyyy-MM-dd格式'")
+    private String browseTime;
     @Column(columnDefinition = "varchar(47) COMMENT '商品id'")
     private Long numId;
-
 }

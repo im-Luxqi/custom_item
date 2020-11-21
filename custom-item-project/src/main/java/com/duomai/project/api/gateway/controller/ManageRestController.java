@@ -1,10 +1,10 @@
 package com.duomai.project.api.gateway.controller;
 
 import com.duomai.common.base.controller.BaseRestController;
-import com.duomai.project.product.general.entity.SysAward;
-import com.duomai.project.product.general.entity.SysKeyValue;
-import com.duomai.project.product.general.repository.SysAwardRepository;
-import com.duomai.project.product.general.repository.SysKeyValueRepository;
+import com.duomai.project.product.general.entity.SysSettingAward;
+import com.duomai.project.product.general.entity.SysSettingKeyValue;
+import com.duomai.project.product.general.repository.SysSettingAwardRepository;
+import com.duomai.project.product.general.repository.SysSettingKeyValueRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,9 @@ import java.util.Optional;
 @RequestMapping(value = "/g3")
 public class ManageRestController extends BaseRestController {
     @Autowired
-    private SysAwardRepository sysAwardRepository;
+    private SysSettingAwardRepository sysSettingAwardRepository;
     @Autowired
-    private SysKeyValueRepository sysKeyValueRepository;
+    private SysSettingKeyValueRepository sysSettingKeyValueRepository;
 
 
     /*gateWay
@@ -34,17 +34,17 @@ public class ManageRestController extends BaseRestController {
     static String CHECK_STRING = "0068f4c44d7a453bbd95cfb58150925d";
 
     @PostMapping(value = "/change/award")
-    public String changeAward(SysAward frontAward, String check) throws InvocationTargetException, IllegalAccessException {
+    public String changeAward(SysSettingAward frontAward, String check) throws InvocationTargetException, IllegalAccessException {
         if (StringUtils.isBlank(frontAward.getId()) || StringUtils.isBlank(check) || !check.equals(CHECK_STRING))
             return "check.error";
-        Optional<SysAward> byId = sysAwardRepository.findById(frontAward.getId());
+        Optional<SysSettingAward> byId = sysSettingAwardRepository.findById(frontAward.getId());
         if (byId.isPresent()) {
-            SysAward behindAward = byId.get();
+            SysSettingAward behindAward = byId.get();
             if (StringUtils.isNotBlank(frontAward.getLuckyValue()))
                 behindAward.setLuckyValue(frontAward.getLuckyValue());
             if (StringUtils.isNotBlank(frontAward.getEname()))
                 behindAward.setEname(frontAward.getEname());
-            sysAwardRepository.save(behindAward);
+            sysSettingAwardRepository.save(behindAward);
         }
         return "success";
     }
@@ -53,11 +53,11 @@ public class ManageRestController extends BaseRestController {
     public String changeKv(String k, String v, String check) throws InvocationTargetException, IllegalAccessException {
         if (StringUtils.isBlank(k) || StringUtils.isBlank(check) || !check.equals(CHECK_STRING))
             return "check.error";
-        Optional<SysKeyValue> byId = sysKeyValueRepository.findById(k);
+        Optional<SysSettingKeyValue> byId = sysSettingKeyValueRepository.findById(k);
         if (byId.isPresent()) {
-            SysKeyValue behind = byId.get();
+            SysSettingKeyValue behind = byId.get();
             behind.setV(v);
-            sysKeyValueRepository.save(behind);
+            sysSettingKeyValueRepository.save(behind);
         }
         return "success";
     }

@@ -3,9 +3,8 @@ package com.duomai.project.helper;
 import com.duomai.project.configuration.annotation.JoinMemcache;
 import com.duomai.project.helper.constants.ActSettingConstant;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
-import com.duomai.project.product.general.dto.TaskBaseSettingDto;
-import com.duomai.project.product.general.entity.SysKeyValue;
-import com.duomai.project.product.general.repository.SysKeyValueRepository;
+import com.duomai.project.product.general.entity.SysSettingKeyValue;
+import com.duomai.project.product.general.repository.SysSettingKeyValueRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ import java.util.stream.Collectors;
 @Component
 public class ProjectHelper {
     @Autowired
-    private SysKeyValueRepository sysKeyValueRepository;
+    private SysSettingKeyValueRepository sysSettingKeyValueRepository;
 
 
     /** 2.活动配置--信息获取
@@ -39,12 +38,15 @@ public class ProjectHelper {
      */
     @JoinMemcache()
     public ActBaseSettingDto actBaseSettingFind() {
-        List<SysKeyValue> byType = sysKeyValueRepository.findByType(ActSettingConstant.TYPE_ACT_SETTING);
-        Map<String, String> collect = byType.stream().collect(Collectors.toMap(SysKeyValue::getK, SysKeyValue::getV));
+        List<SysSettingKeyValue> byType = sysSettingKeyValueRepository.findByType(ActSettingConstant.TYPE_ACT_SETTING);
+        Map<String, String> collect = byType.stream().collect(Collectors.toMap(SysSettingKeyValue::getK, SysSettingKeyValue::getV));
         return new ActBaseSettingDto().setActRule(collect.get(ActSettingConstant.ACT_RULE))
                 .setActStartTime(CommonDateParseUtil.string2date(collect.get(ActSettingConstant.ACT_START_TIME), CommonDateParseUtil.YYYY_MM_DD))
                 .setActEndTime(CommonDateParseUtil.getEndTimeOfDay(CommonDateParseUtil.string2date(collect.get(ActSettingConstant.ACT_END_TIME), CommonDateParseUtil.YYYY_MM_DD)))
                 .setDrawCouponNum(Integer.valueOf(collect.get(ActSettingConstant.DRAW_COUPON_NUM)))
+                .setTaskSignContinuous(Integer.valueOf(collect.get(ActSettingConstant.TASK_SIGN_CONTINUOUS)))
+                .setTaskSignContinuousPayment(Integer.valueOf(collect.get(ActSettingConstant.TASK_SIGN_CONTINUOUS_PAYMENT)))
+                .setTaskBrowseShouldSee(Integer.valueOf(collect.get(ActSettingConstant.TASK_BROWSE_SHOULD_SEE)))
                 ;
     }
 

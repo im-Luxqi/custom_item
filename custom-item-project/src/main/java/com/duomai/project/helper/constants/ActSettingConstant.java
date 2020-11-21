@@ -22,5 +22,21 @@ public interface ActSettingConstant {
      */
     String DRAW_COUPON_NUM = "draw_coupon_num";
 
+   /**
+     * 每连续签到几天
+     */
+    String TASK_SIGN_CONTINUOUS = "task_sign_continuous";
+
+   /**
+     * 每连续签到几天
+     */
+    String TASK_SIGN_CONTINUOUS_PAYMENT = "task_sign_continuous_payment";
+
+
+   /**
+     * 每连续签到几天
+     */
+    String TASK_BROWSE_SHOULD_SEE = "task_browse_should_see";
+
 
 }

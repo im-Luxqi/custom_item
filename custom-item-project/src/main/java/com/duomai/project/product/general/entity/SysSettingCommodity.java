@@ -14,9 +14,9 @@ import java.util.Date;
 @Data
 @Entity
 @Accessors(chain = true)
-@Table(name = "sys_commodity")
-@org.hibernate.annotations.Table(appliesTo = "sys_commodity", comment = "商品表")
-public class SysCommodity {
+@Table(name = "sys_setting_commodity")
+@org.hibernate.annotations.Table(appliesTo = "sys_setting_commodity", comment = "商品表")
+public class SysSettingCommodity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
@@ -28,21 +28,14 @@ public class SysCommodity {
     private String name;
     @Column(columnDefinition = "bigint(20) COMMENT '商品id'")
     private Long numId;
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(50) COMMENT '商品类型 GOODS 商品 COUPON 优惠券'")
-    private AwardTypeEnum type;
     @Column(columnDefinition = "varchar(255) COMMENT '商品图片'")
     private String img;
     @Column(columnDefinition = "varchar(64) COMMENT '奖品价格'")
     private String price;
-    @Column(columnDefinition = "varchar(64) COMMENT '分类字段 total 主商品 everyDay 每天商品'")
-    private String commoditySort;
 
-    //是否浏览 0 未浏览 1 已浏览
+    /**
+     * 今日是否浏览
+     */
     @Transient
-    private Integer isBrowse = 0;
-
-    //商品名称组合
-    @Transient
-    private String[] names;
+    private boolean todayHasBrowse;
 }

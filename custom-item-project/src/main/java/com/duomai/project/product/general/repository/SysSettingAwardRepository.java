@@ -1,7 +1,7 @@
 package com.duomai.project.product.general.repository;
 
 import com.duomai.common.framework.jpa.BaseRepository;
-import com.duomai.project.product.general.entity.SysAward;
+import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface SysAwardRepository extends BaseRepository<SysAward, String> {
+public interface SysSettingAwardRepository extends BaseRepository<SysSettingAward, String> {
 
     @Modifying
     @Transactional
@@ -28,12 +28,12 @@ public interface SysAwardRepository extends BaseRepository<SysAward, String> {
      * @param useWay
      * @return
      */
-    SysAward findFirstByUseWay(AwardUseWayEnum useWay);
+    SysSettingAward findFirstByUseWay(AwardUseWayEnum useWay);
 
-    List<SysAward> findByUseWay(AwardUseWayEnum useWay);
+    List<SysSettingAward> findByUseWay(AwardUseWayEnum useWay);
 
-    List<SysAward> findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum useWay);
+    List<SysSettingAward> findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum useWay);
 
 
-    List<SysAward> findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum useWay, Integer level);
+    List<SysSettingAward> findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum useWay, Integer level);
 }

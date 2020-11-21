@@ -13,9 +13,9 @@ import java.util.Date;
 @Data
 @Entity
 @Accessors(chain = true)
-@Table(name = "sys_exchange_log")
-@org.hibernate.annotations.Table(appliesTo = "sys_exchange_log", comment = "抽奖日志表")
-public class SysExchangeLog {
+@Table(name = "sys_lucky_exchange_log")
+@org.hibernate.annotations.Table(appliesTo = "sys_lucky_exchange_log", comment = "抽奖日志表")
+public class SysLuckyExchangeLog {
 
     @Id
     @GeneratedValue(generator = "uuid2")

@@ -8,12 +8,12 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
-import com.duomai.project.product.general.entity.SysAward;
+import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
-import com.duomai.project.product.general.repository.SysAwardRepository;
+import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 @Component
 public class GameIndexLuckyExchangeExecute implements IApiExecute {
     @Autowired
-    private SysAwardRepository sysAwardRepository;
+    private SysSettingAwardRepository sysSettingAwardRepository;
     @Autowired
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
     @Autowired
@@ -66,9 +66,9 @@ public class GameIndexLuckyExchangeExecute implements IApiExecute {
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         String exchange_award_id = jsonObjectAdmjson.getString("exchange_award_id");
         Assert.hasLength(exchange_award_id, "exchange_award_id不能为空");
-        Optional<SysAward> awards = sysAwardRepository.findById(exchange_award_id);
+        Optional<SysSettingAward> awards = sysSettingAwardRepository.findById(exchange_award_id);
         Assert.isTrue(awards.isPresent(), "无效的奖品Id");
-        SysAward award = awards.get();
+        SysSettingAward award = awards.get();
         Assert.isTrue(AwardUseWayEnum.POOL.equals(award.getUseWay()), "无效的奖品");
         Assert.isTrue(award.getRemainNum() > 0, award.getName() + "数量不足,无法兑换");
 

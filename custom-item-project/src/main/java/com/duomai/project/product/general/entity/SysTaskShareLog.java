@@ -13,9 +13,9 @@ import java.util.Date;
 @Data
 @Entity
 @Accessors(chain = true)
-@Table(name = "sys_share_log")
-@org.hibernate.annotations.Table(appliesTo = "sys_share_log", comment = "分享日志表")
-public class SysShareLog {
+@Table(name = "sys_task_share_log")
+@org.hibernate.annotations.Table(appliesTo = "sys_task_share_log", comment = "分享日志表")
+public class SysTaskShareLog {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
@@ -24,6 +24,11 @@ public class SysShareLog {
 
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '创建时间'")
     private Date createTime;
+
+
+    @Column(columnDefinition = "varchar(10) COMMENT '入会,关注时间，yyyy-MM-dd格式'")
+    private String shareTime;
+
 
     @Column(columnDefinition = "varchar(64) COMMENT '分享人mix'")
     private String mixSharer;

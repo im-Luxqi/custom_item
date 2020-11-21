@@ -9,9 +9,10 @@ import com.duomai.common.base.enums.IEnum;
  **/
 public enum LuckyChanceFromEnum implements IEnum {
     FREE("FREE","首次进游戏免费送"),
+    SIGN("SIGN", "每日签到"),
     INVITE_MEMBER("INVITE_MEMBER", "邀请入会"),
     SHARE("SHARE", "分享"),
-    SIGN("SIGN", "每日签到"),
+    MEMBER("MEMBER", "入会"),
     FOLLOW("FOLLOW", "关注店铺"),
     BROWSE("BROWSE", "浏览商品"),
     DAKA("DAKA", "大咖日历"),

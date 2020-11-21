@@ -5,13 +5,13 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.adidasmusic.domain.CusBigWheelLog;
 import com.duomai.project.product.adidasmusic.service.ICusBigWheelLogService;
-import com.duomai.project.product.general.entity.SysBrowseLog;
+import com.duomai.project.product.general.entity.SysTaskBrowseLog;
 import com.duomai.project.product.general.entity.SysCustom;
-import com.duomai.project.product.general.entity.SysGeneralTask;
+import com.duomai.project.product.general.entity.SysTaskMemberOrFollowLog;
 import com.duomai.project.product.general.enums.TaskTypeEnum;
-import com.duomai.project.product.general.repository.SysBrowseLogRepository;
+import com.duomai.project.product.general.repository.SysTaskBrowseLogRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.product.general.repository.SysGeneralTaskRepository;
+import com.duomai.project.product.general.repository.SysTaskMemberOrFollowRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,9 +32,9 @@ import java.util.Map;
 @Component
 public class GeneralTaskLoadExecute implements IApiExecute {
     @Autowired
-    private SysGeneralTaskRepository sysGeneralTaskRepository;
+    private SysTaskMemberOrFollowRepository sysTaskMemberOrFollowRepository;
     @Autowired
-    private SysBrowseLogRepository sysBrowseLogRepository;
+    private SysTaskBrowseLogRepository sysTaskBrowseLogRepository;
     @Autowired
     private SysCustomRepository sysCustomRepository;
     @Autowired
@@ -51,16 +51,16 @@ public class GeneralTaskLoadExecute implements IApiExecute {
         Date date = sysParm.getRequestStartTime();
         Map<String, Object> result = new HashMap<>();
         /*1.是否关注*/
-        List<SysGeneralTask> followLog = sysGeneralTaskRepository.findByBuyerNickAndTaskType(buyerNick, TaskTypeEnum.FOLLOW);
+        List<SysTaskMemberOrFollowLog> followLog = sysTaskMemberOrFollowRepository.findByBuyerNickAndTaskType(buyerNick, TaskTypeEnum.FOLLOW);
         result.put("task_follow", followLog.size() > 0);
 
         /*2.今日是否签到*/
-        List<SysGeneralTask> signLog = sysGeneralTaskRepository.findByBuyerNickAndTaskTypeAndCreateTimeBetween(buyerNick,
-                TaskTypeEnum.SIGN, CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
-        result.put("task_sign", signLog.size() > 0);
+//        List<SysTaskMemberOrFollowLog> signLog = sysTaskMemberOrFollowRepository.findByBuyerNickAndTaskTypeAndCreateTimeBetween(buyerNick,
+//                TaskTypeEnum.SIGN, CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
+//        result.put("task_sign", signLog.size() > 0);
 
         /*3.今日是否浏览宝贝*/
-        List<SysBrowseLog> browseLog = sysBrowseLogRepository.findByBuyerNickAndCreateTimeBetween(buyerNick,
+        List<SysTaskBrowseLog> browseLog = sysTaskBrowseLogRepository.findByBuyerNickAndCreateTimeBetween(buyerNick,
                 CommonDateParseUtil.getStartTimeOfDay(date), CommonDateParseUtil.getEndTimeOfDay(date));
         result.put("task_browse",browseLog.size() > 0);
 

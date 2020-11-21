@@ -4,7 +4,7 @@ import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.configuration.SysCustomProperties;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
-import com.duomai.project.product.general.repository.SysAwardRepository;
+import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
@@ -41,7 +41,7 @@ public class TestController {
     SysCustomProperties sysCustomProperties;
 
     @Autowired
-    SysAwardRepository sysAwardRepository;
+    SysSettingAwardRepository sysSettingAwardRepository;
 
     @Autowired
     ITaobaoAPIService taobaoAPIService;

@@ -34,7 +34,6 @@ public class LuckyBagAllWinExecute implements IApiExecute {
         /*.数据展示*/
         Map result = new HashMap<>();
         //@1.我的奖品
-//        List<SysLuckyDrawRecord> byPlayerBuyerNickAndIsWin = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndIsWin(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), BooleanConstant.BOOLEAN_YES);
         List<SysLuckyDrawRecord> byPlayerBuyerNickAndIsWin = sysLuckyDrawRecordRepository.queryMybag(buyerNick);
         byPlayerBuyerNickAndIsWin.forEach((x)->{
             x.setLuckyChance(null);

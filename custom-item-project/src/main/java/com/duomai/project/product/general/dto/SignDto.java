@@ -1,6 +1,6 @@
 package com.duomai.project.product.general.dto;
 
-import com.duomai.project.product.general.entity.SysAward;
+import com.duomai.project.product.general.entity.SysSettingAward;
 import lombok.Data;
 
 /**
@@ -14,7 +14,7 @@ public class SignDto {
     private Integer num;
 
     //奖品信息
-    private SysAward sysAward;
+    private SysSettingAward sysSettingAward;
 
     //是否领取 0 未领取 1 已领取
     private Integer isSend;

@@ -12,7 +12,6 @@ import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,13 +24,13 @@ import java.util.List;
 public class DzToolsClearLogExecute implements IApiExecute {
 
     @Autowired
-    private SysGeneralTaskRepository sysGeneralTaskRepository;
+    private SysTaskMemberOrFollowRepository sysTaskMemberOrFollowRepository;
     @Autowired
     private ICusBigWheelLogService iCusBigWheelLogService;
     @Autowired
-    private SysBrowseLogRepository sysBrowseLogRepository;
+    private SysTaskBrowseLogRepository sysTaskBrowseLogRepository;
     @Autowired
-    private SysInviteLogRepository sysInviteLogRepository;
+    private SysTaskInviteLogRepository sysTaskInviteLogRepository;
     @Autowired
     private SysLuckyChanceRepository sysLuckyChanceRepository;
     @Autowired
@@ -51,9 +50,9 @@ public class DzToolsClearLogExecute implements IApiExecute {
         String buyerNick = object.getString("buyerNick");
 
         // 签到、关注、入会记录
-        List<SysGeneralTask> sysGeneralTasks = sysGeneralTaskRepository.findByBuyerNick(buyerNick);
-        if (!sysGeneralTasks.isEmpty())
-            sysGeneralTaskRepository.deleteInBatch(sysGeneralTasks);
+        List<SysTaskMemberOrFollowLog> sysTaskMemberOrFollowLogs = sysTaskMemberOrFollowRepository.findByBuyerNick(buyerNick);
+        if (!sysTaskMemberOrFollowLogs.isEmpty())
+            sysTaskMemberOrFollowRepository.deleteInBatch(sysTaskMemberOrFollowLogs);
         // 尖货大咖操作记录
         List<CusBigWheelLog> cusBigWheelLogs = iCusBigWheelLogService.query().eq(CusBigWheelLog::getBuyerNick, buyerNick).list();
         if (!cusBigWheelLogs.isEmpty()){
@@ -62,16 +61,16 @@ public class DzToolsClearLogExecute implements IApiExecute {
             }
         }
         // 浏览商品记录
-        List<SysBrowseLog> sysBrowseLogs = sysBrowseLogRepository.findByBuyerNick(buyerNick);
-        if (!sysBrowseLogs.isEmpty())
-            sysBrowseLogRepository.deleteInBatch(sysBrowseLogs);
+        List<SysTaskBrowseLog> sysTaskBrowseLogs = sysTaskBrowseLogRepository.findByBuyerNick(buyerNick);
+        if (!sysTaskBrowseLogs.isEmpty())
+            sysTaskBrowseLogRepository.deleteInBatch(sysTaskBrowseLogs);
         // 邀请记录
-        List<SysInviteLog> sysInviterLogs = sysInviteLogRepository.findByInviter(buyerNick);
+        List<SysTaskInviteLog> sysInviterLogs = sysTaskInviteLogRepository.findByInviter(buyerNick);
         if (!sysInviterLogs.isEmpty())
-            sysInviteLogRepository.deleteInBatch(sysInviterLogs);
-        List<SysInviteLog> logs = sysInviteLogRepository.findByInvitee(buyerNick);
+            sysTaskInviteLogRepository.deleteInBatch(sysInviterLogs);
+        List<SysTaskInviteLog> logs = sysTaskInviteLogRepository.findByInvitee(buyerNick);
         if (!logs.isEmpty())
-            sysInviteLogRepository.deleteInBatch(logs);
+            sysTaskInviteLogRepository.deleteInBatch(logs);
         // 抽奖机会来源
         List<SysLuckyChance> sysLuckyChances = sysLuckyChanceRepository.findByBuyerNick(buyerNick);
         if (!sysLuckyChances.isEmpty())

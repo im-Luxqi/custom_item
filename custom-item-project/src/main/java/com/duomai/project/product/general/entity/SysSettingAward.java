@@ -14,9 +14,9 @@ import javax.persistence.*;
 @Data
 @Entity
 @Accessors(chain = true)
-@Table(name = "sys_award")
-@org.hibernate.annotations.Table(appliesTo = "sys_award", comment = "奖品表")
-public class SysAward {
+@Table(name = "sys_setting_award")
+@org.hibernate.annotations.Table(appliesTo = "sys_setting_award", comment = "奖品表")
+public class SysSettingAward {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")

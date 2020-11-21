@@ -13,9 +13,9 @@ import java.util.Date;
 @Data
 @Entity
 @Accessors(chain = true)
-@Table(name = "sys_invite_log")
-@org.hibernate.annotations.Table(appliesTo = "sys_invite_log", comment = "邀请日志表")
-public class SysInviteLog {
+@Table(name = "sys_task_invite_log")
+@org.hibernate.annotations.Table(appliesTo = "sys_task_invite_log", comment = "邀请日志表")
+public class SysTaskInviteLog {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
@@ -24,6 +24,9 @@ public class SysInviteLog {
 
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '创建时间'")
     private Date createTime;
+
+    @Column(columnDefinition = "varchar(10) COMMENT '邀请时间，yyyy-MM-dd格式'")
+    private String inviteTime;
 
     @Column(columnDefinition = "varchar(64) COMMENT '邀请人mix'")
     private String mixInviter;
