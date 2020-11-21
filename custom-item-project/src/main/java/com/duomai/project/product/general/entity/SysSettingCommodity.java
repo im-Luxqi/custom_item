@@ -20,10 +20,8 @@ public class SysSettingCommodity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 64)
+    @Column(length = 40)
     private String id;
-    @Column(nullable = false, columnDefinition = "DATETIME COMMENT '创建时间'")
-    private Date createTime;
     @Column(columnDefinition = "varchar(47) COMMENT '商品名称'")
     private String name;
     @Column(columnDefinition = "bigint(20) COMMENT '商品id'")

@@ -1,4 +1,4 @@
-package com.duomai.project.product.adidasmusic.domain;
+package com.duomai.project.product.mengniuwawaji.domain;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;

@@ -1,10 +1,10 @@
-package com.duomai.project.product.adidasmusic.service.impl;
+package com.duomai.project.product.mengniuwawaji.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.duomai.common.framework.mybatisplus.service.impl.BaseServiceImpl;
-import com.duomai.project.product.adidasmusic.domain.CusOrderInfo;
-import com.duomai.project.product.adidasmusic.mapper.CusOrderInfoMapper;
-import com.duomai.project.product.adidasmusic.service.ICusOrderInfoService;
+import com.duomai.project.product.mengniuwawaji.domain.CusOrderInfo;
+import com.duomai.project.product.mengniuwawaji.mapper.CusOrderInfoMapper;
+import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
 import com.duomai.project.tool.CommonDateParseUtil;
 import com.taobao.api.response.OpenTradesSoldGetResponse;
 import org.springframework.stereotype.Service;

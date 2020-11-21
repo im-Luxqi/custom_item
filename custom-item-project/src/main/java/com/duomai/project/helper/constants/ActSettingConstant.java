@@ -39,4 +39,10 @@ public interface ActSettingConstant {
     String TASK_BROWSE_SHOULD_SEE = "task_browse_should_see";
 
 
+   /**
+     * 每连续签到几天
+     */
+    String TASK_ORDER_SHOULD_SPEND = "task_order_should_spend";
+
+
 }

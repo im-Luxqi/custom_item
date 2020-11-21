@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.api.taobao.enums.TaoBaoSendCouponStatus;
-import com.duomai.project.product.adidasmusic.dto.CustomPlayProgressDto;
-import com.duomai.project.product.adidasmusic.enums.PoolLevelEnum;
-import com.duomai.project.product.adidasmusic.service.ICusOrderInfoService;
+import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
 import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
@@ -386,37 +384,37 @@ public class LuckyDrawHelper {
      * @create by 王星齐
      * @time 2020-11-08 19:12:41
      */
-    @Transactional
-    public CustomPlayProgressDto findCurrentPoolLevel(SysCustom sysCustom) {
-        CustomPlayProgressDto customPlayProgressDto = new CustomPlayProgressDto();
-        //累计签到天数
-        long sign_num = 0;
-//        long sign_num = sysTaskMemberOrFollowRepository.countByBuyerNickAndTaskType(sysCustom.getBuyerNick(), TaskTypeEnum.SIGN);
-
-        //下单数
-        Integer orderNum = cusOrderInfoService.countTidsByBuyerNick(sysCustom.getBuyerNick());
-
-        PoolLevelEnum level = PoolLevelEnum.LEVEL_1;
-        if (sign_num >= 1) {
-            level = PoolLevelEnum.LEVEL_1;
-        }
-        if (sign_num >= 3) {
-            level = PoolLevelEnum.LEVEL_2;
-        }
-        if (sign_num >= 5 && orderNum >= 1) {
-            level = PoolLevelEnum.LEVEL_3;
-        }
-        if (sign_num >= 7 && orderNum >= 1) {
-            level = PoolLevelEnum.LEVEL_4;
-        }
-        if (sign_num >= 11 && orderNum >= 2) {
-            level = PoolLevelEnum.LEVEL_5;
-        }
-        customPlayProgressDto.setCurrentPoolLevel(level);
-        customPlayProgressDto.setOrderNum(orderNum);
-        customPlayProgressDto.setSignNum((int) sign_num);
-        return customPlayProgressDto;
-    }
+//    @Transactional
+//    public CustomPlayProgressDto findCurrentPoolLevel(SysCustom sysCustom) {
+//        CustomPlayProgressDto customPlayProgressDto = new CustomPlayProgressDto();
+//        //累计签到天数
+//        long sign_num = 0;
+////        long sign_num = sysTaskMemberOrFollowRepository.countByBuyerNickAndTaskType(sysCustom.getBuyerNick(), TaskTypeEnum.SIGN);
+//
+//        //下单数
+//        Integer orderNum = cusOrderInfoService.countTidsByBuyerNick(sysCustom.getBuyerNick());
+//
+//        PoolLevelEnum level = PoolLevelEnum.LEVEL_1;
+//        if (sign_num >= 1) {
+//            level = PoolLevelEnum.LEVEL_1;
+//        }
+//        if (sign_num >= 3) {
+//            level = PoolLevelEnum.LEVEL_2;
+//        }
+//        if (sign_num >= 5 && orderNum >= 1) {
+//            level = PoolLevelEnum.LEVEL_3;
+//        }
+//        if (sign_num >= 7 && orderNum >= 1) {
+//            level = PoolLevelEnum.LEVEL_4;
+//        }
+//        if (sign_num >= 11 && orderNum >= 2) {
+//            level = PoolLevelEnum.LEVEL_5;
+//        }
+//        customPlayProgressDto.setCurrentPoolLevel(level);
+//        customPlayProgressDto.setOrderNum(orderNum);
+//        customPlayProgressDto.setSignNum((int) sign_num);
+//        return customPlayProgressDto;
+//    }
 
 
     /**

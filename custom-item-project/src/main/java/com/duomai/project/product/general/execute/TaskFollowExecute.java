@@ -56,8 +56,8 @@ public class TaskFollowExecute implements IApiExecute {
                 .setBuyerNick(buyerNick)
                 .setCreateTime(sysParm.getRequestStartTime())
                 .setTaskType(TaskTypeEnum.FOLLOW));
-        if (FollowWayFromEnum.NON_FOLLOW.equals(syscustom.getFollowWayFromEnum())) {
-            syscustom.setFollowWayFromEnum(FollowWayFromEnum.NATURE_JOIN_FOLLOW);
+        if (FollowWayFromEnum.NON_FOLLOW.equals(syscustom.getFollowWayFrom())) {
+            syscustom.setFollowWayFrom(FollowWayFromEnum.NATURE_JOIN_FOLLOW);
             sysCustomRepository.save(syscustom);
         }
 

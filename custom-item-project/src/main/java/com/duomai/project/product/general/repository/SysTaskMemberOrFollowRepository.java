@@ -29,7 +29,11 @@ public interface SysTaskMemberOrFollowRepository extends BaseRepository<SysTaskM
     List<SysTaskMemberOrFollowLog> findByBuyerNickAndTaskTypeAndCreateTimeBetween(String buyerNick, TaskTypeEnum taskType,
                                                                                   Date start, Date end);
 
-    //根据粉丝昵称
+    /**
+     * 查询 指定玩家  入会关注记录
+     * @param buyerNick
+     * @return
+     */
     List<SysTaskMemberOrFollowLog> findByBuyerNick(String buyerNick);
 
 }

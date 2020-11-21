@@ -54,4 +54,10 @@ public class ActBaseSettingDto {
     private Integer taskBrowseShouldSee;
 
 
+    /**
+     * 下单任务，满多少
+     */
+    private Integer taskOrderShouldSpend;
+
+
 }

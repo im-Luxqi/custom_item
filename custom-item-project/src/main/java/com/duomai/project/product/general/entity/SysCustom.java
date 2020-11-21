@@ -22,7 +22,7 @@ public class SysCustom {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 100)
+    @Column(length = 40)
     private String id;
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '创建时间'")
     private Date createTime;
@@ -55,6 +55,6 @@ public class SysCustom {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(30) COMMENT '入会途径'")
-    private FollowWayFromEnum followWayFromEnum;
+    private FollowWayFromEnum followWayFrom;
 
 }

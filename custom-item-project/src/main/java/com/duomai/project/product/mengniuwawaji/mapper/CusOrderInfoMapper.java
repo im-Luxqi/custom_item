@@ -1,7 +1,7 @@
-package com.duomai.project.product.adidasmusic.mapper;
+package com.duomai.project.product.mengniuwawaji.mapper;
 
 import com.duomai.common.framework.mybatisplus.mapper.BaseMapper;
-import com.duomai.project.product.adidasmusic.domain.CusOrderInfo;
+import com.duomai.project.product.mengniuwawaji.domain.CusOrderInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

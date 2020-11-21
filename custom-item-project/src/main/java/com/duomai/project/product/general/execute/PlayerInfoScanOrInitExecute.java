@@ -45,13 +45,13 @@ public class PlayerInfoScanOrInitExecute implements IApiExecute {
                     .setOpenId(sysParm.getApiParameter().getYunTokenParameter().getOpenUId())
                     .setHaveAuthorization(BooleanConstant.BOOLEAN_NO)
                     .setMemberWayFrom(historyMember ? MemberWayFromEnum.HISTROY_MEMBER : MemberWayFromEnum.NON_MEMBER)
-                    .setFollowWayFromEnum(FollowWayFromEnum.UNDIFIND);
+                    .setFollowWayFrom(FollowWayFromEnum.UNDIFIND);
             sysCustom = sysCustomRepository.save(temp);
         }
 
         /*2.组织返回值*/
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
-        boolean should_sure_history_follow_state = FollowWayFromEnum.UNDIFIND.equals(sysCustom.getFollowWayFromEnum());
+        boolean should_sure_history_follow_state = FollowWayFromEnum.UNDIFIND.equals(sysCustom.getFollowWayFrom());
         boolean have_authorization = BooleanConstant.BOOLEAN_YES.equals(sysCustom.getHaveAuthorization());
         resultMap.put("history_follow_undefined", should_sure_history_follow_state);
         resultMap.put("have_authorization", have_authorization);

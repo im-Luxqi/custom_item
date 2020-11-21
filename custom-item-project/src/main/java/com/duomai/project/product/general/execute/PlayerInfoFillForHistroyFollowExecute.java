@@ -2,7 +2,6 @@ package com.duomai.project.product.general.execute;
 
 import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
-import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.entity.SysCustom;
@@ -37,13 +36,14 @@ public class PlayerInfoFillForHistroyFollowExecute implements IApiExecute {
         Assert.notNull(has_follow, "是否关注店铺，不能为空(demo:->{'has_follow':true/false})");
 
         /*2.查找到指定玩家*/
-        SysCustom sysCustom = sysCustomRepository.findByBuyerNickAndHistoryFollow(
-                sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), BooleanConstant.BOOLEAN_UNDEFINED);
+        SysCustom sysCustom = sysCustomRepository.findFirstByBuyerNickAndFollowWayFrom(
+                sysParm.getApiParameter().getYunTokenParameter().getBuyerNick(), FollowWayFromEnum.UNDIFIND);
 
-        if (!Objects.isNull(sysCustom)) {
+        boolean queryFlag = !Objects.isNull(sysCustom);
+        if (queryFlag){
             /*3.初始化玩家关注状态*/
-            sysCustomRepository.save(sysCustom.setFollowWayFromEnum(has_follow ? FollowWayFromEnum.HISTROY_FOLLOW : FollowWayFromEnum.NON_FOLLOW));
+            sysCustomRepository.save(sysCustom.setFollowWayFrom(has_follow ? FollowWayFromEnum.HISTROY_FOLLOW : FollowWayFromEnum.NON_FOLLOW));
         }
-        return YunReturnValue.ok("初始化玩家关注信息成功");
+        return YunReturnValue.ok(queryFlag ? "初始化玩家关注信息成功" : "未查询到符合条件的玩家");
     }
 }

@@ -20,7 +20,7 @@ public class SysLuckyExchangeLog {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 100)
+    @Column(length = 40)
     private String id;
     @Column(columnDefinition = "varchar(100) COMMENT '用户混淆昵称'")
     private String buyerNick;

@@ -1,7 +1,7 @@
-package com.duomai.project.product.adidasmusic.service;
+package com.duomai.project.product.mengniuwawaji.service;
 
 import com.duomai.common.framework.mybatisplus.service.BaseService;
-import com.duomai.project.product.adidasmusic.domain.CusOrderInfo;
+import com.duomai.project.product.mengniuwawaji.domain.CusOrderInfo;
 import com.taobao.api.response.OpenTradesSoldGetResponse;
 
 import java.util.Date;

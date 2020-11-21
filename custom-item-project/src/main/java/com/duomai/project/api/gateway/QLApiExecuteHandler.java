@@ -5,7 +5,6 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.common.enums.SysErrorEnum;
 import com.duomai.project.api.taobao.MemcacheTools;
-import com.duomai.project.product.adidasmusic.execute.*;
 import com.duomai.project.product.general.execute.*;
 import com.duomai.project.product.mengniuwawaji.execute.GameIndexLoadExecute;
 import com.duomai.project.tool.ApplicationUtils;
@@ -40,7 +39,6 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.common.playerInfo.fill.afterAuthorization", PlayerInfoFillForAfterAuthorizationExecute.class);
 
 
-
         /**
          * 首页
          */
@@ -48,19 +46,10 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
 
 
-
-
-
-
         //我的奖品 wxq
         map.put("wx.dz.common.luckyBag.allWin", LuckyBagAllWinExecute.class);
         //留资料 wxq
         map.put("wx.dz.common.luckyBag.fill.awardAddress", LuckyBagFillAwardAddressExecute.class);
-
-
-
-
-
 
 
 //
@@ -117,8 +106,8 @@ public class QLApiExecuteHandler {
         //防连点
         if (ProjectTools.hasMemCacheEnvironment()) {
             Assert.isTrue(MemcacheTools.add("_checkoutMultipleCommit_"
-                            + sysParm.getApiParameter().getYunTokenParameter().getBuyerNick()
-                            + sendApiExecute.getClass().getName()), "点太快了，请休息下");
+                    + sysParm.getApiParameter().getYunTokenParameter().getBuyerNick()
+                    + sendApiExecute.getClass().getName()), "点太快了，请休息下");
         }
         return sendApiExecute.ApiExecute(sysParm, request, response);
     }

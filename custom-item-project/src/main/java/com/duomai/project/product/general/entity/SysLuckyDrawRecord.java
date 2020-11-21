@@ -21,7 +21,7 @@ public class SysLuckyDrawRecord {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 64)
+    @Column(length = 40)
     private String id;
     @Column(columnDefinition = "varchar(64) COMMENT '奖品机会'")
     private String luckyChance;

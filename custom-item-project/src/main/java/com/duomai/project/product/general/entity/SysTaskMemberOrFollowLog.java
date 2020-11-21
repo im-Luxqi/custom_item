@@ -20,7 +20,7 @@ public class SysTaskMemberOrFollowLog {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 64)
+    @Column(length = 40)
     private String id;
     @Column(columnDefinition = "varchar(255) COMMENT '粉丝混淆昵称'")
     private String buyerNick;
