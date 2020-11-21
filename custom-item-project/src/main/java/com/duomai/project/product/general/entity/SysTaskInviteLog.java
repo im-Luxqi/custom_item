@@ -31,7 +31,7 @@ public class SysTaskInviteLog {
     @Column(columnDefinition = "varchar(64) COMMENT '邀请人mix'")
     private String mixInviter;
 
-    @Column(columnDefinition = "varchar(255) COMMENT '邀请人'")
+    @Column(columnDefinition = "varchar(64) COMMENT '邀请人'")
     private String inviter;
 
     @Column(columnDefinition = "varchar(255) COMMENT '被邀请人头像'")
@@ -40,7 +40,7 @@ public class SysTaskInviteLog {
     @Column(columnDefinition = "varchar(64) COMMENT '被邀请人mix'")
     private String mixInvitee;
 
-    @Column(columnDefinition = "varchar(255) COMMENT '被邀请人'")
+    @Column(columnDefinition = "varchar(64) COMMENT '被邀请人'")
     private String invitee;
 
     @Column(columnDefinition = "varchar(255) COMMENT '被邀请人头像'")

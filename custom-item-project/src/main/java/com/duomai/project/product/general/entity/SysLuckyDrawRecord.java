@@ -44,14 +44,14 @@ public class SysLuckyDrawRecord {
     @Column(columnDefinition = "varchar(255) COMMENT '奖品图片'")
     private String awardImg;
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(20) COMMENT '奖品类型'")
+    @Column(columnDefinition = "varchar(30) COMMENT '奖品类型'")
     private AwardTypeEnum awardType;
     @Column(nullable = false, columnDefinition = "int(1) COMMENT '是否中奖'")
     private Integer isWin;
     @Column(nullable = false, columnDefinition = "int(1) COMMENT '是否填写地址'")
     private Integer isFill;
 
-    @Column(columnDefinition = "varchar(64) COMMENT '收件人昵称'")
+    @Column(columnDefinition = "varchar(10) COMMENT '收件人昵称'")
     private String receviceName;
     @Column(columnDefinition = "varchar(64) COMMENT '收件人电话'")
     private String recevicePhone;

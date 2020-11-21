@@ -24,21 +24,21 @@ public class SysSettingAward {
     private String id;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(20) COMMENT '奖品用途'")
+    @Column(columnDefinition = "varchar(30) COMMENT '奖品用途'")
     private AwardUseWayEnum useWay;
 
-    @Column(columnDefinition = "varchar(47) COMMENT '奖品等级;一等奖、二等奖。。。'")
+    @Column(columnDefinition = "varchar(64) COMMENT '奖品等级;一等奖、二等奖。。。'")
     private String awardLevel;
     @Column(columnDefinition = "int(2) COMMENT '奖品等级sign'")
     private Integer awardLevelSign;
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(20) COMMENT '奖品类型'")
+    @Column(columnDefinition = "varchar(30) COMMENT '奖品类型'")
     private AwardTypeEnum type;
     @Column(columnDefinition = "varchar(64) COMMENT '奖品名称'")
     private String name;
     @Column(columnDefinition = "varchar(255) COMMENT '奖品图片'")
     private String img;
-    @Column(columnDefinition = "varchar(64) COMMENT '奖品价格'")
+    @Column(columnDefinition = "varchar(30) COMMENT '奖品价格'")
     private String price;
 
     @Column(columnDefinition = "int(10) COMMENT '奖品总数量'")
@@ -48,7 +48,7 @@ public class SysSettingAward {
     @Column(columnDefinition = "int(10) COMMENT '奖品已发数量'")
     private Integer sendNum;
 
-    @Column(columnDefinition = "varchar(20) COMMENT '奖品概率'")
+    @Column(columnDefinition = "varchar(30) COMMENT '奖品概率'")
     private String luckyValue;
     @Column(columnDefinition = "int(2) COMMENT '奖池等级'")
     private Integer poolLevel;

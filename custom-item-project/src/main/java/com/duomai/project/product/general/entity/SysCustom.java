@@ -1,6 +1,5 @@
 package com.duomai.project.product.general.entity;
 
-import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.FollowWayFromEnum;
 import com.duomai.project.product.general.enums.MemberWayFromEnum;
 import lombok.Data;
@@ -28,7 +27,7 @@ public class SysCustom {
     private Date createTime;
     @Column(columnDefinition = "DATETIME COMMENT '更新时间'")
     private Date updateTime;
-    @Column(nullable = false, columnDefinition = "varchar(255) COMMENT '用户混淆昵称'")
+    @Column(nullable = false, columnDefinition = "varchar(64) COMMENT '用户混淆昵称'")
     private String buyerNick;
     @Column(columnDefinition = "varchar(64) COMMENT '用户openID'")
     private String openId;
@@ -36,15 +35,6 @@ public class SysCustom {
     private String znick;
     @Column(columnDefinition = "varchar(255) COMMENT '头像'")
     private String headImg;
-
-//    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否为会员 0:否1:是'")
-//    private Integer member;
-//    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否老会员 0:否1:是'")
-//    private Integer historyMember;
-//    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否粉丝(关注店铺) 0:否1:是'")
-//    private Integer follow;
-//    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否老粉丝 0:否1:是'")
-//    private Integer historyFollow;
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否授权 0:否1:是'")
     private Integer haveAuthorization;
 

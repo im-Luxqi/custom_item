@@ -22,13 +22,13 @@ public class SysSettingCommodity {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(length = 40)
     private String id;
-    @Column(columnDefinition = "varchar(47) COMMENT '商品名称'")
+    @Column(columnDefinition = "varchar(64) COMMENT '商品名称'")
     private String name;
-    @Column(columnDefinition = "bigint(20) COMMENT '商品id'")
+    @Column(columnDefinition = "bigint(30) COMMENT '商品id'")
     private Long numId;
     @Column(columnDefinition = "varchar(255) COMMENT '商品图片'")
     private String img;
-    @Column(columnDefinition = "varchar(64) COMMENT '奖品价格'")
+    @Column(columnDefinition = "varchar(30) COMMENT '奖品价格'")
     private String price;
 
     /**

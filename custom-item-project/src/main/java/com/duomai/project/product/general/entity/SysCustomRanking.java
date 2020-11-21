@@ -20,7 +20,7 @@ public class SysCustomRanking implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false, columnDefinition = "varchar(47) COMMENT '用户混淆昵称'")
+    @Column(nullable = false, columnDefinition = "varchar(64) COMMENT '用户混淆昵称'")
     private String buyerNick;
     @Column(columnDefinition = "varchar(64) COMMENT '真实昵称'")
     private String znick;

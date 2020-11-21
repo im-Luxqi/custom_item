@@ -21,7 +21,7 @@ public class SysTaskSignLog {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(length = 40)
     private String id;
-    @Column(columnDefinition = "varchar(255) COMMENT '粉丝混淆昵称'")
+    @Column(columnDefinition = "varchar(64) COMMENT '粉丝混淆昵称'")
     private String buyerNick;
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '创建时间'")
     private Date createTime;

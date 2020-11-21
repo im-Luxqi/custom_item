@@ -26,10 +26,10 @@ public class SysLuckyChance {
     private Date getTime;
     @Column(columnDefinition = "DATETIME COMMENT '消耗时间'")
     private Date useTime;
-    @Column(nullable = false, columnDefinition = "varchar(100) COMMENT '用户混淆昵称'")
+    @Column(nullable = false, columnDefinition = "varchar(64) COMMENT '用户混淆昵称'")
     private String buyerNick;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "varchar(20) COMMENT '机会来源'")
+    @Column(nullable = false, columnDefinition = "varchar(30) COMMENT '机会来源'")
     private LuckyChanceFromEnum chanceFrom;
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否使用'")
     private Integer isUse;
