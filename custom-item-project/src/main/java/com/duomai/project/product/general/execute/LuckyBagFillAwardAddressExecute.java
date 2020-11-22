@@ -47,6 +47,7 @@ public class LuckyBagFillAwardAddressExecute implements IApiExecute {
                         .setRecevicePhone(beautyAdmjson.getRecevicePhone())
                         .setReceviceProvince(beautyAdmjson.getReceviceProvince())
                         .setReceviceTime(sysParm.getRequestStartTime())
+                        .setIdentityNumber(beautyAdmjson.getIdentityNumber())
                         .setReceviceAddress(beautyAdmjson.getReceviceAddress()));
         return YunReturnValue.ok("完善地址成功");
     }

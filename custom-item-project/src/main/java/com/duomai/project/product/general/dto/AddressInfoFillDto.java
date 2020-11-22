@@ -56,4 +56,8 @@ public class AddressInfoFillDto {
     @NotBlank(message = "收件人地址 详细地址 不能为空")
     private String receviceAddress;
 
+    @Pattern(regexp  = "^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$|^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$", message = "身份证格式不正确")
+    @NotBlank(message = "身份证 不能为空")
+    private String identityNumber;
+
 }

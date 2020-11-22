@@ -80,12 +80,13 @@ public class LuckyDrawHelper {
                             .setTidTime(sendTime)
                             .setIsUse(BooleanConstant.BOOLEAN_NO)
                             .setTid(tid)
-                            .setHaveNotification(BooleanConstant.BOOLEAN_NO)
+                            .setHaveNotification(BooleanConstant.BOOLEAN_YES)
                             .setNotificationTitle("---")
                             .setNotificationContent("---");
                     if (i == 0) {
                         sysLuckyChance.setNotificationTitle(messageTitle);
                         sysLuckyChance.setNotificationContent(messageContent);
+                        sysLuckyChance.setHaveNotification(BooleanConstant.BOOLEAN_NO);
                     }
                     return sysLuckyChance;
                 }).collect(Collectors.toList()));
@@ -503,7 +504,8 @@ public class LuckyDrawHelper {
 
         if (BooleanConstant.BOOLEAN_YES.equals(drawRecord.getIsWin())) {
             //标记已兑换的瓶子
-            sysLuckyDrawRecordRepository.exchangeAward(Arrays.asList(stringBuffer.toString().split(",")), sendTime);
+            String[] split = stringBuffer.toString().split(",");
+            sysLuckyDrawRecordRepository.exchangeAward(split, sendTime);
 
             //记录瓶子兑换日志
             List<SysLuckyExchangeLog> collect = unUseBattles.stream().map(x -> new SysLuckyExchangeLog()

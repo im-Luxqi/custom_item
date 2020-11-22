@@ -85,7 +85,8 @@ public class PostExchanageRestController extends BaseRestController {
 
         /*3.执行业务逻辑*/
         try {
-            YunReturnValue yunReturnValue = QLApiExecuteHandler.ApiExecute(apiSysParameter, request, response);//执行业务逻辑，并获得返回值rValue
+            //执行业务逻辑，并获得返回值rValue
+            YunReturnValue yunReturnValue = QLApiExecuteHandler.ApiExecute(apiSysParameter, request, response);
             if (yunReturnValue.getData().getStatus().equals(ReturnBaseData.error)) {
                 cgApiLog.setParType(1);
                 cgApiLog.setErrorMsg(yunReturnValue.getData().getMsg());

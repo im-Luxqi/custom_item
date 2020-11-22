@@ -15,17 +15,19 @@ import com.duomai.project.product.general.repository.SysTaskMemberOrFollowReposi
 import com.duomai.project.product.general.repository.SysTaskSignLogRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
-/**
+/** 任务页load
  * @author 王星齐
  * @description
  * @create 2020/11/21 20:31
  */
+@Component
 public class TaskDashboardExecute implements IApiExecute {
     @Autowired
     private SysTaskSignLogRepository sysTaskSignLogRepository;
@@ -68,6 +70,11 @@ public class TaskDashboardExecute implements IApiExecute {
                     lastLog = sysTaskSignLog;
                 }
             }
+            taskSignLogList.forEach(x->{
+                x.setId(null);
+                x.setCreateTime(null);
+                x.setBuyerNick(null);
+            });
         }
         Map<String, Object> signMap = new LinkedHashMap<>();
         signMap.put("task", "sign");

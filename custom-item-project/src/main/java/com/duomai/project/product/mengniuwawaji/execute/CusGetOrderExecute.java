@@ -13,6 +13,7 @@ import com.duomai.project.product.mengniuwawaji.domain.CusOrderInfo;
 import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
 import com.taobao.api.response.OpenTradesSoldGetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,7 +31,7 @@ import java.util.List;
  * @create by 王星齐
  * @time 2020-10-10 15:43:06
  */
-@Service
+@Component
 public class CusGetOrderExecute implements IApiExecute {
 
 

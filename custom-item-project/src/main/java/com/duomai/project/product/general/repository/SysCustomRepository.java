@@ -3,6 +3,8 @@ package com.duomai.project.product.general.repository;
 import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.enums.FollowWayFromEnum;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface SysCustomRepository extends BaseRepository<SysCustom, String> {
 
@@ -17,4 +19,12 @@ public interface SysCustomRepository extends BaseRepository<SysCustom, String> {
      * @return
      */
     SysCustom findFirstByBuyerNickAndFollowWayFrom(String buyerNick, FollowWayFromEnum followWayFrom);
+
+    /**
+     * test
+     *
+     * @param buyerNick
+     */
+    @Transactional
+    void deleteByBuyerNick(String buyerNick);
 }

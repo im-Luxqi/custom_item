@@ -39,6 +39,11 @@ public class LuckyBagAllWinExecute implements IApiExecute {
             x.setLuckyChance(null);
             x.setPlayerBuyerNick(null);
             x.setIsWin(null);
+            x.setHaveExchange(null);
+            x.setRemark(null);
+            x.setPlayerZnick(null);
+            x.setPlayerHeadImg(null);
+            x.setDrawTime(null);
         });
         result.put("my_lucky_bag", byPlayerBuyerNickAndIsWin);
         return YunReturnValue.ok(result, "玩家成功打开我的奖品");

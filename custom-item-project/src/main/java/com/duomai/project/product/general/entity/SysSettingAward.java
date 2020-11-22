@@ -57,4 +57,38 @@ public class SysSettingAward {
 
     @Transient
     private String logId;
+
+
+    /**
+     * 奖品数量不足
+     */
+    @Transient
+    private Boolean awardIsNull;
+
+
+    /**
+     * 已达到兑换上限 或者 已中过实物
+     */
+    @Transient
+    private Boolean canNotExchange;
+
+
+
+    /**
+     * 今日不能兑换
+     */
+    @Transient
+    private Boolean todayCanNotExchange;
+
+
+
+    /**
+     * 未达到兑换条件
+     */
+    @Transient
+    private Boolean HaveNotGetCondition;
+
+
+
+
 }

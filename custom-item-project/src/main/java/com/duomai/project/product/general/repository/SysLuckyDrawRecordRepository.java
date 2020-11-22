@@ -39,6 +39,7 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
 
     @Query(nativeQuery = true,
             value = "select * " +
+                    "from  sys_lucky_draw_record " +
                     "where player_buyer_nick = ?1  and is_win = 1 and award_type in ('COUPON','GOODS')  order by award_id asc ")
     List<SysLuckyDrawRecord> queryMybag(String buyernick);
 
@@ -52,9 +53,16 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
     @Transactional
     @Query(nativeQuery = true,
             value = "update sys_lucky_draw_record" +
-                    "        set have_exchange = 1,exchange_time = ?3" +
+                    "        set have_exchange = 1,exchange_time = ?2" +
                     "    where id in (?1) "
     )
-    int exchangeAward(List<String> ids, Date exchangeTime);
+    int exchangeAward(String[] ids, Date exchangeTime);
 
+    /**
+     * test
+     *
+     * @param buyerNick
+     */
+    @Transactional
+    void deleteByPlayerBuyerNick(String buyerNick);
 }

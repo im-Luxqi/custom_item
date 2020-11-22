@@ -18,6 +18,7 @@ import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepositor
 import com.duomai.project.tool.CommonDateParseUtil;
 import com.duomai.project.tool.ProjectTools;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +31,7 @@ import java.util.Objects;
  * @description
  * @create 2020/11/19 15:13
  */
+@Component
 public class GameIndexLuckyDrawExecute implements IApiExecute {
     @Autowired
     private SysCustomRepository sysCustomRepository;
@@ -89,6 +91,11 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
                     .setSendNum(null)
                     .setTotalNum(null)
                     .setLuckyValue(null)
+                    .setUseWay(null)
+                    .setLogId(null)
+                    .setType(null)
+                    .setAwardLevel(null)
+                    .setAwardLevelSign(null)
                     .setPoolLevel(null);
         }
         return YunReturnValue.ok(resultMap, "玩家成功进行抽奖");

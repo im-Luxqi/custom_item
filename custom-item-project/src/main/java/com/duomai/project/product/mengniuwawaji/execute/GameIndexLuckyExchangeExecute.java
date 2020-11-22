@@ -268,6 +268,17 @@ public class GameIndexLuckyExchangeExecute implements IApiExecute {
         boolean isWin = BooleanConstant.BOOLEAN_YES.equals(thisExchangeRecord.getIsWin());
         resultMap.put("isWin",isWin);
         resultMap.put("award",award);
+        if(award!=null){
+            award.setUseWay(null);
+            award.setAwardLevel(null);
+            award.setAwardLevelSign(null);
+            award.setTotalNum(null);
+            award.setRemainNum(null);
+            award.setSendNum(null);
+            award.setLuckyValue(null);
+            award.setPoolLevel(null);
+            award.setLogId(thisExchangeRecord.getId());
+        }
         resultMap.put("errorMsg",thisExchangeRecord.getSendError());
         return YunReturnValue.ok(resultMap, "奶瓶兑换操作");
     }

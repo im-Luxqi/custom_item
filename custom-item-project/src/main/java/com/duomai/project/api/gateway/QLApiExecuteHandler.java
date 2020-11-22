@@ -6,7 +6,7 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.common.enums.SysErrorEnum;
 import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.product.general.execute.*;
-import com.duomai.project.product.mengniuwawaji.execute.GameIndexLoadExecute;
+import com.duomai.project.product.mengniuwawaji.execute.*;
 import com.duomai.project.tool.ApplicationUtils;
 import com.duomai.project.tool.ProjectTools;
 import org.springframework.context.ApplicationContext;
@@ -30,6 +30,9 @@ public class QLApiExecuteHandler {
         //测试阶段专用 --增加指定玩家30次抽奖次数 wxq
         map.put("wx.dz.common.test.luckyChance", TestLuckyChanceExecute.class);
 
+        //测试阶段专用 --kill wxq
+        map.put("wx.dz.common.test.kill", TestKillChanceExecute.class);
+
 
         //玩家信息扫描，首次完成初始化操作 wxq
         map.put("wx.dz.common.playerInfo.scan", PlayerInfoScanOrInitExecute.class);
@@ -44,12 +47,73 @@ public class QLApiExecuteHandler {
          */
         //游戏首页 加载
         map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
+        //抽奖机会通知
+        map.put("wx.dz.game.index.notification", LuckyNewChangeGetExecute.class);
+        //点击抓娃娃
+        map.put("wx.dz.game.lucky.draw", GameIndexLuckyDrawExecute.class);
+
+
+        //我的战利品-查看明细
+        map.put("wx.dz.game.show.list.exchange", ShowExchangeListExecute.class);
+
+
+        //立即兑换
+        map.put("wx.dz.game.lucky.exchange", GameIndexLuckyExchangeExecute.class);
+
+        //本机奖品池
+        map.put("wx.dz.game.lucky.pool", GameIndexLuckyPoolExecute.class);
+
+
+        /**
+         * 任务
+         */
+        //任务页面load
+        map.put("wx.dz.game.task.load", TaskDashboardExecute.class);
+
+
+
+        //任务--每日签到
+        map.put("wx.dz.game.task.sign", TaskSignExecute.class);
+
+        //任务--成为会员
+        map.put("wx.dz.game.task.member", TaskMemberExecute.class);
+
+        //任务--关注店铺
+        map.put("wx.dz.game.task.follow", TaskFollowExecute.class);
+
+
+        //任务--浏览商品
+        map.put("wx.dz.game.task.browse", TaskBrowseExecute.class);
+
+
+        //任务--观看直播
+        map.put("wx.dz.game.task.tv", TaskTvExecute.class);
+
+
+        //任务--消费增送
+        map.put("wx.dz.game.task.order", CusGetOrderExecute.class);
+
+        //任务--浏览页
+        map.put("wx.dz.game.show.list.browse", ShowBrowseListExecute.class);
+
+
+        //任务--邀请明细
+        map.put("wx.dz.game.show.list.invite", ShowInviteListExecute.class);
+
+
+        //任务--分享明细
+        map.put("wx.dz.game.show.list.share", ShowShareListExecute.class);
+
+
+
+
+
 
 
         //我的奖品 wxq
-        map.put("wx.dz.common.luckyBag.allWin", LuckyBagAllWinExecute.class);
+        map.put("wx.dz.common.luckyBag.win", LuckyBagAllWinExecute.class);
         //留资料 wxq
-        map.put("wx.dz.common.luckyBag.fill.awardAddress", LuckyBagFillAwardAddressExecute.class);
+        map.put("wx.dz.common.luckyBag.win.address", LuckyBagFillAwardAddressExecute.class);
 
 
 //

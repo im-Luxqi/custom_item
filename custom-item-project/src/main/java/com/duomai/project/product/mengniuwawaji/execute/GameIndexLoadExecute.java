@@ -8,20 +8,17 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
-import com.duomai.project.product.general.entity.SysCustom;
-import com.duomai.project.product.general.entity.SysTaskInviteLog;
-import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
-import com.duomai.project.product.general.entity.SysTaskShareLog;
+import com.duomai.project.product.general.dto.ActBaseSettingDto;
+import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.enums.MemberWayFromEnum;
-import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.product.general.repository.SysTaskInviteLogRepository;
-import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
-import com.duomai.project.product.general.repository.SysTaskShareLogRepository;
+import com.duomai.project.product.general.enums.PvPageEnum;
+import com.duomai.project.product.general.repository.*;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +32,7 @@ import java.util.List;
  * @description
  * @create 2020/11/18 18:14
  */
+@Component
 public class GameIndexLoadExecute implements IApiExecute {
 
     @Autowired
@@ -49,6 +47,10 @@ public class GameIndexLoadExecute implements IApiExecute {
 
     @Autowired
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
+
+
+    @Autowired
+    private SysPagePvLogRepository sysPagePvLogRepository;
 
 
     @Autowired
@@ -69,6 +71,13 @@ public class GameIndexLoadExecute implements IApiExecute {
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
 
+        /*保存pv*/
+        sysPagePvLogRepository.save(new SysPagePvLog()
+                .setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
+                .setCreateTime(sysParm.getRequestStartTime())
+                .setId(sysParm.getApiParameter().getCommomParameter().getIp())
+                .setPage(PvPageEnum.PAGE_INDEX));
+
 
         boolean actLive = projectHelper.actTimeValidateFlag();
         if (actLive) {
@@ -76,6 +85,7 @@ public class GameIndexLoadExecute implements IApiExecute {
             JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
             String sharer = jsonObjectAdmjson.getString("sharer");
             String inviter = jsonObjectAdmjson.getString("inviter");
+            Assert.isTrue(!(StringUtils.isNotBlank(sharer) && StringUtils.isNotBlank(inviter)), "非法链接");
             //分享助力
             if (StringUtils.isNotBlank(sharer) && !sharer.equals(buyerNick)) {
                 //同一个人每天只能为他人助力一次
@@ -148,7 +158,13 @@ public class GameIndexLoadExecute implements IApiExecute {
 
 
         //1.活动规则
-        resultMap.put("game_rule", projectHelper.actBaseSettingFind());
+        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
+        actBaseSettingDto.setDrawCouponNum(null);
+        actBaseSettingDto.setTaskOrderShouldSpend(null);
+        actBaseSettingDto.setTaskBrowseShouldSee(null);
+        actBaseSettingDto.setTaskSignContinuousPayment(null);
+        actBaseSettingDto.setTaskSignContinuous(null);
+        resultMap.put("game_rule", actBaseSettingDto);
         //2.抓娃娃机会次数
         resultMap.put("lucky_chance_num", luckyDrawHelper.unUseLuckyChance(buyerNick));
         List<SysLuckyDrawRecord> unUseBattles = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndAwardTypeAndIsWinAndHaveExchange(buyerNick, AwardTypeEnum.EXCHANGE,
@@ -160,7 +176,6 @@ public class GameIndexLoadExecute implements IApiExecute {
             x.setPlayerHeadImg(null);
             x.setPlayerBuyerNick(null);
             x.setPlayerZnick(null);
-            x.setAwardId(null);
             x.setAwardLevel(null);
             x.setAwardType(null);
             x.setIsWin(null);
@@ -171,6 +186,9 @@ public class GameIndexLoadExecute implements IApiExecute {
         resultMap.put("lucky_win_bottle", unUseBattles);
         //4.兑换弹幕
         resultMap.put("lucky_exchange_barrage", sysLuckyDrawRecordRepository.queryExchangeLog());
+
+
+
 
         return YunReturnValue.ok(resultMap, "游戏首页");
     }

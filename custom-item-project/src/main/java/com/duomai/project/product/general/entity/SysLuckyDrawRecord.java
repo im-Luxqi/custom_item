@@ -61,8 +61,14 @@ public class SysLuckyDrawRecord {
     private String receviceProvince;
     @Column(columnDefinition = "varchar(64) COMMENT '收件人地址 区'")
     private String receviceDistrict;
+
+    @Column(columnDefinition = "varchar(64) COMMENT '身份证'")
+    private String identityNumber;
+
     @Column(columnDefinition = "text COMMENT '收件人地址 详细地址'")
     private String receviceAddress;
+
+
     @Column(columnDefinition = "DATETIME COMMENT '填写地址时间'")
     private Date receviceTime;
     @Column(columnDefinition = "text COMMENT '发奖发送错误信息'")

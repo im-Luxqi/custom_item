@@ -14,7 +14,7 @@ public interface SysSettingAwardRepository extends BaseRepository<SysSettingAwar
     @Modifying
     @Transactional
     @Query(nativeQuery = true,
-            value = "update sys_award" +
+            value = "update sys_setting_award" +
                     "        set remain_num = remain_num-1,send_num = send_num + 1" +
                     "    where id = ?1" +
                     "        and  remain_num >0")
