@@ -149,7 +149,7 @@ public class GameIndexLoadExecute implements IApiExecute {
 
 
             //首次登陆游戏免费送一次
-            long l = luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.FREE);
+            long l = luckyDrawHelper.countLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.FREE);
             if (l == 0) {
                 luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.FREE, 1,
                         "首次登陆", "首次登陆,获取" + 1 + "次机会");

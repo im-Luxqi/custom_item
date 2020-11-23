@@ -3,7 +3,6 @@ package com.duomai.project.product.general.repository;
 import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -21,6 +20,13 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
     long countByBuyerNickAndChanceFromAndGetTimeBetween(String buyerNick, LuckyChanceFromEnum chanceFrom, Date startTime, Date endTime);
 
 
+    /**
+     * 查询 玩家 指定来源 的游戏机会获取数量
+     *
+     * @param buyerNick
+     * @param from
+     * @return
+     */
     long countByBuyerNickAndChanceFrom(String buyerNick, LuckyChanceFromEnum from);
 
 
