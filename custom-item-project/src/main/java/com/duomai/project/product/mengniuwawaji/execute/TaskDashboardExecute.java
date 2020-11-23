@@ -79,6 +79,8 @@ public class TaskDashboardExecute implements IApiExecute {
         Map<String, Object> signMap = new LinkedHashMap<>();
         signMap.put("task", "sign");
         signMap.put("title", "每日签到");
+        signMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon0.png");
+        signMap.put("explain", "游戏次数+2，活动期间1次");
         signMap.put("finish", todaySign);
         signMap.put("task_end", taskFinish);
         signMap.put("sign_list", taskSignLogList);
@@ -102,7 +104,9 @@ public class TaskDashboardExecute implements IApiExecute {
         }
         Map<String, Object> membershipMap = new LinkedHashMap<>();
         membershipMap.put("task", "membership");
-        membershipMap.put("title", "成为会员");
+        membershipMap.put("title", "加入会员");
+        membershipMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon0.png");
+        membershipMap.put("explain", "游戏次数+2，活动期间1次");
         membershipMap.put("finish", finishMember);
         membershipMap.put("task_end", taskFinish);
         resultList.add(membershipMap);
@@ -112,6 +116,8 @@ public class TaskDashboardExecute implements IApiExecute {
         Map<String, Object> attentionMap = new LinkedHashMap<>();
         attentionMap.put("task", "follow");
         attentionMap.put("title", "关注店铺");
+        attentionMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon1.png");
+        attentionMap.put("explain", "游戏次数+1，活动期间1次");
         attentionMap.put("finish", finishFollow);
         attentionMap.put("task_end", taskFinish);
         resultList.add(attentionMap);
@@ -121,6 +127,8 @@ public class TaskDashboardExecute implements IApiExecute {
         Map<String, Object> shareMap = new LinkedHashMap<>();
         shareMap.put("task", "share");
         shareMap.put("title", "分享活动");
+        shareMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon2.png");
+        shareMap.put("explain", "游戏次数+1");
         shareMap.put("finish", false);
         shareMap.put("task_end", taskFinish);
         resultList.add(shareMap);
@@ -129,6 +137,8 @@ public class TaskDashboardExecute implements IApiExecute {
         Map<String, Object> browseMap = new LinkedHashMap<>();
         browseMap.put("task", "browse");
         browseMap.put("title", "浏览商品");
+        browseMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon3.png");
+        browseMap.put("explain", "浏览纯甄商品，游戏次数+1");
         browseMap.put("finish", false);
         browseMap.put("task_end", taskFinish);
 //        browseMap.put("progress", browseCount + "/3");
@@ -138,7 +148,9 @@ public class TaskDashboardExecute implements IApiExecute {
         //        luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.BROWSE);
         Map<String, Object> tvMap = new LinkedHashMap<>();
         tvMap.put("task", "tv");
-        tvMap.put("title", "看直播");
+        tvMap.put("title", "观看直播");
+        tvMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon4.png");
+        tvMap.put("explain", "游戏次数+1，每日1次");
         tvMap.put("finish", false);
         tvMap.put("task_end", taskFinish);
         resultList.add(tvMap);
@@ -148,6 +160,8 @@ public class TaskDashboardExecute implements IApiExecute {
         Map<String, Object> inviteMap = new LinkedHashMap<>();
         inviteMap.put("task", "invite");
         inviteMap.put("title", "邀请加入会员");
+        inviteMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon5.png");
+        inviteMap.put("explain", "游戏次数+1，受邀者须为从未注册加入蒙牛的全新会员");
         inviteMap.put("finish", false);
         inviteMap.put("task_end", taskFinish);
 //        inviteMap.put("invite_progress", inviteCount == 0 ? 0 : ((inviteCount % 3) == 0 ? 3 : (inviteCount % 3)) + "/3");
@@ -158,6 +172,8 @@ public class TaskDashboardExecute implements IApiExecute {
         Map<String, Object> orderMap = new LinkedHashMap<>();
         orderMap.put("task", "order");
         orderMap.put("title", "消费赠送");
+        orderMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon6.png");
+        orderMap.put("explain", "购买纯甄系列产品，单笔订单实付金额达到99元及以上，游戏次数+3");
         orderMap.put("finish", false);
         orderMap.put("task_end", taskFinish);
 //        orderMap.put("gold_deposit_progress", orderCount + "/10");
