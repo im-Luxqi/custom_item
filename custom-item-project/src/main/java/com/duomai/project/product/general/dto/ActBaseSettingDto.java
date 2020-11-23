@@ -3,6 +3,7 @@ package com.duomai.project.product.general.dto;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,7 +16,8 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-public class ActBaseSettingDto {
+public class ActBaseSettingDto  implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * 活动规则
      */

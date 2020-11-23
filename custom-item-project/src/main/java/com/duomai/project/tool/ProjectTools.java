@@ -70,6 +70,8 @@ public class ProjectTools {
     }
 
     public static boolean hasMemCacheEnvironment() {
+//        todo: wxq
+//        return false;
         String property = ApplicationUtils.getContext().getEnvironment().getProperty("spring.profiles.active");
         if ("dev".equals(property)) {
             return false;

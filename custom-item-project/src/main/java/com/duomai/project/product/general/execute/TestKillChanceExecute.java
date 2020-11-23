@@ -7,7 +7,6 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.repository.*;
 import com.duomai.project.product.mengniuwawaji.domain.CusOrderInfo;
 import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
-import com.duomai.project.tool.ProjectTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -60,7 +59,9 @@ public class TestKillChanceExecute implements IApiExecute {
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Assert.isTrue(ProjectTools.findMaxWinGoodNum() > 10, "测试专用~~");
+
+        //todo:wxq
+        //        Assert.isTrue(ProjectTools.findMaxWinGoodNum() > 10, "测试专用~~");
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         String buyerNick = jsonObjectAdmjson.getString("buyerNick");
         Assert.hasLength(buyerNick, "buyerNick不能为空");

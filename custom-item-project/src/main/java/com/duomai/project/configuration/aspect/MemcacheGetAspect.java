@@ -61,7 +61,7 @@ public class MemcacheGetAspect {
                 } else {
                     Thread.sleep(wait_time);
                 }
-            } else if (memCacheData.getTimeout() <= new Date().getTime()) {
+            } else if (memCacheData.getTimeout() <= System.currentTimeMillis()) {
                 if (MemcacheTools.add(lock_key, lock_time)) {
                     MemcacheTools.cacheData(key, new MemCacheData<>(timeout - delayed_time).setData(memCacheData.getData()), timeout);
                     MemcacheTools.cacheData(key, new MemCacheData<>(timeout - delayed_time).setData(point.proceed()), timeout);

@@ -100,7 +100,7 @@ public class PostExchanageRestController extends BaseRestController {
             return YunReturnValue.fail(SysErrorEnum.SERVE_INNER, e.getMessage());
         } finally {
             //失败请求记录日志
-            if (cgApiLog.getParType() == 1)
+//            if (cgApiLog.getParType() == 1)
                 cgApiLogRepository.save(cgApiLog);
         }
     }

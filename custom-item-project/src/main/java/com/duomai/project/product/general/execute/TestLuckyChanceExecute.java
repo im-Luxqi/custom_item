@@ -29,7 +29,9 @@ public class TestLuckyChanceExecute implements IApiExecute {
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Assert.isTrue(ProjectTools.findMaxWinGoodNum() > 10, "测试专用~~");
+
+        //todo:wxq
+        //        Assert.isTrue(ProjectTools.findMaxWinGoodNum() > 10, "测试专用~~");
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         String buyerNick = jsonObjectAdmjson.getString("buyerNick");
         Assert.hasLength(buyerNick, "buyerNick不能为空");
