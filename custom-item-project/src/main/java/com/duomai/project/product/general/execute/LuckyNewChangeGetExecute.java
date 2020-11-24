@@ -5,16 +5,14 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.product.general.entity.SysLuckyChance;
-import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
-import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +27,9 @@ import java.util.Map;
 public class LuckyNewChangeGetExecute implements IApiExecute {
     @Autowired
     private SysLuckyChanceRepository sysLuckyChanceRepository;
+
+    @Autowired
+    private LuckyDrawHelper luckyDrawHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -61,6 +62,8 @@ public class LuckyNewChangeGetExecute implements IApiExecute {
 
 
         result.put("notification", noShow);
+        //2.抓娃娃机会次数
+        result.put("lucky_chance_num", luckyDrawHelper.unUseLuckyChance(buyerNick));
         return YunReturnValue.ok(result, "未展示过的获取记录");
     }
 }
