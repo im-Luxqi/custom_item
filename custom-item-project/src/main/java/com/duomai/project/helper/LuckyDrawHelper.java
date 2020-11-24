@@ -186,7 +186,8 @@ public class LuckyDrawHelper {
         try {
 
             /*1.整理历史抽奖记录*/
-            List<SysLuckyDrawRecord> historyWin = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndIsWin(custom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
+//            List<SysLuckyDrawRecord> historyWin = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndIsWin(custom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
+            List<SysLuckyDrawRecord> historyWin = sysLuckyDrawRecordRepository.queryMybag(custom.getBuyerNick());
             StringBuffer historySignsBuffer = new StringBuffer();
             AtomicReference<Integer> historyGoodsHasGetAto = new AtomicReference<>(0);
             if (CollectionUtils.isNotEmpty(historyWin)) {
