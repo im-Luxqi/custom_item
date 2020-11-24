@@ -28,6 +28,10 @@ public class PageListDto<T> implements Serializable {
     private int pageSize = 20;//每页显示记录数
     private List<T> resultList;// 当前页数据结果集
 
+
+
+    private Integer todayBrowseNum;// 今日已浏览商品数（浏览商品任务用）
+
     public void setTotalAmount(int totalAmount) {
         this.totalAmount = totalAmount;
         this.totalPage = (totalAmount % pageSize == 0) ? (totalAmount / pageSize) : (totalAmount / pageSize + 1);
