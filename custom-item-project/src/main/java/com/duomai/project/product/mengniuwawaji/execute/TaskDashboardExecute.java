@@ -138,7 +138,7 @@ public class TaskDashboardExecute implements IApiExecute {
         browseMap.put("task", "browse");
         browseMap.put("title", "浏览商品");
         browseMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon3.png");
-        browseMap.put("explain", "浏览纯甄商品，游戏次数+1");
+        browseMap.put("explain", "浏览纯甄商品，游戏次数+1，每日一次");
         browseMap.put("finish", false);
         browseMap.put("task_end", taskFinish);
 //        browseMap.put("progress", browseCount + "/3");
