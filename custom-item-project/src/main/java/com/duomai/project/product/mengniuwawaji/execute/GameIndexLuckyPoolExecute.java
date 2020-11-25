@@ -74,7 +74,10 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
 
         List<SysSettingAward> all = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.POOL);
 
-        Map<String, List<SysLuckyDrawRecord>> collect = allExchangeAward.stream()
+        Map<String, List<SysLuckyDrawRecord>> allExchangeAwardCollect = allExchangeAward.stream()
+                .collect(Collectors.groupingBy(SysLuckyDrawRecord::getAwardId));
+
+        Map<String, List<SysLuckyDrawRecord>> unUseBattlesCollect = unUseBattles.stream()
                 .collect(Collectors.groupingBy(SysLuckyDrawRecord::getAwardId));
 
         for (SysSettingAward award : all) {
@@ -94,7 +97,7 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
                 if (!CollectionUtils.isEmpty(allExchangeAward)) {
 //                    Map<String, List<SysLuckyDrawRecord>> collect = allExchangeAward.stream()
 //                            .collect(Collectors.groupingBy(SysLuckyDrawRecord::getAwardId));
-                    List<SysLuckyDrawRecord> award2001 = collect.get("2001");
+                    List<SysLuckyDrawRecord> award2001 = allExchangeAwardCollect.get("2001");
                     if (!CollectionUtils.isEmpty(award2001)) {
                         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
                         Integer drawCouponNum = actBaseSettingDto.getDrawCouponNum();
@@ -159,10 +162,10 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
 //                Assert.isTrue(!CollectionUtils.isEmpty(collect.get("1002")), "2号奶瓶数量不足，无法兑换");
 //                Assert.isTrue(!CollectionUtils.isEmpty(collect.get("1003")), "3号奶瓶数量不足，无法兑换");
 //                Assert.isTrue(!CollectionUtils.isEmpty(collect.get("1004")), "4号奶瓶数量不足，无法兑换");
-                if (CollectionUtils.isEmpty(collect.get("1001"))
-                        || CollectionUtils.isEmpty(collect.get("1002"))
-                        || CollectionUtils.isEmpty(collect.get("1003"))
-                        || CollectionUtils.isEmpty(collect.get("1004"))
+                if (CollectionUtils.isEmpty(unUseBattlesCollect.get("1001"))
+                        || CollectionUtils.isEmpty(unUseBattlesCollect.get("1002"))
+                        || CollectionUtils.isEmpty(unUseBattlesCollect.get("1003"))
+                        || CollectionUtils.isEmpty(unUseBattlesCollect.get("1004"))
                 ) {
                     award.setHaveNotGetCondition(true);
                     continue;
@@ -196,11 +199,11 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
 //                Assert.isTrue(!CollectionUtils.isEmpty(collect.get("1003")), "3号奶瓶数量不足，无法兑换");
 //                Assert.isTrue(!CollectionUtils.isEmpty(collect.get("1004")), "4号奶瓶数量不足，无法兑换");
 //                Assert.isTrue(!CollectionUtils.isEmpty(collect.get("1005")), "5号奶瓶数量不足，无法兑换");
-                if (CollectionUtils.isEmpty(collect.get("1001"))
-                        || CollectionUtils.isEmpty(collect.get("1002"))
-                        || CollectionUtils.isEmpty(collect.get("1003"))
-                        || CollectionUtils.isEmpty(collect.get("1004"))
-                        || CollectionUtils.isEmpty(collect.get("1005"))
+                if (CollectionUtils.isEmpty(unUseBattlesCollect.get("1001"))
+                        || CollectionUtils.isEmpty(unUseBattlesCollect.get("1002"))
+                        || CollectionUtils.isEmpty(unUseBattlesCollect.get("1003"))
+                        || CollectionUtils.isEmpty(unUseBattlesCollect.get("1004"))
+                        || CollectionUtils.isEmpty(unUseBattlesCollect.get("1005"))
                 ) {
                     award.setHaveNotGetCondition(true);
                     continue;
@@ -233,12 +236,12 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
 //                Assert.isTrue(!CollectionUtils.isEmpty(collect.get("1004")), "4号奶瓶数量不足，无法兑换");
 //                Assert.isTrue(!CollectionUtils.isEmpty(collect.get("1005")), "5号奶瓶数量不足，无法兑换");
 //                Assert.isTrue(!CollectionUtils.isEmpty(collect.get("1006")), "6号奶瓶数量不足，无法兑换");
-                if (CollectionUtils.isEmpty(collect.get("1001"))
-                        || CollectionUtils.isEmpty(collect.get("1002"))
-                        || CollectionUtils.isEmpty(collect.get("1003"))
-                        || CollectionUtils.isEmpty(collect.get("1004"))
-                        || CollectionUtils.isEmpty(collect.get("1005"))
-                        || CollectionUtils.isEmpty(collect.get("1006"))
+                if (CollectionUtils.isEmpty(unUseBattlesCollect.get("1001"))
+                        || CollectionUtils.isEmpty(unUseBattlesCollect.get("1002"))
+                        || CollectionUtils.isEmpty(unUseBattlesCollect.get("1003"))
+                        || CollectionUtils.isEmpty(unUseBattlesCollect.get("1004"))
+                        || CollectionUtils.isEmpty(unUseBattlesCollect.get("1005"))
+                        || CollectionUtils.isEmpty(unUseBattlesCollect.get("1006"))
                 ) {
                     award.setHaveNotGetCondition(true);
                     continue;

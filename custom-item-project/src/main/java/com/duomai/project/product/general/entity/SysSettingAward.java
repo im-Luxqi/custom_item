@@ -36,6 +36,9 @@ public class SysSettingAward {
     private String img;
     @Column(columnDefinition = "varchar(255) COMMENT '奖品价格'")
     private String price;
+    @Column(columnDefinition = "varchar(255) COMMENT '奖品获奖弹窗图片'")
+    private String winImg;
+
     @Column(columnDefinition = "varchar(255) COMMENT '奖品描述'")
     private String description;
 
