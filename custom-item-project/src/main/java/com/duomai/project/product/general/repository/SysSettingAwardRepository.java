@@ -2,6 +2,7 @@ package com.duomai.project.product.general.repository;
 
 import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.product.general.entity.SysSettingAward;
+import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,6 +32,7 @@ public interface SysSettingAwardRepository extends BaseRepository<SysSettingAwar
     SysSettingAward findFirstByUseWay(AwardUseWayEnum useWay);
 
     List<SysSettingAward> findByUseWay(AwardUseWayEnum useWay);
+    List<SysSettingAward> findByType(AwardTypeEnum type);
 
     List<SysSettingAward> findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum useWay);
 

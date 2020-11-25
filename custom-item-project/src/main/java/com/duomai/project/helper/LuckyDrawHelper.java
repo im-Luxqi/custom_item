@@ -233,7 +233,7 @@ public class LuckyDrawHelper {
             drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO)
                     .setAwardId(awardThisWin.getId())
                     .setAwardImg(awardThisWin.getImg())
-                    .setAwardLevel(awardThisWin.getAwardLevel())
+//                    .setAwardLevel(awardThisWin.getAwardLevel())
                     .setAwardName(awardThisWin.getName())
                     .setAwardType(awardThisWin.getType());
 
@@ -343,7 +343,7 @@ public class LuckyDrawHelper {
                 .setPlayerZnick(custom.getZnick())
                 .setAwardId(award.getId())
                 .setAwardImg(award.getImg())
-                .setAwardLevel(award.getAwardLevel())
+//                .setAwardLevel(award.getAwardLevel())
                 .setAwardName(award.getName())
                 .setAwardType(award.getType())
                 .setRemark("邀请五个好友发放优惠券");
@@ -446,7 +446,7 @@ public class LuckyDrawHelper {
                 .setPlayerZnick(custom.getZnick())
                 .setAwardId(award.getId())
                 .setAwardImg(award.getImg())
-                .setAwardLevel(award.getAwardLevel())
+//                .setAwardLevel(award.getAwardLevel())
                 .setAwardName(award.getName())
                 .setAwardType(award.getType())
                 .setRemark("消耗:" + stringBuffer.toString() + "兑换:" + award.getName());

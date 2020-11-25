@@ -270,8 +270,8 @@ public class GameIndexLuckyExchangeExecute implements IApiExecute {
         resultMap.put("award",award);
         if(award!=null){
             award.setUseWay(null);
-            award.setAwardLevel(null);
-            award.setAwardLevelSign(null);
+//            award.setAwardLevel(null);
+//            award.setAwardLevelSign(null);
             award.setTotalNum(null);
             award.setRemainNum(null);
             award.setSendNum(null);

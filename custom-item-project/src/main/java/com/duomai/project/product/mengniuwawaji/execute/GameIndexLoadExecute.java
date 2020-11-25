@@ -2,6 +2,7 @@ package com.duomai.project.product.mengniuwawaji.execute;
 
 import cn.hutool.core.lang.Assert;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
@@ -24,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 游戏首页 加载
@@ -41,6 +44,9 @@ public class GameIndexLoadExecute implements IApiExecute {
 
     @Autowired
     private SysTaskInviteLogRepository sysTaskInviteLogRepository;
+
+    @Autowired
+    private SysSettingAwardRepository sysSettingAwardRepository;
 
     @Autowired
     private SysTaskShareLogRepository sysTaskShareLogRepository;
@@ -169,24 +175,30 @@ public class GameIndexLoadExecute implements IApiExecute {
         resultMap.put("lucky_chance_num", luckyDrawHelper.unUseLuckyChance(buyerNick));
         List<SysLuckyDrawRecord> unUseBattles = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndAwardTypeAndIsWinAndHaveExchange(buyerNick, AwardTypeEnum.EXCHANGE,
                 BooleanConstant.BOOLEAN_YES, BooleanConstant.BOOLEAN_NO);
-        unUseBattles.forEach((x) -> {
-            x.setId(null);
-            x.setLuckyChance(null);
-            x.setDrawTime(null);
-            x.setPlayerHeadImg(null);
-            x.setPlayerBuyerNick(null);
-            x.setPlayerZnick(null);
-            x.setAwardLevel(null);
-            x.setAwardType(null);
-            x.setIsWin(null);
-            x.setIsFill(null);
-            x.setHaveExchange(null);
-        });
+        Map<String, List<SysLuckyDrawRecord>> collect = unUseBattles.stream().collect(Collectors.groupingBy(SysLuckyDrawRecord::getAwardId));
+        List<SysSettingAward> all = sysSettingAwardRepository.findByType(AwardTypeEnum.EXCHANGE);
+        for (SysSettingAward award : all) {
+            award.setHaveGetNum(0);
+            List<SysLuckyDrawRecord> sysLuckyDrawRecords = collect.get(award.getId());
+            if (!CollectionUtils.isEmpty(sysLuckyDrawRecords)) {
+                award.setHaveGetNum(sysLuckyDrawRecords.size());
+            }
+            award.setEname(null);
+            award.setLuckyValue(null);
+            award.setDescription(null);
+            award.setPoolLevel(null);
+            award.setRemainNum(null);
+            award.setSendNum(null);
+            award.setTotalNum(null);
+            award.setType(null);
+            award.setUseWay(null);
+        }
+
+
         //3.我的战利品
-        resultMap.put("lucky_win_bottle", unUseBattles);
+        resultMap.put("lucky_win_bottle", all);
         //4.兑换弹幕
         resultMap.put("lucky_exchange_barrage", sysLuckyDrawRecordRepository.queryExchangeLog());
-
 
 
 

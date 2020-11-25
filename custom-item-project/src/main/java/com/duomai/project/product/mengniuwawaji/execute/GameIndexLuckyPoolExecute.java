@@ -248,8 +248,8 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
 
         all.forEach(x -> {
             x.setUseWay(null);
-            x.setAwardLevel(null);
-            x.setAwardLevelSign(null);
+//            x.setAwardLevel(null);
+//            x.setAwardLevelSign(null);
             x.setTotalNum(null);
             x.setRemainNum(null);
             x.setSendNum(null);

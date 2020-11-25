@@ -94,8 +94,8 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
                     .setUseWay(null)
                     .setLogId(null)
                     .setType(null)
-                    .setAwardLevel(null)
-                    .setAwardLevelSign(null)
+//                    .setAwardLevel(null)
+//                    .setAwardLevelSign(null)
                     .setPoolLevel(null);
         }
         return YunReturnValue.ok(resultMap, "玩家成功进行抽奖");

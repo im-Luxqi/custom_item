@@ -27,10 +27,6 @@ public class SysSettingAward {
     @Column(columnDefinition = "varchar(30) COMMENT '奖品用途'")
     private AwardUseWayEnum useWay;
 
-    @Column(columnDefinition = "varchar(64) COMMENT '奖品等级;一等奖、二等奖。。。'")
-    private String awardLevel;
-    @Column(columnDefinition = "int(2) COMMENT '奖品等级sign'")
-    private Integer awardLevelSign;
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(30) COMMENT '奖品类型'")
     private AwardTypeEnum type;
@@ -38,8 +34,12 @@ public class SysSettingAward {
     private String name;
     @Column(columnDefinition = "varchar(255) COMMENT '奖品图片'")
     private String img;
-    @Column(columnDefinition = "varchar(30) COMMENT '奖品价格'")
+    @Column(columnDefinition = "varchar(255) COMMENT '奖品价格'")
     private String price;
+    @Column(columnDefinition = "varchar(255) COMMENT '奖品描述'")
+    private String description;
+
+
 
     @Column(columnDefinition = "int(10) COMMENT '奖品总数量'")
     private Integer totalNum;
@@ -55,8 +55,12 @@ public class SysSettingAward {
     @Column(columnDefinition = "varchar(64) COMMENT '发放优惠券的标识'")
     private String ename;
 
+
+
     @Transient
     private String logId;
+    @Transient
+    private Integer haveGetNum;
 
 
     /**
