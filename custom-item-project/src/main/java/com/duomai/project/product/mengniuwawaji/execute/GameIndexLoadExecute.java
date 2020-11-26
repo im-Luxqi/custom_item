@@ -118,9 +118,11 @@ public class GameIndexLoadExecute implements IApiExecute {
                 if (BooleanConstant.BOOLEAN_YES.equals(sysInviteLog.getHaveSuccess())) {
                     luckyDrawHelper.sendLuckyChance(sharerCustom.getBuyerNick(), LuckyChanceFromEnum.SHARE, 1,
                             "分享" + syscustom.getZnick(), "任务完成,获取" + 1 + "次机会");
+                    resultMap.put("alter_for_shared_flag", true);
+                    resultMap.put("alter_for_shared_msg", "恭喜你，助力成功");
+                    resultMap.put("alter_for_sharer_img", sharerCustom.getHeadImg());
                 }
-                resultMap.put("alter_for_shared_flag", true);
-                resultMap.put("alter_for_shared_msg", "恭喜你，助力成功");
+
             }
             //邀请入会
             if (StringUtils.isNotBlank(inviter) && !inviter.equals(buyerNick)) {
@@ -147,18 +149,19 @@ public class GameIndexLoadExecute implements IApiExecute {
                     sysCustomRepository.save(syscustom.setMemberWayFrom(MemberWayFromEnum.INVITEE_JOIN_MEMBER));
                     luckyDrawHelper.sendLuckyChance(inviterCustom.getBuyerNick(), LuckyChanceFromEnum.INVITE_MEMBER, 1,
                             "邀请入会" + syscustom.getZnick(), "任务完成,获取" + 1 + "次机会");
+                    resultMap.put("alter_for_invitee_flag", true);
+                    resultMap.put("alter_for_invitee_msg", "恭喜你，助力成功");
+                    resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
                 }
 
-                resultMap.put("alter_for_invitee_flag", true);
-                resultMap.put("alter_for_invitee_msg", "恭喜你，助力成功");
             }
 
 
-            //首次登陆游戏免费送一次
+            //首次登录游戏免费送一次
             long l = luckyDrawHelper.countLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.FREE);
             if (l == 0) {
                 luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.FREE, 1,
-                        "首次登陆", "首次登陆,获取" + 1 + "次机会");
+                        "首次登录", "首次登录,获取" + 1 + "次机会");
             }
         }
 
@@ -199,7 +202,6 @@ public class GameIndexLoadExecute implements IApiExecute {
         resultMap.put("lucky_win_bottle", all);
         //4.兑换弹幕
         resultMap.put("lucky_exchange_barrage", sysLuckyDrawRecordRepository.queryExchangeLog());
-
 
 
         return YunReturnValue.ok(resultMap, "游戏首页");

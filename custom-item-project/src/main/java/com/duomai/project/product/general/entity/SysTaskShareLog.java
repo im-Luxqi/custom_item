@@ -36,7 +36,7 @@ public class SysTaskShareLog {
     @Column(columnDefinition = "varchar(64) COMMENT '分享人'")
     private String sharer;
 
-    @Column(columnDefinition = "varchar(64) COMMENT '被分享人头像'")
+    @Column(columnDefinition = "varchar(255) COMMENT '被分享人头像'")
     private String sharerImg;
 
     @Column(columnDefinition = "varchar(64) COMMENT '被分享人mix'")

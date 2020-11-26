@@ -1,5 +1,6 @@
 package com.duomai.project.product.mengniuwawaji.execute;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
@@ -14,7 +15,6 @@ import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
 import com.taobao.api.response.OpenTradesSoldGetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -76,13 +76,21 @@ public class CusGetOrderExecute implements IApiExecute {
                     || "TRADE_FINISHED".equals(trade.getStatus()))) {
                 continue;
             }
-
             if (!hasUpdateTradeIds.toString().contains(trade.getTid())) {
+//                double cunzhenMoney = Double.parseDouble(trade.getPayment()) - Double.parseDouble(trade.getTotalFee());
+                double cunzhenMoney = 0;
+                List<OpenTradesSoldGetResponse.Order> orders = trade.getOrders();
+                if (!CollectionUtils.isEmpty(orders)) {
+                    for (OpenTradesSoldGetResponse.Order order : orders) {
+                        if (order.getTitle().contains("纯甄")) {
+                            cunzhenMoney += Double.parseDouble(order.getPayment());
+                        }
+                    }
+                }
                 Integer taskOrderShouldSpend = config.getTaskOrderShouldSpend();
-                double payment = Double.parseDouble(trade.getPayment());
-                if (payment >= Double.valueOf(taskOrderShouldSpend)) {
+                if (cunzhenMoney >= Double.valueOf(taskOrderShouldSpend)) {
                     luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.ORDER, 3, trade.getTid(),
-                            "下单", "订单" + trade.getTid() + "消费" + payment + ",获取" + 3 + "次机会");
+                            "下单", "订单" + trade.getTid() + "消费" + cunzhenMoney + ",获取" + 3 + "次机会");
                 }
                 newestTrades.add(trade);
             }
