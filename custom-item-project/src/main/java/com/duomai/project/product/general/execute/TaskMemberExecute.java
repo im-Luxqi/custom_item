@@ -1,6 +1,7 @@
 package com.duomai.project.product.general.execute;
 
 import com.duomai.common.base.execute.IApiExecute;
+import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.LuckyDrawHelper;
@@ -45,7 +46,8 @@ public class TaskMemberExecute implements IApiExecute {
         //是否存在玩家
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
-        cn.hutool.core.lang.Assert.notNull(syscustom, "无效的玩家");
+        Assert.notNull(syscustom, "无效的玩家");
+        Assert.isTrue(BooleanConstant.BOOLEAN_YES.equals(syscustom.getHaveAuthorization()), "请先授权");
         //校验是否已完成入会任务
 
         long memberTime = sysTaskMemberOrFollowRepository.countByBuyerNickAndTaskType(buyerNick

@@ -88,6 +88,20 @@ public class TaskDashboardExecute implements IApiExecute {
         resultList.add(signMap);
 
 
+
+        //6. 看直播
+        //        luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.BROWSE);
+        Map<String, Object> tvMap = new LinkedHashMap<>();
+        tvMap.put("task", "tv");
+        tvMap.put("title", "观看直播");
+        tvMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon4.png");
+        tvMap.put("explain", "游戏次数+2，每日1次");
+        tvMap.put("finish", false);
+        tvMap.put("task_end", taskFinish);
+        resultList.add(tvMap);
+
+
+
         //2.成为会员
         List<SysTaskMemberOrFollowLog> memberAndFollow = sysTaskMemberOrFollowRepository.findByBuyerNick(buyerNick);
         boolean finishMember = false;
@@ -138,22 +152,11 @@ public class TaskDashboardExecute implements IApiExecute {
         browseMap.put("task", "browse");
         browseMap.put("title", "浏览商品");
         browseMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon3.png");
-        browseMap.put("explain", "浏览纯甄商品，游戏次数+1，每日一次");
+        browseMap.put("explain", "浏览纯甄商品，游戏次数+1，每日1次");
         browseMap.put("finish", false);
         browseMap.put("task_end", taskFinish);
 //        browseMap.put("progress", browseCount + "/3");
         resultList.add(browseMap);
-
-        //6. 看直播
-        //        luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.BROWSE);
-        Map<String, Object> tvMap = new LinkedHashMap<>();
-        tvMap.put("task", "tv");
-        tvMap.put("title", "观看直播");
-        tvMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon4.png");
-        tvMap.put("explain", "游戏次数+1，每日1次");
-        tvMap.put("finish", false);
-        tvMap.put("task_end", taskFinish);
-        resultList.add(tvMap);
 
 
         //7. 邀请加入会员
