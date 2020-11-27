@@ -95,9 +95,10 @@ public class CusGetOrderExecute implements IApiExecute {
                 newestTrades.add(trade);
             }
         }
-        if (newestTrades.size() > 0) {
-            cusOrderInfoService.insertTaobaoTradeList(newestTrades, buyerNick, sysParm.getRequestStartTime());
+        if (newestTrades.size() == 0) {
+            return YunReturnValue.fail("当前没有可用的新订单");
         }
+        cusOrderInfoService.insertTaobaoTradeList(newestTrades, buyerNick, sysParm.getRequestStartTime());
         return YunReturnValue.ok("获取当前用户订单!");
     }
 }
