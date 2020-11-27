@@ -97,7 +97,7 @@ public class TaskBrowseExecute implements IApiExecute {
         Integer taskBrowseShouldSee = actBaseSettingDto.getTaskBrowseShouldSee();
         if (l == 0 && taskBrowseShouldSee.equals(todayHasBrowseLogs.size())) {
             luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.BROWSE, 1,
-                    "浏览", "每日浏览,获取" + 1 + "次机会");
+                    "浏览", "每日浏览,获取" + 1 + "次游戏机会");
         }
 
         return YunReturnValue.ok("浏览成功!");

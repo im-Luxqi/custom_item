@@ -66,7 +66,7 @@ public class TaskMemberExecute implements IApiExecute {
         /*3完成任务，获取奖励*/
         Integer thisGet = 2;
         luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.MEMBER, thisGet,
-                "入会", "加入会员,获取" + thisGet + "次机会");
+                "入会", "加入会员,获取" + thisGet + "次游戏机会");
         return YunReturnValue.ok("完成入会任务！");
     }
 }

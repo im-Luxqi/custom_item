@@ -48,7 +48,7 @@ public class TaskTvExecute implements IApiExecute {
         long tvCount = luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.TV);
         if (tvCount == 0) {
             luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.TV, 2,
-                    "直播", "今日观看直播,获取" + 2 + "次机会");
+                    "直播", "今日观看直播,获取" + 2 + "次游戏机会");
         }
         return YunReturnValue.ok("直播");
     }
