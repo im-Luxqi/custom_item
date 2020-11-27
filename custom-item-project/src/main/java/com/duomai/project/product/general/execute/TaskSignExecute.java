@@ -77,7 +77,7 @@ public class TaskSignExecute implements IApiExecute {
             thisSignGet = actBaseSettingDto.getTaskSignContinuousPayment();
         }
         luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.SIGN, thisSignGet,
-                "签到", "今日签到,获取" + thisSignGet + "次游戏机会");
+                "签到", "今日签到，获得" + thisSignGet + "次游戏机会");
         return YunReturnValue.ok("完成签到任务！");
     }
 }

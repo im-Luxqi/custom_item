@@ -90,7 +90,7 @@ public class CusGetOrderExecute implements IApiExecute {
                 Integer taskOrderShouldSpend = config.getTaskOrderShouldSpend();
                 if (cunzhenMoney >= Double.valueOf(taskOrderShouldSpend)) {
                     luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.ORDER, 3, trade.getTid(),
-                            "下单", "订单" + trade.getTid() + "消费" + cunzhenMoney + ",获取" + 3 + "次游戏机会");
+                            "下单", "消费任务，获得" + 3 + "次游戏机会");
                 }
                 newestTrades.add(trade);
             }

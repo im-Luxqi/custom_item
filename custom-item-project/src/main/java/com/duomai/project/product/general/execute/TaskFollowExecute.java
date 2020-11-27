@@ -66,7 +66,7 @@ public class TaskFollowExecute implements IApiExecute {
         /*3完成任务，获取奖励*/
         Integer thisGet = 1;
         luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.FOLLOW, thisGet,
-                "关注", "关注店铺,获取" + thisGet + "次游戏机会");
+                "关注", "关注店铺，获得" + thisGet + "次游戏机会");
         return YunReturnValue.ok("完成关注任务！");
     }
 }

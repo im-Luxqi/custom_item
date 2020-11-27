@@ -118,7 +118,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                 sysTaskShareLogRepository.save(sysInviteLog);
                 if (BooleanConstant.BOOLEAN_YES.equals(sysInviteLog.getHaveSuccess())) {
                     luckyDrawHelper.sendLuckyChance(sharerCustom.getBuyerNick(), LuckyChanceFromEnum.SHARE, 1,
-                            "分享" + syscustom.getZnick(), "任务完成,获取" + 1 + "次游戏机会");
+                            "分享" + syscustom.getZnick(), "分享任务，获得" + 1 + "次游戏机会");
                     resultMap.put("alter_for_shared_flag", true);
                     resultMap.put("alter_for_shared_msg", "恭喜你，助力成功");
                     resultMap.put("alter_for_sharer_img", sharerCustom.getHeadImg());
@@ -150,7 +150,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                 if (BooleanConstant.BOOLEAN_YES.equals(sysTaskInviteLog.getHaveSuccess())) {
                     sysCustomRepository.save(syscustom.setMemberWayFrom(MemberWayFromEnum.INVITEE_JOIN_MEMBER));
                     luckyDrawHelper.sendLuckyChance(inviterCustom.getBuyerNick(), LuckyChanceFromEnum.INVITE_MEMBER, 1,
-                            "邀请入会" + syscustom.getZnick(), "任务完成,获取" + 1 + "次游戏机会");
+                            "邀请入会" + syscustom.getZnick(), "邀请任务，获得" + 1 + "次游戏机会");
                     resultMap.put("alter_for_invitee_flag", true);
                     resultMap.put("alter_for_invitee_msg", "恭喜你，助力成功");
                     resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());

@@ -8,6 +8,7 @@ import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysTaskMemberOrFollowLog;
 import com.duomai.project.product.general.entity.SysTaskSignLog;
+import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.enums.TaskTypeEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
@@ -22,7 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
-/** 任务页load
+/**
+ * 任务页load
+ *
  * @author 王星齐
  * @description
  * @create 2020/11/21 20:31
@@ -70,7 +73,7 @@ public class TaskDashboardExecute implements IApiExecute {
                     lastLog = sysTaskSignLog;
                 }
             }
-            taskSignLogList.forEach(x->{
+            taskSignLogList.forEach(x -> {
                 x.setId(null);
                 x.setCreateTime(null);
                 x.setBuyerNick(null);
@@ -88,18 +91,16 @@ public class TaskDashboardExecute implements IApiExecute {
         resultList.add(signMap);
 
 
-
         //6. 看直播
-        //        luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.BROWSE);
+        long tv = luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.TV);
         Map<String, Object> tvMap = new LinkedHashMap<>();
         tvMap.put("task", "tv");
         tvMap.put("title", "观看直播");
         tvMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon4.png");
         tvMap.put("explain", "游戏次数+2，每日1次");
-        tvMap.put("finish", false);
+        tvMap.put("finish", tv > 0);
         tvMap.put("task_end", taskFinish);
         resultList.add(tvMap);
-
 
 
         //2.成为会员
@@ -137,6 +138,22 @@ public class TaskDashboardExecute implements IApiExecute {
         resultList.add(attentionMap);
 
 
+
+        //5.浏览商品
+        long browse = luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.BROWSE);
+        Map<String, Object> browseMap = new LinkedHashMap<>();
+        browseMap.put("task", "browse");
+        browseMap.put("title", "浏览商品");
+        browseMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon3.png");
+        browseMap.put("explain", "浏览纯甄商品，游戏次数+1，每日1次");
+        browseMap.put("finish", browse > 0);
+        browseMap.put("task_end", taskFinish);
+//        browseMap.put("progress", browseCount + "/3");
+        resultList.add(browseMap);
+
+
+
+
         //4.分享任务
         Map<String, Object> shareMap = new LinkedHashMap<>();
         shareMap.put("task", "share");
@@ -147,16 +164,6 @@ public class TaskDashboardExecute implements IApiExecute {
         shareMap.put("task_end", taskFinish);
         resultList.add(shareMap);
 
-        //5.浏览商品
-        Map<String, Object> browseMap = new LinkedHashMap<>();
-        browseMap.put("task", "browse");
-        browseMap.put("title", "浏览商品");
-        browseMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon3.png");
-        browseMap.put("explain", "浏览纯甄商品，游戏次数+1，每日1次");
-        browseMap.put("finish", false);
-        browseMap.put("task_end", taskFinish);
-//        browseMap.put("progress", browseCount + "/3");
-        resultList.add(browseMap);
 
 
         //7. 邀请加入会员
