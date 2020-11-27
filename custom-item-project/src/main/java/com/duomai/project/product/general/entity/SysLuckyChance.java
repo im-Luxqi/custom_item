@@ -24,6 +24,10 @@ public class SysLuckyChance {
     private String id;
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '获取时间'")
     private Date getTime;
+
+    @Column(columnDefinition = "varchar(10) COMMENT '获取时间,yyyy-MM-dd格式'")
+    private String getTimeString;
+
     @Column(columnDefinition = "DATETIME COMMENT '消耗时间'")
     private Date useTime;
     @Column(nullable = false, columnDefinition = "varchar(64) COMMENT '用户混淆昵称'")
@@ -35,14 +39,10 @@ public class SysLuckyChance {
     private Integer isUse;
 
 
-
-
-
     @Column(columnDefinition = "varchar(64) COMMENT '订单号'")
     private String tid;
     @Column(columnDefinition = "DATETIME COMMENT '下单时间'")
     private Date tidTime;
-
 
 
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否已通知'")

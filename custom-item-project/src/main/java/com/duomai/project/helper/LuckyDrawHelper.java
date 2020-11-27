@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.api.taobao.enums.TaoBaoSendCouponStatus;
-import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
 import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.repository.*;
+import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
 import com.duomai.project.tool.CommonDateParseUtil;
 import com.duomai.project.tool.ProjectTools;
 import com.taobao.api.response.AlibabaBenefitSendResponse;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -77,6 +76,7 @@ public class LuckyDrawHelper {
                     SysLuckyChance sysLuckyChance = new SysLuckyChance().setBuyerNick(buyerNick)
                             .setChanceFrom(chanceFrom)
                             .setGetTime(sendTime)
+                            .setGetTimeString(CommonDateParseUtil.date2string(sendTime, "yyyy-MM-dd"))
                             .setTidTime(sendTime)
                             .setIsUse(BooleanConstant.BOOLEAN_NO)
                             .setTid(tid)
@@ -125,8 +125,8 @@ public class LuckyDrawHelper {
      */
     public long countTodayLuckyChanceFrom(String buyerNick, LuckyChanceFromEnum from) {
         Date today = new Date();
-        return sysLuckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeBetween(buyerNick, from,
-                CommonDateParseUtil.getStartTimeOfDay(today), CommonDateParseUtil.getEndTimeOfDay(today));
+        return sysLuckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeString(buyerNick, from,
+                CommonDateParseUtil.date2string(today, "yyyy-MM-dd"));
     }
 
     /**
