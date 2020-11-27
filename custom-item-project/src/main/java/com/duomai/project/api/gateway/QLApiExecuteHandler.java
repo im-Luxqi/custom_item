@@ -71,7 +71,6 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.game.task.load", TaskDashboardExecute.class);
 
 
-
         //任务--每日签到
         map.put("wx.dz.game.task.sign", TaskSignExecute.class);
 
@@ -103,11 +102,6 @@ public class QLApiExecuteHandler {
 
         //任务--分享明细
         map.put("wx.dz.game.show.list.share", ShowShareListExecute.class);
-
-
-
-
-
 
 
         //我的奖品 wxq

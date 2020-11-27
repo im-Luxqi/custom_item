@@ -94,6 +94,7 @@ public class GameIndexLoadExecute implements IApiExecute {
             Assert.isTrue(!(StringUtils.isNotBlank(sharer) && StringUtils.isNotBlank(inviter)), "非法链接");
             //分享助力
             if (StringUtils.isNotBlank(sharer) && !sharer.equals(buyerNick)) {
+                sharer = sharer.replaceAll(" ", "+");
                 //同一个人每天只能为他人助力一次
                 SysCustom sharerCustom = sysCustomRepository.findByBuyerNick(sharer);
                 Assert.notNull(sharerCustom, "无效的分享者");
@@ -126,6 +127,7 @@ public class GameIndexLoadExecute implements IApiExecute {
             }
             //邀请入会
             if (StringUtils.isNotBlank(inviter) && !inviter.equals(buyerNick)) {
+                inviter = inviter.replaceAll(" ", "+");
                 SysCustom inviterCustom = sysCustomRepository.findByBuyerNick(inviter);
                 Assert.notNull(inviterCustom, "无效的邀请者");
 

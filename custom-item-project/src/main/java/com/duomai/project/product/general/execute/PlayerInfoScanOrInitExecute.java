@@ -54,6 +54,7 @@ public class PlayerInfoScanOrInitExecute implements IApiExecute {
         boolean should_sure_history_follow_state = FollowWayFromEnum.UNDIFIND.equals(sysCustom.getFollowWayFrom());
         boolean have_authorization = BooleanConstant.BOOLEAN_YES.equals(sysCustom.getHaveAuthorization());
         resultMap.put("buyer_nick", sysCustom.getBuyerNick());
+        resultMap.put("znick", sysCustom.getZnick());
         resultMap.put("history_follow_undefined", should_sure_history_follow_state);
         resultMap.put("have_authorization", have_authorization);
         resultMap.put("hava_join_member", MemberWayFromEnum.NON_MEMBER.equals(sysCustom.getMemberWayFrom()) ? false : true);

@@ -36,7 +36,7 @@ public class ManageRestController extends BaseRestController {
 
     @PostMapping(value = "/change/award")
     public String changeAward(SysSettingAward frontAward, String check) throws InvocationTargetException, IllegalAccessException {
-        if (StringUtils.isBlank(frontAward.getId()) || StringUtils.isBlank(check) || !check.equals(CHECK_STRING)){
+        if (StringUtils.isBlank(frontAward.getId()) || StringUtils.isBlank(check) || !check.equals(CHECK_STRING)) {
             return "check.error";
         }
         Optional<SysSettingAward> byId = sysSettingAwardRepository.findById(frontAward.getId());
@@ -87,8 +87,14 @@ public class ManageRestController extends BaseRestController {
             if (!Objects.isNull(frontAward.getType())) {
                 behindAward.setType(frontAward.getType());
             }
-
-
+            //11.use_way
+            if (!Objects.isNull(frontAward.getUseWay())) {
+                behindAward.setUseWay(frontAward.getUseWay());
+            }
+            //12.win_img
+            if (!Objects.isNull(frontAward.getWinImg())) {
+                behindAward.setWinImg(frontAward.getWinImg());
+            }
             sysSettingAwardRepository.save(behindAward);
         }
         return "success";
@@ -96,7 +102,7 @@ public class ManageRestController extends BaseRestController {
 
     @PostMapping(value = "/change/kv")
     public String changeKv(String k, String v, String check) throws InvocationTargetException, IllegalAccessException {
-        if (StringUtils.isBlank(k) || StringUtils.isBlank(check) || !check.equals(CHECK_STRING)){
+        if (StringUtils.isBlank(k) || StringUtils.isBlank(check) || !check.equals(CHECK_STRING)) {
             return "check.error";
         }
         Optional<SysSettingKeyValue> byId = sysSettingKeyValueRepository.findById(k);
