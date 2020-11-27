@@ -107,8 +107,9 @@ public class GameIndexLoadExecute implements IApiExecute {
                         .setMixSharer(sharerCustom.getBuyerNick())
                         .setSharer(sharerCustom.getZnick())
                         .setSharerImg(sharerCustom.getHeadImg());
-                long today_has_help = sysTaskShareLogRepository.countByMixSharederAndCreateTimeBetween(syscustom.getBuyerNick(),
-                        CommonDateParseUtil.getStartTimeOfDay(sysParm.getRequestStartTime()), CommonDateParseUtil.getEndTimeOfDay(sysParm.getRequestStartTime()));
+
+                long today_has_help = sysTaskShareLogRepository.countByMixSharederAndHaveSuccessAndShareTime(syscustom.getBuyerNick(), BooleanConstant.BOOLEAN_YES,
+                        CommonDateParseUtil.date2string(sysParm.getRequestStartTime(), "yyyy-MM-dd"));
                 if (today_has_help > 0) {
                     resultMap.put("alter_for_shared_flag", true);
                     resultMap.put("alter_for_shared_msg", "您今日已经为好友助力过，无法再为好友助力");
