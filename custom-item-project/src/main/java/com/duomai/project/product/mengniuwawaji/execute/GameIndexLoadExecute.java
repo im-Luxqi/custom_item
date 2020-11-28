@@ -175,13 +175,13 @@ public class GameIndexLoadExecute implements IApiExecute {
                         sysTaskInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
                     } else if (MemberWayFromEnum.HISTROY_MEMBER.equals(syscustom.getMemberWayFrom())) {
                         resultMap.put("alter_for_invitee_flag", true);
-                        resultMap.put("alter_for_invitee_msg", "您已是店铺会员，无法为好友助力");
+                        resultMap.put("alter_for_invitee_msg", "您不是店铺新会员，无法为好友助力");
                         resultMap.put("alter_for_invitee_pic", errorPic);
                         resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
                         sysTaskInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
                     } else if (!MemberWayFromEnum.NON_MEMBER.equals(syscustom.getMemberWayFrom())) {
                         resultMap.put("alter_for_invitee_flag", true);
-                        resultMap.put("alter_for_invitee_msg", "您不是店铺新会员，无法为好友助力");
+                        resultMap.put("alter_for_invitee_msg", "您已是店铺会员，无法为好友助力");
                         resultMap.put("alter_for_invitee_pic", errorPic);
                         resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
                         sysTaskInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
