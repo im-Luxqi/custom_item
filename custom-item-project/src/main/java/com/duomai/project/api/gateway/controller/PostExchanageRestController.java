@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.Random;
 
 /**
  *
@@ -49,14 +50,23 @@ public class PostExchanageRestController extends BaseRestController {
     }
 
 
-    /*gateWay
-     * @description
-     **/
+    /**
+     * gateWay
+     *
+     * @param apiSysParameter   内部参数
+     * @param yunTokenParameter 云应用参数
+     * @param request
+     * @param response
+     * @return
+     */
     @PostMapping(value = "/router/api")
     public YunReturnValue gateWay(
             @RequestBody @Validated ApiSysParameter apiSysParameter,
             @Validated YunTokenParameter yunTokenParameter,
             HttpServletRequest request, HttpServletResponse response) {
+
+        //压力测试
+//        pressTest(yunTokenParameter);
 
         apiSysParameter.setRequestStartTime(new Date());
         CgApiLog cgApiLog = new CgApiLog()
@@ -100,8 +110,14 @@ public class PostExchanageRestController extends BaseRestController {
             return YunReturnValue.fail(SysErrorEnum.SERVE_INNER, e.getMessage());
         } finally {
             //失败请求记录日志
-//            if (cgApiLog.getParType() == 1)
+            if (cgApiLog.getParType() == 1)
                 cgApiLogRepository.save(cgApiLog);
         }
+    }
+
+
+    static Random random = new Random();
+    static void pressTest(YunTokenParameter yunTokenParameter) {
+        yunTokenParameter.setBuyerNick("夏01MN0fiX4NSkxY6YSa4UBv9j9xhcZT2bM0mnYiHo5bPlE="+ random.nextInt(1000000));
     }
 }

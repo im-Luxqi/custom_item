@@ -53,7 +53,7 @@ public class ShowShareListExecute implements IApiExecute {
                 x.setHaveSuccess(null);
                 x.setShareTime(null);
                 x.setSharer(null);
-                x.setSharederImg(null);
+                x.setSharerImg(null);
                 x.setMixSharer(null);
             });
         }

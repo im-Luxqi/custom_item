@@ -8,14 +8,14 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
-import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
+import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
-import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -266,9 +266,9 @@ public class GameIndexLuckyExchangeExecute implements IApiExecute {
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
 
         boolean isWin = BooleanConstant.BOOLEAN_YES.equals(thisExchangeRecord.getIsWin());
-        resultMap.put("isWin",isWin);
-        resultMap.put("award",award);
-        if(award!=null){
+        resultMap.put("isWin", isWin);
+        resultMap.put("award", award);
+        if (award != null) {
             award.setUseWay(null);
 //            award.setAwardLevel(null);
 //            award.setAwardLevelSign(null);
@@ -279,7 +279,7 @@ public class GameIndexLuckyExchangeExecute implements IApiExecute {
             award.setPoolLevel(null);
             award.setLogId(thisExchangeRecord.getId());
         }
-        resultMap.put("errorMsg",thisExchangeRecord.getSendError());
+        resultMap.put("errorMsg", thisExchangeRecord.getSendError());
         return YunReturnValue.ok(resultMap, "奶瓶兑换操作");
     }
 }

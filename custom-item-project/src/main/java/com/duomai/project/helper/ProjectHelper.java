@@ -47,7 +47,7 @@ public class ProjectHelper {
                 .setTaskSignContinuous(Integer.valueOf(collect.get(ActSettingConstant.TASK_SIGN_CONTINUOUS)))
                 .setTaskSignContinuousPayment(Integer.valueOf(collect.get(ActSettingConstant.TASK_SIGN_CONTINUOUS_PAYMENT)))
                 .setTaskBrowseShouldSee(Integer.valueOf(collect.get(ActSettingConstant.TASK_BROWSE_SHOULD_SEE)))
-                .setTaskOrderShouldSpend(Integer.valueOf(collect.get(ActSettingConstant.TASK_ORDER_SHOULD_SPEND)))
+                .setTaskOrderShouldSpend(Double.valueOf(collect.get(ActSettingConstant.TASK_ORDER_SHOULD_SPEND)))
                 ;
     }
 

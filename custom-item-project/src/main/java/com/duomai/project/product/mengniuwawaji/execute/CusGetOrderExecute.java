@@ -69,6 +69,8 @@ public class CusGetOrderExecute implements IApiExecute {
         dbCusOrders.forEach(x -> hasUpdateTradeIds.append(x.getTid()).append(","));
 
         /*符合条件的最新订单，同步最新订单*/
+        StringBuilder tid = new StringBuilder();
+        int sendTime = 0;
         List<OpenTradesSoldGetResponse.Trade> newestTrades = new ArrayList<>();
         for (OpenTradesSoldGetResponse.Trade trade : goods) {
             if (!("WAIT_SELLER_SEND_GOODS".equals(trade.getStatus()) || "SELLER_CONSIGNED_PART".equals(trade.getStatus())
@@ -76,8 +78,8 @@ public class CusGetOrderExecute implements IApiExecute {
                     || "TRADE_FINISHED".equals(trade.getStatus()))) {
                 continue;
             }
+
             if (!hasUpdateTradeIds.toString().contains(trade.getTid())) {
-//                double cunzhenMoney = Double.parseDouble(trade.getPayment()) - Double.parseDouble(trade.getTotalFee());
                 double cunzhenMoney = 0;
                 List<OpenTradesSoldGetResponse.Order> orders = trade.getOrders();
                 if (!CollectionUtils.isEmpty(orders)) {
@@ -87,18 +89,22 @@ public class CusGetOrderExecute implements IApiExecute {
                         }
                     }
                 }
-                Integer taskOrderShouldSpend = config.getTaskOrderShouldSpend();
+                Double taskOrderShouldSpend = config.getTaskOrderShouldSpend();
                 if (cunzhenMoney >= Double.valueOf(taskOrderShouldSpend)) {
-                    luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.ORDER, 3, trade.getTid(),
-                            "下单", "消费任务，获得" + 3 + "次游戏机会");
+                    tid.append(trade.getTid() + ",");
+                    sendTime += 3;
                 }
                 newestTrades.add(trade);
             }
         }
-        if (newestTrades.size() == 0) {
+        if (newestTrades.size() > 0) {
+            cusOrderInfoService.insertTaobaoTradeList(newestTrades, buyerNick, sysParm.getRequestStartTime());
+        }
+        if (sendTime == 0) {
             return YunReturnValue.fail("当前没有可用的新订单");
         }
-        cusOrderInfoService.insertTaobaoTradeList(newestTrades, buyerNick, sysParm.getRequestStartTime());
+        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.ORDER, sendTime, tid.toString(),
+                "下单", "消费任务，获得" + sendTime + "次游戏机会");
         return YunReturnValue.ok("获取当前用户订单!");
     }
 }

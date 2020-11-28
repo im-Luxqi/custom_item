@@ -59,7 +59,7 @@ public class ActBaseSettingDto  implements Serializable {
     /**
      * 下单任务，满多少
      */
-    private Integer taskOrderShouldSpend;
+    private Double taskOrderShouldSpend;
 
 
 }

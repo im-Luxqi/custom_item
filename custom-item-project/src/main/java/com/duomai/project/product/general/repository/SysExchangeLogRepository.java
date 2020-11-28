@@ -16,7 +16,7 @@ public interface SysExchangeLogRepository extends BaseRepository<SysLuckyExchang
      * @param startJPAPage
      * @return
      */
-    Page<SysLuckyExchangeLog> findByBuyerNickOrderByCreateTimeAsc(String buyerNick, Pageable startJPAPage);
+    Page<SysLuckyExchangeLog> findByBuyerNickOrderByCreateTimeDesc(String buyerNick, Pageable startJPAPage);
 
     /**
      * test

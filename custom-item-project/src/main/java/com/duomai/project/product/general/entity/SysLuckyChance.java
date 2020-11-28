@@ -39,7 +39,7 @@ public class SysLuckyChance {
     private Integer isUse;
 
 
-    @Column(columnDefinition = "varchar(64) COMMENT '订单号'")
+    @Column(columnDefinition = "text COMMENT '订单号'")
     private String tid;
     @Column(columnDefinition = "DATETIME COMMENT '下单时间'")
     private Date tidTime;

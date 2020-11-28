@@ -2,16 +2,13 @@ package com.duomai.project.product.general.execute;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.base.execute.IApiExecute;
-import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.dto.PageListDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyExchangeLog;
-import com.duomai.project.product.general.entity.SysTaskShareLog;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysExchangeLogRepository;
-import com.duomai.project.product.general.repository.SysTaskShareLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -46,8 +43,8 @@ public class ShowExchangeListExecute implements IApiExecute {
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
-        Page<SysLuckyExchangeLog> list = sysExchangeLogRepository.findByBuyerNickOrderByCreateTimeAsc(
-                buyerNick,pageListDto.startJPAPage());
+        Page<SysLuckyExchangeLog> list = sysExchangeLogRepository.findByBuyerNickOrderByCreateTimeDesc(
+                buyerNick, pageListDto.startJPAPage());
         pageListDto.setJpaResultList(list);
         if (CollectionUtils.isNotEmpty(pageListDto.getResultList())) {
             pageListDto.getResultList().forEach(x -> {
