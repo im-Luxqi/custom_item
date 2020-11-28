@@ -7,14 +7,14 @@ import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.LuckyDrawHelper;
-import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.BottleTypeEnum;
-import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import com.duomai.project.tool.ProjectTools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
-/** 首页 抓娃娃
+/**
+ * 首页 抓娃娃
+ *
  * @author 王星齐
  * @description
  * @create 2020/11/19 15:13
@@ -67,7 +69,7 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
         if (BottleTypeEnum.SPECIAL_SIX.equals(bottle)) {
             List<SysSettingAward> byUseWay = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.SPECIAL_FIVE);
             SysSettingAward firstSysSettingAward = byUseWay.get(0);
-            long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndAwardTypeAndIsWinAndHaveExchangeAndAwardId(buyerNick, firstSysSettingAward.getType(), BooleanConstant.BOOLEAN_YES, BooleanConstant.BOOLEAN_NO, firstSysSettingAward.getId());
+            long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndAwardIdAndIsWinAndHaveExchange(buyerNick, firstSysSettingAward.getId(), BooleanConstant.BOOLEAN_YES, BooleanConstant.BOOLEAN_NO);
             if (l == 0) {
                 LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
                 resultMap.put("win", false);

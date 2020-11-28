@@ -3,12 +3,16 @@ package com.duomai.project.product.general.repository;
 import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.enums.FollowWayFromEnum;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface SysCustomRepository extends BaseRepository<SysCustom, String> {
 
-    //根据粉丝昵称获取粉丝信息
+    /**
+     * 查询  粉丝信息
+     *
+     * @param buyerNick
+     * @return
+     */
     SysCustom findByBuyerNick(String buyerNick);
 
     /**

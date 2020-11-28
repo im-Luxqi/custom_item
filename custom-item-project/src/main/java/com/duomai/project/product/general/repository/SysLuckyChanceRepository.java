@@ -5,15 +5,26 @@ import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance, String> {
 
-    //获取当前粉丝剩余抽奖次数
+    /**
+     * 查询  玩家 剩余抽奖次数
+     *
+     * @param buyerNick
+     * @param use
+     * @return
+     */
     long countByBuyerNickAndIsUse(String buyerNick, Integer use);
 
-    //获取一条未使用的抽奖机会日志
+    /**
+     * 查询  玩家 一条未使用的抽奖机会日志
+     *
+     * @param buyerNick
+     * @param use
+     * @return
+     */
     SysLuckyChance findFirstByBuyerNickAndIsUse(String buyerNick, Integer use);
 
     //获取某个任务当天完成了几次

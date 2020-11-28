@@ -171,7 +171,7 @@ public class TaskDashboardExecute implements IApiExecute {
         inviteMap.put("task", "invite");
         inviteMap.put("title", "邀请加入会员");
         inviteMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon5.png");
-        inviteMap.put("explain", "游戏次数+1，受邀者须为从未注册加入蒙牛的全新会员");
+        inviteMap.put("explain", "游戏次数+1，受邀者需为从未注册加入蒙牛的全新会员");
         inviteMap.put("finish", false);
         inviteMap.put("task_end", taskFinish);
 //        inviteMap.put("invite_progress", inviteCount == 0 ? 0 : ((inviteCount % 3) == 0 ? 3 : (inviteCount % 3)) + "/3");

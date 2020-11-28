@@ -6,14 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 public interface SysTaskInviteLogRepository extends BaseRepository<SysTaskInviteLog, String> {
-
-    //清除数据
-    List<SysTaskInviteLog> findByInviter(String buyerNick);
-
-    List<SysTaskInviteLog> findByInvitee(String invitee);
 
 
     /**
@@ -31,6 +24,7 @@ public interface SysTaskInviteLogRepository extends BaseRepository<SysTaskInvite
      */
     @Transactional
     void deleteByMixInviter(String buyerNick);
+
     @Transactional
     void deleteByMixInvitee(String buyerNick);
 }

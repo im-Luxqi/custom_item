@@ -21,14 +21,6 @@ public interface SysTaskMemberOrFollowRepository extends BaseRepository<SysTaskM
     long countByBuyerNickAndTaskType(String buyerNick, TaskTypeEnum taskType);
 
 
-    //根据粉丝昵称、任务类型查询集合
-    List<SysTaskMemberOrFollowLog> findByBuyerNickAndTaskType(String buyerNick, TaskTypeEnum taskType);
-
-
-    //根据粉丝昵称、任务类型、时间段查找数据
-    List<SysTaskMemberOrFollowLog> findByBuyerNickAndTaskTypeAndCreateTimeBetween(String buyerNick, TaskTypeEnum taskType,
-                                                                                  Date start, Date end);
-
     /**
      * 查询 指定玩家  入会关注记录
      *

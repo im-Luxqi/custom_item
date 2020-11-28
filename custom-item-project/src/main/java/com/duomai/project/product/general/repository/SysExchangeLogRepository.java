@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface SysExchangeLogRepository extends BaseRepository<SysLuckyExchangeLog, String> {
 
+
     /**
      * 分页查询 指定玩家 瓶子获取消耗明细
      *
