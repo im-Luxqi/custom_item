@@ -58,7 +58,8 @@ public class ProjectTools {
         Validator validator = validatorFactory.getValidator();
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(obj);
         if (constraintViolations.size() > 0)
-            throw new Exception("必传参数校验，" + constraintViolations.iterator().next().getMessage());
+            throw new Exception(constraintViolations.iterator().next().getMessage());
+//            throw new Exception("必传参数校验，" + constraintViolations.iterator().next().getMessage());
     }
 
     public static Integer findMaxWinGoodNum() {

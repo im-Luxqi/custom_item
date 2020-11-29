@@ -47,13 +47,16 @@ public class PlayerInfoScanOrInitExecute implements IApiExecute {
                     .setMemberWayFrom(historyMember ? MemberWayFromEnum.HISTROY_MEMBER : MemberWayFromEnum.NON_MEMBER)
                     .setFollowWayFrom(FollowWayFromEnum.UNDIFIND);
             sysCustom = sysCustomRepository.save(temp);
-        } else if (MemberWayFromEnum.NON_MEMBER.equals(sysCustom.getMemberWayFrom())) {
-            boolean historyMember = taobaoAPIService.isMember(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
-            if (historyMember) {
-                sysCustom.setMemberWayFrom(MemberWayFromEnum.HISTROY_MEMBER);
-                sysCustom = sysCustomRepository.save(sysCustom);
-            }
         }
+
+
+//        else if (MemberWayFromEnum.NON_MEMBER.equals(sysCustom.getMemberWayFrom())) {
+//            boolean historyMember = taobaoAPIService.isMember(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick());
+//            if (historyMember) {
+//                sysCustom.setMemberWayFrom(MemberWayFromEnum.HISTROY_MEMBER);
+//                sysCustom = sysCustomRepository.save(sysCustom);
+//            }
+//        }
 
         /*2.组织返回值*/
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
@@ -63,7 +66,7 @@ public class PlayerInfoScanOrInitExecute implements IApiExecute {
         resultMap.put("znick", sysCustom.getZnick());
         resultMap.put("history_follow_undefined", should_sure_history_follow_state);
         resultMap.put("have_authorization", have_authorization);
-        resultMap.put("hava_join_member", !MemberWayFromEnum.NON_MEMBER.equals(sysCustom.getMemberWayFrom()));
+//        resultMap.put("hava_join_member", !MemberWayFromEnum.NON_MEMBER.equals(sysCustom.getMemberWayFrom()));
         return YunReturnValue.ok(resultMap, "获取玩家信息," +
                 (should_sure_history_follow_state ? "【提示：】history_follow_undefined = true ---> 首次进入活动，需要调用接口(wx.dz.common.playerInfo.fill.historyFollow)。!!!!!!!" : "") +
                 (!have_authorization ? "【提示：】have_authorization = false ---> 表示当前玩家当前尚未授权。" : "")

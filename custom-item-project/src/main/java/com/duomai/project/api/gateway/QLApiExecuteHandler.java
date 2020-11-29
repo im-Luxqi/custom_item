@@ -41,6 +41,9 @@ public class QLApiExecuteHandler {
         //授权成功后，完善用户信息 wxq
         map.put("wx.dz.common.playerInfo.fill.afterAuthorization", PlayerInfoFillForAfterAuthorizationExecute.class);
 
+        //玩家入会状态 wxq
+        map.put("wx.dz.common.playerInfo.member.state", CustomMemberExecute.class);
+
 
         /**
          * 首页

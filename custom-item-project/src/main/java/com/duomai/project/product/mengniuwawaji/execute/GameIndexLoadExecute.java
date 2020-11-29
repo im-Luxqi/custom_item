@@ -80,6 +80,8 @@ public class GameIndexLoadExecute implements IApiExecute {
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
 
+
+
         /*保存pv*/
         sysPagePvLogRepository.save(new SysPagePvLog()
                 .setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
@@ -92,6 +94,7 @@ public class GameIndexLoadExecute implements IApiExecute {
         if (actLive) {
             /*2.被邀请助力或者被邀请入会*/
             JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
+//            String sharer = jsonObjectAdmjson.getString("joinBack");
             String sharer = jsonObjectAdmjson.getString("sharer");
             String inviter = jsonObjectAdmjson.getString("inviter");
             Assert.isTrue(!(StringUtils.isNotBlank(sharer) && StringUtils.isNotBlank(inviter)), "非法链接");
@@ -140,6 +143,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                     }
                 }
             }
+
             //邀请入会
             if (StringUtils.isNotBlank(inviter)) {
                 inviter = inviter.replaceAll(" ", "+");
@@ -173,15 +177,9 @@ public class GameIndexLoadExecute implements IApiExecute {
                         resultMap.put("alter_for_invitee_pic", errorPic);
                         resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
                         sysTaskInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
-                    } else if (MemberWayFromEnum.HISTROY_MEMBER.equals(syscustom.getMemberWayFrom())) {
-                        resultMap.put("alter_for_invitee_flag", true);
-                        resultMap.put("alter_for_invitee_msg", "您不是店铺新会员，无法为好友助力");
-                        resultMap.put("alter_for_invitee_pic", errorPic);
-                        resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
-                        sysTaskInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
                     } else if (!MemberWayFromEnum.NON_MEMBER.equals(syscustom.getMemberWayFrom())) {
                         resultMap.put("alter_for_invitee_flag", true);
-                        resultMap.put("alter_for_invitee_msg", "您已是店铺会员，无法为好友助力");
+                        resultMap.put("alter_for_invitee_msg", "您不是店铺新会员，无法为好友助力");
                         resultMap.put("alter_for_invitee_pic", errorPic);
                         resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
                         sysTaskInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
