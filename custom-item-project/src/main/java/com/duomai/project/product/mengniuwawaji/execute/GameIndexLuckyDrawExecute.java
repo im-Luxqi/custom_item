@@ -8,11 +8,13 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.BottleTypeEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
+import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
@@ -43,6 +45,8 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
     private SysSettingAwardRepository sysSettingAwardRepository;
     @Autowired
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
+    @Autowired
+    private SysLuckyChanceRepository sysLuckyChanceRepository;
 
 
     @Override
@@ -62,8 +66,10 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
 
 
         //一人每天只能抽15次
-        long todayHasDraw = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndAwardTypeAndIsWinAndDrawTimeBetween(buyerNick, AwardTypeEnum.EXCHANGE, BooleanConstant.BOOLEAN_YES,
+        long todayHasDraw = sysLuckyChanceRepository.countByBuyerNickAndIsUseAndUseTimeBetween(buyerNick,BooleanConstant.BOOLEAN_YES,
                 CommonDateParseUtil.getStartTimeOfDay(sysParm.getRequestStartTime()), CommonDateParseUtil.getEndTimeOfDay(sysParm.getRequestStartTime()));
+//        long todayHasDraw = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndAwardTypeAndDrawTimeBetween(buyerNick, AwardTypeEnum.EXCHANGE,
+//                CommonDateParseUtil.getStartTimeOfDay(sysParm.getRequestStartTime()), CommonDateParseUtil.getEndTimeOfDay(sysParm.getRequestStartTime()));
         Assert.isTrue(todayHasDraw < 15, "今日抽奖次数已达到上限，明天再来看吧");
         //抽6号瓶子需要先抽5号瓶子
         if (BottleTypeEnum.SPECIAL_SIX.equals(bottle)) {
@@ -72,6 +78,13 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
             long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndAwardIdAndIsWinAndHaveExchange(buyerNick, firstSysSettingAward.getId(), BooleanConstant.BOOLEAN_YES, BooleanConstant.BOOLEAN_NO);
             if (l == 0) {
                 LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
+                /*消耗一次抽奖次数,但不中奖*/
+                SysLuckyChance thisChance = sysLuckyChanceRepository.findFirstByBuyerNickAndIsUse(syscustom.getBuyerNick(), BooleanConstant.BOOLEAN_NO);
+                if (Objects.isNull(thisChance)) {
+                    throw new Exception("抽奖次数不足");
+                }
+                sysLuckyChanceRepository.save(thisChance.setIsUse(BooleanConstant.BOOLEAN_YES)
+                        .setUseTime(sysParm.getRequestStartTime()));
                 resultMap.put("win", false);
                 resultMap.put("award", null);
                 return YunReturnValue.ok(resultMap, "玩家成功进行抽奖");

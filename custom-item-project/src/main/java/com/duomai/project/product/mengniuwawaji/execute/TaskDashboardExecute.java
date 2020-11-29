@@ -159,7 +159,7 @@ public class TaskDashboardExecute implements IApiExecute {
         shareMap.put("task", "share");
         shareMap.put("title", "分享活动");
         shareMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon2.png");
-        shareMap.put("explain", "游戏次数+1");
+        shareMap.put("explain", "分享好友并成功参与游戏，次数+1。同一好友每天只能助力1次");
         shareMap.put("finish", false);
         shareMap.put("task_end", taskFinish);
         resultList.add(shareMap);

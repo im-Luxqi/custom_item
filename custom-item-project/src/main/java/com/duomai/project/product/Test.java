@@ -9,27 +9,33 @@ import com.taobao.api.response.TradesSoldGetResponse;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Test {
 
     public static void main(String[] args) throws Exception {
 
-        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", "21699045", "20ee7d6400dda1c9670e7f997af2c2c8");
-        TradesSoldGetRequest req = new TradesSoldGetRequest();
-        req.setFields("tid,payment,total_fee,created,status,orders,buyer_rate");
-        req.setBuyerNick("t01k3OzV5DSJfBiChmIa9rZ2Z/HkuUlU16/T/y6FH7lLiM=");
-        req.setType("guarantee_trade,auto_delivery,ec,cod,step,tmall_i18n");
-        req.putOtherTextParam("top_mix_params", "buyer_nick");
-        TradesSoldGetResponse res = client.execute(req, "6202914b8c0b9bb920d5bceg6b00afbf86fba14a2fadc7c407957498");
-        if(res.isSuccess()){
-            List<Trade> list = res.getTrades();
-            for(Trade trade:list){
-                if(trade.getTid().toString().equals("1393007256636743014")){
-                    System.out.println(11111);
-                }
-            }
-        }
+
+
+        Pattern.matches("^[A-Za-z0-9]{15,18}$","11111111111111");
+//
+//        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", "21699045", "20ee7d6400dda1c9670e7f997af2c2c8");
+//        TradesSoldGetRequest req = new TradesSoldGetRequest();
+//        req.setFields("tid,payment,total_fee,created,status,orders,buyer_rate");
+//        req.setBuyerNick("t01k3OzV5DSJfBiChmIa9rZ2Z/HkuUlU16/T/y6FH7lLiM=");
+//        req.setType("guarantee_trade,auto_delivery,ec,cod,step,tmall_i18n");
+//        req.putOtherTextParam("top_mix_params", "buyer_nick");
+//        TradesSoldGetResponse res = client.execute(req, "6202914b8c0b9bb920d5bceg6b00afbf86fba14a2fadc7c407957498");
+//        if(res.isSuccess()){
+//            List<Trade> list = res.getTrades();
+//            for(Trade trade:list){
+//                if(trade.getTid().toString().equals("1393007256636743014")){
+//                    System.out.println(11111);
+//                }
+//            }
+//        }
 
 
 

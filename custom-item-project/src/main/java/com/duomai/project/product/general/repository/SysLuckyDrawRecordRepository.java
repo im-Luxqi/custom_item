@@ -44,7 +44,7 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
     @Query(nativeQuery = true,
             value = "select * " +
                     "from  sys_lucky_draw_record " +
-                    "where player_buyer_nick = ?1 and award_type in ('COUPON','GOODS')  and is_win = 1   order by award_id asc ")
+                    "where player_buyer_nick = ?1 and award_type in ('COUPON','GOODS')  and is_win = 1   order by exchange_time desc ")
     List<SysLuckyDrawRecord> queryMybag(String buyernick);
 
 
@@ -74,7 +74,6 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
      */
     long countByPlayerBuyerNickAndAwardIdAndIsWinAndHaveExchange(String buyerNick, String awardId, Integer isWin, Integer haveExchange);
 
-    long countByPlayerBuyerNickAndAwardTypeAndIsWinAndDrawTimeBetween(String buyerNick, AwardTypeEnum awardTypeEnum, Integer isWin, Date start, Date end);
 
 
     /**

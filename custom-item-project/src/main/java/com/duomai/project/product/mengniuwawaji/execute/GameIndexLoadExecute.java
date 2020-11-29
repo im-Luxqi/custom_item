@@ -94,14 +94,13 @@ public class GameIndexLoadExecute implements IApiExecute {
         if (actLive) {
             /*2.被邀请助力或者被邀请入会*/
             JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
-//            String sharer = jsonObjectAdmjson.getString("joinBack");
+            Boolean joinMemberBack = jsonObjectAdmjson.getBoolean("joinMemberBack");
             String sharer = jsonObjectAdmjson.getString("sharer");
             String inviter = jsonObjectAdmjson.getString("inviter");
             Assert.isTrue(!(StringUtils.isNotBlank(sharer) && StringUtils.isNotBlank(inviter)), "非法链接");
 
             String successPic = "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/modal/zhulisuccess.png";
             String errorPic = "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/modal/failimg2.png";
-
             //分享助力
             if (StringUtils.isNotBlank(sharer)) {
                 sharer = sharer.replaceAll(" ", "+");
@@ -136,7 +135,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                     sysTaskShareLogRepository.save(sysInviteLog);
                     if (BooleanConstant.BOOLEAN_YES.equals(sysInviteLog.getHaveSuccess())) {
                         luckyDrawHelper.sendLuckyChance(sharerCustom.getBuyerNick(), LuckyChanceFromEnum.SHARE, 1,
-                                "分享" + syscustom.getZnick(), "分享任务，获得" + 1 + "次游戏机会");
+                                "分享" + syscustom.getZnick(), "分享任务，获得了游戏机会");
                         resultMap.put("alter_for_shared_flag", true);
                         resultMap.put("alter_for_shared_msg", "恭喜你，助力成功");
                         resultMap.put("alter_for_shared_pic", successPic);
@@ -147,55 +146,58 @@ public class GameIndexLoadExecute implements IApiExecute {
             //邀请入会
             if (StringUtils.isNotBlank(inviter)) {
                 inviter = inviter.replaceAll(" ", "+");
-                if (inviter.equals(buyerNick)) {
-                    resultMap.put("alter_for_invitee_flag", true);
-                    resultMap.put("alter_for_invitee_msg", "无法帮自己助力");
-                    resultMap.put("alter_for_invitee_pic", errorPic);
-                } else {
-                    SysCustom inviterCustom = sysCustomRepository.findByBuyerNick(inviter);
-                    Assert.notNull(inviterCustom, "无效的邀请者");
-                    String todayString = CommonDateParseUtil.date2string(sysParm.getRequestStartTime(), "yyyy-MM-dd");
-                    SysTaskInviteLog sysTaskInviteLog = new SysTaskInviteLog().setCreateTime(sysParm.getRequestStartTime())
-                            .setHaveSuccess(BooleanConstant.BOOLEAN_YES)
-                            .setMixInvitee(syscustom.getBuyerNick())
-                            .setInviteTime(todayString)
-                            .setInvitee(syscustom.getZnick())
-                            .setInviteeImg(syscustom.getHeadImg())
-                            .setMixInviter(inviterCustom.getBuyerNick())
-                            .setInviter(inviterCustom.getZnick())
-                            .setInviterImg(inviterCustom.getHeadImg());
+                SysCustom inviterCustom = sysCustomRepository.findByBuyerNick(inviter);
+                Assert.notNull(inviterCustom, "无效的邀请者");
 
-                    if (BooleanConstant.BOOLEAN_NO.equals(syscustom.getHaveAuthorization())) {
-                        resultMap.put("alter_for_invitee_flag", true);
-                        resultMap.put("alter_for_invitee_msg", "未授权");
-                        resultMap.put("alter_for_invitee_pic", errorPic);
-                        resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
+
+                String todayString = CommonDateParseUtil.date2string(sysParm.getRequestStartTime(), "yyyy-MM-dd");
+                SysTaskInviteLog sysTaskInviteLog = new SysTaskInviteLog().setCreateTime(sysParm.getRequestStartTime())
+                        .setMixInvitee(syscustom.getBuyerNick())
+                        .setInviteTime(todayString)
+                        .setInvitee(syscustom.getZnick())
+                        .setInviteeImg(syscustom.getHeadImg())
+                        .setMixInviter(inviterCustom.getBuyerNick())
+                        .setInviter(inviterCustom.getZnick())
+                        .setInviterImg(inviterCustom.getHeadImg());
+
+                //邀请非回调进页面
+                if (joinMemberBack == null || !joinMemberBack) {
+                    resultMap.put("alter_for_invitee_flag", true);
+                    resultMap.put("alter_for_invitee_msg", "未入会");
+                    resultMap.put("alter_for_invitee_pic", errorPic);
+                    resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
+                    if (inviter.equals(buyerNick)) {
+                        resultMap.put("alter_for_invitee_msg", "无法帮自己助力");
                         sysTaskInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
-                    } else if (!taobaoAPIService.isMember(buyerNick)) {
-                        resultMap.put("alter_for_invitee_flag", true);
-                        resultMap.put("alter_for_invitee_msg", "未入会");
-                        resultMap.put("alter_for_invitee_pic", errorPic);
-                        resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
-                        sysTaskInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
-                    } else if (!MemberWayFromEnum.NON_MEMBER.equals(syscustom.getMemberWayFrom())) {
-                        resultMap.put("alter_for_invitee_flag", true);
-                        resultMap.put("alter_for_invitee_msg", "您不是店铺新会员，无法为好友助力");
-                        resultMap.put("alter_for_invitee_pic", errorPic);
-                        resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
+                    } else {
+                        if (!MemberWayFromEnum.NON_MEMBER.equals(syscustom.getMemberWayFrom())
+                                || taobaoAPIService.isMember(buyerNick)) {
+                            resultMap.put("alter_for_invitee_msg", "您不是店铺新会员，无法为好友助力");
+                            sysTaskInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
+                        }
+                    }
+                } else {
+                    sysTaskInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_YES);
+                    if (inviter.equals(buyerNick) ||
+                            !taobaoAPIService.isMember(buyerNick) ||
+                            BooleanConstant.BOOLEAN_NO.equals(syscustom.getHaveAuthorization()) ||
+                            !MemberWayFromEnum.NON_MEMBER.equals(syscustom.getMemberWayFrom())) {
                         sysTaskInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
                     }
-
-                    //记录邀请日志，成功发放抽奖机会
-                    sysTaskInviteLogRepository.save(sysTaskInviteLog);
+                    //邀请成功,发放抽奖机会
                     if (BooleanConstant.BOOLEAN_YES.equals(sysTaskInviteLog.getHaveSuccess())) {
                         sysCustomRepository.save(syscustom.setMemberWayFrom(MemberWayFromEnum.INVITEE_JOIN_MEMBER));
                         luckyDrawHelper.sendLuckyChance(inviterCustom.getBuyerNick(), LuckyChanceFromEnum.INVITE_MEMBER, 1,
-                                "邀请入会" + syscustom.getZnick(), "邀请任务，获得" + 1 + "次游戏机会");
+                                "邀请入会" + syscustom.getZnick(), "邀请任务，获得了游戏机会");
                         resultMap.put("alter_for_invitee_flag", true);
                         resultMap.put("alter_for_invitee_msg", "恭喜你，助力成功");
                         resultMap.put("alter_for_invitee_pic", successPic);
                         resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
                     }
+                }
+                //记录邀请日志
+                if (sysTaskInviteLog.getHaveSuccess() != null) {
+                    sysTaskInviteLogRepository.save(sysTaskInviteLog);
                 }
             }
 

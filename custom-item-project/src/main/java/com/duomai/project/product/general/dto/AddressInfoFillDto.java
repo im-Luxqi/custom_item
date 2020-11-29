@@ -62,7 +62,7 @@ public class AddressInfoFillDto {
 
 
 //    @Pattern(regexp = "^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$|^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$", message = "身份证格式不正确")
-    @Pattern(regexp = "^[A-Za-z0-9]{15,17}$", message = "身份证格式不正确,请输入15-18位数字或字母")
+    @Pattern(regexp = "^[A-Za-z0-9]{15,19}$", message = "身份证格式不正确,请输入15-18位数字或字母")
     @NotBlank(message = "身份证 不能为空")
     private String identityNumber;
 

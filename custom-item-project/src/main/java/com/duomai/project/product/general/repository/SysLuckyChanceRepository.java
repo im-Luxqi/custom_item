@@ -5,6 +5,7 @@ import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance, String> {
@@ -68,4 +69,6 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
      */
     @Transactional
     void deleteByBuyerNick(String buyerNick);
+
+    long countByBuyerNickAndIsUseAndUseTimeBetween(String buyerNick, Integer isUse, Date start, Date end);
 }
