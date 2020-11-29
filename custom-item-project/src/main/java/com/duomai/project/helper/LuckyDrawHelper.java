@@ -427,7 +427,7 @@ public class LuckyDrawHelper {
      */
     @Transactional
     public SysLuckyDrawRecord directExchangeAward(List<SysLuckyDrawRecord> unUseBattles, SysCustom custom, SysSettingAward award, Date sendTime) {
-        Assert.isTrue(sysSettingAwardRepository.tryReduceOne(award.getId()) > 0, "奖品库存库存不足");
+        Assert.isTrue(sysSettingAwardRepository.tryReduceOne(award.getId()) > 0, "你来晚了,奖品已兑完");
 
         StringBuffer stringBuffer = new StringBuffer();
         unUseBattles.forEach(x -> {

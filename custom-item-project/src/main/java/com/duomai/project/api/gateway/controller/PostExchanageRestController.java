@@ -65,9 +65,6 @@ public class PostExchanageRestController extends BaseRestController {
             @Validated YunTokenParameter yunTokenParameter,
             HttpServletRequest request, HttpServletResponse response) {
 
-        //压力测试
-//        pressTest(yunTokenParameter);
-
         apiSysParameter.setRequestStartTime(new Date());
         CgApiLog cgApiLog = new CgApiLog()
                 .setParType(0)
@@ -93,6 +90,9 @@ public class PostExchanageRestController extends BaseRestController {
             return YunReturnValue.fail(SysErrorEnum.VALID_SIGN);
         }
 
+        //压力测试
+//        pressTest(yunTokenParameter);
+
         /*3.执行业务逻辑*/
         try {
             //执行业务逻辑，并获得返回值rValue
@@ -110,14 +110,16 @@ public class PostExchanageRestController extends BaseRestController {
             return YunReturnValue.fail(SysErrorEnum.SERVE_INNER, e.getMessage());
         } finally {
             //失败请求记录日志
-            if (cgApiLog.getParType() == 1)
+            if (cgApiLog.getParType() == 1) {
                 cgApiLogRepository.save(cgApiLog);
+            }
         }
     }
 
 
     static Random random = new Random();
+
     static void pressTest(YunTokenParameter yunTokenParameter) {
-        yunTokenParameter.setBuyerNick("夏01MN0fiX4NSkxY6YSa4UBv9j9xhcZT2bM0mnYiHo5bPlE="+ random.nextInt(1000000));
+        yunTokenParameter.setBuyerNick("夏01MN0fiX4NSkxY6YSa4UBv9j9xhcZT2bM0mnYiHo5bPlE=" + random.nextInt(1000000));
     }
 }
