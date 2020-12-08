@@ -2,7 +2,7 @@ package com.duomai.project.product.general.enums;
 
 import com.duomai.common.base.enums.IEnum;
 
-/** 抽奖机会来源
+/** 机会来源
  * @description
  * @create by 王星齐
  * @time 2020-08-28 14:28:07

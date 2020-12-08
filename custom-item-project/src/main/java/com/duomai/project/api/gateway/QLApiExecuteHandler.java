@@ -26,16 +26,77 @@ public class QLApiExecuteHandler {
          * 通用
          */
         //测试阶段专用  wxq
-        map.put("wx.dz.common.test", TestExecute.class);
+//        map.put("wx.dz.common.test", TestExecute.class);
         //测试阶段专用 --增加指定玩家30次抽奖次数 wxq
-        map.put("wx.dz.common.test.luckyChance", TestLuckyChanceExecute.class);
+//        map.put("wx.dz.common.test.luckyChance", TestLuckyChanceExecute.class);
 
         //测试阶段专用 --kill wxq
-        map.put("wx.dz.common.test.kill", TestKillChanceExecute.class);
+//        map.put("wx.dz.common.test.kill", TestKillChanceExecute.class);
 
 
-        //玩家信息扫描，首次完成初始化操作 wxq
+        //1.玩家信息扫描，首次完成初始化操作 wxq
         map.put("wx.dz.common.playerInfo.scan", PlayerInfoScanOrInitExecute.class);
+        //2.0 场景1 load
+        map.put("wx.dz.game.index.load.party1", GameIndexParty1Execute.class);
+        //2.1 场景1 和雪人玩
+        map.put("wx.dz.game.party1.play.snowman", GamePlaySnowmanExecute.class);
+        //2.2 场景1 和企鹅玩
+        map.put("wx.dz.game.party1.play.penguin", GamePlayPenguinExecute.class);
+        //2.3  开礼盒
+        map.put("wx.dz.game.party.open.luckyBox", GameOpenLuckyBoxExecute.class);
+
+
+
+
+        //2.4  白熊 获取三道新题目
+        map.put("wx.dz.game.party1.bear.threeQuestion", GameBearGetThreeQuestionExecute.class);
+        //2.5  白熊 增加答题次数
+        map.put("wx.dz.game.party1.bear.addChance", GameBearAddChanceExecute.class);
+        //2.6  白熊 答题正确
+        map.put("wx.dz.game.party1.bear.answerWin", GameBearAnswerWinExecute.class);
+        //2.7  分享
+        map.put("wx.dz.game.party.share", GameShareExecute.class);
+        //2.8  使用邀请函
+        map.put("wx.dz.game.party.share", GameShareExecute.class);
+        //2.9  点灯
+        map.put("wx.dz.game.party.share", GameShareExecute.class);
+        //3.0  狗 浏览商品列表
+        map.put("wx.dz.game.party.share", GameShareExecute.class);
+        //3.1  狗 浏览
+        map.put("wx.dz.game.party.share", GameShareExecute.class);
+
+        //3.2  与气球互动
+        map.put("wx.dz.game.party.share", GameShareExecute.class);
+
+
+
+
+        //规则,星愿值，弹幕
+        //pv
+        //我的奖品
+        //填写地址
+//入会任务
+
+
+
+
+
+
+
+
+
+
+        //2.游戏首页 加载
+        map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
+        //3.游戏首页 小彩蛋
+        map.put("wx.dz.game.index.egg", GameIndexEggExecute.class);
+
+        //1.进入场景1
+        map.put("wx.dz.go.snowman", PlayerInfoScanOrInitExecute.class);
+        //1.为雪人带上节日围巾
+        map.put("wx.dz.play.snowman", PlayerInfoScanOrInitExecute.class);
+
+
         //补全字段history_follow  wxq
         map.put("wx.dz.common.playerInfo.fill.historyFollow", PlayerInfoFillForHistroyFollowExecute.class);
         //授权成功后，完善用户信息 wxq
@@ -43,7 +104,6 @@ public class QLApiExecuteHandler {
 
         //玩家入会状态 wxq
         map.put("wx.dz.common.playerInfo.member.state", CustomMemberExecute.class);
-
 
         /**
          * 首页
@@ -59,12 +119,11 @@ public class QLApiExecuteHandler {
         //我的战利品-查看明细
         map.put("wx.dz.game.show.list.exchange", ShowExchangeListExecute.class);
 
-
         //立即兑换
-        map.put("wx.dz.game.lucky.exchange", GameIndexLuckyExchangeExecute.class);
+//        map.put("wx.dz.game.lucky.exchange", GameIndexLuckyExchangeExecute.class);
 
         //本机奖品池
-        map.put("wx.dz.game.lucky.pool", GameIndexLuckyPoolExecute.class);
+//        map.put("wx.dz.game.lucky.pool", GameIndexLuckyPoolExecute.class);
 
 
         /**
@@ -75,7 +134,7 @@ public class QLApiExecuteHandler {
 
 
         //任务--每日签到
-        map.put("wx.dz.game.task.sign", TaskSignExecute.class);
+//        map.put("wx.dz.game.task.sign", TaskSignExecute.class);
 
         //任务--成为会员
         map.put("wx.dz.game.task.member", TaskMemberExecute.class);

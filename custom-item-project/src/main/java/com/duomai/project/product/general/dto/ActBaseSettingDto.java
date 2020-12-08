@@ -32,34 +32,19 @@ public class ActBaseSettingDto  implements Serializable {
      */
     private Date actEndTime;
 
-
     /**
-     * 优惠券一人可以抽几张
+     * 活动最后一天
      */
-    private Integer drawCouponNum;
-
-
-    /**
-     * 每连续签到几天,有额外奖励
-     */
-    private Integer taskSignContinuous;
+    private Date actLastTime;
 
 
     /**
-     * 每连续签到几天,那天的奖励（默认一次）
+     * 订单开始时间
      */
-    private Integer taskSignContinuousPayment;
+    private Date orderStartTime;
 
     /**
-     * 完成浏览任务，需要浏览几个商品
+     * 订单结束时间
      */
-    private Integer taskBrowseShouldSee;
-
-
-    /**
-     * 下单任务，满多少
-     */
-    private Double taskOrderShouldSpend;
-
-
+    private Date orderEndTime;
 }

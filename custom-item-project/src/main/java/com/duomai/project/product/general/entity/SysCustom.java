@@ -2,6 +2,7 @@ package com.duomai.project.product.general.entity;
 
 import com.duomai.project.product.general.enums.FollowWayFromEnum;
 import com.duomai.project.product.general.enums.MemberWayFromEnum;
+import com.duomai.project.product.general.enums.PlayActionEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
@@ -44,7 +45,27 @@ public class SysCustom {
 
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(30) COMMENT '入会途径'")
+    @Column(columnDefinition = "varchar(30) COMMENT '关注途径'")
     private FollowWayFromEnum followWayFrom;
+
+
+    @Column(columnDefinition = "varchar(64) COMMENT '场景'")
+    private String playParty;
+
+
+    @Column(columnDefinition = "varchar(64) COMMENT '当前行动'")
+    private PlayActionEnum currentAction;
+
+    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否邀请过好友 0:否1:是'")
+    private Integer haveInviteFriend;
+
+    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否浏览过商品 0:否1:是'")
+    private Integer haveBrowseGoods;
+
+
+    @Column(nullable = false, columnDefinition = "int(11)  COMMENT '星愿值'")
+    private Integer starValue;
+
+
 
 }

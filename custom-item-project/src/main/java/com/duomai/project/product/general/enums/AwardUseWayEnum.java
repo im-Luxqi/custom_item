@@ -14,7 +14,11 @@ public enum AwardUseWayEnum implements IEnum {
     COMMON_FOUR("COMMON_FOUR", "普通4号奶瓶"),
     SPECIAL_FIVE("SPECIAL_FIVE", "特殊5号奶瓶"),
     SPECIAL_SIX("SPECIAL_SIX", "特殊6号奶瓶"),
-    POOL("POOL", "奖池");
+
+
+    POOL("POOL", "奖池"),
+    TENT("TENT", "帐篷")
+    ;
     private final String code;
     private final String descp;
 

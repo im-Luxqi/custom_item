@@ -58,7 +58,8 @@ public class CusGetOrderExecute implements IApiExecute {
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         ActBaseSettingDto config = projectHelper.actBaseSettingFind();
 
-        List<OpenTradesSoldGetResponse.Trade> goods = taobaoAPIService.taobaoOpenTradesSoldGet(openUId, TaoBaoTradeStatus.WAIT_SELLER_SEND_GOODS, config.getActStartTime(), config.getActEndTime());
+        List<OpenTradesSoldGetResponse.Trade> goods = taobaoAPIService.taobaoOpenTradesSoldGet(openUId,
+                TaoBaoTradeStatus.WAIT_SELLER_SEND_GOODS, config.getOrderStartTime(), config.getOrderEndTime());
         if (goods == null || goods.size() == 0) {
             return YunReturnValue.fail("未获取到订单");
         }
@@ -70,7 +71,7 @@ public class CusGetOrderExecute implements IApiExecute {
 
         /*符合条件的最新订单，同步最新订单*/
         StringBuilder tid = new StringBuilder();
-        int sendTime = 0;
+        double allMoney = 0;
         List<OpenTradesSoldGetResponse.Trade> newestTrades = new ArrayList<>();
         for (OpenTradesSoldGetResponse.Trade trade : goods) {
             if (!("WAIT_SELLER_SEND_GOODS".equals(trade.getStatus()) || "SELLER_CONSIGNED_PART".equals(trade.getStatus())
@@ -78,33 +79,17 @@ public class CusGetOrderExecute implements IApiExecute {
                     || "TRADE_FINISHED".equals(trade.getStatus()))) {
                 continue;
             }
+            allMoney += Double.parseDouble(trade.getPayment());
 
+            //未记录本地的订单
             if (!hasUpdateTradeIds.toString().contains(trade.getTid())) {
-                double cunzhenMoney = 0;
-                List<OpenTradesSoldGetResponse.Order> orders = trade.getOrders();
-                if (!CollectionUtils.isEmpty(orders)) {
-                    for (OpenTradesSoldGetResponse.Order order : orders) {
-                        if (order.getTitle().contains("纯甄")) {
-                            cunzhenMoney += Double.parseDouble(order.getPayment());
-                        }
-                    }
-                }
-                Double taskOrderShouldSpend = config.getTaskOrderShouldSpend();
-                if (cunzhenMoney >= Double.valueOf(taskOrderShouldSpend)) {
-                    tid.append(trade.getTid() + ",");
-                    sendTime += 3;
-                }
                 newestTrades.add(trade);
             }
         }
         if (newestTrades.size() > 0) {
             cusOrderInfoService.insertTaobaoTradeList(newestTrades, buyerNick, sysParm.getRequestStartTime());
         }
-        if (sendTime == 0) {
-            return YunReturnValue.fail("当前没有可用的新订单");
-        }
-        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.ORDER, sendTime, tid.toString(),
-                "下单", "消费任务，获得" + sendTime + "次游戏机会");
+
         return YunReturnValue.ok("获取当前用户订单!");
     }
 }

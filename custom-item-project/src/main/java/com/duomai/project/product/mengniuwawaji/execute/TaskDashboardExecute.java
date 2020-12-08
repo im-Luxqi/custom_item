@@ -97,7 +97,7 @@ public class TaskDashboardExecute implements IApiExecute {
         tvMap.put("task", "tv");
         tvMap.put("title", "观看直播");
         tvMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon4.png");
-        tvMap.put("explain", "游戏次数+2，每日1次");
+        tvMap.put("explain", "游戏次数+2，每日1次，需观看直播/直播回放≥20S");
         tvMap.put("finish", tv > 0);
         tvMap.put("task_end", taskFinish);
         resultList.add(tvMap);

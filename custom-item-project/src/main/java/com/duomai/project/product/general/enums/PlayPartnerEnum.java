@@ -2,24 +2,23 @@ package com.duomai.project.product.general.enums;
 
 import com.duomai.common.base.enums.IEnum;
 
-/**
- * Pv来源页
- *
+/** 互动对象
  * @description
  * @create by 王星齐
- * @date 2020-08-28 11:21
+ * @time 2020-08-28 14:28:07
  */
-public enum PvPageEnum implements IEnum {
-    PAGE_PARTY1("PAGE_PARTY1", "场景1"),
-    PAGE_PARTY2("PAGE_PARTY2", "场景2"),
-    PAGE_PARTY3("PAGE_PARTY3", "场景3"),
+public enum PlayPartnerEnum implements IEnum {
+    snowman("snowman", "雪人"),
+    penguin("penguin", "企鹅"),
+    bear("bear", "熊"),
+    lamp("lamp", "灯"),
+    tent("tent", "帐篷"),
+    dog("dog", "狗"),
     ;
-
     private final String code;
     private final String descp;
 
-
-    PvPageEnum(String code, String descp) {
+    PlayPartnerEnum(String code, String descp) {
         this.code = code;
         this.descp = descp;
     }

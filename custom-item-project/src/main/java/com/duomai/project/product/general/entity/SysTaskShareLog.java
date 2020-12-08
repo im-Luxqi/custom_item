@@ -48,6 +48,11 @@ public class SysTaskShareLog {
     @Column(columnDefinition = "varchar(255) COMMENT '被分享人头像'")
     private String sharederImg;
 
-    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否分享成功 0:否1:是'")
+    @Column(columnDefinition = "int(1)  COMMENT '是否分享成功 0:否1:是'")
     private Integer haveSuccess;
+
+
+    @Column(columnDefinition = "varchar(64) COMMENT '分享地点'")
+    private String remark;
+
 }

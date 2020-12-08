@@ -2,7 +2,6 @@ package com.duomai.project.product.mengniuwawaji.execute;
 
 import cn.hutool.core.lang.Assert;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
@@ -11,9 +10,9 @@ import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
-import com.duomai.project.product.general.entity.*;
-import com.duomai.project.product.general.enums.AwardTypeEnum;
-import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
+import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysPagePvLog;
+import com.duomai.project.product.general.entity.SysTaskInviteLog;
 import com.duomai.project.product.general.enums.MemberWayFromEnum;
 import com.duomai.project.product.general.enums.PvPageEnum;
 import com.duomai.project.product.general.repository.*;
@@ -26,9 +25,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 游戏首页 加载
@@ -71,7 +67,6 @@ public class GameIndexLoadExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
-        resultMap.put("alter_for_shared_flag", false);
         resultMap.put("alter_for_invitee_flag", false);
 
 
@@ -86,62 +81,19 @@ public class GameIndexLoadExecute implements IApiExecute {
         sysPagePvLogRepository.save(new SysPagePvLog()
                 .setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
                 .setCreateTime(sysParm.getRequestStartTime())
-                .setId(sysParm.getApiParameter().getCommomParameter().getIp())
-                .setPage(PvPageEnum.PAGE_INDEX));
-
+                .setId(sysParm.getApiParameter().getCommomParameter().getIp()))
+//                .setPage(PvPageEnum.PAGE_INDEX))
+        ;
 
         boolean actLive = projectHelper.actTimeValidateFlag();
         if (actLive) {
             /*2.被邀请助力或者被邀请入会*/
             JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
             Boolean joinMemberBack = jsonObjectAdmjson.getBoolean("joinMemberBack");
-            String sharer = jsonObjectAdmjson.getString("sharer");
             String inviter = jsonObjectAdmjson.getString("inviter");
-            Assert.isTrue(!(StringUtils.isNotBlank(sharer) && StringUtils.isNotBlank(inviter)), "非法链接");
 
             String successPic = "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/modal/zhulisuccess.png";
             String errorPic = "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/modal/failimg2.png";
-            //分享助力
-            if (StringUtils.isNotBlank(sharer)) {
-                sharer = sharer.replaceAll(" ", "+");
-                if (sharer.equals(buyerNick)) {
-                    resultMap.put("alter_for_shared_flag", true);
-                    resultMap.put("alter_for_shared_msg", "无法帮自己助力");
-                    resultMap.put("alter_for_shared_pic", errorPic);
-                } else {
-                    //同一个人每天只能为他人助力一次
-                    SysCustom sharerCustom = sysCustomRepository.findByBuyerNick(sharer);
-                    Assert.notNull(sharerCustom, "无效的分享者");
-
-                    String todayString = CommonDateParseUtil.date2string(sysParm.getRequestStartTime(), "yyyy-MM-dd");
-                    SysTaskShareLog sysInviteLog = new SysTaskShareLog().setCreateTime(sysParm.getRequestStartTime())
-                            .setHaveSuccess(BooleanConstant.BOOLEAN_YES)
-                            .setShareTime(todayString)
-                            .setMixShareder(syscustom.getBuyerNick())
-                            .setShareder(syscustom.getZnick())
-                            .setSharederImg(syscustom.getHeadImg())
-                            .setMixSharer(sharerCustom.getBuyerNick())
-                            .setSharer(sharerCustom.getZnick())
-                            .setSharerImg(sharerCustom.getHeadImg());
-
-                    long today_has_help = sysTaskShareLogRepository.countByMixSharederAndHaveSuccessAndShareTime(syscustom.getBuyerNick(), BooleanConstant.BOOLEAN_YES,
-                            todayString);
-                    if (today_has_help > 0) {
-                        resultMap.put("alter_for_shared_flag", true);
-                        resultMap.put("alter_for_shared_msg", "您今日已经为好友助力过，无法再为好友助力");
-                        resultMap.put("alter_for_shared_pic", errorPic);
-                        sysInviteLog.setHaveSuccess(BooleanConstant.BOOLEAN_NO);
-                    }
-                    sysTaskShareLogRepository.save(sysInviteLog);
-                    if (BooleanConstant.BOOLEAN_YES.equals(sysInviteLog.getHaveSuccess())) {
-                        luckyDrawHelper.sendLuckyChance(sharerCustom.getBuyerNick(), LuckyChanceFromEnum.SHARE, 1,
-                                "分享" + syscustom.getZnick(), "分享任务，获得了游戏机会");
-                        resultMap.put("alter_for_shared_flag", true);
-                        resultMap.put("alter_for_shared_msg", "恭喜你，助力成功");
-                        resultMap.put("alter_for_shared_pic", successPic);
-                    }
-                }
-            }
 
             //邀请入会
             if (StringUtils.isNotBlank(inviter)) {
@@ -163,7 +115,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                 //邀请非回调进页面
                 if (joinMemberBack == null || !joinMemberBack) {
                     resultMap.put("alter_for_invitee_flag", true);
-                    resultMap.put("alter_for_invitee_msg", "未入会");
+                    resultMap.put("alter_for_invitee_msg", "符合邀请助力条件，引导入会");
                     resultMap.put("alter_for_invitee_pic", errorPic);
                     resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
                     if (inviter.equals(buyerNick)) {
@@ -187,12 +139,16 @@ public class GameIndexLoadExecute implements IApiExecute {
                     //邀请成功,发放抽奖机会
                     if (BooleanConstant.BOOLEAN_YES.equals(sysTaskInviteLog.getHaveSuccess())) {
                         sysCustomRepository.save(syscustom.setMemberWayFrom(MemberWayFromEnum.INVITEE_JOIN_MEMBER));
-                        luckyDrawHelper.sendLuckyChance(inviterCustom.getBuyerNick(), LuckyChanceFromEnum.INVITE_MEMBER, 1,
-                                "邀请入会" + syscustom.getZnick(), "邀请任务，获得了游戏机会");
+//                        luckyDrawHelper.sendLuckyChance(inviterCustom.getBuyerNick(), LuckyChanceFromEnum.INVITE_MEMBER, 1,
+//                                "邀请入会" + syscustom.getZnick(), "邀请任务，获得了游戏机会");
                         resultMap.put("alter_for_invitee_flag", true);
                         resultMap.put("alter_for_invitee_msg", "恭喜你，助力成功");
                         resultMap.put("alter_for_invitee_pic", successPic);
                         resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
+
+                        if(BooleanConstant.BOOLEAN_NO.equals(syscustom.getHaveInviteFriend())){
+
+                        }
                     }
                 }
                 //记录邀请日志
@@ -201,55 +157,32 @@ public class GameIndexLoadExecute implements IApiExecute {
                 }
             }
 
-
             //首次登录游戏免费送一次
-            long l = luckyDrawHelper.countLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.FREE);
-            if (l == 0) {
-                luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.FREE, 1,
-                        "首次登录", "首次登录，获得" + 1 + "次游戏机会");
-            }
+//            long l = luckyDrawHelper.countLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.FREE);
+//            if (l == 0) {
+//                luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.FREE, 1,
+//                        "首次登录", "首次登录，获得" + 1 + "次游戏机会");
+//            }
         }
 
 
         //1.活动规则
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
-        actBaseSettingDto.setDrawCouponNum(null);
-        actBaseSettingDto.setTaskOrderShouldSpend(null);
-        actBaseSettingDto.setTaskBrowseShouldSee(null);
-        actBaseSettingDto.setTaskSignContinuousPayment(null);
-        actBaseSettingDto.setTaskSignContinuous(null);
         resultMap.put("game_rule", actBaseSettingDto);
-        //2.抓娃娃机会次数
-        resultMap.put("lucky_chance_num", luckyDrawHelper.unUseLuckyChance(buyerNick));
-        List<SysLuckyDrawRecord> unUseBattles = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndAwardTypeAndIsWinAndHaveExchange(buyerNick, AwardTypeEnum.EXCHANGE,
-                BooleanConstant.BOOLEAN_YES, BooleanConstant.BOOLEAN_NO);
-        Map<String, List<SysLuckyDrawRecord>> collect = unUseBattles.stream().collect(Collectors.groupingBy(SysLuckyDrawRecord::getAwardId));
-        List<SysSettingAward> all = sysSettingAwardRepository.findByType(AwardTypeEnum.EXCHANGE);
-        for (SysSettingAward award : all) {
-            award.setHaveGetNum(0);
-            List<SysLuckyDrawRecord> sysLuckyDrawRecords = collect.get(award.getId());
-            if (!CollectionUtils.isEmpty(sysLuckyDrawRecords)) {
-                award.setHaveGetNum(sysLuckyDrawRecords.size());
-            }
-            award.setEname(null);
-            award.setLuckyValue(null);
-            award.setDescription(null);
-            award.setPoolLevel(null);
-            award.setRemainNum(null);
-            award.setSendNum(null);
-            award.setTotalNum(null);
-            award.setType(null);
-            award.setUseWay(null);
-        }
-
-
-        //3.我的战利品
-        resultMap.put("lucky_win_bottle", all);
+        //2.星愿值
+        resultMap.put("star_value", syscustom.getStarValue());
+        //3.场景权限
+        boolean lastDay = sysParm.getRequestStartTime().after(actBaseSettingDto.getActLastTime());
+        resultMap.put("only_go_scene3", lastDay);
+//        resultMap.put("can_go_scene", syscustom.getPlayScene());
         //4.兑换弹幕
-        resultMap.put("lucky_exchange_barrage", sysLuckyDrawRecordRepository.queryExchangeLog());
+        resultMap.put("lucky_barrage", sysLuckyDrawRecordRepository.queryExchangeLog());
 
 
-        return YunReturnValue.ok(resultMap, "游戏首页");
+        return YunReturnValue.ok(resultMap, "游戏首页" +
+                "\nonly_go_scene3 =  true  ---> 表示当前活动处于最后一天，所有玩家只展示 场景3，优先级大于玩家自身权限" +
+                "\ncan_go_scene ---> 表示玩家的场景权限,三种返回值（party1）(party1,party2)(party1,party2,party3)"
+        );
     }
 }
 

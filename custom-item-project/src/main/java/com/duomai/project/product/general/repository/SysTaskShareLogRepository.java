@@ -20,6 +20,17 @@ public interface SysTaskShareLogRepository extends BaseRepository<SysTaskShareLo
     long countByMixSharederAndHaveSuccessAndShareTime(String mixShareder, Integer hasSuccess, String shareTime);
 
 
+
+    /**
+     * 查询 分享人 某日 分享次数
+     *
+     * @param mixSharer
+     * @param shareTime
+     * @return
+     */
+    long countByMixSharerdAndShareTime(String mixSharer,String shareTime);
+
+
     /**
      * 分页查询 分享人分享成功记录
      *

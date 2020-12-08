@@ -41,7 +41,7 @@ public class AddressInfoFillDto {
     private String id;
 
     @NotBlank(message = "收件人昵称 不能为空")
-    @Length(max = 15, message = "最大不超过15个字")
+    @Length(max = 20, message = "收件人昵称 最大不超过20个字")
 //    @Pattern(regexp = "^[\\u4e00-\\u9fa5]{1,14}$", message = "请输入汉字,且最大不超过15个字")
     private String receviceName;
     @NotBlank(message = "收件人电话 不能为空")

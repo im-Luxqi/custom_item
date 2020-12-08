@@ -94,7 +94,8 @@ public class TaskBrowseExecute implements IApiExecute {
 
         //浏览送抽奖机会
         long l = luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.BROWSE);
-        Integer taskBrowseShouldSee = actBaseSettingDto.getTaskBrowseShouldSee();
+//        Integer taskBrowseShouldSee = actBaseSettingDto.getTaskBrowseShouldSee();
+        Integer taskBrowseShouldSee = 0;
         if (l == 0 && taskBrowseShouldSee.equals(todayHasBrowseLogs.size())) {
             luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.BROWSE, 1,
                     "浏览", "每日浏览，获得" + 1 + "次游戏机会");

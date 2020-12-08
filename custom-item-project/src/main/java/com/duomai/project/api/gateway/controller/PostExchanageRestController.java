@@ -11,6 +11,7 @@ import com.duomai.project.api.gateway.QLApiExecuteHandler;
 import com.duomai.project.api.gateway.entity.CgApiLog;
 import com.duomai.project.api.gateway.repository.CgApiLogRepository;
 import com.duomai.project.api.gateway.tool.ApiTool;
+import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.configuration.SysCustomProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,14 @@ public class PostExchanageRestController extends BaseRestController {
     @ResponseBody
     @RequestMapping(value = "/router/test")
     public YunReturnValue test2() {
+
+
+        MemcacheTools.add("aaa","bbb",10);
+
+        Object aaa = MemcacheTools.loadData("aaa");
+
+        log.info(aaa.toString());
+
         return YunReturnValue.ok("云应用存活检测");
     }
 
