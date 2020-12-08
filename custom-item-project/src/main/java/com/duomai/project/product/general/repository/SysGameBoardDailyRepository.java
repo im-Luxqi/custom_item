@@ -19,4 +19,6 @@ public interface SysGameBoardDailyRepository extends BaseRepository<SysGameBoard
      * @return
      */
     SysGameBoardDaily findFirstByBuyerNickAndCreateTimeString(String buyerNick, String requestStartTimeString);
+
+    void deleteByBuyerNick(String buyerNick);
 }

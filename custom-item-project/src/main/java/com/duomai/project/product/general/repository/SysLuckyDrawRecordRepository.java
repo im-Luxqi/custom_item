@@ -16,20 +16,12 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
 
     /**
      * 是否抽过相关奖品
+     *
      * @param buyerNick
      * @param luckyChance
      * @return
      */
     long countByPlayerBuyerNickAndLuckyChance(String buyerNick, String luckyChance);
-
-
-
-
-
-
-
-
-
 
 
     /**
@@ -50,7 +42,7 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
      */
     @Query(nativeQuery = true,
             value = "select award_name as awardName,player_buyer_nick as playerBuyerNick from sys_lucky_draw_record " +
-                    "where award_type in ('COUPON','GOODS')  and  is_win = 1 order by exchange_time desc limit 20")
+                    "where award_type in ('COUPON','GOODS')  and  is_win = 1 order by draw_time desc limit 20")
     List<Map> queryExchangeLog();
 
     /**
@@ -66,7 +58,9 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
     List<SysLuckyDrawRecord> queryMybag(String buyernick);
 
 
-    /** 消耗 被兑换的商品
+    /**
+     * 消耗 被兑换的商品
+     *
      * @param ids
      * @param exchangeTime
      * @return
@@ -91,7 +85,6 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
      * @return
      */
     long countByPlayerBuyerNickAndAwardIdAndIsWinAndHaveExchange(String buyerNick, String awardId, Integer isWin, Integer haveExchange);
-
 
 
     /**

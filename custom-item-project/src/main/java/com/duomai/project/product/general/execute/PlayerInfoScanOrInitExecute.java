@@ -91,6 +91,7 @@ public class PlayerInfoScanOrInitExecute implements IApiExecute {
                     .setFirstGameLamp(BooleanConstant.BOOLEAN_YES)
                     .setFirstGameTent(BooleanConstant.BOOLEAN_YES)
                     .setFirstGameDog(BooleanConstant.BOOLEAN_YES)
+                    .setBearQuestionChance(2)
             );
         } else {
             //最后一天
@@ -166,6 +167,7 @@ public class PlayerInfoScanOrInitExecute implements IApiExecute {
                         .setFirstGameLamp(firstLamp)
                         .setFirstGameTent(firstTent)
                         .setFirstGameDog(firstDog)
+                        .setBearQuestionChance(2)
                 );
             }
         }
@@ -180,19 +182,13 @@ public class PlayerInfoScanOrInitExecute implements IApiExecute {
         resultMap.put("only_go_party3", lastDay);
         resultMap.put("can_go_party", sysCustom.getPlayParty());
         resultMap.put("current_action", sysCustom.getCurrentAction());
-        resultMap.put("first_play_snowman", daily.getFirstGameSnowman().equals(BooleanConstant.BOOLEAN_YES));
-        resultMap.put("first_play_penguin", daily.getFirstGamePenguin().equals(BooleanConstant.BOOLEAN_YES));
-        resultMap.put("first_play_Bear", daily.getFirstGameBear().equals(BooleanConstant.BOOLEAN_YES));
-        resultMap.put("first_play_Lamp", daily.getFirstGameLamp().equals(BooleanConstant.BOOLEAN_YES));
-        resultMap.put("first_play_Tent", daily.getFirstGameTent().equals(BooleanConstant.BOOLEAN_YES));
-        resultMap.put("first_play_Dog", daily.getFirstGameDog().equals(BooleanConstant.BOOLEAN_YES));
         return YunReturnValue.ok(resultMap, "获取玩家信息," +
                 "【提示：】" +
                 "\nhave_authorization = false ---> 表示尚未授权,默认没有头像,真实昵称为未授权" +
                 "\nonly_go_party3 =  true  ---> 表示当前活动处于最后一天，所有玩家只展示 场景3，优先级大于玩家自身权限" +
                 "\ncan_go_party ---> 表示玩家的场景权限,三种返回值（party1）(party1,party2)(party1,party2,party3)" +
-                "\ncurrent_action ---> 表示玩家跟随指引的进度" +
-                "\nfirst_play_snowman = true ---> 表示玩家首次或尚未与雪人互动过，第一天与雪人互动"
+                "\ncurrent_action ---> 表示玩家跟随指引的进度"+
+                "\n"
         );
     }
 }

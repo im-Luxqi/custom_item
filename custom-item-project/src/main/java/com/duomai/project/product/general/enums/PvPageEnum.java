@@ -10,6 +10,7 @@ import com.duomai.common.base.enums.IEnum;
  * @date 2020-08-28 11:21
  */
 public enum PvPageEnum implements IEnum {
+    PAGE_INDEX("PAGE_INDEX", "首页"),
     PAGE_PARTY1("PAGE_PARTY1", "场景1"),
     PAGE_PARTY2("PAGE_PARTY2", "场景2"),
     PAGE_PARTY3("PAGE_PARTY3", "场景3"),

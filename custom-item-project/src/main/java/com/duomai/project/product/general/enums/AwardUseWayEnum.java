@@ -16,8 +16,10 @@ public enum AwardUseWayEnum implements IEnum {
     SPECIAL_SIX("SPECIAL_SIX", "特殊6号奶瓶"),
 
 
-    POOL("POOL", "奖池"),
-    TENT("TENT", "帐篷")
+    PENGUIN("PENGUIN", "企鹅奖池"),
+    PARTY2("PARTY2", "party2开场奖池"),
+    POOL("POOL", "一般奖池"),
+    TENT("TENT", "帐篷奖池"),
     ;
     private final String code;
     private final String descp;

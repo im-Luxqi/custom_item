@@ -81,9 +81,8 @@ public class GameIndexLoadExecute implements IApiExecute {
         sysPagePvLogRepository.save(new SysPagePvLog()
                 .setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
                 .setCreateTime(sysParm.getRequestStartTime())
-                .setId(sysParm.getApiParameter().getCommomParameter().getIp()))
-//                .setPage(PvPageEnum.PAGE_INDEX))
-        ;
+                .setId(sysParm.getApiParameter().getCommomParameter().getIp()).setPage(PvPageEnum.PAGE_INDEX)
+        );
 
         boolean actLive = projectHelper.actTimeValidateFlag();
         if (actLive) {
@@ -146,8 +145,9 @@ public class GameIndexLoadExecute implements IApiExecute {
                         resultMap.put("alter_for_invitee_pic", successPic);
                         resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
 
-                        if(BooleanConstant.BOOLEAN_NO.equals(syscustom.getHaveInviteFriend())){
-
+                        if (BooleanConstant.BOOLEAN_NO.equals(syscustom.getHaveInviteFriend())) {
+                            syscustom.setHaveInviteFriend(BooleanConstant.BOOLEAN_YES);
+                            syscustom = sysCustomRepository.save(syscustom);
                         }
                     }
                 }
@@ -156,33 +156,16 @@ public class GameIndexLoadExecute implements IApiExecute {
                     sysTaskInviteLogRepository.save(sysTaskInviteLog);
                 }
             }
-
-            //首次登录游戏免费送一次
-//            long l = luckyDrawHelper.countLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.FREE);
-//            if (l == 0) {
-//                luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.FREE, 1,
-//                        "首次登录", "首次登录，获得" + 1 + "次游戏机会");
-//            }
         }
-
 
         //1.活动规则
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         resultMap.put("game_rule", actBaseSettingDto);
         //2.星愿值
-        resultMap.put("star_value", syscustom.getStarValue());
-        //3.场景权限
-        boolean lastDay = sysParm.getRequestStartTime().after(actBaseSettingDto.getActLastTime());
-        resultMap.put("only_go_scene3", lastDay);
-//        resultMap.put("can_go_scene", syscustom.getPlayScene());
-        //4.兑换弹幕
-        resultMap.put("lucky_barrage", sysLuckyDrawRecordRepository.queryExchangeLog());
-
-
-        return YunReturnValue.ok(resultMap, "游戏首页" +
-                "\nonly_go_scene3 =  true  ---> 表示当前活动处于最后一天，所有玩家只展示 场景3，优先级大于玩家自身权限" +
-                "\ncan_go_scene ---> 表示玩家的场景权限,三种返回值（party1）(party1,party2)(party1,party2,party3)"
-        );
+        resultMap.put("total_star_value", syscustom.getStarValue());
+        //2.兑换弹幕
+        resultMap.put("lucky_barrage", luckyDrawHelper.luckyBarrage());
+        return YunReturnValue.ok(resultMap, "游戏门头");
     }
 }
 

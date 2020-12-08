@@ -9,7 +9,9 @@ import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
-import com.duomai.project.product.general.repository.*;
+import com.duomai.project.product.general.repository.SysCustomRepository;
+import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -63,15 +65,27 @@ public class GameOpenLuckyBoxExecute implements IApiExecute {
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
 
+        AwardUseWayEnum useWay = null;
 
-        long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChance(buyerNick, awardPlace);
-        Assert.isTrue(l == 0, "仅限一次");
+        //企鹅奖品
+        if ("award_penguin".equals(awardPlace)) {
+            useWay = AwardUseWayEnum.PENGUIN;
+        }
+        //party2开场奖品
+        if ("award_party2".equals(awardPlace)) {
+            useWay = AwardUseWayEnum.PARTY2;
+        }
+        //帐篷奖品
+        if ("award_tent".equals(awardPlace)) {
+            useWay = AwardUseWayEnum.TENT;
+        }
 
-
-        List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWay("award_tent".equals(awardPlace) ? AwardUseWayEnum.TENT : AwardUseWayEnum.POOL);
-        SysSettingAward winAward = luckyDrawHelper.luckyDraw(awards, syscustom, requestStartTime, awardPlace);
-        /*只反馈有效数据*/
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
+        long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChance(buyerNick, useWay.getValue());
+        Assert.isTrue(l == 0, "仅限一次");
+        List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWay(useWay);
+        SysSettingAward winAward = luckyDrawHelper.luckyDraw(awards, syscustom, requestStartTime, useWay.getValue());
+        /*只反馈有效数据*/
         resultMap.put("win", !Objects.isNull(winAward));
         resultMap.put("award", winAward);
         if (!Objects.isNull(winAward)) {
@@ -85,7 +99,6 @@ public class GameOpenLuckyBoxExecute implements IApiExecute {
                     .setType(null)
                     .setPoolLevel(null);
         }
-
         return YunReturnValue.ok(resultMap, "开礼盒");
     }
 }

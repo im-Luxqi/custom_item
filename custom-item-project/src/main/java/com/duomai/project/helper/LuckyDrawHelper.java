@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.api.taobao.enums.TaoBaoSendCouponStatus;
+import com.duomai.project.configuration.annotation.JoinMemcache;
 import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
@@ -331,9 +332,10 @@ public class LuckyDrawHelper {
      * @time 2020-11-08 19:13:48
      */
     @Transactional
-    public void directSendCoupon(SysSettingAward award, SysCustom custom, Date sendTime) {
+    public boolean directSendCoupon(SysSettingAward award, SysCustom custom, Date sendTime, String remark) {
         Assert.isTrue(sysSettingAwardRepository.tryReduceOne(award.getId()) > 0, "奖品库存库存不足");
         /*整理抽奖日志*/
+        boolean success = true;
         SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord()
                 .setIsWin(BooleanConstant.BOOLEAN_YES)
                 .setIsFill(BooleanConstant.BOOLEAN_NO)
@@ -343,10 +345,9 @@ public class LuckyDrawHelper {
                 .setPlayerZnick(custom.getZnick())
                 .setAwardId(award.getId())
                 .setAwardImg(award.getImg())
-//                .setAwardLevel(award.getAwardLevel())
                 .setAwardName(award.getName())
                 .setAwardType(award.getType())
-                .setRemark("邀请五个好友发放优惠券");
+                .setRemark(remark);
 
         try {
             AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon(custom.getOpenId(), award.getEname());
@@ -355,13 +356,16 @@ public class LuckyDrawHelper {
                 drawRecord.setSendError("发放优惠券失败：-->" + alibabaBenefitSendResponse.getResultCode() + ":-->" + alibabaBenefitSendResponse.getResultMsg());
                 drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO);
             }
+            success = false;
         } catch (Exception e) {
             e.printStackTrace();
             //发放异常
             drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO);
             drawRecord.setSendError("发放优惠券异常：" + e.getMessage());
+            success = false;
         }
         sysLuckyDrawRecordRepository.save(drawRecord);
+        return success;
     }
 
     /**
@@ -524,9 +528,6 @@ public class LuckyDrawHelper {
     }
 
 
-
-
-
     @Transactional
     public SysSettingAward luckyDraw(List<SysSettingAward> awards, SysCustom custom, Date drawTime, String chance) throws Exception {
         //本次抽中的奖品
@@ -551,7 +552,7 @@ public class LuckyDrawHelper {
             AtomicReference<Integer> historyGoodsHasGetAto = new AtomicReference<>(0);
             if (CollectionUtils.isNotEmpty(historyWin)) {
                 historyWin.forEach((record) -> {
-                     //实物
+                    //实物
                     if (AwardTypeEnum.GOODS.equals(record.getAwardType())) {
                         historyGoodsHasGetAto.updateAndGet(v -> v + 1);
                     }
@@ -665,6 +666,12 @@ public class LuckyDrawHelper {
     }
 
 
-
-
+    /**
+     * 弹幕
+     * @return
+     */
+    @JoinMemcache()
+    public Object luckyBarrage() {
+        return sysLuckyDrawRecordRepository.queryExchangeLog();
+    }
 }

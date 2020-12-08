@@ -6,4 +6,5 @@ import com.duomai.project.product.general.entity.SysGameLog;
 
 public interface SysGameLogRepository extends BaseRepository<SysGameLog, String> {
 
+    void deleteByBuyerNick(String buyerNick);
 }

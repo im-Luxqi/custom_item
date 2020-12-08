@@ -2,6 +2,7 @@ package com.duomai.project.product.mengniuwawaji.execute;
 
 import cn.hutool.core.lang.Assert;
 import com.duomai.common.base.execute.IApiExecute;
+import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.ProjectHelper;
@@ -19,16 +20,17 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 /**
- * 场景1 白熊 答题正确
+ * 场景2 点灯
  *
  * @author 王星齐
  * @description
  * @create 2020/11/18 18:14
  */
 @Component
-public class GameBearAnswerWinExecute implements IApiExecute {
+public class GamePlayLampExecute implements IApiExecute {
 
     @Autowired
     private SysCustomRepository sysCustomRepository;
@@ -43,6 +45,8 @@ public class GameBearAnswerWinExecute implements IApiExecute {
     private SysGameLogRepository sysGameLogRepository;
     @Autowired
     private SysGameBoardDailyRepository sysGameBoardDailyRepository;
+    @Autowired
+    private SysTaskShareLogRepository sysTaskShareLogRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -55,18 +59,25 @@ public class GameBearAnswerWinExecute implements IApiExecute {
         Assert.notNull(syscustom, "无效的玩家");
 
         SysGameBoardDaily todayGameBoard = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
-        Assert.isTrue(todayGameBoard.getGameSnowman() == 0, "每天送一次哦");
+        Assert.isTrue(todayGameBoard.getGameLamp() == 0, "每天玩一次哦");
+
+
+        //首次点灯
+        if (todayGameBoard.getFirstGameLamp().equals(BooleanConstant.BOOLEAN_YES)) {
+            long l = sysTaskShareLogRepository.countByMixSharer(buyerNick);
+            Assert.isTrue(l >= 3, "分享3位好友");
+        }
 
 
         //2.发放星愿，更新活动进度
-        syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.snowman_xingyuan);
-        if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_snowman)) {
-            syscustom.setCurrentAction(PlayActionEnum.playwith_penguin);
+        syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.lamp_xingyuan);
+        if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_lamp)) {
+            syscustom.setCurrentAction(PlayActionEnum.playwith_dog);
         }
         sysCustomRepository.save(syscustom);
 
         //3.增加今日互动次数
-        todayGameBoard.setGameSnowman(todayGameBoard.getGameSnowman() + 1);
+        todayGameBoard.setGameLamp(todayGameBoard.getGameLamp() + 1);
         sysGameBoardDailyRepository.save(todayGameBoard);
 
         //4.记录互动日志
@@ -74,9 +85,13 @@ public class GameBearAnswerWinExecute implements IApiExecute {
                 .setBuyerNick(buyerNick)
                 .setCreateTime(requestStartTime)
                 .setCreateTimeString(requestStartTimeString)
-                .setPartner(PlayPartnerEnum.snowman)
+                .setPartner(PlayPartnerEnum.lamp)
         );
-        return YunReturnValue.ok("白熊 答题正确");
+
+        LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
+        //2.星愿值
+        resultMap.put("total_star_value", syscustom.getStarValue());
+        return YunReturnValue.ok(resultMap,"和灯玩");
     }
 }
 

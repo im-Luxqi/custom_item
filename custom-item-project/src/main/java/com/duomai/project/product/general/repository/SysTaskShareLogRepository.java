@@ -28,7 +28,7 @@ public interface SysTaskShareLogRepository extends BaseRepository<SysTaskShareLo
      * @param shareTime
      * @return
      */
-    long countByMixSharerdAndShareTime(String mixSharer,String shareTime);
+    long countByMixSharerAndShareTime(String mixSharer,String shareTime);
 
 
     /**
@@ -51,4 +51,6 @@ public interface SysTaskShareLogRepository extends BaseRepository<SysTaskShareLo
 
     @Transactional
     void deleteByMixShareder(String buyerNick);
+
+    long countByMixSharer(String buyerNick);
 }

@@ -27,14 +27,14 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 
 /**
- * 场景1 load
+ * 场景2 load
  *
  * @author 王星齐
  * @description
  * @create 2020/11/18 18:14
  */
 @Component
-public class GameIndexParty1Execute implements IApiExecute {
+public class GameIndexParty2Execute implements IApiExecute {
 
     @Autowired
     private SysCustomRepository sysCustomRepository;
@@ -65,30 +65,32 @@ public class GameIndexParty1Execute implements IApiExecute {
                 .setBuyerNick(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())
                 .setCreateTime(sysParm.getRequestStartTime())
                 .setId(sysParm.getApiParameter().getCommomParameter().getIp())
-                .setPage(PvPageEnum.PAGE_PARTY1));
+                .setPage(PvPageEnum.PAGE_PARTY2));
 
 
         ActBaseSettingDto actSetting = projectHelper.actBaseSettingFind();
 
-        long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChance(buyerNick, AwardUseWayEnum.PENGUIN.getValue());
+        long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChance(buyerNick, AwardUseWayEnum.PARTY2.getValue());
+        long l2 = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChance(buyerNick, AwardUseWayEnum.TENT.getValue());
         SysGameBoardDaily daily = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
 
 
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
+        //1.是否开启过礼盒
+        resultMap.put("have_open_award_party2", l > 0);
+        resultMap.put("have_open_award_tent", l2 > 0);
+//        resultMap.put("get_letter_party2", syscustom.getCurrentAction().equals(PlayActionEnum.letter_party2));
+//        resultMap.put("first_play_Tent", daily.getFirstGameTent().equals(BooleanConstant.BOOLEAN_YES));
+        resultMap.put("first_play_Lamp", daily.getFirstGameLamp().equals(BooleanConstant.BOOLEAN_YES));
+        resultMap.put("first_play_Dog", daily.getFirstGameDog().equals(BooleanConstant.BOOLEAN_YES));
+
+
+
         //2.星愿值
         resultMap.put("total_star_value", syscustom.getStarValue());
-        //1.是否开启过礼盒
-        resultMap.put("have_open_award_penguin", l > 0);
-        resultMap.put("get_letter_party2", syscustom.getCurrentAction().equals(PlayActionEnum.letter_party2));
-        resultMap.put("first_play_snowman", daily.getFirstGameSnowman().equals(BooleanConstant.BOOLEAN_YES));
-        resultMap.put("first_play_penguin", daily.getFirstGamePenguin().equals(BooleanConstant.BOOLEAN_YES));
-        resultMap.put("first_play_Bear", daily.getFirstGameBear().equals(BooleanConstant.BOOLEAN_YES));
-
-
-
-        return YunReturnValue.ok(resultMap, "场景1" +
-                "\nget_letter_party2 = true ---> 表示玩家得到邀请函，尚未开启" +
-                "\nfirst_play_snowman = true ---> 表示玩家首次或尚未与雪人互动过，第一天与雪人互动,first_play_penguin,first_play_Bear同理"
+        return YunReturnValue.ok(resultMap, "场景2" +
+                "\nhave_open_award_party2 = true ---> 表示玩家已经开过场景2开场礼盒" +
+                "\nhave_open_award_tent = true ---> 表示玩家已经开过帐篷礼盒"
         );
     }
 }

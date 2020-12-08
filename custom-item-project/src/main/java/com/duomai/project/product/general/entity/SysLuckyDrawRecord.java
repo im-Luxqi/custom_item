@@ -51,7 +51,7 @@ public class SysLuckyDrawRecord {
     @Column(nullable = false, columnDefinition = "int(1) COMMENT '是否填写地址'")
     private Integer isFill;
 
-    @Column(columnDefinition = "varchar(15) COMMENT '收件人昵称'")
+    @Column(columnDefinition = "varchar(20) COMMENT '收件人昵称'")
     private String receviceName;
     @Column(columnDefinition = "varchar(64) COMMENT '收件人电话'")
     private String recevicePhone;

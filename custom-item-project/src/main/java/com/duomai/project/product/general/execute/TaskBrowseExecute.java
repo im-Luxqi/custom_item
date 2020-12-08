@@ -8,14 +8,12 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
-import com.duomai.project.product.general.entity.SysCustom;
-import com.duomai.project.product.general.entity.SysSettingCommodity;
-import com.duomai.project.product.general.entity.SysTaskBrowseLog;
-import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
-import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
-import com.duomai.project.product.general.repository.SysSettingCommodityRepository;
-import com.duomai.project.product.general.repository.SysTaskBrowseLogRepository;
+import com.duomai.project.product.general.entity.*;
+import com.duomai.project.product.general.enums.AwardUseWayEnum;
+import com.duomai.project.product.general.enums.CoachConstant;
+import com.duomai.project.product.general.enums.PlayActionEnum;
+import com.duomai.project.product.general.enums.PlayPartnerEnum;
+import com.duomai.project.product.general.repository.*;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +23,9 @@ import org.springframework.util.CollectionUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @内容：任务页面 浏览商品操作
@@ -47,15 +47,23 @@ public class TaskBrowseExecute implements IApiExecute {
     private ProjectHelper projectHelper;
     @Autowired
     private LuckyDrawHelper luckyDrawHelper;
+    @Autowired
+    private SysSettingAwardRepository sysSettingAwardRepository;
+    @Autowired
+    private SysGameBoardDailyRepository sysGameBoardDailyRepository;
+    @Autowired
+    private SysGameLogRepository sysGameLogRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         /*1.校验*/
         //活动只能再活动期间
-        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         projectHelper.actTimeValidate();
+        ActBaseSettingDto actSetting = projectHelper.actBaseSettingFind();
         //校验传参
+        Date requestStartTime = sysParm.getRequestStartTime();
+        String requestStartTimeString = CommonDateParseUtil.date2string(requestStartTime, "yyyy-MM-dd");
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         Long numId = jsonObjectAdmjson.getLong("numId");
         Assert.notNull(numId, "商品id不能为空");
@@ -65,7 +73,6 @@ public class TaskBrowseExecute implements IApiExecute {
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
-        Assert.isTrue(BooleanConstant.BOOLEAN_YES.equals(syscustom.getHaveAuthorization()), "请先授权");
 
 
         /*2.记录浏览日志*/
@@ -89,18 +96,66 @@ public class TaskBrowseExecute implements IApiExecute {
                     .setBrowseTime(CommonDateParseUtil.date2string(today, "yyyy-MM-dd"))
                     .setNumId(numId));
             todayHasBrowseLogs.add(thisBrowse);
+
+
+            //浏览，每日前3次发放星愿，最后一天前10次
+            long limit = requestStartTime.after(actSetting.getActLastTime()) ? CoachConstant.browse_limit_count_last : CoachConstant.browse_limit_count;
+            Integer winStar = requestStartTime.after(actSetting.getActLastTime()) ? CoachConstant.browse_xingyuan_last : CoachConstant.browse_xingyuan;
+            if (todayHasBrowseLogs.size() <= limit) {
+                syscustom.setHaveBrowseGoods(BooleanConstant.BOOLEAN_YES);
+                syscustom.setStarValue(syscustom.getStarValue() + winStar);
+                syscustom = sysCustomRepository.save(syscustom);
+            }
         }
 
 
-        //浏览送抽奖机会
-        long l = luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.BROWSE);
-//        Integer taskBrowseShouldSee = actBaseSettingDto.getTaskBrowseShouldSee();
-        Integer taskBrowseShouldSee = 0;
-        if (l == 0 && taskBrowseShouldSee.equals(todayHasBrowseLogs.size())) {
-            luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.BROWSE, 1,
-                    "浏览", "每日浏览，获得" + 1 + "次游戏机会");
-        }
+        SysSettingAward winAward = null;
+        //第三次浏览抽奖
+        Integer taskBrowseShouldSee = 3;
+        boolean get_letter_party3 = false;
+        SysGameBoardDaily todayGameBoard = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
+        if (todayGameBoard.getGameDog() == 0 && taskBrowseShouldSee.equals(todayHasBrowseLogs.size())) {
+            //抽奖
+            List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.POOL);
+            winAward = luckyDrawHelper.luckyDraw(awards, syscustom, sysParm.getRequestStartTime(), "_dog");
+            todayGameBoard.setGameDog(todayGameBoard.getGameDog() + 1);
+            sysGameBoardDailyRepository.save(todayGameBoard);
 
-        return YunReturnValue.ok("浏览成功!");
+
+            //2.发放星愿，更新活动进度
+            syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.dog_xingyuan);
+            if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_dog)) {
+                syscustom.setCurrentAction(PlayActionEnum.letter_party3);
+                get_letter_party3 = true;
+            }
+            sysCustomRepository.save(syscustom);
+
+            //4.记录互动日志
+            sysGameLogRepository.save(new SysGameLog()
+                    .setBuyerNick(buyerNick)
+                    .setCreateTime(requestStartTime)
+                    .setCreateTimeString(requestStartTimeString)
+                    .setPartner(PlayPartnerEnum.dog));
+
+        }
+        /*只反馈有效数据*/
+        LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
+        resultMap.put("win", !Objects.isNull(winAward));
+        resultMap.put("award", winAward);
+        resultMap.put("get_letter_party3", get_letter_party3);
+        if (!Objects.isNull(winAward)) {
+            winAward.setEname(null)
+                    .setId(null)
+                    .setRemainNum(null)
+                    .setSendNum(null)
+                    .setTotalNum(null)
+                    .setLuckyValue(null)
+                    .setUseWay(null)
+                    .setType(null)
+                    .setPoolLevel(null);
+        }
+        //2.星愿值
+        resultMap.put("total_star_value", syscustom.getStarValue());
+        return YunReturnValue.ok(resultMap, "浏览成功!");
     }
 }

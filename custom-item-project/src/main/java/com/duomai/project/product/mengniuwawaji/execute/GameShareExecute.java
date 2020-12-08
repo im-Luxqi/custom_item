@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 /**
  * 分享
@@ -53,24 +54,17 @@ public class GameShareExecute implements IApiExecute {
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         String sharePlace = jsonObjectAdmjson.getString("sharePlace");
         org.springframework.util.Assert.hasLength(sharePlace, "分享地点sharePlace不能为空，" +
-                "可选值[share_bear,share_tent,share_other]");
+                "可选值[share_bear,share_lamp,share_other]");
         org.springframework.util.Assert.isTrue("share_bear".equals(sharePlace) ||
-                "share_tent".equals(sharePlace) ||
+                "share_lamp".equals(sharePlace) ||
                 "share_other".equals(sharePlace), "无效的奖品位置");
 
 
-        /*1.校验是否存在玩家*/
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         Date requestStartTime = sysParm.getRequestStartTime();
         String requestStartTimeString = CommonDateParseUtil.date2string(requestStartTime, "yyyy-MM-dd");
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
-
-        SysGameBoardDaily todayGameBoard = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
-        Assert.isTrue(todayGameBoard.getGameSnowman() == 0, "每天送一次哦");
-        ActBaseSettingDto actSetting = projectHelper.actBaseSettingFind();
-
-
         //记录分享日志
         sysTaskShareLogRepository.save(new SysTaskShareLog()
                 .setSharer(buyerNick)
@@ -79,8 +73,11 @@ public class GameShareExecute implements IApiExecute {
                 .setRemark(sharePlace)
         );
 
-        //发放星愿,分平时和最后一天
-        long l = sysTaskShareLogRepository.countByMixSharerdAndShareTime(buyerNick, requestStartTimeString);
+        ActBaseSettingDto actSetting = projectHelper.actBaseSettingFind();
+
+
+        //分享，每日前3次发放星愿，最后一天前10次
+        long l = sysTaskShareLogRepository.countByMixSharerAndShareTime(buyerNick, requestStartTimeString);
         long limit = requestStartTime.after(actSetting.getActLastTime()) ? CoachConstant.share_limit_count_last : CoachConstant.share_limit_count;
         Integer winStar = requestStartTime.after(actSetting.getActLastTime()) ? CoachConstant.share_xingyuan_last : CoachConstant.share_xingyuan;
         if (l <= limit) {
@@ -88,8 +85,18 @@ public class GameShareExecute implements IApiExecute {
             sysCustomRepository.save(syscustom);
         }
 
+        //分享给熊加一次游戏机会
+        if("share_bear".equals(sharePlace)){
+            SysGameBoardDaily todayGameBoard = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
+            //增加与白熊答题机会
+            todayGameBoard.setBearQuestionChance(todayGameBoard.getBearQuestionChance() + 1);
+            sysGameBoardDailyRepository.save(todayGameBoard);
+        }
 
-        return YunReturnValue.ok("分享");
+        LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
+        //2.星愿值
+        resultMap.put("total_star_value", syscustom.getStarValue());
+        return YunReturnValue.ok(resultMap,"记录分享日志");
     }
 }
 

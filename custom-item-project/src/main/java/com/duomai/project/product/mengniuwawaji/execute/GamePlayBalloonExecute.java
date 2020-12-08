@@ -9,9 +9,10 @@ import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysGameBoardDaily;
 import com.duomai.project.product.general.entity.SysGameLog;
 import com.duomai.project.product.general.enums.CoachConstant;
-import com.duomai.project.product.general.enums.PlayActionEnum;
 import com.duomai.project.product.general.enums.PlayPartnerEnum;
-import com.duomai.project.product.general.repository.*;
+import com.duomai.project.product.general.repository.SysCustomRepository;
+import com.duomai.project.product.general.repository.SysGameBoardDailyRepository;
+import com.duomai.project.product.general.repository.SysGameLogRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,22 +23,17 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 
 /**
- * 场景1 和雪人玩
+ * 场景2 和气球玩
  *
  * @author 王星齐
  * @description
  * @create 2020/11/18 18:14
  */
 @Component
-public class GamePlaySnowmanExecute implements IApiExecute {
+public class GamePlayBalloonExecute implements IApiExecute {
 
     @Autowired
     private SysCustomRepository sysCustomRepository;
-
-    @Autowired
-    private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
-    @Autowired
-    private SysPagePvLogRepository sysPagePvLogRepository;
     @Autowired
     private ProjectHelper projectHelper;
     @Autowired
@@ -56,18 +52,15 @@ public class GamePlaySnowmanExecute implements IApiExecute {
         Assert.notNull(syscustom, "无效的玩家");
 
         SysGameBoardDaily todayGameBoard = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
-        Assert.isTrue(todayGameBoard.getGameSnowman() == 0, "每天玩一次哦");
+        Assert.isTrue(todayGameBoard.getGameBalloon() == 0, "每天玩一次哦");
 
 
         //2.发放星愿，更新活动进度
-        syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.snowman_xingyuan);
-        if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_snowman)) {
-            syscustom.setCurrentAction(PlayActionEnum.playwith_penguin);
-        }
+        syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.balloon_xingyuan);
         sysCustomRepository.save(syscustom);
 
         //3.增加今日互动次数
-        todayGameBoard.setGameSnowman(todayGameBoard.getGameSnowman() + 1);
+        todayGameBoard.setGameBalloon(todayGameBoard.getGameBalloon() + 1);
         sysGameBoardDailyRepository.save(todayGameBoard);
 
         //4.记录互动日志
@@ -75,13 +68,12 @@ public class GamePlaySnowmanExecute implements IApiExecute {
                 .setBuyerNick(buyerNick)
                 .setCreateTime(requestStartTime)
                 .setCreateTimeString(requestStartTimeString)
-                .setPartner(PlayPartnerEnum.snowman)
+                .setPartner(PlayPartnerEnum.balloon)
         );
-
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         //2.星愿值
         resultMap.put("total_star_value", syscustom.getStarValue());
-        return YunReturnValue.ok(resultMap,"和雪人玩");
+        return YunReturnValue.ok(resultMap,"和气球玩");
     }
 }
 

@@ -9,6 +9,7 @@ import com.duomai.project.product.mengniuwawaji.domain.CusOrderInfo;
 import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +58,16 @@ public class TestKillChanceExecute implements IApiExecute {
     private ICusOrderInfoService cusOrderInfoService;
 
 
+    @Autowired
+    private SysGameLogRepository sysGameLogRepository;
+
+
+    @Autowired
+    private SysGameBoardDailyRepository sysGameBoardDailyRepository;
+
+
     @Override
+    @Transactional
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         //todo:wxq
@@ -65,8 +75,6 @@ public class TestKillChanceExecute implements IApiExecute {
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         String buyerNick = jsonObjectAdmjson.getString("buyerNick");
         Assert.hasLength(buyerNick, "buyerNick不能为空");
-
-
         sysCustomRepository.deleteByBuyerNick(buyerNick);
         sysLuckyChanceRepository.deleteByBuyerNick(buyerNick);
         sysLuckyDrawRecordRepository.deleteByPlayerBuyerNick(buyerNick);
@@ -79,8 +87,10 @@ public class TestKillChanceExecute implements IApiExecute {
         sysTaskShareLogRepository.deleteByMixSharer(buyerNick);
         sysTaskSignLogRepository.deleteByBuyerNick(buyerNick);
 
-        cusOrderInfoService.delete().eq(CusOrderInfo::getBuyerNick, buyerNick);
+        sysGameLogRepository.deleteByBuyerNick(buyerNick);
+        sysGameBoardDailyRepository.deleteByBuyerNick(buyerNick);
 
+        cusOrderInfoService.delete().eq(CusOrderInfo::getBuyerNick, buyerNick);
         return YunReturnValue.ok("恭喜【" + buyerNick + "】被kill");
     }
 }

@@ -31,93 +31,89 @@ public class QLApiExecuteHandler {
 //        map.put("wx.dz.common.test.luckyChance", TestLuckyChanceExecute.class);
 
         //测试阶段专用 --kill wxq
-//        map.put("wx.dz.common.test.kill", TestKillChanceExecute.class);
-
+        map.put("wx.dz.common.test.kill", TestKillChanceExecute.class);
 
         //1.玩家信息扫描，首次完成初始化操作 wxq
         map.put("wx.dz.common.playerInfo.scan", PlayerInfoScanOrInitExecute.class);
-        //2.0 场景1 load
-        map.put("wx.dz.game.index.load.party1", GameIndexParty1Execute.class);
+        //授权成功后，完善用户信息 wxq
+        map.put("wx.dz.common.playerInfo.fill.afterAuthorization", PlayerInfoFillForAfterAuthorizationExecute.class);
+        //2 首页load
+        map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
+        //party1 load
+        map.put("wx.dz.game.party1.load", GameIndexParty1Execute.class);
         //2.1 场景1 和雪人玩
         map.put("wx.dz.game.party1.play.snowman", GamePlaySnowmanExecute.class);
         //2.2 场景1 和企鹅玩
         map.put("wx.dz.game.party1.play.penguin", GamePlayPenguinExecute.class);
         //2.3  开礼盒
         map.put("wx.dz.game.party.open.luckyBox", GameOpenLuckyBoxExecute.class);
-
-
-
-
-        //2.4  白熊 获取三道新题目
-        map.put("wx.dz.game.party1.bear.threeQuestion", GameBearGetThreeQuestionExecute.class);
-        //2.5  白熊 增加答题次数
-        map.put("wx.dz.game.party1.bear.addChance", GameBearAddChanceExecute.class);
-        //2.6  白熊 答题正确
-        map.put("wx.dz.game.party1.bear.answerWin", GameBearAnswerWinExecute.class);
         //2.7  分享
         map.put("wx.dz.game.party.share", GameShareExecute.class);
-        //2.8  使用邀请函
-        map.put("wx.dz.game.party.share", GameShareExecute.class);
-        //2.9  点灯
-        map.put("wx.dz.game.party.share", GameShareExecute.class);
+        //2.4  白熊 获取三道新题目
+        map.put("wx.dz.game.party1.bear.threeQuestion", GameBearGetThreeQuestionExecute.class);
+        //2.6  白熊 答题
+        map.put("wx.dz.game.party1.bear.answer", GameBearAnswerExecute.class);
+        //2.8  使用 letter_party2邀请函
+        map.put("wx.dz.game.party1.use.letterParty2", GameUseLetterParty2Execute.class);
+        //party2 load
+        map.put("wx.dz.game.party2.load", GameIndexParty2Execute.class);
+        //2.9  场景2 点灯
+        map.put("wx.dz.game.party2.play.lamp", GamePlayLampExecute.class);
         //3.0  狗 浏览商品列表
-        map.put("wx.dz.game.party.share", GameShareExecute.class);
+        map.put("wx.dz.game.party2.play.dog.goodsList", ShowBrowseListExecute.class);
         //3.1  狗 浏览
-        map.put("wx.dz.game.party.share", GameShareExecute.class);
-
-        //3.2  与气球互动
-        map.put("wx.dz.game.party.share", GameShareExecute.class);
+        map.put("wx.dz.game.party2.play.dog.browse", TaskBrowseExecute.class);
 
 
+        //2.8  使用 letter_party3邀请函
+        map.put("wx.dz.game.party2.use.letterParty3", GameUseLetterParty3Execute.class);
 
 
-        //规则,星愿值，弹幕
-        //pv
-        //我的奖品
-        //填写地址
-//入会任务
+        //3.2  场景2 和气球玩
+        map.put("wx.dz.game.party2.play.balloon", GamePlayBalloonExecute.class);
 
+        //我的奖品 wxq
+        map.put("wx.dz.common.luckyBag.win", LuckyBagAllWinExecute.class);
+        //留资料 wxq
+        map.put("wx.dz.common.luckyBag.win.address", LuckyBagFillAwardAddressExecute.class);
+        //入会任务
 
+        //任务--成为会员
+        map.put("wx.dz.game.task.member", TaskMemberExecute.class);
 
-
-
-
-
-
-
-
-        //2.游戏首页 加载
-        map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
         //3.游戏首页 小彩蛋
         map.put("wx.dz.game.index.egg", GameIndexEggExecute.class);
 
+
+        //2.游戏首页 加载
+//        map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
+
+
         //1.进入场景1
-        map.put("wx.dz.go.snowman", PlayerInfoScanOrInitExecute.class);
+//        map.put("wx.dz.go.snowman", PlayerInfoScanOrInitExecute.class);
         //1.为雪人带上节日围巾
-        map.put("wx.dz.play.snowman", PlayerInfoScanOrInitExecute.class);
+//        map.put("wx.dz.play.snowman", PlayerInfoScanOrInitExecute.class);
 
 
         //补全字段history_follow  wxq
-        map.put("wx.dz.common.playerInfo.fill.historyFollow", PlayerInfoFillForHistroyFollowExecute.class);
-        //授权成功后，完善用户信息 wxq
-        map.put("wx.dz.common.playerInfo.fill.afterAuthorization", PlayerInfoFillForAfterAuthorizationExecute.class);
+//        map.put("wx.dz.common.playerInfo.fill.historyFollow", PlayerInfoFillForHistroyFollowExecute.class);
 
         //玩家入会状态 wxq
-        map.put("wx.dz.common.playerInfo.member.state", CustomMemberExecute.class);
+//        map.put("wx.dz.common.playerInfo.member.state", CustomMemberExecute.class);
 
         /**
          * 首页
          */
         //游戏首页 加载
-        map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
+//        map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
         //抽奖机会通知
-        map.put("wx.dz.game.index.notification", LuckyNewChangeGetExecute.class);
+//        map.put("wx.dz.game.index.notification", LuckyNewChangeGetExecute.class);
         //点击抓娃娃
-        map.put("wx.dz.game.lucky.draw", GameIndexLuckyDrawExecute.class);
+//        map.put("wx.dz.game.lucky.draw", GameIndexLuckyDrawExecute.class);
 
 
         //我的战利品-查看明细
-        map.put("wx.dz.game.show.list.exchange", ShowExchangeListExecute.class);
+//        map.put("wx.dz.game.show.list.exchange", ShowExchangeListExecute.class);
 
         //立即兑换
 //        map.put("wx.dz.game.lucky.exchange", GameIndexLuckyExchangeExecute.class);
@@ -130,81 +126,40 @@ public class QLApiExecuteHandler {
          * 任务
          */
         //任务页面load
-        map.put("wx.dz.game.task.load", TaskDashboardExecute.class);
+//        map.put("wx.dz.game.task.load", TaskDashboardExecute.class);
 
 
         //任务--每日签到
 //        map.put("wx.dz.game.task.sign", TaskSignExecute.class);
 
         //任务--成为会员
-        map.put("wx.dz.game.task.member", TaskMemberExecute.class);
+//        map.put("wx.dz.game.task.member", TaskMemberExecute.class);
 
         //任务--关注店铺
-        map.put("wx.dz.game.task.follow", TaskFollowExecute.class);
+//        map.put("wx.dz.game.task.follow", TaskFollowExecute.class);
 
 
         //任务--浏览商品
-        map.put("wx.dz.game.task.browse", TaskBrowseExecute.class);
+//        map.put("wx.dz.game.task.browse", TaskBrowseExecute.class);
 
 
         //任务--观看直播
-        map.put("wx.dz.game.task.tv", TaskTvExecute.class);
+//        map.put("wx.dz.game.task.tv", TaskTvExecute.class);
 
 
         //任务--消费增送
-        map.put("wx.dz.game.task.order", CusGetOrderExecute.class);
+//        map.put("wx.dz.game.task.order", CusGetOrderExecute.class);
 
         //任务--浏览页
-        map.put("wx.dz.game.show.list.browse", ShowBrowseListExecute.class);
+//        map.put("wx.dz.game.show.list.browse", ShowBrowseListExecute.class);
 
 
         //任务--邀请明细
-        map.put("wx.dz.game.show.list.invite", ShowInviteListExecute.class);
+//        map.put("wx.dz.game.show.list.invite", ShowInviteListExecute.class);
 
 
         //任务--分享明细
-        map.put("wx.dz.game.show.list.share", ShowShareListExecute.class);
-
-
-        //我的奖品 wxq
-        map.put("wx.dz.common.luckyBag.win", LuckyBagAllWinExecute.class);
-        //留资料 wxq
-        map.put("wx.dz.common.luckyBag.win.address", LuckyBagFillAwardAddressExecute.class);
-
-
-//
-//        map.put("wx.dz.common.pv", PagePvExecute.class);//pv  wxq
-
-
-        /*
-         * 阿迪2020双十一 定制
-         **/
-    /*    map.put("wx.dz.index.award.forinvite", IndexSendInviteAwardExecute.class); //首页发送邀请人员的奖励 wxq
-        map.put("wx.dz.index.award.luckydraw", IndexLuckyDrawExecute.class); //抽奖 wxq
-
-        map.put("wx.dz.task.finish.load", GeneralTaskLoadExecute.class); // 任务页面load:签到、关注是否完成 lyj
-        map.put("wx.dz.task.sign.operate", GeneralTaskSignOperateExecute.class); // 任务页面：完成每日打卡 lyj
-        map.put("wx.dz.task.follow.operate", GeneralTaskFollowOperateExecute.class); // 任务页面：完成关注店铺 lyj
-        map.put("wx.dz.task.browse.operate", GeneralTaskBrowseOperateExecute.class); // 任务页面：完成浏览 lyj
-        map.put("wx.dz.task.bigWheel.operate", GeneralTaskBigWheelOperateExecute.class); //任务页面：尖货大咖 lyj
-
-        map.put("wx.dz.big.wheel.list", CusBigWheelListExecute.class); // 尖货大咖秀列表:活动标签 lyj
-        map.put("wx.dz.page.load", DmAdidas11PageLoadExecute.class); //首页load cjw
-        map.put("wx.dz.browseBaby.list.load", DmBrowseBabyListExecute.class); //浏览宝贝列表 cjw
-        map.put("wx.dz.clickTo.browse", DmClickToBrowseExecute.class); //浏览宝贝送抽奖次数 cjw
-        map.put("wx.dz.tools.browse.baby", DmBrowseBabySaveDelExecute.class); //封网备用 新增删除浏览宝贝接口 cjw
-        map.put("wx.dz.tools.big.wheel", DmCusBigWheelSaveDelExecute.class); //封网备用 新增删除尖货大咖活动接口 cjw
-        map.put("wx.dz.tools.sys.award", SysAwardSaveDelExecute.class); //封网备用 新增删除奖品接口 lyj
-        map.put("wx.dz.tools.act.setting", DmModifyActivitySettingExecute.class); //封网备用 修改活动配置表信息 cjw
-
-        map.put("wx.dz.membership.sys", DmMembershipExecute.class); // 判断当前粉丝是否入会 cjw
-        map.put("wx.dz.invite.to.join", DmInviteToJoinExecute.class); // 邀请入会 cjw
-
-        map.put("wx.dz.tools.get.order", CusGetOrderExecute.class); //拉取订单 wxq
-
-//        map.put("wz.dz.tools.clear.log",DzToolsClearLogExecute.class); // 测试：清除记录
-
-        map.put("wz.dz.tools.award.all", DzToolsAwardFindAllExecute.class); // 获得所有奖品*/
+//        map.put("wx.dz.game.show.list.share", ShowShareListExecute.class);
 
 
     }

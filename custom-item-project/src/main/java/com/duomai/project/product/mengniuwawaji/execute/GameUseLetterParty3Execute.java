@@ -1,60 +1,57 @@
 package com.duomai.project.product.mengniuwawaji.execute;
 
-import cn.hutool.core.lang.Assert;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
-import com.duomai.project.product.general.entity.SysGameBoardDaily;
-import com.duomai.project.product.general.repository.*;
-import com.duomai.project.tool.CommonDateParseUtil;
+import com.duomai.project.product.general.enums.PlayActionEnum;
+import com.duomai.project.product.general.repository.SysCustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 /**
- * 场景1 白熊 增加答题次数
+ * //使用 letter_party3邀请函
  *
  * @author 王星齐
  * @description
  * @create 2020/11/18 18:14
  */
 @Component
-public class GameBearAddChanceExecute implements IApiExecute {
+public class GameUseLetterParty3Execute implements IApiExecute {
 
     @Autowired
     private SysCustomRepository sysCustomRepository;
-
-    @Autowired
-    private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
-    @Autowired
-    private SysPagePvLogRepository sysPagePvLogRepository;
     @Autowired
     private ProjectHelper projectHelper;
-    @Autowired
-    private SysGameLogRepository sysGameLogRepository;
-    @Autowired
-    private SysGameBoardDailyRepository sysGameBoardDailyRepository;
+    @Resource
+    private ITaobaoAPIService taobaoAPIService;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
         projectHelper.actTimeValidate();
         /*1.校验是否存在玩家*/
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
-        Date requestStartTime = sysParm.getRequestStartTime();
-        String requestStartTimeString = CommonDateParseUtil.date2string(requestStartTime, "yyyy-MM-dd");
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
-
-        SysGameBoardDaily todayGameBoard = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
-        //增加与白熊答题机会
-        todayGameBoard.setBearQuestionChance(todayGameBoard.getBearQuestionChance() + 1);
-        sysGameBoardDailyRepository.save(todayGameBoard);
-        return YunReturnValue.ok("白熊 增加答题次数");
+        Date requestStartTime = sysParm.getRequestStartTime();
+        ActBaseSettingDto actSetting = projectHelper.actBaseSettingFind();
+        Assert.isTrue(requestStartTime.after(actSetting.getActLastTime()), "12/24零点解锁");
+        if ("party1,party2".equals(syscustom.getPlayParty()) && syscustom.getCurrentAction().equals(PlayActionEnum.letter_party3)) {
+            syscustom.setPlayParty("party1,party2,party3");
+            syscustom.setCurrentAction(PlayActionEnum.party3_ing);
+        }
+        sysCustomRepository.save(syscustom);
+        return YunReturnValue.ok("使用letter_party3邀请函");
     }
 }
 

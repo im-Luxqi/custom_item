@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 /**
  * 场景1 和企鹅玩
@@ -55,7 +56,7 @@ public class GamePlayPenguinExecute implements IApiExecute {
         Assert.notNull(syscustom, "无效的玩家");
 
         SysGameBoardDaily todayGameBoard = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
-        Assert.isTrue(todayGameBoard.getGamePenguin() == 0, "每天送一次哦");
+        Assert.isTrue(todayGameBoard.getGamePenguin() == 0, "每天玩一次哦");
 
 
         //2.发放星愿，更新活动进度
@@ -66,7 +67,7 @@ public class GamePlayPenguinExecute implements IApiExecute {
         sysCustomRepository.save(syscustom);
 
         //3.增加今日互动次数
-        todayGameBoard.setGameSnowman(todayGameBoard.getGamePenguin() + 1);
+        todayGameBoard.setGamePenguin(todayGameBoard.getGamePenguin() + 1);
         sysGameBoardDailyRepository.save(todayGameBoard);
 
         //4.记录互动日志
@@ -76,7 +77,11 @@ public class GamePlayPenguinExecute implements IApiExecute {
                 .setCreateTimeString(requestStartTimeString)
                 .setPartner(PlayPartnerEnum.penguin)
         );
-        return YunReturnValue.ok("和企鹅玩");
+
+        LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
+        //2.星愿值
+        resultMap.put("total_star_value", syscustom.getStarValue());
+        return YunReturnValue.ok(resultMap,"和企鹅玩");
     }
 }
 
