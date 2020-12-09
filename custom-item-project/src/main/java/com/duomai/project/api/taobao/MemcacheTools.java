@@ -60,7 +60,7 @@ public class MemcacheTools {
         try {
             Boolean aBoolean = aTrue.get();
             String b = aBoolean ? "成功" : "失败";
-            logger.info("【Memcache】:" + "_操作:add——" + b + "_key：" + key + "_data:" + data);
+//            logger.info("【Memcache】:" + "_操作:add——" + b + "_key：" + key + "_data:" + data);
             return aBoolean;
         } catch (InterruptedException | ExecutionException e) {
             logger.error("【Memcache】:" + "_操作:add--异常" + "_key：" + key + "_data:" + data + "_error:" + e.getMessage());
@@ -80,7 +80,7 @@ public class MemcacheTools {
     public static <T> void cacheData(String key, T data, int exp) {
         try {
             memcachedClient.set(key, exp, data);
-            logger.info("【Memcache】:" + "_操作:cacheData" + "_key：" + key + "_data:" + data);
+//            logger.info("【Memcache】:" + "_操作:cacheData" + "_key：" + key + "_data:" + data);
         } catch (Exception e) {
             logger.error("【Memcache】:" + "_操作:cacheData" + "_key：" + key + "_data:" + data + "_error:" + e.getMessage());
         }
@@ -96,7 +96,7 @@ public class MemcacheTools {
         T object = null;
         try {
             object = (T) memcachedClient.get(key);
-            logger.info("【Memcache】:" + "_操作:loadData" + "_key：" + key + "_data:" + object);
+//            logger.info("【Memcache】:" + "_操作:loadData" + "_key：" + key + "_data:" + object);
         } catch (Exception e) {
             logger.error("【Memcache】:" + "_操作:loadData" + "_key：" + key + "_data:" + object + "_error:" + e.getMessage());
         }
@@ -112,7 +112,7 @@ public class MemcacheTools {
     public static void cleanData(String key) {
         try {
             memcachedClient.delete(key);
-            logger.info("【Memcache】:" + "_操作:cleanData" + "_key：" + key);
+//            logger.info("【Memcache】:" + "_操作:cleanData" + "_key：" + key);
         } catch (Exception e) {
             logger.error("【Memcache】:" + "_操作:cleanData" + "_key：" + key + "_error:" + e.getMessage());
         }

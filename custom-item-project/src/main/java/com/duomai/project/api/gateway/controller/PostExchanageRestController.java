@@ -13,6 +13,9 @@ import com.duomai.project.api.gateway.repository.CgApiLogRepository;
 import com.duomai.project.api.gateway.tool.ApiTool;
 import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.configuration.SysCustomProperties;
+import com.duomai.project.helper.LuckyDrawHelper;
+import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -37,6 +41,9 @@ public class PostExchanageRestController extends BaseRestController {
     @Autowired
     private SysCustomProperties sysCustomProperties;
 
+    @Autowired
+    private ProjectHelper projectHelper;
+
 
     /**
      * 云应用存活检测
@@ -48,13 +55,7 @@ public class PostExchanageRestController extends BaseRestController {
     @RequestMapping(value = "/router/test")
     public YunReturnValue test2() {
 
-
-        MemcacheTools.add("aaa","bbb",10);
-
-        Object aaa = MemcacheTools.loadData("aaa");
-
-        log.info(aaa.toString());
-
+        projectHelper.getAllQuestion();
         return YunReturnValue.ok("云应用存活检测");
     }
 

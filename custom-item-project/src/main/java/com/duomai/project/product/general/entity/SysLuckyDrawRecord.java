@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,8 +17,8 @@ import java.util.Date;
 @Accessors(chain = true)
 @Table(name = "sys_lucky_draw_record")
 @org.hibernate.annotations.Table(appliesTo = "sys_lucky_draw_record", comment = "抽奖日志表")
-public class SysLuckyDrawRecord {
-
+public class SysLuckyDrawRecord implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
