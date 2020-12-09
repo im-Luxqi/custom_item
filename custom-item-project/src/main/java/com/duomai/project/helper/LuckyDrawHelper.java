@@ -541,6 +541,7 @@ public class LuckyDrawHelper {
                 .setDrawTime(drawTime)
                 .setPlayerHeadImg(custom.getHeadImg())
                 .setPlayerBuyerNick(custom.getBuyerNick())
+                .setHaveExchange(BooleanConstant.BOOLEAN_UNDEFINED)
                 .setPlayerZnick(custom.getZnick());
 
         try {

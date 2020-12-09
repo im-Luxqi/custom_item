@@ -28,7 +28,7 @@ public class SysGameLog {
     private Date createTime;
     @Column(columnDefinition = "varchar(10) COMMENT '互动时间，yyyy-MM-dd格式'")
     private String createTimeString;
-
+    @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(64) COMMENT '互动对象'")
     private PlayPartnerEnum partner;
 }

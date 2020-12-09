@@ -37,10 +37,15 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.common.playerInfo.scan", PlayerInfoScanOrInitExecute.class);
         //授权成功后，完善用户信息 wxq
         map.put("wx.dz.common.playerInfo.fill.afterAuthorization", PlayerInfoFillForAfterAuthorizationExecute.class);
-        //2 首页load
+
+        //2 落地页，门头页load
         map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
-        //party1 load
+
+
+        //party1  场景load
         map.put("wx.dz.game.party1.load", GameIndexParty1Execute.class);
+
+
         //2.1 场景1 和雪人玩
         map.put("wx.dz.game.party1.play.snowman", GamePlaySnowmanExecute.class);
         //2.2 场景1 和企鹅玩

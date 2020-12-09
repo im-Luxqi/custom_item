@@ -92,7 +92,7 @@ public class GameIndexEggExecute implements IApiExecute {
         resultMap.put("have_spend", allMoney > 0);
         //4.是否加入会员
         resultMap.put("have_member", taobaoAPIService.isMember(buyerNick));
-        return YunReturnValue.ok(resultMap, "游戏首页 小彩蛋");
+        return YunReturnValue.ok(resultMap, "小彩蛋");
     }
 }
 

@@ -67,7 +67,8 @@ public class GameShareExecute implements IApiExecute {
         Assert.notNull(syscustom, "无效的玩家");
         //记录分享日志
         sysTaskShareLogRepository.save(new SysTaskShareLog()
-                .setSharer(buyerNick)
+                .setMixSharer(buyerNick)
+                .setSharer(syscustom.getZnick())
                 .setCreateTime(requestStartTime)
                 .setShareTime(requestStartTimeString)
                 .setRemark(sharePlace)

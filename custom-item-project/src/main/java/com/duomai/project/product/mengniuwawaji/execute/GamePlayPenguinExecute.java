@@ -81,6 +81,7 @@ public class GamePlayPenguinExecute implements IApiExecute {
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         //2.星愿值
         resultMap.put("total_star_value", syscustom.getStarValue());
+        resultMap.put("current_action", syscustom.getCurrentAction());
         return YunReturnValue.ok(resultMap,"和企鹅玩");
     }
 }

@@ -6,7 +6,6 @@ import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.ProjectHelper;
-import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysGameBoardDaily;
 import com.duomai.project.product.general.entity.SysPagePvLog;
@@ -68,8 +67,6 @@ public class GameIndexParty1Execute implements IApiExecute {
                 .setPage(PvPageEnum.PAGE_PARTY1));
 
 
-        ActBaseSettingDto actSetting = projectHelper.actBaseSettingFind();
-
         long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChance(buyerNick, AwardUseWayEnum.PENGUIN.getValue());
         SysGameBoardDaily daily = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
 
@@ -83,12 +80,17 @@ public class GameIndexParty1Execute implements IApiExecute {
         resultMap.put("first_play_snowman", daily.getFirstGameSnowman().equals(BooleanConstant.BOOLEAN_YES));
         resultMap.put("first_play_penguin", daily.getFirstGamePenguin().equals(BooleanConstant.BOOLEAN_YES));
         resultMap.put("first_play_Bear", daily.getFirstGameBear().equals(BooleanConstant.BOOLEAN_YES));
-
-
+        resultMap.put("today_have_play_snowman", daily.getGameSnowman() > 0);
+        resultMap.put("today_have_play_penguin", daily.getGamePenguin() > 0);
+        resultMap.put("today_have_play_Bear", daily.getGameBear() > 0);
+        resultMap.put("current_action", syscustom.getCurrentAction());
+        resultMap.put("bear_question_chance", daily.getBearQuestionChance());
 
         return YunReturnValue.ok(resultMap, "场景1" +
-                "\nget_letter_party2 = true ---> 表示玩家得到邀请函，尚未开启" +
-                "\nfirst_play_snowman = true ---> 表示玩家首次或尚未与雪人互动过，第一天与雪人互动,first_play_penguin,first_play_Bear同理"
+                "get_letter_party2 = true ---> 表示玩家得到邀请函，尚未开启" +
+                "first_play_snowman = true ---> 表示玩家首次或尚未与雪人互动过，第一天与雪人互动"+
+                "today_have_play_snowman = true ---> 表示玩家今日已互动过" +
+                "bear_question_chance  ---> 当前和熊答题的机会"
         );
     }
 }

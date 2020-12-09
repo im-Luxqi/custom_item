@@ -52,7 +52,7 @@ public class SysCustom {
     @Column(columnDefinition = "varchar(64) COMMENT '场景'")
     private String playParty;
 
-
+    @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(64) COMMENT '当前行动'")
     private PlayActionEnum currentAction;
 

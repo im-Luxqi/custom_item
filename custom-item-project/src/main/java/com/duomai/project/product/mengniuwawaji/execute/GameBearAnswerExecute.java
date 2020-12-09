@@ -83,12 +83,10 @@ public class GameBearAnswerExecute implements IApiExecute {
             return YunReturnValue.ok("答题错误");
         }
 
-        boolean get_letter_party2 = false;
         //2.发放星愿，更新活动进度
         syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.bear_xingyuan);
         if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_bear)) {
             syscustom.setCurrentAction(PlayActionEnum.letter_party2);
-            get_letter_party2 = true;
         }
         sysCustomRepository.save(syscustom);
 
@@ -112,7 +110,7 @@ public class GameBearAnswerExecute implements IApiExecute {
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         resultMap.put("win", !Objects.isNull(winAward));
         resultMap.put("award", winAward);
-        resultMap.put("get_letter_party2", get_letter_party2);
+        resultMap.put("get_letter_party2", syscustom.getCurrentAction().equals(PlayActionEnum.letter_party2));
         if (!Objects.isNull(winAward)) {
             winAward.setEname(null)
                     .setId(null)

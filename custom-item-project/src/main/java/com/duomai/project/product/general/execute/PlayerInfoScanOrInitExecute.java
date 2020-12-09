@@ -67,7 +67,9 @@ public class PlayerInfoScanOrInitExecute implements IApiExecute {
                     .setPlayParty("party1")
                     .setCurrentAction(PlayActionEnum.playwith_snowman)
                     .setHaveInviteFriend(BooleanConstant.BOOLEAN_NO)
-                    .setHaveBrowseGoods(BooleanConstant.BOOLEAN_NO);
+                    .setHaveBrowseGoods(BooleanConstant.BOOLEAN_NO)
+                    .setStarValue(0)
+                    ;
             //最后一天
             if (lastDay) {
                 temp.setPlayParty("party1,party2,party3");
@@ -184,11 +186,10 @@ public class PlayerInfoScanOrInitExecute implements IApiExecute {
         resultMap.put("current_action", sysCustom.getCurrentAction());
         return YunReturnValue.ok(resultMap, "获取玩家信息," +
                 "【提示：】" +
-                "\nhave_authorization = false ---> 表示尚未授权,默认没有头像,真实昵称为未授权" +
-                "\nonly_go_party3 =  true  ---> 表示当前活动处于最后一天，所有玩家只展示 场景3，优先级大于玩家自身权限" +
-                "\ncan_go_party ---> 表示玩家的场景权限,三种返回值（party1）(party1,party2)(party1,party2,party3)" +
-                "\ncurrent_action ---> 表示玩家跟随指引的进度"+
-                "\n"
+                "have_authorization = false ---> 表示尚未授权,默认没有头像,真实昵称为未授权" +
+                "only_go_party3 =  true  ---> 表示当前活动处于最后一天，所有玩家只展示 场景3，优先级大于玩家自身权限" +
+                "can_go_party ---> 表示玩家的场景权限,三种返回值（party1）(party1,party2)(party1,party2,party3)" +
+                "current_action ---> 表示玩家跟随指引的进度"
         );
     }
 }

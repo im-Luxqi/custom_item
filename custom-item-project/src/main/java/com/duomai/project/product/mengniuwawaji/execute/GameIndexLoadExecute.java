@@ -13,6 +13,7 @@ import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysPagePvLog;
 import com.duomai.project.product.general.entity.SysTaskInviteLog;
+import com.duomai.project.product.general.enums.CoachConstant;
 import com.duomai.project.product.general.enums.MemberWayFromEnum;
 import com.duomai.project.product.general.enums.PvPageEnum;
 import com.duomai.project.product.general.repository.*;
@@ -67,7 +68,7 @@ public class GameIndexLoadExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
-        resultMap.put("alter_for_invitee_flag", false);
+//        resultMap.put("alter_for_invitee_flag", false);
 
 
         /*1.校验是否存在玩家*/
@@ -146,6 +147,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                         resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
 
                         if (BooleanConstant.BOOLEAN_NO.equals(syscustom.getHaveInviteFriend())) {
+                            syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.joinmember_xingyuan);
                             syscustom.setHaveInviteFriend(BooleanConstant.BOOLEAN_YES);
                             syscustom = sysCustomRepository.save(syscustom);
                         }
@@ -160,6 +162,9 @@ public class GameIndexLoadExecute implements IApiExecute {
 
         //1.活动规则
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
+        actBaseSettingDto.setActLastTime(null);
+        actBaseSettingDto.setOrderStartTime(null);
+        actBaseSettingDto.setOrderEndTime(null);
         resultMap.put("game_rule", actBaseSettingDto);
         //2.星愿值
         resultMap.put("total_star_value", syscustom.getStarValue());

@@ -1,9 +1,11 @@
 package com.duomai.project.product.general.execute;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.common.framework.mybatisplus.lambdawrapperchain.LambdaDeleteWrapperChain;
 import com.duomai.project.product.general.repository.*;
 import com.duomai.project.product.mengniuwawaji.domain.CusOrderInfo;
 import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
@@ -90,7 +92,7 @@ public class TestKillChanceExecute implements IApiExecute {
         sysGameLogRepository.deleteByBuyerNick(buyerNick);
         sysGameBoardDailyRepository.deleteByBuyerNick(buyerNick);
 
-        cusOrderInfoService.delete().eq(CusOrderInfo::getBuyerNick, buyerNick);
-        return YunReturnValue.ok("恭喜【" + buyerNick + "】被kill");
+        cusOrderInfoService.remove(Wrappers.<CusOrderInfo>query().eq("buyer_nick",buyerNick));
+        return YunReturnValue.ok("kill【" + buyerNick + "】");
     }
 }

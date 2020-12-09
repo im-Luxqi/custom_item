@@ -13,10 +13,7 @@ import com.duomai.project.product.general.entity.SysPagePvLog;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.PlayActionEnum;
 import com.duomai.project.product.general.enums.PvPageEnum;
-import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.product.general.repository.SysGameBoardDailyRepository;
-import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
-import com.duomai.project.product.general.repository.SysPagePvLogRepository;
+import com.duomai.project.product.general.repository.*;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,6 +44,8 @@ public class GameIndexParty2Execute implements IApiExecute {
     private ProjectHelper projectHelper;
     @Autowired
     private SysGameBoardDailyRepository sysGameBoardDailyRepository;
+    @Autowired
+    private SysTaskShareLogRepository sysTaskShareLogRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -77,20 +76,22 @@ public class GameIndexParty2Execute implements IApiExecute {
 
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         //1.是否开启过礼盒
+        resultMap.put("get_letter_party3", syscustom.getCurrentAction().equals(PlayActionEnum.letter_party3));
         resultMap.put("have_open_award_party2", l > 0);
         resultMap.put("have_open_award_tent", l2 > 0);
-//        resultMap.put("get_letter_party2", syscustom.getCurrentAction().equals(PlayActionEnum.letter_party2));
-//        resultMap.put("first_play_Tent", daily.getFirstGameTent().equals(BooleanConstant.BOOLEAN_YES));
         resultMap.put("first_play_Lamp", daily.getFirstGameLamp().equals(BooleanConstant.BOOLEAN_YES));
         resultMap.put("first_play_Dog", daily.getFirstGameDog().equals(BooleanConstant.BOOLEAN_YES));
-
+        resultMap.put("today_have_play_Lamp", daily.getGameLamp() > 0);
+        resultMap.put("today_have_play_Dog", daily.getGameDog() > 0);
+        resultMap.put("have_share_friend", sysTaskShareLogRepository.countByMixSharer(buyerNick));
 
 
         //2.星愿值
         resultMap.put("total_star_value", syscustom.getStarValue());
         return YunReturnValue.ok(resultMap, "场景2" +
-                "\nhave_open_award_party2 = true ---> 表示玩家已经开过场景2开场礼盒" +
-                "\nhave_open_award_tent = true ---> 表示玩家已经开过帐篷礼盒"
+                "have_open_award_party2 = true ---> 表示玩家已经开过场景2开场礼盒" +
+                "have_open_award_tent = true ---> 表示玩家已经开过帐篷礼盒" +
+                "have_share_friend = true ---> 已分享分好友数"
         );
     }
 }

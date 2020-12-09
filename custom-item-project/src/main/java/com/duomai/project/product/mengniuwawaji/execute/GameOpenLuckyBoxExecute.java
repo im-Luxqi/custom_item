@@ -96,7 +96,6 @@ public class GameOpenLuckyBoxExecute implements IApiExecute {
                     .setTotalNum(null)
                     .setLuckyValue(null)
                     .setUseWay(null)
-                    .setType(null)
                     .setPoolLevel(null);
         }
         return YunReturnValue.ok(resultMap, "开礼盒");

@@ -50,10 +50,9 @@ public class GameUseLetterParty2Execute implements IApiExecute {
             syscustom.setMemberWayFrom(MemberWayFromEnum.NATURE_JOIN_MEMBER);
             syscustom.setStarValue(syscustom.getStarValue()+ CoachConstant.joinmember_xingyuan);
         }
-        if ("party1".equals(syscustom.getPlayParty()) && syscustom.getCurrentAction().equals(PlayActionEnum.letter_party2)) {
-            syscustom.setPlayParty("party1,party2");
-            syscustom.setCurrentAction(PlayActionEnum.playwith_lamp);
-        }
+        Assert.isTrue("party1".equals(syscustom.getPlayParty()) && syscustom.getCurrentAction().equals(PlayActionEnum.letter_party2),"无可用的邀请函");
+        syscustom.setPlayParty("party1,party2");
+        syscustom.setCurrentAction(PlayActionEnum.playwith_lamp);
         sysCustomRepository.save(syscustom);
         return YunReturnValue.ok("使用letter_party2邀请函");
     }

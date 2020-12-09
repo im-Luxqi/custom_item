@@ -1,0 +1,34 @@
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (1, 'B', '犹太教', '基督教', '印度教', '圣诞节起源于哪一个宗教？');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (2, 'C', '是蛇最爱吃的一种红色果子', '蛇果就是普通苹果', '蛇果是苹果中抗氧化剂活性最强的品种', '平安夜送平安果常用的蛇果是什么？');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (3, 'A', '红、绿、白', '红、黄、白', '红、黑、白', '圣诞色有哪几色？');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (4, 'B', '挂在圣诞树上', '床边的圣诞袜里', '放在门口', '圣诞老人给孩子送礼物会放在那里？');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (5, 'C', '母玛利亚', '耶和华', '耶酥', '圣诞节是为了庆祝谁的复活而举行的盛会？');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (6, 'B', '麋鹿', '驯鹿', '梅花鹿', '给圣诞老人拉车的动物是什么？');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (7, 'A', '罗马', '俄罗斯', '冰岛', '圣诞节第一次盛会是在哪里举行的？');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (8, 'A', '金币', '美元', '欧元', '传说中的圣诞老人将他的第一份什么礼物放在没有钱办婚礼嫁妆女孩的袜子里？ ');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (9, 'C', '天堂', '赤道', '北极圈', '传说中圣诞老人住在那哪里？');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (10, 'C', '棕树', '杨树', '松柏', '圣诞树主要是什么树？');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (11, 'B', '澳大利亚', '埃及', '韩国', '哪里的圣诞节不在十二月二十五日，而是十二月七日？  ');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (12, 'C', '海明威', '老舍', '莎士比亚', '谁的喜剧“第十二夜”就是从圣诞节的“第十二夜”来的，虽然剧中没有关于圣诞节的情节？ ');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (13, 'B', '圣·尼古拉斯·凯奇', '圣·尼古拉斯', '尼各底母', '圣诞老人的名字叫什么呢？ ');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (14, 'A', '芬兰', '土耳其', '危地马拉', '圣诞老人是哪国人？');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (15, 'C', '人力马车', '士兵驾驶的坦克', '驯鹿拉的雪橇', '圣诞老人乘坐的交通工具是什么？ ');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (16, 'B', '披萨', '火鸡', '麦当劳', '美国人过圣诞节着重家庭布置，安置圣诞树，在袜子中塞满礼物，以吃什么食物为主的圣诞大菜并举行家庭舞会？');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (17, 'C', '8', '9', '12', '帮圣诞老人拉雪橇的鹿有几头呢？');
+INSERT INTO `ccc`.`sys_bear_question`(`id`, `answer`, `optiona`, `optionb`, `optionc`, `question`) VALUES (18, 'A', '利恒之星', '牛郎星', '荧惑星', '圣诞树顶上的那颗星星是什么星？');
+
+
+
+
+
+
+
+
+
+
+INSERT INTO `ccc`.`sys_setting_key_value`(`k`, `remark`, `type`, `v`) VALUES ('act_end_time', '活动结束时间', 'type_act_setting', '2020-12-29');
+INSERT INTO `ccc`.`sys_setting_key_value`(`k`, `remark`, `type`, `v`) VALUES ('act_rule', '活动规则', 'type_act_setting', '一、【活动时间】\r\n2020年12月1日00:00:00至2020年12月20日23:59:59\r\n\r\n二、【活动说明】\r\n活动期间，进入蒙牛官方旗舰店淘宝二楼参与互动活动即有机会赢纯甄xMOSCHINO联名定制周边好礼。奖品数量有限，兑完即止。\r\n注意：参与抓娃娃互动游戏凑齐指定数量的纯甄MOSCHINO联名包装设计的纯甄白桃石榴小蛮腰才可兑换不同的实物奖品，且每个ID限制实物中奖1次。（仅优惠券可多次兑换）\r\n\r\n三、【奖品明细】\r\n一等奖：纯甄MOSCHINO联名定制神秘礼包\r\n限量1份，内含纯甄MOSCHINO惊喜彩蛋*1、MOSCHINOx纯甄定制毛绒小熊*1、MOSCHINOx纯甄定制杯子*1，需集齐6款不同纯甄MOSCHINO联名包装设计的纯甄白桃石榴小蛮腰，进行兑换 。\r\n二等奖：纯甄MOSCHINO联名白桃石榴小蛮腰*1箱、MOSCHINOx纯甄定制杯子*1\r\n限量3份，需集齐5款不同包装的纯甄白桃石榴小蛮腰进行兑换。 \r\n三等奖：纯甄MOSCHINO联名白桃石榴小蛮腰*1箱、MOSCHINOx纯甄定制毛绒小熊*1\r\n限量20份，需集齐4款不同包装的纯甄白桃石榴小蛮腰进行兑换。 \r\n四等奖：5元无门槛券\r\n限量50000张，需3个纯甄白桃石榴小蛮腰（不限款式）进行兑换。\r\n\r\n四、【游戏机会获取方式】（每个ID每天游戏最高次数为15次）\r\n1.活动签到：每日前往蒙牛旗舰店淘宝二楼完成签到，可获得1次游戏机会，每连续签到5天，即可额外获得3次游戏机会。\r\n2.加入会员：成功注册蒙牛会员，可获得2次游戏机会（用户须为从未注册加入蒙牛的全新会员）。\r\n3.关注店铺：成功关注“蒙牛旗舰店”可获得1次游戏机会。活动期间，每个用户ID仅限通过该任务获得1次游戏机会。\r\n4.消费赠送：购买纯甄系列产品，单笔订单实付金额达到99元及以上，可获得3次游戏机会。\r\n5.邀请好友入会：每成功邀请一位好友注册成为蒙牛会员，即可获得1次游戏机会（受邀好友需为从未注册加入蒙牛的全新会员）。\r\n6.浏览指定商品：浏览指定数量的纯甄系列商品，即可获得1次游戏机会。\r\n7.分享活动：每日分享“纯甄抓娃娃赢MOSCHINO定制周边好礼”活动给好友并成功邀请一位好友进入该活动，可获得1次游戏机会。\r\n8.观看直播：活动期间，每日观看店铺直播，即可获得2次游戏机会。\r\n\r\n五、【领奖说明及其他活动细则】\r\n1.优惠券奖品将自动发放至中奖者的天猫卡券包，具体使用情况请以商品页面提示为准。店铺优惠券不可叠加使用。\r\n2.获得实物奖品的中奖者需在12月20日23点59分59秒前，前往中奖页面预留准确有效的个人及地址信息，以便于本店铺核对中奖信息及安排奖品寄送事宜。所有实物奖品将于提供中奖信息后30个工作日内以快递形式陆续寄送至中奖者在领奖信息页面中所留的配送地址。·\r\n3.奖品一经发出，无质量问题恕不退换。奖品不能转让、折现或兑换任何其他实物或权益。\r\n4.如因中奖者未于截至日期在中奖页面填写准确有效的领奖信息，或因中奖者信息填写有误导致本店铺无法联系或无法寄送奖品的，均视为中奖者自动放弃奖项，本店铺有权不予提供奖品。\r\n5.活动期间，若出现参与者通过下单后取消订单/仅退款/退货退款等操作恶意刷取活动奖励（例如多次下单后多次取消订单），或通过其他不正当手段、不诚信方式参与活动的，本店铺有权单方面取消其活动参与资格及中奖资格；奖品已发出的，本店铺有权要求中奖者退回奖品。\r\n6.本店铺不对因通讯、网络传输等非本店铺原因导致参与者提交的信息错误、延迟或失败承担任何责任。\r\n7.如遇不可抗力因素，本活动因故无法进行时，本店铺有权在法律允许的范围内取消、终止、修改或暂停本活动。');
+INSERT INTO `ccc`.`sys_setting_key_value`(`k`, `remark`, `type`, `v`) VALUES ('act_start_time', '活动开始时间', 'type_act_setting', '2020-12-09');
+INSERT INTO `ccc`.`sys_setting_key_value`(`k`, `remark`, `type`, `v`) VALUES ('act_last_time', '活动最后一天', 'type_act_setting', '2020-12-29');
+INSERT INTO `ccc`.`sys_setting_key_value`(`k`, `remark`, `type`, `v`) VALUES ('order_start_time', '订单开始时间', 'type_act_setting', '2020-12-09');
+INSERT INTO `ccc`.`sys_setting_key_value`(`k`, `remark`, `type`, `v`) VALUES ('order_end_time', '订单结束时间', 'type_act_setting', '2020-12-09');

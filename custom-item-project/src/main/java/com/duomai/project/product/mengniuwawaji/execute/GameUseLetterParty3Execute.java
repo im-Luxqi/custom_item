@@ -44,12 +44,12 @@ public class GameUseLetterParty3Execute implements IApiExecute {
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
         Date requestStartTime = sysParm.getRequestStartTime();
+        Assert.isTrue("party1,party2".equals(syscustom.getPlayParty()) && syscustom.getCurrentAction().equals(PlayActionEnum.letter_party3),"无效的邀请函");
         ActBaseSettingDto actSetting = projectHelper.actBaseSettingFind();
         Assert.isTrue(requestStartTime.after(actSetting.getActLastTime()), "12/24零点解锁");
-        if ("party1,party2".equals(syscustom.getPlayParty()) && syscustom.getCurrentAction().equals(PlayActionEnum.letter_party3)) {
-            syscustom.setPlayParty("party1,party2,party3");
-            syscustom.setCurrentAction(PlayActionEnum.party3_ing);
-        }
+
+        syscustom.setPlayParty("party1,party2,party3");
+        syscustom.setCurrentAction(PlayActionEnum.party3_ing);
         sysCustomRepository.save(syscustom);
         return YunReturnValue.ok("使用letter_party3邀请函");
     }

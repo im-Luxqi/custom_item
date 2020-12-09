@@ -76,7 +76,7 @@ public class SysLuckyDrawRecord {
     @Column(columnDefinition = "text COMMENT '备注'")
     private String remark;
 
-    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '虚拟奖品是否兑换 0:否1:是'")
+    @Column(columnDefinition = "int(1)  COMMENT '虚拟奖品是否兑换 0:否1:是'")
     private Integer haveExchange;
 
     @Column(columnDefinition = "DATETIME COMMENT '兑换时间'")
