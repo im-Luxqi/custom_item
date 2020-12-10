@@ -1,11 +1,17 @@
 package com.duomai.project.helper;
 
+import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.configuration.annotation.JoinMemcache;
 import com.duomai.project.helper.constants.ActSettingConstant;
+import com.duomai.project.helper.constants.ActTreeWinConstant;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
+import com.duomai.project.product.general.dto.ActTreeWinDto;
 import com.duomai.project.product.general.entity.SysBearQuestion;
+import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysGameBoardDaily;
 import com.duomai.project.product.general.entity.SysSettingKeyValue;
 import com.duomai.project.product.general.repository.SysBearQuestionRepository;
+import com.duomai.project.product.general.repository.SysGameBoardDailyRepository;
 import com.duomai.project.product.general.repository.SysSettingKeyValueRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -34,6 +41,9 @@ public class ProjectHelper {
     private SysSettingKeyValueRepository sysSettingKeyValueRepository;
     @Autowired
     private SysBearQuestionRepository sysBearQuestionRepository;
+
+    @Autowired
+    private SysGameBoardDailyRepository sysGameBoardDailyRepository;
 
 
     /**
@@ -56,8 +66,24 @@ public class ProjectHelper {
                 ;
     }
 
+    @JoinMemcache()
+    public ActTreeWinDto treeWinSettingFind() {
+        List<SysSettingKeyValue> byType = sysSettingKeyValueRepository.findByType(ActTreeWinConstant.TYPE_TREE_WIN);
+        Map<String, String> collect = byType.stream().collect(Collectors.toMap(SysSettingKeyValue::getK, SysSettingKeyValue::getV));
+        return new ActTreeWinDto()
+                .setStarValueTreeLimit(Integer.valueOf(collect.get(ActTreeWinConstant.STAR_VALUE_TREE_LIMIT)))
+                .setTimeTreeLimit(CommonDateParseUtil.string2date(collect.get(ActTreeWinConstant.TIME_TREE_LIMIT), CommonDateParseUtil.YYYY_MM_DD_HH_MM_SS))
+                .setTreeAwardOne(collect.get(ActTreeWinConstant.TREE_AWARD_ONE))
+                .setTreeAwardTwo(collect.get(ActTreeWinConstant.TREE_AWARD_TWO))
+                .setTreeAwardThree(collect.get(ActTreeWinConstant.TREE_AWARD_THREE))
+                .setTreeAwardFour(collect.get(ActTreeWinConstant.TREE_AWARD_FOUR))
+                ;
+    }
+
+
     /**
      * 所有问题
+     *
      * @return
      */
     @JoinMemcache(refreshTime = 100)
@@ -81,19 +107,83 @@ public class ProjectHelper {
             throw new Exception("活动已结束！");
     }
 
-    /**
-     * 3.检验时候为活动期间
-     *
-     * @description 使用场景-------->load请求
-     * @create by 王星齐
-     * @time 2020-08-26 20:11:04
-     */
-    public boolean actTimeValidateFlag() {
-        ActBaseSettingDto actBaseSettingDto = this.actBaseSettingFind();
-        Date now = new Date();
-        boolean liveFlag = true;
-        if (now.before(actBaseSettingDto.getActStartTime()) || now.after(actBaseSettingDto.getActEndTime()))
-            liveFlag = false;
-        return liveFlag;
+
+    public SysGameBoardDaily findTodayGameBoard(SysCustom sysCustom,Date requestStartTime) {
+
+        String buyerNick  = sysCustom.getBuyerNick();
+        String requestStartTimeString = CommonDateParseUtil.date2string(requestStartTime, "yyyy-MM-dd");
+        SysGameBoardDaily todayGameBoard = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
+
+        if (todayGameBoard == null) {
+            int firstSnowman = BooleanConstant.BOOLEAN_YES;
+            int firstPenguin = BooleanConstant.BOOLEAN_YES;
+            int firstBear = BooleanConstant.BOOLEAN_YES;
+            int firstLamp = BooleanConstant.BOOLEAN_YES;
+            int firstTent = BooleanConstant.BOOLEAN_YES;
+            int firstDog = BooleanConstant.BOOLEAN_YES;
+            switch (sysCustom.getCurrentAction()) {
+
+                case playwith_snowman:
+                    break;
+                case playwith_penguin:
+                    firstSnowman = BooleanConstant.BOOLEAN_NO;
+                    break;
+                case playwith_bear:
+                    firstSnowman = BooleanConstant.BOOLEAN_NO;
+                    firstPenguin = BooleanConstant.BOOLEAN_NO;
+                    break;
+                case letter_party2:
+                case playwith_lamp:
+                    firstSnowman = BooleanConstant.BOOLEAN_NO;
+                    firstPenguin = BooleanConstant.BOOLEAN_NO;
+                    firstBear = BooleanConstant.BOOLEAN_NO;
+                    break;
+                case playwith_tent:
+                    firstSnowman = BooleanConstant.BOOLEAN_NO;
+                    firstPenguin = BooleanConstant.BOOLEAN_NO;
+                    firstBear = BooleanConstant.BOOLEAN_NO;
+                    firstLamp = BooleanConstant.BOOLEAN_NO;
+                    break;
+                case playwith_dog:
+                    firstSnowman = BooleanConstant.BOOLEAN_NO;
+                    firstPenguin = BooleanConstant.BOOLEAN_NO;
+                    firstBear = BooleanConstant.BOOLEAN_NO;
+                    firstLamp = BooleanConstant.BOOLEAN_NO;
+                    firstTent = BooleanConstant.BOOLEAN_NO;
+                    break;
+                case letter_party3:
+                case party3_ing:
+                    firstSnowman = BooleanConstant.BOOLEAN_NO;
+                    firstPenguin = BooleanConstant.BOOLEAN_NO;
+                    firstBear = BooleanConstant.BOOLEAN_NO;
+                    firstLamp = BooleanConstant.BOOLEAN_NO;
+                    firstTent = BooleanConstant.BOOLEAN_NO;
+                    firstDog = BooleanConstant.BOOLEAN_NO;
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + sysCustom.getCurrentAction());
+            }
+
+            todayGameBoard = sysGameBoardDailyRepository.save(new SysGameBoardDaily()
+                    .setBuyerNick(buyerNick)
+                    .setCreateTime(requestStartTime)
+                    .setCreateTimeString(requestStartTimeString)
+                    .setGameSnowman(0)
+                    .setGamePenguin(0)
+                    .setGameBear(0)
+                    .setGameLamp(0)
+                    .setGameBalloon(0)
+                    .setGameDog(0)
+                    .setFirstGameSnowman(firstSnowman)
+                    .setFirstGamePenguin(firstPenguin)
+                    .setFirstGameBear(firstBear)
+                    .setFirstGameLamp(firstLamp)
+                    .setFirstGameTent(firstTent)
+                    .setFirstGameDog(firstDog)
+                    .setBearQuestionChance(2)
+                    .setTodayRandomNum(new Random().nextInt(8) + 1)
+            );
+        }
+        return todayGameBoard;
     }
 }

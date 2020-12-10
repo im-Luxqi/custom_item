@@ -1,25 +1,19 @@
 package com.duomai.project.product;
 
-import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
-import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
-import com.taobao.api.domain.Trade;
-import com.taobao.api.request.TradesSoldGetRequest;
-import com.taobao.api.response.TradesSoldGetResponse;
-
-import java.io.UnsupportedEncodingException;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
 public class Test {
 
     public static void main(String[] args) throws Exception {
 
-
-
-        Pattern.matches("^[A-Za-z0-9]{15,18}$","11111111111111");
+        int a = 0;
+        for (int rankingValue = 1; rankingValue <= 10000; rankingValue++) {
+            if (rankingValue <= 7000 && (rankingValue % 50 == 0)) {
+                a++;
+            } else if (rankingValue > 8000 && rankingValue <= 10000 && (rankingValue % 200 == 0)) {
+                a++;
+            }
+        }
+        System.out.println(a);
+//        Pattern.matches("^[A-Za-z0-9]{15,18}$","11111111111111");
 //
 //        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", "21699045", "20ee7d6400dda1c9670e7f997af2c2c8");
 //        TradesSoldGetRequest req = new TradesSoldGetRequest();
@@ -36,8 +30,6 @@ public class Test {
 //                }
 //            }
 //        }
-
-
 
 
         //生成sign

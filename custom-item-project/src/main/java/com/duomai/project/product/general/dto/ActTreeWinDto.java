@@ -16,38 +16,41 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-public class ActBaseSettingDto  implements Serializable {
+public class ActTreeWinDto implements Serializable {
     private static final long serialVersionUID = 1L;
-    /**
-     * 活动规则
-     */
-    private String actRule;
-    /**
-     * 活动开始时间
-     */
-    private Date actStartTime;
 
     /**
-     * 活动结束时间
+     * 点亮圣诞数的星源值
      */
-    private Date actEndTime;
-
-    /**
-     * 活动最后一天
-     */
-    private Date actLastTime;
+    private Integer starValueTreeLimit;
 
 
     /**
-     * 订单开始时间
+     * 点亮圣诞树时间限制
      */
-    private Date orderStartTime;
+    private Date timeTreeLimit;
+
 
     /**
-     * 订单结束时间
+     * 排行榜奖励1
      */
-    private Date orderEndTime;
+    private String treeAwardOne;
 
+    /**
+     * 排行榜奖励2
+     */
+    private String treeAwardTwo;
+
+    /**
+     * 排行榜奖励3
+     */
+    private String treeAwardThree;
+
+
+    /**
+     * 排行榜奖励4
+     */
+    private String treeAwardFour;
 
 
 }

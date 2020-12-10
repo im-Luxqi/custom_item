@@ -95,5 +95,9 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
     @Transactional
     void deleteByPlayerBuyerNick(String buyerNick);
 
-    List<SysLuckyDrawRecord> findByPlayerBuyerNickAndIsWin(String buyerNick, Integer booleanYes);
+    @Query(nativeQuery = true,
+            value = "select award_id " +
+                    "from  sys_lucky_draw_record " +
+                    "where player_buyer_nick = ?1 and is_win = 1 and draw_time_string = ?2")
+    List<String> todayHasLuckyWin(String buyerNick,String drawTimeString);
 }

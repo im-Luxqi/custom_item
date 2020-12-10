@@ -93,6 +93,15 @@ public class QLApiExecuteHandler {
         //3.拉取订单
         map.put("wx.dz.game.order.get", GameOrderGetExecute.class);
 
+        //4.点亮圣诞树
+        map.put("wx.dz.game.win.tree", GameWinTreeExecute.class);
+
+
+        //party3  场景load
+        map.put("wx.dz.game.party3.load", GameIndexParty3Execute.class);
+
+
+
 
         //2.游戏首页 加载
 //        map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);

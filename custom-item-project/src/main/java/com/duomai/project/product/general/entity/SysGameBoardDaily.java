@@ -1,7 +1,5 @@
 package com.duomai.project.product.general.entity;
 
-import com.duomai.project.product.general.enums.FollowWayFromEnum;
-import com.duomai.project.product.general.enums.MemberWayFromEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
@@ -58,7 +56,6 @@ public class SysGameBoardDaily {
     private Integer firstGameBear;
 
 
-
     @Column(nullable = false, columnDefinition = "int(10)  COMMENT '与彩灯互动次数'")
     private Integer gameLamp;
 
@@ -75,7 +72,6 @@ public class SysGameBoardDaily {
     private Integer firstGameDog;
 
 
-
     @Column(nullable = false, columnDefinition = "int(10)  COMMENT '是否第一次和帐篷互动 1:是 0：否'")
     private Integer firstGameTent;
 
@@ -85,6 +81,10 @@ public class SysGameBoardDaily {
 
     @Column(nullable = false, columnDefinition = "int(10)  COMMENT '今日与熊的答题次数'")
     private Integer bearQuestionChance;
+
+
+    @Column(nullable = false, columnDefinition = "int(10)  COMMENT '每日随机一个数'")
+    private Integer todayRandomNum;
 
 
 }

@@ -71,7 +71,7 @@ public class GameBearAnswerExecute implements IApiExecute {
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
 
-        SysGameBoardDaily todayGameBoard = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
+        SysGameBoardDaily todayGameBoard = projectHelper.findTodayGameBoard(syscustom, requestStartTime);
         Assert.isTrue(todayGameBoard.getGameBear() == 0, "每天玩一次哦");
         Assert.isTrue(todayGameBoard.getBearQuestionChance() > 0, "答题次数不足");
 
@@ -82,6 +82,9 @@ public class GameBearAnswerExecute implements IApiExecute {
         if (!win) {
             return YunReturnValue.ok("答题错误");
         }
+        //3.增加今日互动次数
+        todayGameBoard.setGameBear(todayGameBoard.getGameBear() + 1);
+        sysGameBoardDailyRepository.save(todayGameBoard);
 
         //2.发放星愿，更新活动进度
         syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.bear_xingyuan);
@@ -90,9 +93,6 @@ public class GameBearAnswerExecute implements IApiExecute {
         }
         sysCustomRepository.save(syscustom);
 
-        //3.增加今日互动次数
-        todayGameBoard.setGameBear(todayGameBoard.getGameBear() + 1);
-        sysGameBoardDailyRepository.save(todayGameBoard);
 
         //4.记录互动日志
         sysGameLogRepository.save(new SysGameLog()
@@ -104,7 +104,7 @@ public class GameBearAnswerExecute implements IApiExecute {
 
 
         //抽奖
-        List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.POOL);
+        List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWay(todayGameBoard.getFirstGameBear() > 0 ? AwardUseWayEnum.BEAR_FIRST : AwardUseWayEnum.POOL);
         SysSettingAward winAward = luckyDrawHelper.luckyDraw(awards, syscustom, requestStartTime, "_bear");
         /*只反馈有效数据*/
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
@@ -122,6 +122,7 @@ public class GameBearAnswerExecute implements IApiExecute {
                     .setType(null)
                     .setPoolLevel(null);
         }
+
         //2.星愿值
         resultMap.put("total_star_value", syscustom.getStarValue());
         return YunReturnValue.ok(resultMap, "答题正确");

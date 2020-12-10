@@ -92,7 +92,7 @@ public class GameShareExecute implements IApiExecute {
 
         //分享给熊加一次游戏机会
         if("share_bear".equals(sharePlace)){
-            SysGameBoardDaily todayGameBoard = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
+            SysGameBoardDaily todayGameBoard = projectHelper.findTodayGameBoard(syscustom, requestStartTime);
             //增加与白熊答题机会
             todayGameBoard.setBearQuestionChance(todayGameBoard.getBearQuestionChance() + 1);
             sysGameBoardDailyRepository.save(todayGameBoard);

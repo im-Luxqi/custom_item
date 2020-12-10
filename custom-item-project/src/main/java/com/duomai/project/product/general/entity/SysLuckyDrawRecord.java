@@ -28,7 +28,8 @@ public class SysLuckyDrawRecord implements Serializable {
     private String luckyChance;
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '抽奖时间'")
     private Date drawTime;
-
+    @Column(columnDefinition = "DATETIME COMMENT '抽奖时间String'")
+    private String drawTimeString;
     @Column(columnDefinition = "varchar(255) COMMENT '玩家头像'")
     private String playerHeadImg;
     @Column(columnDefinition = "varchar(64) COMMENT '玩家混淆昵称'")

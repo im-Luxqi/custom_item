@@ -46,11 +46,10 @@ public class GameBearAddChanceExecute implements IApiExecute {
         /*1.校验是否存在玩家*/
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         Date requestStartTime = sysParm.getRequestStartTime();
-        String requestStartTimeString = CommonDateParseUtil.date2string(requestStartTime, "yyyy-MM-dd");
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
 
-        SysGameBoardDaily todayGameBoard = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
+        SysGameBoardDaily todayGameBoard = projectHelper.findTodayGameBoard(syscustom, requestStartTime);
         //增加与白熊答题机会
         todayGameBoard.setBearQuestionChance(todayGameBoard.getBearQuestionChance() + 1);
         sysGameBoardDailyRepository.save(todayGameBoard);

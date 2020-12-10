@@ -534,43 +534,47 @@ public class LuckyDrawHelper {
         SysSettingAward awardThisWin = null;
 
         /*整理抽奖日志*/
+        String drawTimeString = CommonDateParseUtil.date2string(drawTime, "yyyy-MM-dd");
         SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord()
                 .setLuckyChance(chance)
                 .setIsWin(BooleanConstant.BOOLEAN_NO)
                 .setIsFill(BooleanConstant.BOOLEAN_NO)
                 .setDrawTime(drawTime)
+                .setDrawTimeString(drawTimeString)
                 .setPlayerHeadImg(custom.getHeadImg())
                 .setPlayerBuyerNick(custom.getBuyerNick())
                 .setHaveExchange(BooleanConstant.BOOLEAN_UNDEFINED)
                 .setPlayerZnick(custom.getZnick());
 
+
         try {
-
             /*1.整理历史抽奖记录*/
-            List<SysLuckyDrawRecord> historyWin = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndIsWin(custom.getBuyerNick(), BooleanConstant.BOOLEAN_YES);
+            List<String> todayHasLuckyWin = sysLuckyDrawRecordRepository.todayHasLuckyWin(custom.getBuyerNick(), drawTimeString);
 //            List<SysLuckyDrawRecord> historyWin = sysLuckyDrawRecordRepository.queryMybag(custom.getBuyerNick());
-            StringBuffer historySignsBuffer = new StringBuffer();
-            AtomicReference<Integer> historyGoodsHasGetAto = new AtomicReference<>(0);
-            if (CollectionUtils.isNotEmpty(historyWin)) {
-                historyWin.forEach((record) -> {
-                    //实物
-                    if (AwardTypeEnum.GOODS.equals(record.getAwardType())) {
-                        historyGoodsHasGetAto.updateAndGet(v -> v + 1);
-                    }
-                });
-            }
+//            StringBuffer historySignsBuffer = new StringBuffer();
+//            AtomicReference<Integer> historyGoodsHasGetAto = new AtomicReference<>(0);
+//            if (CollectionUtils.isNotEmpty(historyWin)) {
+//                historyWin.forEach((record) -> {
+//                    historySignsBuffer
+//                    if (AwardTypeEnum.GOODS.equals(record.getAwardType())) {
+//                        historyGoodsHasGetAto.updateAndGet(v -> v + 1);
+//                    }
+//                });
+//            }
 
-            final String historySigns_awardName_hasWin = historySignsBuffer.toString();
-            Integer historyGoodsHasGet = historyGoodsHasGetAto.get();
+//            final String historySigns_awardName_hasWin = historySignsBuffer.toString();
+//            Integer historyGoodsHasGet = historyGoodsHasGetAto.get();
 
 
             /*2.开始随机抽奖,模拟选出本次抽奖中的奖品*/
-            Integer maxWinGoodNum = ProjectTools.findMaxWinGoodNum();
+//            Integer maxWinGoodNum = ProjectTools.findMaxWinGoodNum();
             for (SysSettingAward award : awards) {
                 //1.奖品数量不足;2.本活动最大实物中奖限制；3.已抽中过本奖品
-                if (award.getRemainNum() < 1 ||
-                        (AwardTypeEnum.GOODS.equals(award.getType()) && historyGoodsHasGet >= maxWinGoodNum) ||
-                        historySigns_awardName_hasWin.contains(award.getName())) {
+                if (award.getRemainNum() < 1
+                        ||
+//                        (AwardTypeEnum.GOODS.equals(award.getType()) && historyGoodsHasGet >= maxWinGoodNum) ||
+                        todayHasLuckyWin.contains(award.getId())
+                ) {
                     continue;
                 }
                 //奖品中奖概率

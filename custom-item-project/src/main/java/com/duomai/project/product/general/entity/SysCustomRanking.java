@@ -27,10 +27,18 @@ public class SysCustomRanking implements Serializable {
     @Column(columnDefinition = "varchar(255) COMMENT '头像'")
     private String headImg;
 
-    @Column(columnDefinition = "DATETIME COMMENT '排行属性更新的时间'")
-    private Date rankingUpdateTime;
-    @Column(nullable = false, columnDefinition = "int(11)  COMMENT '排行榜排序基准，比如 积分；成功邀请的人数'")
-    private Integer ranking;
-    @Column(nullable = false, columnDefinition = "int(11)")
-    private Integer rankingReverse;
+
+
+    @Column(columnDefinition = "int(20) COMMENT '排名'")
+    private Integer winAwardRank;
+
+    @Column(columnDefinition = "varchar(255) COMMENT '中奖的Id'")
+    private String winAwardId;
+
+    @Column(columnDefinition = "varchar(255) COMMENT '中奖的奖品名称'")
+    private String winAwardName;
+
+    @Column(columnDefinition = "int(1) COMMENT '是否发送成功'")
+    private Integer sendSuccess;
+
 }

@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.PageListDto;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysGameBoardDaily;
 import com.duomai.project.product.general.entity.SysSettingCommodity;
 import com.duomai.project.product.general.entity.SysTaskBrowseLog;
 import com.duomai.project.product.general.repository.SysCustomRepository;
@@ -14,9 +16,12 @@ import com.duomai.project.product.general.repository.SysTaskBrowseLogRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -40,6 +45,8 @@ public class ShowBrowseListExecute implements IApiExecute {
     private SysSettingCommodityRepository sysSettingCommodityRepository;
     @Autowired
     private SysTaskBrowseLogRepository sysTaskBrowseLogRepository;
+    @Resource
+    private ProjectHelper projectHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -52,9 +59,40 @@ public class ShowBrowseListExecute implements IApiExecute {
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
+        Date requestStartTime = sysParm.getRequestStartTime();
+        SysGameBoardDaily daily = projectHelper.findTodayGameBoard(syscustom, requestStartTime);
+
+        Integer todayRandomNum = daily.getTodayRandomNum();
+        Sort sort;
+        switch (todayRandomNum) {
+            case 1:
+                sort = Sort.by("name").ascending();
+                break;
+            case 2:
+                sort = Sort.by("numId").ascending();
+                break;
+            case 3:
+                sort = Sort.by("img").ascending();
+                break;
+            case 4:
+                sort = Sort.by("id").descending();
+                break;
+            case 5:
+                sort = Sort.by("name").descending();
+                break;
+            case 6:
+                sort = Sort.by("numId").descending();
+                break;
+            case 7:
+                sort = Sort.by("img").descending();
+                break;
+            default:
+                sort = Sort.by("id").ascending();
+        }
 
         /*2.查询商品*/
-        Page<SysSettingCommodity> list = sysSettingCommodityRepository.findAll(pageListDto.startJPAPage());
+        PageRequest of = PageRequest.of(pageListDto.getCurrentPage() - 1, pageListDto.getPageSize(), sort);
+        Page<SysSettingCommodity> list = sysSettingCommodityRepository.findAll(of);
         pageListDto.setJpaResultList(list);
 
         /*3.今日浏览过的打标*/

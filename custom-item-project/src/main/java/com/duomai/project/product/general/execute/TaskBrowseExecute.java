@@ -113,13 +113,15 @@ public class TaskBrowseExecute implements IApiExecute {
         //第三次浏览抽奖
         Integer taskBrowseShouldSee = 3;
         boolean get_letter_party3 = false;
-        SysGameBoardDaily todayGameBoard = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
+        SysGameBoardDaily todayGameBoard = projectHelper.findTodayGameBoard(syscustom, requestStartTime);
         if (todayGameBoard.getGameDog() == 0 && taskBrowseShouldSee.equals(todayHasBrowseLogs.size())) {
-            //抽奖
-            List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.POOL);
-            winAward = luckyDrawHelper.luckyDraw(awards, syscustom, sysParm.getRequestStartTime(), "_dog");
+
             todayGameBoard.setGameDog(todayGameBoard.getGameDog() + 1);
             sysGameBoardDailyRepository.save(todayGameBoard);
+
+            //抽奖
+            List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWay(todayGameBoard.getFirstGameDog() > 0 ? AwardUseWayEnum.DOG_FIRST : AwardUseWayEnum.POOL);
+            winAward = luckyDrawHelper.luckyDraw(awards, syscustom, sysParm.getRequestStartTime(), "_dog");
 
 
             //2.发放星愿，更新活动进度

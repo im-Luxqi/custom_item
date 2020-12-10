@@ -26,11 +26,9 @@ public interface SysCustomRankingRepository extends BaseRepository<SysCustomRank
     @Query(nativeQuery = true,
             value = "SELECT count(*) " +
                     "FROM `sys_custom_ranking`" +
-                    "WHERE  ranking_reverse < ?1 " +
-                    "       or ranking_reverse = ?1 && ranking_update_time < ?2" +
-                    "       or ranking_reverse = ?1 && ranking_update_time = ?2  && id<=?3"
+                    "WHERE  id <= ?1 "
     )
-    long whoRankingWhere(Integer whoRankingReverse, Date rankingUpdateTime, Integer whoRankingId);
+    long rankingWhere(Integer id);
 
 
     SysCustomRanking findFirstByBuyerNick(String buyerNick);

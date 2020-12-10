@@ -43,8 +43,6 @@ public class GameIndexParty2Execute implements IApiExecute {
     @Autowired
     private ProjectHelper projectHelper;
     @Autowired
-    private SysGameBoardDailyRepository sysGameBoardDailyRepository;
-    @Autowired
     private SysTaskShareLogRepository sysTaskShareLogRepository;
 
     @Override
@@ -71,7 +69,7 @@ public class GameIndexParty2Execute implements IApiExecute {
 
         long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChance(buyerNick, AwardUseWayEnum.PARTY2.getValue());
         long l2 = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChance(buyerNick, AwardUseWayEnum.TENT.getValue());
-        SysGameBoardDaily daily = sysGameBoardDailyRepository.findFirstByBuyerNickAndCreateTimeString(buyerNick, requestStartTimeString);
+        SysGameBoardDaily daily = projectHelper.findTodayGameBoard(syscustom, requestStartTime);
 
 
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();

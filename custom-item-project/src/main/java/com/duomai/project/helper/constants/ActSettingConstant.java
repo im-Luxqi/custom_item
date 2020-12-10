@@ -33,11 +33,6 @@ public interface ActSettingConstant {
     String ORDER_END_TIME = "order_end_time";
 
 
-
-
-
-
-
     /**
      * 优惠券可抽奖次数
      */
