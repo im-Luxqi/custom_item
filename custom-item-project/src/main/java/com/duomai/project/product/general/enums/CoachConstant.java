@@ -67,4 +67,13 @@ public interface CoachConstant {
 
 
 
+    /**
+     * 下单
+     */
+    Integer order_xingyuan = 200;
+
+
+
+
+
 }

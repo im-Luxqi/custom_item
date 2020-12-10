@@ -68,6 +68,7 @@ public class PlayerInfoScanOrInitExecute implements IApiExecute {
                     .setCurrentAction(PlayActionEnum.playwith_snowman)
                     .setHaveInviteFriend(BooleanConstant.BOOLEAN_NO)
                     .setHaveBrowseGoods(BooleanConstant.BOOLEAN_NO)
+                    .setHaveSpendGoods(BooleanConstant.BOOLEAN_NO)
                     .setStarValue(0)
                     ;
             //最后一天

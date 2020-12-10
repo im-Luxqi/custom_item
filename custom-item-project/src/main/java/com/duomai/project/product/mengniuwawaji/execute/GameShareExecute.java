@@ -3,6 +3,7 @@ package com.duomai.project.product.mengniuwawaji.execute;
 import cn.hutool.core.lang.Assert;
 import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
+import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.ProjectHelper;
@@ -82,6 +83,9 @@ public class GameShareExecute implements IApiExecute {
         long limit = requestStartTime.after(actSetting.getActLastTime()) ? CoachConstant.share_limit_count_last : CoachConstant.share_limit_count;
         Integer winStar = requestStartTime.after(actSetting.getActLastTime()) ? CoachConstant.share_xingyuan_last : CoachConstant.share_xingyuan;
         if (l <= limit) {
+            if(BooleanConstant.BOOLEAN_NO.equals(syscustom.getHaveInviteFriend())){
+                syscustom.setHaveInviteFriend(BooleanConstant.BOOLEAN_YES);
+            }
             syscustom.setStarValue(syscustom.getStarValue() + winStar);
             sysCustomRepository.save(syscustom);
         }

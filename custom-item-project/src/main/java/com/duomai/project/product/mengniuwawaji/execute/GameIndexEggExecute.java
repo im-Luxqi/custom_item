@@ -47,49 +47,19 @@ public class GameIndexEggExecute implements IApiExecute {
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
 
         /*1.校验是否存在玩家*/
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
-        String openUId = sysParm.getApiParameter().getYunTokenParameter().getOpenUId();
 
-        ActBaseSettingDto config = projectHelper.actBaseSettingFind();
-        List<OpenTradesSoldGetResponse.Trade> goods = taobaoAPIService.taobaoOpenTradesSoldGet(openUId,
-                TaoBaoTradeStatus.WAIT_SELLER_SEND_GOODS, config.getOrderStartTime(), config.getOrderEndTime());
-        double allMoney = 0;
-        if (goods != null && goods.size() > 0) {
-            //所有已保存的订单
-            List<CusOrderInfo> dbCusOrders = cusOrderInfoService.getTidsByBuyerNick(buyerNick);
-            StringBuilder hasUpdateTradeIds = new StringBuilder();
-            dbCusOrders.forEach(x -> hasUpdateTradeIds.append(x.getTid()).append(","));
-            /*符合条件的最新订单，同步最新订单*/
-            StringBuilder tid = new StringBuilder();
-            List<OpenTradesSoldGetResponse.Trade> newestTrades = new ArrayList<>();
-            for (OpenTradesSoldGetResponse.Trade trade : goods) {
-                if (!("WAIT_SELLER_SEND_GOODS".equals(trade.getStatus()) || "SELLER_CONSIGNED_PART".equals(trade.getStatus())
-                        || "WAIT_BUYER_CONFIRM_GOODS".equals(trade.getStatus()) || "TRADE_BUYER_SIGNED".equals(trade.getStatus())
-                        || "TRADE_FINISHED".equals(trade.getStatus()))) {
-                    continue;
-                }
-                allMoney += Double.parseDouble(trade.getPayment());
-                //未记录本地的订单
-                if (!hasUpdateTradeIds.toString().contains(trade.getTid())) {
-                    newestTrades.add(trade);
-                }
-            }
-            if (newestTrades.size() > 0) {
-                cusOrderInfoService.insertTaobaoTradeList(newestTrades, buyerNick, sysParm.getRequestStartTime());
-            }
-        }
-
-        //1.是否邀请过好友
-        resultMap.put("have_invite", BooleanConstant.BOOLEAN_YES.equals(syscustom.getHaveInviteFriend()));
+        LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         //2.是否浏览过商品
         resultMap.put("have_browse", BooleanConstant.BOOLEAN_YES.equals(syscustom.getHaveBrowseGoods()));
+        //1.是否邀请过好友
+        resultMap.put("have_invite", BooleanConstant.BOOLEAN_YES.equals(syscustom.getHaveInviteFriend()));
         //3.是否购买过coach商品
-        resultMap.put("have_spend", allMoney > 0);
+        resultMap.put("have_spend", BooleanConstant.BOOLEAN_YES.equals(syscustom.getHaveSpendGoods()));
         //4.是否加入会员
         resultMap.put("have_member", taobaoAPIService.isMember(buyerNick));
         return YunReturnValue.ok(resultMap, "小彩蛋");

@@ -62,6 +62,9 @@ public class SysCustom {
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否浏览过商品 0:否1:是'")
     private Integer haveBrowseGoods;
 
+    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否购买过 0:否1:是'")
+    private Integer haveSpendGoods;
+
 
     @Column(nullable = false, columnDefinition = "int(11)  COMMENT '星愿值'")
     private Integer starValue;
