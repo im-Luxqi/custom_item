@@ -30,7 +30,6 @@ public enum AwardUseWayEnum implements IEnum {
     RANKING4("RANKING4", "排行榜4"),
     RANKING5("RANKING5", "排行榜5"),
     RANKING6("RANKING6", "排行榜6"),
-    RANKING7("RANKING7", "排行榜7"),
     ;
     private final String code;
     private final String descp;

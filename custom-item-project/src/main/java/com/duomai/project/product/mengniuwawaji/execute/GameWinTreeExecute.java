@@ -89,10 +89,8 @@ public class GameWinTreeExecute implements IApiExecute {
             awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.RANKING5);
         } else if (rankingValue > 8000 && rankingValue <= 10000 && (rankingValue % 200 == 0)) {
             awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.RANKING5);
-        } else if (rankingValue <= 10000) {
-            awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.RANKING6);
         } else {
-            awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.RANKING7);
+            awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.RANKING6);
         }
 
         SysSettingAward winAward = luckyDrawHelper.luckyDraw(awards, syscustom, requestStartTime, "_ranging");

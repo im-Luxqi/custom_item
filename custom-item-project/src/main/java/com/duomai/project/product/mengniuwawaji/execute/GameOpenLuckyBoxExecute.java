@@ -80,10 +80,19 @@ public class GameOpenLuckyBoxExecute implements IApiExecute {
             useWay = AwardUseWayEnum.TENT;
         }
 
+
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChance(buyerNick, useWay.getValue());
         Assert.isTrue(l == 0, "仅限一次");
-        List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWay(useWay);
+
+
+        List<SysSettingAward> awards = null;
+
+        if ("award_tent".equals(awardPlace)) {
+            awards = sysSettingAwardRepository.findByUseWay(useWay);
+        } else {
+            awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.POOL);
+        }
         SysSettingAward winAward = luckyDrawHelper.luckyDraw(awards, syscustom, requestStartTime, useWay.getValue());
         /*只反馈有效数据*/
         resultMap.put("win", !Objects.isNull(winAward));
