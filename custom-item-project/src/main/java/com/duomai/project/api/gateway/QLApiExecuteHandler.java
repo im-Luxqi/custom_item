@@ -100,6 +100,15 @@ public class QLApiExecuteHandler {
         //party3  场景load
         map.put("wx.dz.game.party3.load", GameIndexParty3Execute.class);
 
+
+
+
+
+        //1.待压测，初始化用户
+        //2.待压测，点亮圣诞树
+        //2.待压测，和白熊答题
+
+
     }
 
 

@@ -112,7 +112,6 @@ public class TaskBrowseExecute implements IApiExecute {
         SysSettingAward winAward = null;
         //第三次浏览抽奖
         Integer taskBrowseShouldSee = 3;
-        boolean get_letter_party3 = false;
         SysGameBoardDaily todayGameBoard = projectHelper.findTodayGameBoard(syscustom, requestStartTime);
         if (todayGameBoard.getGameDog() == 0 && taskBrowseShouldSee.equals(todayHasBrowseLogs.size())) {
 
@@ -128,7 +127,6 @@ public class TaskBrowseExecute implements IApiExecute {
             syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.dog_xingyuan);
             if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_dog)) {
                 syscustom.setCurrentAction(PlayActionEnum.letter_party3);
-                get_letter_party3 = true;
             }
             sysCustomRepository.save(syscustom);
 
@@ -144,7 +142,7 @@ public class TaskBrowseExecute implements IApiExecute {
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         resultMap.put("win", !Objects.isNull(winAward));
         resultMap.put("award", winAward);
-        resultMap.put("get_letter_party3", get_letter_party3);
+        resultMap.put("get_letter_party3", syscustom.getCurrentAction().equals(PlayActionEnum.letter_party3));
         if (!Objects.isNull(winAward)) {
             winAward.setEname(null)
                     .setId(null)

@@ -82,7 +82,7 @@ public class GameIndexParty2Execute implements IApiExecute {
         resultMap.put("today_have_play_Lamp", daily.getGameLamp() > 0);
         resultMap.put("today_have_play_Dog", daily.getGameDog() > 0);
         resultMap.put("have_share_friend", sysTaskShareLogRepository.countByMixSharer(buyerNick));
-
+        resultMap.put("current_action", syscustom.getCurrentAction());
 
         //2.星愿值
         resultMap.put("total_star_value", syscustom.getStarValue());
