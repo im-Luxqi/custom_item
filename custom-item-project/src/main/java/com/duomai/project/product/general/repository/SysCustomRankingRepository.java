@@ -25,5 +25,6 @@ public interface SysCustomRankingRepository extends BaseRepository<SysCustomRank
     SysCustomRanking findFirstByBuyerNick(String buyerNick);
 
 
+    @Transactional
     void deleteByBuyerNick(String buyerNick);
 }

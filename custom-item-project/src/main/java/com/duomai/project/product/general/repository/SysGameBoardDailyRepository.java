@@ -2,6 +2,7 @@ package com.duomai.project.product.general.repository;
 
 import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.product.general.entity.SysGameBoardDaily;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface SysGameBoardDailyRepository extends BaseRepository<SysGameBoardDaily, String> {
 //    /**
@@ -20,5 +21,6 @@ public interface SysGameBoardDailyRepository extends BaseRepository<SysGameBoard
      */
     SysGameBoardDaily findFirstByBuyerNickAndCreateTimeString(String buyerNick, String requestStartTimeString);
 
+    @Transactional
     void deleteByBuyerNick(String buyerNick);
 }
