@@ -15,14 +15,14 @@ public interface SysCustomRepository extends BaseRepository<SysCustom, String> {
      */
     SysCustom findByBuyerNick(String buyerNick);
 
-    /**
-     * 查询  指定未知关注状态的玩家
-     *
-     * @param buyerNick
-     * @param followWayFrom
-     * @return
-     */
-    SysCustom findFirstByBuyerNickAndFollowWayFrom(String buyerNick, FollowWayFromEnum followWayFrom);
+//    /**
+//     * 查询  指定未知关注状态的玩家
+//     *
+//     * @param buyerNick
+//     * @param followWayFrom
+//     * @return
+//     */
+//    SysCustom findFirstByBuyerNickAndFollowWayFrom(String buyerNick, FollowWayFromEnum followWayFrom);
 
     /**
      * test

@@ -79,13 +79,13 @@ public class GameIndexParty1Execute implements IApiExecute {
         resultMap.put("today_have_play_penguin", daily.getGamePenguin() > 0);
         resultMap.put("today_have_play_Bear", daily.getGameBear() > 0);
         resultMap.put("current_action", syscustom.getCurrentAction());
-        resultMap.put("bear_question_chance", daily.getBearQuestionChance());
+//        resultMap.put("bear_question_chance", daily.getBearQuestionChance());
 
         return YunReturnValue.ok(resultMap, "场景1" +
                 "get_letter_party2 = true ---> 表示玩家得到邀请函，尚未开启" +
                 "first_play_snowman = true ---> 表示玩家首次或尚未与雪人互动过，第一天与雪人互动" +
                 "today_have_play_snowman = true ---> 表示玩家今日已互动过" +
-                "bear_question_chance  ---> 当前和熊答题的机会"
+                "bear_question_chance  ---> 当前和熊答题的机会(取消)"
         );
     }
 }

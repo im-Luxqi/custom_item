@@ -13,15 +13,6 @@ import java.util.Date;
 public interface SysCustomRankingRepository extends BaseRepository<SysCustomRanking, String> {
 
 
-    @Query(nativeQuery = true,
-            value = "SELECT * " +
-                    "FROM `sys_custom_ranking` " +
-                    "ORDER BY  ranking_reverse,ranking_update_time,id ",
-            countQuery = "SELECT count(*) " +
-                    "FROM `sys_custom_ranking` "
-    )
-    Page<SysCustomRanking> ranking(Pageable of);
-
 
     @Query(nativeQuery = true,
             value = "SELECT count(*) " +
@@ -34,9 +25,5 @@ public interface SysCustomRankingRepository extends BaseRepository<SysCustomRank
     SysCustomRanking findFirstByBuyerNick(String buyerNick);
 
 
-    @Transactional
-    @Modifying
-    @Query("update SysCustomRanking m set m.znick=?1,m.headImg=?2 where  m.buyerNick=?3")
-    void updateZnickAndHeadImgByBuyerNick(String znick, String headImg, String buyerNick);
-
+    void deleteByBuyerNick(String buyerNick);
 }

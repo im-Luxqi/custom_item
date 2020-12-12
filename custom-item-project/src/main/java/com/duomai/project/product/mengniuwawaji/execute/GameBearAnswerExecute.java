@@ -62,7 +62,7 @@ public class GameBearAnswerExecute implements IApiExecute {
 
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         Boolean win = jsonObjectAdmjson.getBoolean("win");
-        Assert.notNull(win, "本次答题结果是胜利还是失败，不能为空");
+        Assert.notNull(win, "本轮与熊互动通不通过，不能为空");
 
         /*1.校验是否存在玩家*/
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
@@ -73,27 +73,30 @@ public class GameBearAnswerExecute implements IApiExecute {
 
         SysGameBoardDaily todayGameBoard = projectHelper.findTodayGameBoard(syscustom, requestStartTime);
         Assert.isTrue(todayGameBoard.getGameBear() == 0, "每天玩一次哦");
-        Assert.isTrue(todayGameBoard.getBearQuestionChance() > 0, "答题次数不足");
+//        Assert.isTrue(todayGameBoard.getBearQuestionChance() > 0, "答题次数不足");
 
         //2.扣减答题次数
-        todayGameBoard.setBearQuestionChance(todayGameBoard.getBearQuestionChance() - 1);
-        todayGameBoard = sysGameBoardDailyRepository.save(todayGameBoard);
+//        todayGameBoard.setBearQuestionChance(todayGameBoard.getBearQuestionChance() - 1);
+//        todayGameBoard = sysGameBoardDailyRepository.save(todayGameBoard);
 
-        if (!win) {
-            return YunReturnValue.ok("答题错误");
-        }
         //3.增加今日互动次数
         todayGameBoard.setGameBear(todayGameBoard.getGameBear() + 1);
         sysGameBoardDailyRepository.save(todayGameBoard);
 
-        //2.发放星愿，更新活动进度
-        syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.bear_xingyuan);
+
+        SysSettingAward winAward = null;
+        if (win) {
+            //2.发放星愿，更新活动进度
+            syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.bear_xingyuan);
+
+            //抽奖
+            List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWay(todayGameBoard.getFirstGameBear() > 0 ? AwardUseWayEnum.BEAR_FIRST : AwardUseWayEnum.POOL);
+            winAward = luckyDrawHelper.luckyDraw(awards, syscustom, requestStartTime, "_bear");
+        }
         if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_bear)) {
             syscustom.setCurrentAction(PlayActionEnum.letter_party2);
         }
         sysCustomRepository.save(syscustom);
-
-
         //4.记录互动日志
         sysGameLogRepository.save(new SysGameLog()
                 .setBuyerNick(buyerNick)
@@ -102,10 +105,6 @@ public class GameBearAnswerExecute implements IApiExecute {
                 .setPartner(PlayPartnerEnum.bear)
         );
 
-
-        //抽奖
-        List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWay(todayGameBoard.getFirstGameBear() > 0 ? AwardUseWayEnum.BEAR_FIRST : AwardUseWayEnum.POOL);
-        SysSettingAward winAward = luckyDrawHelper.luckyDraw(awards, syscustom, requestStartTime, "_bear");
         /*只反馈有效数据*/
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         resultMap.put("win", !Objects.isNull(winAward));
@@ -123,9 +122,10 @@ public class GameBearAnswerExecute implements IApiExecute {
                     .setPoolLevel(null);
         }
 
+
         //2.星愿值
         resultMap.put("total_star_value", syscustom.getStarValue());
-        return YunReturnValue.ok(resultMap, "答题正确");
+        return YunReturnValue.ok(resultMap, "完成今日互动");
     }
 }
 

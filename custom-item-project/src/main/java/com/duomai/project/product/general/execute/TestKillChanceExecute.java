@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.common.framework.mybatisplus.lambdawrapperchain.LambdaDeleteWrapperChain;
 import com.duomai.project.product.general.repository.*;
 import com.duomai.project.product.mengniuwawaji.domain.CusOrderInfo;
 import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
@@ -65,6 +64,10 @@ public class TestKillChanceExecute implements IApiExecute {
 
 
     @Autowired
+    private SysCustomRankingRepository sysCustomRankingRepository;
+
+
+    @Autowired
     private SysGameBoardDailyRepository sysGameBoardDailyRepository;
 
 
@@ -88,11 +91,12 @@ public class TestKillChanceExecute implements IApiExecute {
         sysTaskShareLogRepository.deleteByMixShareder(buyerNick);
         sysTaskShareLogRepository.deleteByMixSharer(buyerNick);
         sysTaskSignLogRepository.deleteByBuyerNick(buyerNick);
+        sysCustomRankingRepository.deleteByBuyerNick(buyerNick);
 
         sysGameLogRepository.deleteByBuyerNick(buyerNick);
         sysGameBoardDailyRepository.deleteByBuyerNick(buyerNick);
 
-        cusOrderInfoService.remove(Wrappers.<CusOrderInfo>query().eq("buyer_nick",buyerNick));
+        cusOrderInfoService.remove(Wrappers.<CusOrderInfo>query().eq("buyer_nick", buyerNick));
         return YunReturnValue.ok("kill【" + buyerNick + "】");
     }
 }
