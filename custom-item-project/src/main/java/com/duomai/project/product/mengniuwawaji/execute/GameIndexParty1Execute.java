@@ -78,7 +78,16 @@ public class GameIndexParty1Execute implements IApiExecute {
         resultMap.put("today_have_play_snowman", daily.getGameSnowman() > 0);
         resultMap.put("today_have_play_penguin", daily.getGamePenguin() > 0);
         resultMap.put("today_have_play_Bear", daily.getGameBear() > 0);
-        resultMap.put("current_action", syscustom.getCurrentAction());
+        //最高到邀请函2
+        if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_snowman) ||
+                syscustom.getCurrentAction().equals(PlayActionEnum.playwith_penguin) ||
+                syscustom.getCurrentAction().equals(PlayActionEnum.playwith_bear)) {
+            resultMap.put("current_action", syscustom.getCurrentAction());
+        } else {
+            resultMap.put("current_action", PlayActionEnum.letter_party2);
+        }
+
+
 //        resultMap.put("bear_question_chance", daily.getBearQuestionChance());
 
         return YunReturnValue.ok(resultMap, "场景1" +
