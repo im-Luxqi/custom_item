@@ -9,6 +9,7 @@ import com.duomai.common.base.enums.IEnum;
 public enum AwardTypeEnum implements IEnum {
     GOODS("GOODS", "实物"),
     COUPON("COUPON", "优惠券"),
+    ITEM("ITEM", "单品券"),
     EXCHANGE("EXCHANGE", "可用于兑换的虚拟货币")
     ;
     private final String code;
