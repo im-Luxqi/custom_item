@@ -52,8 +52,8 @@ public class TestController {
     @GetMapping(value = "wxq")
     public String test() throws ApiException {
 
-        taobaoAPIService.isMember("夏01p2dBwi4yiMon9yxJTfxmCkprZqrpmO3kFuSpghDIeqQ=");
-        AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon("AAEA4uHTAMeks3ANjnKYXoKb", "03634718fd484633b4de2ec6bea5ee98");
+        taobaoAPIService.isMember("夏01N+7ssW/6uA070Do0QXBYVRaLaqZmPFoJpYmRoU0T4/k=");
+        AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon("AAFdxiB0ANB653Kozg7LgaJ6", "6db88a99df974082b187acc4d5d9e7ca");
 
         return "success";
     }

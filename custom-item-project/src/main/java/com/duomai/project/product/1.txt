@@ -32,3 +32,12 @@ INSERT INTO `ccc`.`sys_setting_key_value`(`k`, `remark`, `type`, `v`) VALUES ('a
 INSERT INTO `ccc`.`sys_setting_key_value`(`k`, `remark`, `type`, `v`) VALUES ('act_last_time', '活动最后一天', 'type_act_setting', '2020-12-29');
 INSERT INTO `ccc`.`sys_setting_key_value`(`k`, `remark`, `type`, `v`) VALUES ('order_start_time', '订单开始时间', 'type_act_setting', '2020-12-09');
 INSERT INTO `ccc`.`sys_setting_key_value`(`k`, `remark`, `type`, `v`) VALUES ('order_end_time', '订单结束时间', 'type_act_setting', '2020-12-09');
+
+
+
+
+,1,1225,
+,55,555,5555,88,888,
+,101,201,301,401,501,601,701,801,901,1001,2001,3001,4001,5001,6001,
+,6,66,152,352,552,752,952,1152,1352,1552,1852,2152,2452,2752,3052,3352,3652,3952,4252,4552,
+

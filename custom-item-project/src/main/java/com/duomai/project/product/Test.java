@@ -12,7 +12,7 @@ public class Test {
                 a++;
             }
         }
-        System.out.println(a);
+//        System.out.println(a);
 //        Pattern.matches("^[A-Za-z0-9]{15,18}$","11111111111111");
 //
 //        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", "21699045", "20ee7d6400dda1c9670e7f997af2c2c8");
