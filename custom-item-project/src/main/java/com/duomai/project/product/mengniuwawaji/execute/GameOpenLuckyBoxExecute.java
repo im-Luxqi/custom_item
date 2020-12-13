@@ -89,9 +89,9 @@ public class GameOpenLuckyBoxExecute implements IApiExecute {
         List<SysSettingAward> awards = null;
 
         if ("award_tent".equals(awardPlace)) {
-            awards = sysSettingAwardRepository.findByUseWay(useWay);
+            awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(useWay);
         } else {
-            awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.POOL);
+            awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.POOL);
         }
         SysSettingAward winAward = luckyDrawHelper.luckyDraw(awards, syscustom, requestStartTime, useWay.getValue());
         /*只反馈有效数据*/

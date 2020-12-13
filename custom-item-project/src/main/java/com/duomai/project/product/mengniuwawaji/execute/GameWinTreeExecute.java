@@ -78,19 +78,19 @@ public class GameWinTreeExecute implements IApiExecute {
         List<SysSettingAward> awards = null;
         //1.发放DREAM IT REAL 限量Tote包（1,1225）
         if (actTreeWinDto.getTreeAwardOne().contains(ls)) {
-            awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.RANKING1);
+            awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.RANKING1);
         } else if (actTreeWinDto.getTreeAwardTwo().contains(ls)) {
-            awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.RANKING2);
+            awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.RANKING2);
         } else if (actTreeWinDto.getTreeAwardThree().contains(ls)) {
-            awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.RANKING3);
+            awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.RANKING3);
         } else if (actTreeWinDto.getTreeAwardFour().contains(ls)) {
-            awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.RANKING4);
+            awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.RANKING4);
         } else if (rankingValue <= 7000 && (rankingValue % 50 == 0)) {
-            awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.RANKING5);
+            awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.RANKING5);
         } else if (rankingValue > 8000 && rankingValue <= 10000 && (rankingValue % 200 == 0)) {
-            awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.RANKING5);
+            awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.RANKING5);
         } else {
-            awards = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.RANKING6);
+            awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.RANKING6);
         }
 
         SysSettingAward winAward = luckyDrawHelper.luckyDraw(awards, syscustom, requestStartTime, "_ranging");

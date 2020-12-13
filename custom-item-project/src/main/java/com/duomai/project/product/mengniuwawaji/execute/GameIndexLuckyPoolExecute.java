@@ -72,7 +72,7 @@
 //        List<SysLuckyDrawRecord> allExchangeAward = sysLuckyDrawRecordRepository.queryMybag(buyerNick);
 //
 //
-//        List<SysSettingAward> all = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.POOL);
+//        List<SysSettingAward> all = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.POOL);
 //
 //        Map<String, List<SysLuckyDrawRecord>> allExchangeAwardCollect = allExchangeAward.stream()
 //                .collect(Collectors.groupingBy(SysLuckyDrawRecord::getAwardId));

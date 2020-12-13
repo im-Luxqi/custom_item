@@ -90,7 +90,7 @@ public class GameBearAnswerExecute implements IApiExecute {
             syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.bear_xingyuan);
 
             //抽奖
-            List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWay(todayGameBoard.getFirstGameBear() > 0 ? AwardUseWayEnum.BEAR_FIRST : AwardUseWayEnum.POOL);
+            List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(todayGameBoard.getFirstGameBear() > 0 ? AwardUseWayEnum.BEAR_FIRST : AwardUseWayEnum.POOL);
             winAward = luckyDrawHelper.luckyDraw(awards, syscustom, requestStartTime, "_bear");
         }
         if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_bear)) {

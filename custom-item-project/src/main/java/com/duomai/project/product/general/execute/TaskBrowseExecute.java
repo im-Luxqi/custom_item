@@ -119,7 +119,7 @@ public class TaskBrowseExecute implements IApiExecute {
             sysGameBoardDailyRepository.save(todayGameBoard);
 
             //抽奖
-            List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWay(todayGameBoard.getFirstGameDog() > 0 ? AwardUseWayEnum.DOG_FIRST : AwardUseWayEnum.POOL);
+            List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(todayGameBoard.getFirstGameDog() > 0 ? AwardUseWayEnum.DOG_FIRST : AwardUseWayEnum.POOL);
             winAward = luckyDrawHelper.luckyDraw(awards, syscustom, sysParm.getRequestStartTime(), "_dog");
 
 
