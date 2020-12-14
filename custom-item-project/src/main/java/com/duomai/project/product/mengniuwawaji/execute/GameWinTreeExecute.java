@@ -4,6 +4,7 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActTreeWinDto;
@@ -65,15 +66,34 @@ public class GameWinTreeExecute implements IApiExecute {
         Assert.isTrue(syscustom.getStarValue() >= actTreeWinDto.getStarValueTreeLimit(), "星愿值要满足" + actTreeWinDto.getStarValueTreeLimit());
 
 
-        long hasGet = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChance(buyerNick, "_ranging");
-        Assert.isTrue(hasGet == 0, "已经点亮过了");
+//        long hasGet = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndLuckyChance(buyerNick, "_ranging");
+        long l = sysCustomRankingRepository.countByBuyerNick(buyerNick);
+
+//        Assert.isTrue(hasGet == 0, "已经点亮过了");
+        Assert.isTrue(l == 0, "已经点亮过了");
 
         SysCustomRanking sysCustomRanking = new SysCustomRanking();
         sysCustomRanking.setBuyerNick(buyerNick);
         sysCustomRanking.setHeadImg(syscustom.getHeadImg());
         sysCustomRanking.setZnick(syscustom.getZnick());
         SysCustomRanking temp = sysCustomRankingRepository.save(sysCustomRanking);
-        long rankingValue = sysCustomRankingRepository.rankingWhere(temp.getId());
+        Object ranking_value_xxx = MemcacheTools.loadData("ranking_value_xxx");
+        long rankingValue = 0;
+        if (ranking_value_xxx != null) {
+            long tempRank = (long) ranking_value_xxx;
+            if (tempRank > 10000) {
+                rankingValue = tempRank;
+                MemcacheTools.cacheData("ranking_value_xxx", tempRank, 1000);
+            } else {
+                rankingValue = sysCustomRankingRepository.rankingWhere(temp.getId());
+                MemcacheTools.cacheData("ranking_value_xxx", rankingValue, 1000);
+            }
+        } else {
+            rankingValue = sysCustomRankingRepository.rankingWhere(temp.getId());
+            MemcacheTools.cacheData("ranking_value_xxx", rankingValue, 1000);
+        }
+
+
         String ls = "," + rankingValue + ",";
         List<SysSettingAward> awards = null;
         //1.发放DREAM IT REAL 限量Tote包（1,1225）
@@ -87,7 +107,7 @@ public class GameWinTreeExecute implements IApiExecute {
             awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.RANKING4);
         } else if (rankingValue <= 7000 && (rankingValue % 50 == 0)) {
             awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.RANKING5);
-        } else if (rankingValue > 8000 && rankingValue <= 10000 && (rankingValue % 200 == 0)) {
+        } else if (rankingValue >= 8000 && rankingValue <= 10000 && (rankingValue % 200 == 0)) {
             awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.RANKING5);
         } else {
             awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.RANKING6);
@@ -95,6 +115,13 @@ public class GameWinTreeExecute implements IApiExecute {
 
         SysSettingAward winAward = luckyDrawHelper.luckyDraw(awards, syscustom, requestStartTime, "_ranging");
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
+
+        temp.setWinAwardId(awards.get(0).getId());
+        temp.setWinAwardName(awards.get(0).getName());
+        temp.setWinAwardRank((int) rankingValue);
+        temp.setSendSuccess(!Objects.isNull(winAward) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO);
+        sysCustomRankingRepository.save(temp);
+
         /*只反馈有效数据*/
         resultMap.put("win", !Objects.isNull(winAward));
         resultMap.put("award", winAward);
@@ -108,11 +135,6 @@ public class GameWinTreeExecute implements IApiExecute {
                     .setUseWay(null)
                     .setPoolLevel(null);
         }
-        temp.setWinAwardId(awards.get(0).getId());
-        temp.setWinAwardName(awards.get(0).getName());
-        temp.setWinAwardRank((int) rankingValue);
-        temp.setSendSuccess(!Objects.isNull(winAward) ? BooleanConstant.BOOLEAN_YES : BooleanConstant.BOOLEAN_NO);
-        sysCustomRankingRepository.save(temp);
         return YunReturnValue.ok(resultMap, "点亮圣诞树");
     }
 }

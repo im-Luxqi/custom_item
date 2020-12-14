@@ -42,7 +42,7 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
      */
     @Query(nativeQuery = true,
             value = "select award_name as awardName,player_buyer_nick as playerBuyerNick from sys_lucky_draw_record " +
-                    "where award_type in ('COUPON','GOODS')  and  is_win = 1 order by draw_time desc limit 20")
+                    "where  is_win = 1 order by draw_time desc limit 20")
     List<Map> queryExchangeLog();
 
     /**
