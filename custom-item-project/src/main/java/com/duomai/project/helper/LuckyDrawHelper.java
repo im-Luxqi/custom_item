@@ -602,6 +602,12 @@ public class LuckyDrawHelper {
                 drawRecord.setSendError("尝试扣减奖品库存，库存不够不中奖");
                 return null;
             }
+            //单品券
+            if(AwardTypeEnum.ITEM.equals(awardThisWin.getType())){
+                drawRecord.setRemark(awardThisWin.getWinImg());
+            }
+
+
             //2.如果中的是优惠券，发放优惠券
             if (AwardTypeEnum.COUPON.equals(awardThisWin.getType())) {
                 try {
