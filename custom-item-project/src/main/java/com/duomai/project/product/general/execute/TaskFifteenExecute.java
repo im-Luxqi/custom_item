@@ -5,7 +5,6 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
-import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysGameBoardDaily;
 import com.duomai.project.product.general.entity.SysGameLog;
@@ -65,29 +64,27 @@ public class TaskFifteenExecute implements IApiExecute {
 
         SysSettingAward winAward = null;
         SysGameBoardDaily todayGameBoard = projectHelper.findTodayGameBoard(syscustom, requestStartTime);
-        if (todayGameBoard.getGameDog() == 0) {
+        Assert.isTrue(todayGameBoard.getGameDog() == 0,"每天一次哦");
 
-            todayGameBoard.setGameDog(todayGameBoard.getGameDog() + 1);
-            sysGameBoardDailyRepository.save(todayGameBoard);
-            //抽奖
-            List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(todayGameBoard.getFirstGameDog() > 0 ? AwardUseWayEnum.DOG_FIRST : AwardUseWayEnum.POOL);
-            winAward = luckyDrawHelper.luckyDraw(awards, syscustom, sysParm.getRequestStartTime(), "_dog");
+        todayGameBoard.setGameDog(todayGameBoard.getGameDog() + 1);
+        sysGameBoardDailyRepository.save(todayGameBoard);
+        //抽奖
+        List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(todayGameBoard.getFirstGameDog() > 0 ? AwardUseWayEnum.DOG_FIRST : AwardUseWayEnum.POOL);
+        winAward = luckyDrawHelper.luckyDraw(awards, syscustom, sysParm.getRequestStartTime(), "_dog");
 
-            //2.发放星愿，更新活动进度
-            syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.dog_xingyuan);
-            if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_dog)) {
-                syscustom.setCurrentAction(PlayActionEnum.letter_party3);
-            }
-            sysCustomRepository.save(syscustom);
-
-            //4.记录互动日志
-            sysGameLogRepository.save(new SysGameLog()
-                    .setBuyerNick(buyerNick)
-                    .setCreateTime(requestStartTime)
-                    .setCreateTimeString(requestStartTimeString)
-                    .setPartner(PlayPartnerEnum.dog));
-
+        //2.发放星愿，更新活动进度
+        syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.dog_xingyuan);
+        if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_dog)) {
+            syscustom.setCurrentAction(PlayActionEnum.letter_party3);
         }
+        sysCustomRepository.save(syscustom);
+
+        //4.记录互动日志
+        sysGameLogRepository.save(new SysGameLog()
+                .setBuyerNick(buyerNick)
+                .setCreateTime(requestStartTime)
+                .setCreateTimeString(requestStartTimeString)
+                .setPartner(PlayPartnerEnum.dog));
         /*只反馈有效数据*/
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         resultMap.put("win", !Objects.isNull(winAward));
