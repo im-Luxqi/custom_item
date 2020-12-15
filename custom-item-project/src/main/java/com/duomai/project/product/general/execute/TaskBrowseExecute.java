@@ -109,52 +109,52 @@ public class TaskBrowseExecute implements IApiExecute {
         }
 
 
-        SysSettingAward winAward = null;
-        //第三次浏览抽奖
-        Integer taskBrowseShouldSee = 3;
-        SysGameBoardDaily todayGameBoard = projectHelper.findTodayGameBoard(syscustom, requestStartTime);
-        if (todayGameBoard.getGameDog() == 0 && taskBrowseShouldSee.equals(todayHasBrowseLogs.size())) {
-
-            todayGameBoard.setGameDog(todayGameBoard.getGameDog() + 1);
-            sysGameBoardDailyRepository.save(todayGameBoard);
-
-            //抽奖
-            List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(todayGameBoard.getFirstGameDog() > 0 ? AwardUseWayEnum.DOG_FIRST : AwardUseWayEnum.POOL);
-            winAward = luckyDrawHelper.luckyDraw(awards, syscustom, sysParm.getRequestStartTime(), "_dog");
-
-
-            //2.发放星愿，更新活动进度
-            syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.dog_xingyuan);
-            if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_dog)) {
-                syscustom.setCurrentAction(PlayActionEnum.letter_party3);
-            }
-            sysCustomRepository.save(syscustom);
-
-            //4.记录互动日志
-            sysGameLogRepository.save(new SysGameLog()
-                    .setBuyerNick(buyerNick)
-                    .setCreateTime(requestStartTime)
-                    .setCreateTimeString(requestStartTimeString)
-                    .setPartner(PlayPartnerEnum.dog));
-
-        }
+//        SysSettingAward winAward = null;
+//        //第三次浏览抽奖
+//        Integer taskBrowseShouldSee = 1;
+//        SysGameBoardDaily todayGameBoard = projectHelper.findTodayGameBoard(syscustom, requestStartTime);
+//        if (todayGameBoard.getGameDog() == 0 && taskBrowseShouldSee.equals(todayHasBrowseLogs.size())) {
+//
+//            todayGameBoard.setGameDog(todayGameBoard.getGameDog() + 1);
+//            sysGameBoardDailyRepository.save(todayGameBoard);
+//
+//            //抽奖
+//            List<SysSettingAward> awards = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(todayGameBoard.getFirstGameDog() > 0 ? AwardUseWayEnum.DOG_FIRST : AwardUseWayEnum.POOL);
+//            winAward = luckyDrawHelper.luckyDraw(awards, syscustom, sysParm.getRequestStartTime(), "_dog");
+//
+//
+//            //2.发放星愿，更新活动进度
+//            syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.dog_xingyuan);
+//            if (syscustom.getCurrentAction().equals(PlayActionEnum.playwith_dog)) {
+//                syscustom.setCurrentAction(PlayActionEnum.letter_party3);
+//            }
+//            sysCustomRepository.save(syscustom);
+//
+//            //4.记录互动日志
+//            sysGameLogRepository.save(new SysGameLog()
+//                    .setBuyerNick(buyerNick)
+//                    .setCreateTime(requestStartTime)
+//                    .setCreateTimeString(requestStartTimeString)
+//                    .setPartner(PlayPartnerEnum.dog));
+//
+//        }
         /*只反馈有效数据*/
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
-        resultMap.put("win", !Objects.isNull(winAward));
-        resultMap.put("award", winAward);
-        resultMap.put("get_letter_party3", syscustom.getCurrentAction().equals(PlayActionEnum.letter_party3));
-        if (!Objects.isNull(winAward)) {
-            winAward.setEname(null)
-                    .setId(null)
-                    .setRemainNum(null)
-                    .setSendNum(null)
-                    .setTotalNum(null)
-                    .setLuckyValue(null)
-                    .setUseWay(null)
-                    .setType(null)
-                    .setPoolLevel(null);
-        }
-        //2.星愿值
+//        resultMap.put("win", !Objects.isNull(winAward));
+//        resultMap.put("award", winAward);
+//        resultMap.put("get_letter_party3", syscustom.getCurrentAction().equals(PlayActionEnum.letter_party3));
+//        if (!Objects.isNull(winAward)) {
+//            winAward.setEname(null)
+//                    .setId(null)
+//                    .setRemainNum(null)
+//                    .setSendNum(null)
+//                    .setTotalNum(null)
+//                    .setLuckyValue(null)
+//                    .setUseWay(null)
+//                    .setType(null)
+//                    .setPoolLevel(null);
+//        }
+//        //2.星愿值
         resultMap.put("total_star_value", syscustom.getStarValue());
         return YunReturnValue.ok(resultMap, "浏览成功!");
     }

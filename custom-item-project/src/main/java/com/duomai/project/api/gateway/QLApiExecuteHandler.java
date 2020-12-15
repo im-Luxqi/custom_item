@@ -69,6 +69,9 @@ public class QLApiExecuteHandler {
         //3.1  狗 浏览
         map.put("wx.dz.game.party2.play.dog.browse", TaskBrowseExecute.class);
 
+        //3.1  与狗互动
+        map.put("wx.dz.game.party2.play.dog.fifteen", TaskFifteenExecute.class);
+
 
         //2.8  使用 letter_party3邀请函
         map.put("wx.dz.game.party2.use.letterParty3", GameUseLetterParty3Execute.class);
