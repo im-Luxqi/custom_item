@@ -11,7 +11,6 @@ import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysGameBoardDaily;
 import com.duomai.project.product.general.entity.SysPagePvLog;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
-import com.duomai.project.product.general.enums.PlayActionEnum;
 import com.duomai.project.product.general.enums.PvPageEnum;
 import com.duomai.project.product.general.repository.*;
 import com.duomai.project.tool.CommonDateParseUtil;
@@ -44,6 +43,8 @@ public class GameIndexParty2Execute implements IApiExecute {
     private ProjectHelper projectHelper;
     @Autowired
     private SysTaskShareLogRepository sysTaskShareLogRepository;
+    @Autowired
+    private SysGameLogRepository sysGameLogRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -74,7 +75,19 @@ public class GameIndexParty2Execute implements IApiExecute {
 
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         //1.是否开启过礼盒
-        resultMap.put("get_letter_party3", syscustom.getCurrentAction().equals(PlayActionEnum.letter_party3));
+
+
+//        if (syscustom.getCurrentAction().equals(PlayActionEnum.letter_party3)) {
+//            long playDog = sysGameLogRepository.countByBuyerNickAndPartner(buyerNick, PlayPartnerEnum.dog);
+//            if (playDog > 0) {
+//                resultMap.put("get_letter_party3", false);
+//            } else {
+//                resultMap.put("get_letter_party3", true);
+//            }
+//        } else {
+//            resultMap.put("get_letter_party3", false);
+//        }
+        resultMap.put("get_letter_party3", false);
         resultMap.put("have_open_award_party2", l > 0);
         resultMap.put("have_open_award_tent", l2 > 0);
         resultMap.put("first_play_Lamp", daily.getFirstGameLamp().equals(BooleanConstant.BOOLEAN_YES));
