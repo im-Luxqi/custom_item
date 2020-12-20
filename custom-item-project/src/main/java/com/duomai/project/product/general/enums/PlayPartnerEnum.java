@@ -14,6 +14,7 @@ public enum PlayPartnerEnum implements IEnum {
     lamp("lamp", "灯"),
     tent("tent", "帐篷"),
     dog("dog", "狗"),
+    partybrowse("partybrowse", "场景三浏览"),
     balloon("balloon", "气球"),
     ;
     private final String code;

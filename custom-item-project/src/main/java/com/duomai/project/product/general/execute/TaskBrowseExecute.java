@@ -8,11 +8,10 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
-import com.duomai.project.product.general.entity.*;
-import com.duomai.project.product.general.enums.AwardUseWayEnum;
+import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysSettingCommodity;
+import com.duomai.project.product.general.entity.SysTaskBrowseLog;
 import com.duomai.project.product.general.enums.CoachConstant;
-import com.duomai.project.product.general.enums.PlayActionEnum;
-import com.duomai.project.product.general.enums.PlayPartnerEnum;
 import com.duomai.project.product.general.repository.*;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @内容：任务页面 浏览商品操作
@@ -99,12 +97,12 @@ public class TaskBrowseExecute implements IApiExecute {
 
 
             //浏览，每日前3次发放星愿，最后一天前10次
-            long limit = requestStartTime.after(actSetting.getActLastTime()) ? CoachConstant.browse_limit_count_last : CoachConstant.browse_limit_count;
-            Integer winStar = requestStartTime.after(actSetting.getActLastTime()) ? CoachConstant.browse_xingyuan_last : CoachConstant.browse_xingyuan;
-            if (todayHasBrowseLogs.size() <= limit) {
-                syscustom.setHaveBrowseGoods(BooleanConstant.BOOLEAN_YES);
-                syscustom.setStarValue(syscustom.getStarValue() + winStar);
-                syscustom = sysCustomRepository.save(syscustom);
+            if (requestStartTime.before(actSetting.getActLastTime())) {
+                if (todayHasBrowseLogs.size() <= CoachConstant.browse_limit_count) {
+                    syscustom.setHaveBrowseGoods(BooleanConstant.BOOLEAN_YES);
+                    syscustom.setStarValue(syscustom.getStarValue() + CoachConstant.browse_xingyuan);
+                    syscustom = sysCustomRepository.save(syscustom);
+                }
             }
         }
 

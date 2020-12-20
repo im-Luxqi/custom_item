@@ -63,8 +63,9 @@ public class TaskFifteenExecute implements IApiExecute {
         Assert.notNull(syscustom, "无效的玩家");
 
         SysSettingAward winAward = null;
+
+
         SysGameBoardDaily todayGameBoard = projectHelper.findTodayGameBoard(syscustom, requestStartTime);
-//        Assert.isTrue(, "每天一次哦");
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         if (todayGameBoard.getGameDog() == 0) {
             todayGameBoard.setGameDog(todayGameBoard.getGameDog() + 1);

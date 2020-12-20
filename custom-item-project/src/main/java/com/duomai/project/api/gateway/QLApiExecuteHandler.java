@@ -103,6 +103,10 @@ public class QLApiExecuteHandler {
         //party3  场景load
         map.put("wx.dz.game.party3.load", GameIndexParty3Execute.class);
 
+        //3.1  场景3浏览
+        map.put("wx.dz.game.party3.browse", PartyThreeBrowseExecute.class);
+
+
 
 
 
