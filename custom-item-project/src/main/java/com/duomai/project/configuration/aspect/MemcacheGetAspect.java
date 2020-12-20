@@ -3,6 +3,7 @@ package com.duomai.project.configuration.aspect;
 import com.duomai.project.api.taobao.MemCacheData;
 import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.configuration.annotation.JoinMemcache;
+import com.duomai.project.tool.ApplicationUtils;
 import com.duomai.project.tool.ProjectTools;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +15,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -43,20 +43,22 @@ public class MemcacheGetAspect {
         Method method = signature.getMethod();
         JoinMemcache join = method.getAnnotation(JoinMemcache.class);
         String className = point.getTarget().getClass().getName();
-
-        String key = StringUtils.isNotBlank(join.key()) ? join.key() : (className + method.getName());
-        String lock_key = lock + key;
+        String property = ApplicationUtils.getContext().getEnvironment().getProperty("spring.profiles.active");
+        String key = property + (StringUtils.isNotBlank(join.key()) ? join.key() : (className + method.getName()));
+        String lock_key = property + lock + key;
         int timeout = join.refreshTime();
 
         if (!ProjectTools.hasMemCacheEnvironment()) {
             return point.proceed();
         }
         boolean endFlag = false;
+        MemCacheData memCacheData = null;
         while (!endFlag) {
-            MemCacheData memCacheData = MemcacheTools.loadData(key);
+            memCacheData = MemcacheTools.loadData(key);
             if (Objects.isNull(memCacheData)) {
                 if (MemcacheTools.add(lock_key, lock_time)) {
-                    MemcacheTools.cacheData(key, new MemCacheData<>(timeout - delayed_time).setData(point.proceed()), timeout);
+                    memCacheData = new MemCacheData<>(timeout - delayed_time).setData(point.proceed());
+                    MemcacheTools.cacheData(key, memCacheData, timeout);
                     MemcacheTools.cleanData(lock_key);
                 } else {
                     Thread.sleep(wait_time);
@@ -64,16 +66,16 @@ public class MemcacheGetAspect {
             } else if (memCacheData.getTimeout() <= System.currentTimeMillis()) {
                 if (MemcacheTools.add(lock_key, lock_time)) {
                     MemcacheTools.cacheData(key, new MemCacheData<>(timeout - delayed_time).setData(memCacheData.getData()), timeout);
-                    MemcacheTools.cacheData(key, new MemCacheData<>(timeout - delayed_time).setData(point.proceed()), timeout);
+                    memCacheData = new MemCacheData<>(timeout - delayed_time).setData(point.proceed());
+                    MemcacheTools.cacheData(key, memCacheData, timeout);
                     MemcacheTools.cleanData(lock_key);
                 } else {
                     Thread.sleep(wait_time);
                 }
             }
-            if (!Objects.isNull(MemcacheTools.loadData(key)))
+            if (!Objects.isNull(memCacheData))
                 endFlag = true;
         }
-        MemCacheData finalData = MemcacheTools.loadData(key);
-        return finalData.getData();
+        return memCacheData.getData();
     }
 }
