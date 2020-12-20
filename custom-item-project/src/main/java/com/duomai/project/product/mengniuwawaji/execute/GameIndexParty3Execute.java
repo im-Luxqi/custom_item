@@ -65,11 +65,15 @@ public class GameIndexParty3Execute implements IApiExecute {
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         //1.表示玩家是否点亮过圣诞树
         resultMap.put("have_light_tree", hasGet > 0);
-        resultMap.put("can_light_tree", requestStartTime.after(actTreeWinDto.getTimeTreeLimit()));
+        resultMap.put("can_light_tree_timeLimit", requestStartTime.after(actTreeWinDto.getTimeTreeLimit()));
+        resultMap.put("can_light_tree_starValue", syscustom.getStarValue() >= actTreeWinDto.getStarValueTreeLimit());
         //2.星愿值
         resultMap.put("total_star_value", syscustom.getStarValue());
         return YunReturnValue.ok(resultMap, "场景3" +
-                "have_light_tree = true ---> 表示玩家是否点亮过圣诞树");
+                "  can_light_tree_timeLimit = true ---> 满足点亮圣诞树的时间要求" +
+                "  can_light_tree_starValue = true ---> 满足点亮圣诞树的星愿要求" +
+                "  have_light_tree = true ---> 表示玩家是否点亮过圣诞树"
+        );
     }
 }
 
