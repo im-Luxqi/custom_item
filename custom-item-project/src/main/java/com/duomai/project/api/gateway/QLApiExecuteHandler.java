@@ -31,7 +31,7 @@ public class QLApiExecuteHandler {
 //        map.put("wx.dz.common.test.luckyChance", TestLuckyChanceExecute.class);
 
         //测试阶段专用 --kill wxq
-        map.put("wx.dz.common.test.kill", TestKillChanceExecute.class);
+//        map.put("wx.dz.common.test.kill", TestKillChanceExecute.class);
 
         //1.玩家信息扫描，首次完成初始化操作 wxq
         map.put("wx.dz.common.playerInfo.scan", PlayerInfoScanOrInitExecute.class);
