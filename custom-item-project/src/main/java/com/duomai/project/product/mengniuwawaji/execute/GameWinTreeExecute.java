@@ -16,6 +16,7 @@ import com.duomai.project.product.general.repository.SysCustomRankingRepository;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import com.duomai.project.product.general.repository.SysSettingAwardRepository;
+import com.duomai.project.tool.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -77,20 +78,22 @@ public class GameWinTreeExecute implements IApiExecute {
         sysCustomRanking.setHeadImg(syscustom.getHeadImg());
         sysCustomRanking.setZnick(syscustom.getZnick());
         SysCustomRanking temp = sysCustomRankingRepository.save(sysCustomRanking);
-        Object ranking_value_xxx = MemcacheTools.loadData("ranking_value_xxx");
+        String property = ApplicationUtils.getContext().getEnvironment().getProperty("spring.profiles.active");
+        String rankingKey = property + "ranking_value_xxx";
+        Object ranking_value_xxx = MemcacheTools.loadData(rankingKey);
         long rankingValue = 0;
         if (ranking_value_xxx != null) {
             long tempRank = (long) ranking_value_xxx;
             if (tempRank > 10000) {
                 rankingValue = tempRank;
-                MemcacheTools.cacheData("ranking_value_xxx", tempRank, 1000);
+                MemcacheTools.cacheData(rankingKey, tempRank, 1000);
             } else {
                 rankingValue = sysCustomRankingRepository.rankingWhere(temp.getId());
-                MemcacheTools.cacheData("ranking_value_xxx", rankingValue, 1000);
+                MemcacheTools.cacheData(rankingKey, rankingValue, 1000);
             }
         } else {
             rankingValue = sysCustomRankingRepository.rankingWhere(temp.getId());
-            MemcacheTools.cacheData("ranking_value_xxx", rankingValue, 1000);
+            MemcacheTools.cacheData(rankingKey, rankingValue, 1000);
         }
 
 
