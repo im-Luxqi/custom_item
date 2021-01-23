@@ -47,7 +47,7 @@ public class XhwIndexLoadExecute implements IApiExecute {
         //活动说明
         resultMap.put("act_rule", xhwSetting.getActRule());
         //showbar
-//        resultMap.put("new_year_card", xhwShowBarRepository.findAllOrderByLevelDesc());
+        resultMap.put("new_year_card", xhwShowBarRepository.findAllByOrderByLevelDesc());
 
         //当前参与抢购的奖品
         resultMap.put("hot_award", xhwAwardRepository.findFirstByAwardRunningTypeOrderByLevelDesc(AwardRunningEnum.RUNNING));

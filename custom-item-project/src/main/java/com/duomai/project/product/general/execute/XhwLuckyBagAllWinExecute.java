@@ -37,7 +37,7 @@ public class XhwLuckyBagAllWinExecute implements IApiExecute {
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
 
         XhwCustom custom = xhwHelper.findCustom(buyerNick);
-        List<XhwAwardRecord> xhwAwardRecordList = xhwAwardRecordRepository.findByBuyerNickOrderByDrawTimeDesc();
+        List<XhwAwardRecord> xhwAwardRecordList = xhwAwardRecordRepository.findByBuyerNickOrderByDrawTimeDesc(custom.getBuyerNick());
 
         /*.数据展示*/
         Map result = new HashMap<>();

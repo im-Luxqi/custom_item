@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface XhwShowBarRepository extends BaseRepository<XhwShowBar, String> {
 
-//    List<XhwShowBar> findAllOrderByLevelDesc();
+    List<XhwShowBar> findAllByOrderByLevelDesc();
 }

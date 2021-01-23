@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface XhwAwardRecordRepository extends BaseRepository<XhwAwardRecord, String> {
 
-    List<XhwAwardRecord> findByBuyerNickOrderByDrawTimeDesc();
+    List<XhwAwardRecord> findByBuyerNickOrderByDrawTimeDesc(String buyerNick);
 }
