@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title th:text="直播管理"></title>
+    <link rel="shortcut icon" href="../static/favicon.ico">
+    <link th:href="@{/static/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/static/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link th:href="@{/static/css/bootstrap-table.min.css}" rel="stylesheet"/>
+    <style>
+        .login-img3-body {
+            background: url(/static/img/bg-1.jpg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        .indexform {
+
+            background: rgba(0, 15, 50, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+        }
+
+        .input-group {
+            margin: 30px;
+        }
+    </style>
+
+</head>
+
+<body class="gray-bg login-img3-body"
+      style="width: 100vw;height: 100vh;display: flex;justify-content: center;align-items: center">
+
+
+<div class="container" style="width:30%">
+
+    <form class="login-form indexform" action="index.html">
+        <div class="login-wrap">
+            <p class="login-img"><i class="icon_lock_alt"></i></p>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="icon_profile"></i></span>
+                <input name="username" type="text" class="form-control" placeholder="Username" autofocus>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                <input name="password" type="password" class="form-control" placeholder="Password">
+            </div>
+            <button class="btn btn-primary btn-lg btn-block LoginBtn" type="button">Login</button>
+        </div>
+    </form>
+</div>
+
+<!-- 通用JS -->
+<div>
+    <script th:inline="javascript"> var ctx = [[@{/}]]; </script>
+    <script th:src="@{/static/js/jquery.min.js}"></script>
+    <script th:src="@{/static/js/bootstrap.min.js}"></script>
+    <script th:src="@{/static/js/bootstrap-table.min.js}"></script>
+    <script th:src="@{/static/js/jquery.blockUI.js}"></script>
+    <script th:src="@{/static/layer/layer.min.js}"></script>
+</div>
+<script th:inline="javascript">
+
+    $(function () {
+
+        $(".LoginBtn").on("click", function () {
+            $.ajax({
+                url: ctx + "admin/login",
+                type: "post",
+                data: {
+                    name: $("[name='username']").val(),
+                    password: $("[name='password']").val(),
+                },
+                success: function (data) {
+                    if (data && data.success) location.href = ctx +"admin/manage";
+                    else location.href = ctx + "admin/loginIndex";
+                }
+            });
+        })
+    });
+
+</script>
+</body>
+</html>
