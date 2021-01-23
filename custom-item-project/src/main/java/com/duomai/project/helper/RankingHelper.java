@@ -1,13 +1,6 @@
 package com.duomai.project.helper;
 
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.duomai.project.configuration.annotation.JoinMemcache;
-import com.duomai.project.product.general.dto.PageListDto;
-import com.duomai.project.product.general.entity.SysCustomRanking;
-import com.duomai.project.product.general.repository.SysCustomRankingRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 /**

@@ -6,7 +6,6 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.common.enums.SysErrorEnum;
 import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.product.general.execute.*;
-import com.duomai.project.product.mengniuwawaji.execute.*;
 import com.duomai.project.tool.ApplicationUtils;
 import com.duomai.project.tool.ProjectTools;
 import org.springframework.context.ApplicationContext;
@@ -25,96 +24,22 @@ public class QLApiExecuteHandler {
         /**
          * 通用
          */
-        //测试阶段专用  wxq
-//        map.put("wx.dz.common.test", TestExecute.class);
-        //测试阶段专用 --增加指定玩家30次抽奖次数 wxq
-//        map.put("wx.dz.common.test.luckyChance", TestLuckyChanceExecute.class);
-
-        //测试阶段专用 --kill wxq
-//        map.put("wx.dz.common.test.kill", TestKillChanceExecute.class);
-
-        //1.玩家信息扫描，首次完成初始化操作 wxq
-        map.put("wx.dz.common.playerInfo.scan", PlayerInfoScanOrInitExecute.class);
-        //授权成功后，完善用户信息 wxq
-        map.put("wx.dz.common.playerInfo.fill.afterAuthorization", PlayerInfoFillForAfterAuthorizationExecute.class);
-
-        //2 落地页，门头页load
-        map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
-
-
-        //party1  场景load
-        map.put("wx.dz.game.party1.load", GameIndexParty1Execute.class);
-
-
-        //2.1 场景1 和雪人玩
-        map.put("wx.dz.game.party1.play.snowman", GamePlaySnowmanExecute.class);
-        //2.2 场景1 和企鹅玩
-        map.put("wx.dz.game.party1.play.penguin", GamePlayPenguinExecute.class);
-        //2.3  开礼盒
-        map.put("wx.dz.game.party.open.luckyBox", GameOpenLuckyBoxExecute.class);
-        //2.7  分享
-        map.put("wx.dz.game.party.share", GameShareExecute.class);
-        //2.4  白熊 获取三道新题目
-        map.put("wx.dz.game.party1.bear.threeQuestion", GameBearGetThreeQuestionExecute.class);
-        //2.6  白熊 答题
-        map.put("wx.dz.game.party1.bear.answer", GameBearAnswerExecute.class);
-        //2.8  使用 letter_party2邀请函
-        map.put("wx.dz.game.party1.use.letterParty2", GameUseLetterParty2Execute.class);
-        //party2 load
-        map.put("wx.dz.game.party2.load", GameIndexParty2Execute.class);
-        //2.9  场景2 点灯
-        map.put("wx.dz.game.party2.play.lamp", GamePlayLampExecute.class);
-        //3.0  狗 浏览商品列表
-        map.put("wx.dz.game.party2.play.dog.goodsList", ShowBrowseListExecute.class);
-        //3.1  狗 浏览
-        map.put("wx.dz.game.party2.play.dog.browse", TaskBrowseExecute.class);
-
-        //3.1  与狗互动
-        map.put("wx.dz.game.party2.play.dog.fifteen", TaskFifteenExecute.class);
-
-
-        //2.8  使用 letter_party3邀请函
-        map.put("wx.dz.game.party2.use.letterParty3", GameUseLetterParty3Execute.class);
-
-
-        //3.2  场景2 和气球玩
-        map.put("wx.dz.game.party2.play.balloon", GamePlayBalloonExecute.class);
-
-        //我的奖品 wxq
-        map.put("wx.dz.common.luckyBag.win", LuckyBagAllWinExecute.class);
-        //留资料 wxq
-        map.put("wx.dz.common.luckyBag.win.address", LuckyBagFillAwardAddressExecute.class);
-        //入会任务
-
-        //任务--成为会员
-        map.put("wx.dz.game.task.member", TaskMemberExecute.class);
-
-        //3.游戏首页 小彩蛋
-        map.put("wx.dz.game.index.egg", GameIndexEggExecute.class);
-
-
-        //3.拉取订单
-        map.put("wx.dz.game.order.get", GameOrderGetExecute.class);
-
-        //4.点亮圣诞树
-        map.put("wx.dz.game.win.tree", GameWinTreeExecute.class);
-
-
-        //party3  场景load
-        map.put("wx.dz.game.party3.load", GameIndexParty3Execute.class);
-
-        //3.1  场景3浏览
-        map.put("wx.dz.game.party3.browse", PartyThreeBrowseExecute.class);
-
-
-
-
-
-
-        //1.待压测，初始化用户
-        //2.待压测，点亮圣诞树
-        //2.待压测，和白熊答题
-
+        /*前台*/
+        //首页load
+        map.put("wx.dz.xhw.index.load", XhwIndexLoadExecute.class);
+        //马上抢
+        map.put("wx.dz.xhw.index.draw", XhwIndexDrawExecute.class);
+        //我的礼品
+        map.put("wx.dz.xhw.luckybag.list", XhwLuckyBagAllWinExecute.class);
+        //填写信息
+        map.put("wx.dz.xhw.luckybag.address", XhwLuckyBagFillAwardAddressExecute.class);
+        //刷新running award
+        map.put("wx.dz.xhw.refresh.award", XhwRefreshAwardExecute.class);
+        /*后台*/
+        //拜年贴  新增,删除,修改
+        //奖品  新增,删除,修改
+        //群  新增
+        //虚拟人数  修改
 
     }
 

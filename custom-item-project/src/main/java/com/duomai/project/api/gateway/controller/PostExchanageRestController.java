@@ -11,11 +11,7 @@ import com.duomai.project.api.gateway.QLApiExecuteHandler;
 import com.duomai.project.api.gateway.entity.CgApiLog;
 import com.duomai.project.api.gateway.repository.CgApiLogRepository;
 import com.duomai.project.api.gateway.tool.ApiTool;
-import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.configuration.SysCustomProperties;
-import com.duomai.project.helper.LuckyDrawHelper;
-import com.duomai.project.helper.ProjectHelper;
-import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -41,8 +36,6 @@ public class PostExchanageRestController extends BaseRestController {
     @Autowired
     private SysCustomProperties sysCustomProperties;
 
-    @Autowired
-    private ProjectHelper projectHelper;
 
 
     /**
@@ -55,7 +48,6 @@ public class PostExchanageRestController extends BaseRestController {
     @RequestMapping(value = "/router/test")
     public YunReturnValue test2() {
 
-        projectHelper.getAllQuestion();
         return YunReturnValue.ok("云应用存活检测");
     }
 
@@ -88,17 +80,17 @@ public class PostExchanageRestController extends BaseRestController {
         /*1.补充需要的请求参数*/
         apiSysParameter.getApiParameter().getCommomParameter().setIp(cgApiLog.getRequestIp());
         apiSysParameter.getApiParameter().setYunTokenParameter(yunTokenParameter);
-        /*2.sign校验*/
-        if (!sysCustomProperties.getSysConfig().getAppkey().equals(apiSysParameter.getApiParameter().getCommomParameter().getAppkey())) {
-            cgApiLog.setParType(1);
-            cgApiLog.setErrorMsg(SysErrorEnum.VALID_APPKEY.getValue());
-            return YunReturnValue.fail(SysErrorEnum.VALID_APPKEY);
-        }
-        if (!ApiTool.signCheck(apiSysParameter)) {
-            cgApiLog.setParType(1);
-            cgApiLog.setErrorMsg(SysErrorEnum.VALID_SIGN.getValue());
-            return YunReturnValue.fail(SysErrorEnum.VALID_SIGN);
-        }
+//        /*2.sign校验*/
+//        if (!sysCustomProperties.getSysConfig().getAppkey().equals(apiSysParameter.getApiParameter().getCommomParameter().getAppkey())) {
+//            cgApiLog.setParType(1);
+//            cgApiLog.setErrorMsg(SysErrorEnum.VALID_APPKEY.getValue());
+//            return YunReturnValue.fail(SysErrorEnum.VALID_APPKEY);
+//        }
+//        if (!ApiTool.signCheck(apiSysParameter)) {
+//            cgApiLog.setParType(1);
+//            cgApiLog.setErrorMsg(SysErrorEnum.VALID_SIGN.getValue());
+//            return YunReturnValue.fail(SysErrorEnum.VALID_SIGN);
+//        }
 
         //压力测试
 //        pressTest(yunTokenParameter);
