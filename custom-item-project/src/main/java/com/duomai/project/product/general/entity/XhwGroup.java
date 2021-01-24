@@ -37,4 +37,7 @@ public class XhwGroup {
     @Column(columnDefinition = "int(10) COMMENT '群最大人数'")
     private Integer maxNum;
 
+    @Column(columnDefinition = "int(10) COMMENT '剩余人数'")
+    private Integer remainNum;
+
 }

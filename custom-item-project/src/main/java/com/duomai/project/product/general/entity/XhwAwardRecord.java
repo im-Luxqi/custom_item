@@ -26,7 +26,7 @@ public class XhwAwardRecord implements Serializable {
 
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '抽奖时间'")
     private Date drawTime;
-    @Column(columnDefinition = "DATETIME COMMENT '抽奖时间String'")
+    @Column(columnDefinition = "varchar(64) COMMENT '抽奖时间String'")
     private String drawTimeString;
 
     @Column(columnDefinition = "varchar(64) COMMENT '玩家混淆昵称'")
@@ -61,8 +61,12 @@ public class XhwAwardRecord implements Serializable {
     @Column(columnDefinition = "DATETIME COMMENT '填写地址时间'")
     private Date receviceTime;
 
-    @Column(columnDefinition = "DATETIME COMMENT '填写地址时间'")
+    @Column(columnDefinition = "varchar(64) COMMENT '填写地址时间'")
     private String receviceTimeString;
     @Column(columnDefinition = "varchar(64) COMMENT 'ip'")
     private String ip;
+
+
+    @Transient
+    private String remark;
 }

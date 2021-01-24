@@ -7,6 +7,7 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.dto.AddressInfoFillDto;
 import com.duomai.project.product.general.entity.XhwAwardRecord;
 import com.duomai.project.product.general.repository.XhwAwardRecordRepository;
+import com.duomai.project.tool.CommonDateParseUtil;
 import com.duomai.project.tool.ProjectTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,6 +46,7 @@ public class XhwLuckyBagFillAwardAddressExecute implements IApiExecute {
                 .setRecevicePhone(beautyAdmjson.getRecevicePhone())
                 .setReceviceProvince(beautyAdmjson.getReceviceProvince())
                 .setReceviceTime(sysParm.getRequestStartTime())
+                .setReceviceTimeString(CommonDateParseUtil.date2string(sysParm.getRequestStartTime(),"yyyy-MM-dd"))
                 .setReceviceAddress(beautyAdmjson.getReceviceAddress()));
         return YunReturnValue.ok("完善地址成功");
     }

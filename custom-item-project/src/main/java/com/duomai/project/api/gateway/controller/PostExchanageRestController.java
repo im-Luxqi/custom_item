@@ -63,8 +63,8 @@ public class PostExchanageRestController extends BaseRestController {
      */
     @PostMapping(value = "/router/api")
     public YunReturnValue gateWay(
-            @RequestBody @Validated ApiSysParameter apiSysParameter,
-            @Validated YunTokenParameter yunTokenParameter,
+            @RequestBody  ApiSysParameter apiSysParameter,
+             YunTokenParameter yunTokenParameter,
             HttpServletRequest request, HttpServletResponse response) {
 
         apiSysParameter.setRequestStartTime(new Date());
