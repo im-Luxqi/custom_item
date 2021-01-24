@@ -56,7 +56,7 @@ public class XhwIndexLoadExecute implements IApiExecute {
         resultMap.put("player_num", xhwSetting.getVirtualNum() + joinNum);
         //中奖记录
 
-        resultMap.put("draw_record", null);
+        resultMap.put("draw_record", xhwHelper.drawLog());
         //群二维码
         resultMap.put("qr_code", custom.getGroupChat());
 

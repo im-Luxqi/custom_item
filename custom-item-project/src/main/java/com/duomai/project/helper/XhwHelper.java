@@ -134,4 +134,8 @@ public class XhwHelper {
         award.setLogId(save.getId());
         return award;
     }
+
+    public Object drawLog() {
+        return xhwAwardRecordRepository.queryLuckyDrawLog();
+    }
 }
