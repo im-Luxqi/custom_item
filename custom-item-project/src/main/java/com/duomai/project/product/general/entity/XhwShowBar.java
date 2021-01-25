@@ -31,4 +31,7 @@ public class XhwShowBar {
     @Column(columnDefinition = "int(10) COMMENT '优先级'")
     private Integer level;
 
+    @Column(columnDefinition = "varchar(255) COMMENT '市长'")
+    private String leader;
+
 }

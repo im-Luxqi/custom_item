@@ -20,6 +20,8 @@ public class ApiSysParameter {
     @NotBlank(message = "JsonRpc的版本号不能为空")
     private String jsonrpc;
 
+    private String buyerNick;
+
     /**
      * 调用方法名
      */

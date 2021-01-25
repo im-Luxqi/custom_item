@@ -11,10 +11,10 @@ import com.duomai.project.api.gateway.QLApiExecuteHandler;
 import com.duomai.project.api.gateway.entity.CgApiLog;
 import com.duomai.project.api.gateway.repository.CgApiLogRepository;
 import com.duomai.project.api.gateway.tool.ApiTool;
+import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.configuration.SysCustomProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +37,6 @@ public class PostExchanageRestController extends BaseRestController {
     private SysCustomProperties sysCustomProperties;
 
 
-
     /**
      * 云应用存活检测
      *
@@ -47,6 +46,26 @@ public class PostExchanageRestController extends BaseRestController {
     @ResponseBody
     @RequestMapping(value = "/router/test")
     public YunReturnValue test2() {
+
+
+        return YunReturnValue.ok("云应用存活检测");
+    }
+
+
+    /**
+     * 云应用存活检测
+     *
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/router/test2")
+    public YunReturnValue test() {
+
+        MemcacheTools.cacheData("ccc", "abv", 100);
+
+        Object ccc = MemcacheTools.loadData("ccc");
+        System.out.println(ccc);
 
         return YunReturnValue.ok("云应用存活检测");
     }
@@ -63,10 +82,11 @@ public class PostExchanageRestController extends BaseRestController {
      */
     @PostMapping(value = "/router/api")
     public YunReturnValue gateWay(
-            @RequestBody  ApiSysParameter apiSysParameter,
-             YunTokenParameter yunTokenParameter,
+            @RequestBody ApiSysParameter apiSysParameter,
+            YunTokenParameter yunTokenParameter,
             HttpServletRequest request, HttpServletResponse response) {
 
+        yunTokenParameter.setBuyerNick(apiSysParameter.getBuyerNick());
         apiSysParameter.setRequestStartTime(new Date());
         CgApiLog cgApiLog = new CgApiLog()
                 .setParType(0)

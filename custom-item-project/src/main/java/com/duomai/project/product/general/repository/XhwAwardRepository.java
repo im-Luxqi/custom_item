@@ -20,4 +20,6 @@ public interface XhwAwardRepository extends BaseRepository<XhwAward, String> {
                     "    where id = ?1" +
                     "        and  remain_num >0")
     int tryReduceOne(String id);
+
+    XhwAward findFirstByAwardRunningTypeOrderByLevelAsc(AwardRunningEnum running);
 }

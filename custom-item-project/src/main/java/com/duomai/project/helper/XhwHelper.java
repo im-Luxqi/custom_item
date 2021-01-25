@@ -123,7 +123,14 @@ public class XhwHelper {
         XhwAward award = byId.get();
         Assert.isTrue(AwardRunningEnum.RUNNING.equals(award.getAwardRunningType()), "商品还未开抢");
         if (xhwAwardRepository.tryReduceOne(award.getId()) != 1) {
+            award.setAwardRunningType(AwardRunningEnum.FINISH);
+            xhwAwardRepository.save(award);
             return award;
+        }
+        if (award.getRemainNum() == 1) {
+            award.setAwardRunningType(AwardRunningEnum.FINISH);
+            award.setRemainNum(0);
+            xhwAwardRepository.save(award);
         }
         String dateString = CommonDateParseUtil.date2string(drawTime, CommonDateParseUtil.YYYY_MM_DD);
         XhwAwardRecord awardRecord = new XhwAwardRecord()
@@ -172,5 +179,11 @@ public class XhwHelper {
 
         }
         return collect;
+    }
+
+    @Transactional
+    public void finishAward(XhwAward award) {
+        award.setAwardRunningType(AwardRunningEnum.FINISH);
+        xhwAwardRepository.save(award);
     }
 }

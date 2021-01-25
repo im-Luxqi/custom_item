@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>系统</title>
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+    <!--    <link th:href="@{favicon.ico}" rel="stylesheet"/>-->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/jquery.contextMenu.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/animate.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/skins.css}" rel="stylesheet"/>
+    <link th:href="@{/crown/css/crown-ui.css?v=3.4.0}" rel="stylesheet"/>
+</head>
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow: hidden" th:classappend="skin-yellow">
+<div id="wrapper">
+
+    <!--左侧导航开始-->
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="nav-close">
+            <i class="fa fa-times-circle"></i>
+        </div>
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="active">
+                    <a href="index.html"><i class="fa fa-home"></i>
+                        <span class="nav-label">后台管理</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class="active"><a class="menuItem" th:href="@{/admin/virtual}">虚拟人数</a></li>
+                    </ul>
+                    <ul class="nav nav-second-level">
+                        <li><a class="menuItem" th:href="@{/admin/group}">粉丝群</a></li>
+                    </ul>
+                    <ul class="nav nav-second-level">
+                        <li><a class="menuItem" th:href="@{/admin/award}">奖品</a></li>
+                    </ul>
+
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+    <!--左侧导航结束-->
+
+    <!--右侧部分开始-->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+
+            </nav>
+        </div>
+        <div class="row content-tabs">
+            <button class="roll-nav roll-left tabLeft">
+                <i class="fa fa-backward"></i>
+            </button>
+            <nav class="page-tabs menuTabs">
+                <div class="page-tabs-content">
+                    <!--                    <a href="javascript:;" class="active menuTab" data-id="/system/main">首页</a>-->
+                </div>
+            </nav>
+            <button class="roll-nav roll-right tabRight">
+                <i class="fa fa-forward"></i>
+            </button>
+            <a href="#" class="roll-nav roll-right tabReload"><i class="fa fa-refresh"></i> 刷新</a>
+        </div>
+
+
+        <div class="row mainContent" id="content-main">
+            <iframe class="Crown_iframe" name="iframe0" width="100%" height="100%" data-id="/admin/virtual"
+                    th:src="@{/admin/virtual}" frameborder="0" seamless></iframe>
+        </div>
+        <div class="footer">
+            <div class="pull-left">
+                <iframe allowtransparency="true" frameborder="0"
+                        scrolling="no"
+                        src="//tianqi.eastday.com/plugin/widget_v1.html?sc=3&amp;z=1&amp;t=1&amp;v=0&amp;d=1&amp;bd=0&amp;k=&amp;q=1&amp;a=1&amp;c=54511&amp;w=317&amp;h=28&amp;align=center"></iframe>
+            </div>
+            <!--            src="//tianqi.eastday.com/plugin/widget_v1.html?sc=3&amp;z=1&amp;t=1&amp;v=0&amp;d=1&amp;bd=0&amp;k=&amp;f=&amp;q=1&amp;a=1&amp;c=54511&amp;w=317&amp;h=28&amp;align=center"-->
+            <div class="pull-right"><h5>多卖团队</h5></div>
+        </div>
+    </div>
+    <!--右侧部分结束-->
+</div>
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+<script th:src="@{/js/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+<script th:src="@{/js/jquery.contextMenu.min.js}"></script>
+<script th:src="@{/ajax/libs/blockUI/jquery.blockUI.js}"></script>
+<script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
+<script th:src="@{/crown/js/crown-ui.js?v=3.4.0}"></script>
+<script th:src="@{/crown/index.js}"></script>
+<!--<script th:src="@{/ajax/libs/fullscreen/jquery.fullscreen.js}"></script>-->
+<script th:inline="javascript">
+    var ctx = [[@{/}]];
+        /*用户管理-重置密码*/
+        function resetPwd() {
+            var url = ctx + 'system/user/profile/resetPwd';
+            $.modal.open("重置密码", url, '800', '500');
+        }
+</script>
+</body>
+</html>

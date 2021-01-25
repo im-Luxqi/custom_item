@@ -55,5 +55,7 @@ public class XhwAward {
 
     @Transient
     private String logId;
+    @Transient
+    private boolean hasGet;
 
 }

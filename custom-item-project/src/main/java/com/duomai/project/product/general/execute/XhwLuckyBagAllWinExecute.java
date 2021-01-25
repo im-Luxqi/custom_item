@@ -45,7 +45,7 @@ public class XhwLuckyBagAllWinExecute implements IApiExecute {
         xhwAwardRecordList.forEach((x) -> {
             x.setBuyerNick(null);
             x.setIp(null);
-            x.setId(null);
+//            x.setId(null);
             x.setDrawTime(null);
             x.setDrawTimeString(null);
             x.setReceviceTime(null);

@@ -7,6 +7,7 @@ import com.duomai.project.helper.XhwHelper;
 import com.duomai.project.product.general.dto.XhwSettingDto;
 import com.duomai.project.product.general.entity.XhwAward;
 import com.duomai.project.product.general.enums.AwardRunningEnum;
+import com.duomai.project.product.general.repository.XhwAwardRecordRepository;
 import com.duomai.project.product.general.repository.XhwAwardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,17 +27,21 @@ public class XhwRefreshAwardExecute implements IApiExecute {
     @Autowired
     private XhwAwardRepository xhwAwardRepository;
     @Autowired
+    private XhwAwardRecordRepository xhwAwardRecordRepository;
+    @Autowired
     private XhwHelper xhwHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+        String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         //当前参与抢购的奖品
         XhwAward hotAward = xhwAwardRepository.findFirstByAwardRunningTypeOrderByLevelDesc(AwardRunningEnum.RUNNING);
         if (Objects.isNull(hotAward)) {
-            hotAward = new XhwAward();
+            hotAward = xhwAwardRepository.findFirstByAwardRunningTypeOrderByLevelAsc(AwardRunningEnum.FINISH);
         } else {
+            long l = xhwAwardRecordRepository.countByBuyerNickAndAwardId(buyerNick, hotAward.getId());
+            hotAward.setHasGet(l > 0);
             hotAward.setTotalNum(null);
             hotAward.setRemainNum(null);
             hotAward.setSendNum(null);

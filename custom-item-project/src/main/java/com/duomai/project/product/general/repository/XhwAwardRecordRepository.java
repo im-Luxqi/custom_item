@@ -18,4 +18,6 @@ public interface XhwAwardRecordRepository extends BaseRepository<XhwAwardRecord,
             value = "select award_name as awardName, recevice_time as receviceTime,recevice_phone as recevicePhone from xhw_award_record " +
                     "where is_Fill = 1 order by draw_time desc limit 20")
     List<Map> queryLuckyDrawLog();
+
+    long countByBuyerNickAndAwardId(String buyerNick, String id);
 }

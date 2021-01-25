@@ -77,7 +77,7 @@
                     password: $("[name='password']").val(),
                 },
                 success: function (data) {
-                    if (data && data.success) location.href = ctx +"admin/manage";
+                    if (data && data.success) location.href = ctx +"admin/index";
                     else location.href = ctx + "admin/loginIndex";
                 }
             });

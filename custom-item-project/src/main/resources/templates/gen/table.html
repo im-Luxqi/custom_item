@@ -206,9 +206,9 @@
                 iframeWin.contentWindow.submitHandler(index, layero);
                 setTimeout(function () {
                     refreshTableContent();
-                    layer.close(index);
-                }, 50);
 
+                }, 50);
+                layer.close(index);
             },
             cancel: function (index) {
                 return true;

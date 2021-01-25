@@ -5,8 +5,12 @@ import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.XhwHelper;
 import com.duomai.project.product.general.dto.XhwSettingDto;
-import com.duomai.project.product.general.entity.*;
+import com.duomai.project.product.general.entity.XhwAward;
+import com.duomai.project.product.general.entity.XhwCustom;
+import com.duomai.project.product.general.entity.XhwPagePvLog;
+import com.duomai.project.product.general.entity.XhwShowBar;
 import com.duomai.project.product.general.enums.AwardRunningEnum;
+import com.duomai.project.product.general.repository.XhwAwardRecordRepository;
 import com.duomai.project.product.general.repository.XhwAwardRepository;
 import com.duomai.project.product.general.repository.XhwPagePvLogRepository;
 import com.duomai.project.product.general.repository.XhwShowBarRepository;
@@ -39,6 +43,8 @@ public class XhwIndexLoadExecute implements IApiExecute {
     private XhwAwardRepository xhwAwardRepository;
     @Resource
     private XhwPagePvLogRepository xhwPagePvLogRepository;
+    @Resource
+    private XhwAwardRecordRepository xhwAwardRecordRepository;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -62,11 +68,14 @@ public class XhwIndexLoadExecute implements IApiExecute {
         }
         resultMap.put("new_year_card", newYearCard);
 
+
         //当前参与抢购的奖品
         XhwAward hotAward = xhwAwardRepository.findFirstByAwardRunningTypeOrderByLevelDesc(AwardRunningEnum.RUNNING);
         if (Objects.isNull(hotAward)) {
-            hotAward = new XhwAward();
+            hotAward = xhwAwardRepository.findFirstByAwardRunningTypeOrderByLevelAsc(AwardRunningEnum.FINISH);
         } else {
+            long l = xhwAwardRecordRepository.countByBuyerNickAndAwardId(custom.getBuyerNick(), hotAward.getId());
+            hotAward.setHasGet(l > 0);
             hotAward.setTotalNum(null);
             hotAward.setRemainNum(null);
             hotAward.setSendNum(null);
