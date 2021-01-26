@@ -180,11 +180,11 @@ public class XhwHelper {
         if (collect.size() < 20) {
             List<String> temp = new ArrayList<>();
             List<String> fakeLog = getFakeLog(hotAward);
-            for (int i = collect.size() - 1; i < 20; i++) {
+            for (int i = collect.size(); i < 20; i++) {
                 temp.add(fakeLog.get(i));
             }
             temp.addAll(collect);
-            collect = temp;
+           return temp;
         }
         return collect;
     }

@@ -88,7 +88,7 @@ public class XhwIndexLoadExecute implements IApiExecute {
         resultMap.put("hot_award", hotAward);
         //活动人数
         Integer joinNum = xhwHelper.findJoinNum();
-        resultMap.put("player_num", xhwSetting.getVirtualNum() + joinNum);
+        resultMap.put("player_num", Integer.valueOf(xhwSetting.getVirtualNum()) + joinNum);
         //中奖记录
         resultMap.put("draw_record", xhwHelper.drawLog(hotAward));
         //群二维码

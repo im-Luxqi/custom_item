@@ -8,6 +8,7 @@ import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.product.general.execute.*;
 import com.duomai.project.tool.ApplicationUtils;
 import com.duomai.project.tool.ProjectTools;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 
@@ -59,9 +60,11 @@ public class QLApiExecuteHandler {
 
         //防连点
         if (ProjectTools.hasMemCacheEnvironment()) {
-            Assert.isTrue(MemcacheTools.add("_checkoutMultipleCommit_"
-                    + sysParm.getApiParameter().getYunTokenParameter().getBuyerNick()
-                    + sendApiExecute.getClass().getName()), "点太快了，请休息下");
+            if (StringUtils.isNotBlank(sysParm.getApiParameter().getYunTokenParameter().getBuyerNick())) {
+                Assert.isTrue(MemcacheTools.add("_checkoutMultipleCommit_"
+                        + sysParm.getApiParameter().getYunTokenParameter().getBuyerNick()
+                        + sendApiExecute.getClass().getName()), "点太快了，请休息下");
+            }
         }
         return sendApiExecute.ApiExecute(sysParm, request, response);
     }

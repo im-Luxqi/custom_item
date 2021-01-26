@@ -27,10 +27,10 @@
                 <div class="select-list">
                     <ul>
                         <li>
-                            奖品名称：<input type="text" name="userId"/>
+                            奖品名称：<input type="text" id="search_name"/>
                         </li>
                         <li>
-                            奖品状态：<select name="status">
+                            奖品状态：<select id="search_status">
                             <option value="">所有</option>
                             <option value="READY">准备</option>
                             <option value="RUNNING">进行中</option>
@@ -258,6 +258,21 @@
         });
         window.location.reload();
     }
+
+
+    $(".btn-search").on("click", function () {
+        $('#table').bootstrapTable('refresh', {
+            query: {
+                searchName: $('#search_name').val(),
+                searchStatus: $('#search_status').val(),
+            }
+        });
+    });
+    $(".btn-refresh").on("click", function () {
+
+        $("#search_name").val("");
+        $("#search_status").val("");
+    });
 
 </script>
 </body>

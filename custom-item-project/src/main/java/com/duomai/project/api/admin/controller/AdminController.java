@@ -168,7 +168,7 @@ public class AdminController {
     @LoginRequired()
     @GetMapping("/award/list")
     @ResponseBody
-    public List<XhwAward> awardList() {
+    public List<XhwAward> awardList(String searchName, String searchStatus) {
         List<XhwAward> all = xhwAwardRepository.findAll();
         return all;
     }
