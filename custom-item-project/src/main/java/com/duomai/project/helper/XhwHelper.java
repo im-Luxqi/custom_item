@@ -56,7 +56,7 @@ public class XhwHelper {
     }
 
     @Transactional
-    public XhwCustom findCustom(String buyerNick, String ip) {
+    public XhwCustom findCustom(String buyerNick, String ip) throws InterruptedException {
 
         if (StringUtils.isNotBlank(buyerNick)) {
             XhwCustom byBuyerNick = xhwCustomRepository.findByBuyerNick(buyerNick);
@@ -90,6 +90,8 @@ public class XhwHelper {
                 .setIp(ip)
                 .setGroupChat(group.getQrCode());
 
+        findJoinNum();
+        MemcacheTools.addIncr(joinNumKey);
 //        XhwSetting joinNum = xhwSettingRepository.findFirstByK("join_num");
 //        int i = Integer.parseInt(joinNum.getV()) + 1;
 //        joinNum.setV(i + "");

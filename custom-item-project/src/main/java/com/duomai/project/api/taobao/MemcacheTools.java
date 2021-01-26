@@ -93,6 +93,7 @@ public class MemcacheTools {
      * @param key
      **/
     public static <T> T loadData(String key) {
+
         T object = null;
         try {
             object = (T) memcachedClient.get(key);
@@ -117,4 +118,18 @@ public class MemcacheTools {
             logger.error("【Memcache】:" + "_操作:cleanData" + "_key：" + key + "_error:" + e.getMessage());
         }
     }
+
+
+    public static long addIncr(String key) {
+        long incr = -1;
+        try {
+            incr = memcachedClient.incr(key, 1);
+//            logger.info("【Memcache】:" + "_操作:cleanData" + "_key：" + key);
+        } catch (Exception e) {
+            logger.error("【Memcache】:" + "_操作:addIncr" + "_key：" + key + "_error:" + e.getMessage());
+        }
+        return incr;
+    }
+
+
 }
