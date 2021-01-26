@@ -1,0 +1,34 @@
+FROM centos:7
+MAINTAINER 新华网h5
+# 安装打包必备软件
+RUN yum -y install wget unzip
+# 准备 JDK/Tomcat 系统变量与路径
+ENV JAVA_HOME /usr/java/latest
+ENV CATALINA_HOME /home/admin/taobao-tomcat
+ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/bin
+# 设置 EDAS-Container / Pandora 应用容器版本
+ENV EDAS_CONTAINER_VERSION V3.5.2
+LABEL pandora V3.5.2
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN echo 'Asia/Shanghai' >/etc/timezone
+# 下载安装 JDK 8
+RUN wget http://edas-hz.oss-cn-hangzhou.aliyuncs.com/agent/prod/files/jdk-8u191-linux-x64.rpm -O /tmp/jdk-8u191-linux-x64.rpm && \
+    yum -y install /tmp/jdk-8u191-linux-x64.rpm && \
+    rm -rf /tmp/jdk-8u191-linux-x64.rpm
+# 下载安装 tomcat 到 /home/admin/taobao-tomcat 目录
+RUN wget http://wevip.file.alimmdn.com/wevip/cjwx_service/cjwx_openapi/apache-tomcat-9.0.19.zip?t=1573810350000 -O  /tmp/apache-tomcat-9.0.19.zip
+#COPY Dockerfiles/apache-tomcat-9.0.19.zip /tmp/
+RUN  mkdir -p ${CATALINA_HOME} &&  unzip  /tmp/apache-tomcat-9.0.19.zip -d ${CATALINA_HOME} && \
+    mv ${CATALINA_HOME}/apache-tomcat-9.0.19/* ${CATALINA_HOME}/ && \
+    rm -rf /tmp/apache-tomcat-9.0.19.zip ${CATALINA_HOME}/apache-tomcat-9.0.19  && \
+    chmod +x ${CATALINA_HOME}/bin/*sh
+# 下载部署 WAR 包
+RUN wget https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/qqdVersion/cjwx_service_master/cjwx_openapi/openapi-1218-01.war -O /tmp/openapi.war
+
+RUN rm -rf ${CATALINA_HOME}/webapps/ROOT/*
+RUN  unzip /tmp/openapi.war -d ${CATALINA_HOME}/webapps/ROOT && \
+    rm -rf /tmp/openapi.war
+
+# 设定 Tomcat 安装目录为容器启动目录，并采用 run 方式启动 Tomcat，在标准命令行输出 catalina 日志。
+WORKDIR $CATALINA_HOME
+CMD ["catalina.sh", "run"]
