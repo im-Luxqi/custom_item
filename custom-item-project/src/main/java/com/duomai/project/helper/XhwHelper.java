@@ -161,14 +161,9 @@ public class XhwHelper {
         if (xhwAwardRepository.tryReduceOne(award.getId()) != 1) {
             award.setRemainNum(0);
             award.setAwardRunningType(AwardRunningEnum.FINISH);
-            xhwAwardRepository.save(award);
-            return award;
+            return xhwAwardRepository.save(award);
         }
-        if (award.getRemainNum() == 1) {
-            award.setAwardRunningType(AwardRunningEnum.FINISH);
-            award.setRemainNum(0);
-            xhwAwardRepository.save(award);
-        }
+
         String dateString = CommonDateParseUtil.date2string(drawTime, CommonDateParseUtil.YYYY_MM_DD);
         XhwAwardRecord awardRecord = new XhwAwardRecord()
                 .setDrawTime(drawTime)
