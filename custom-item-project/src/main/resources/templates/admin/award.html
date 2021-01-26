@@ -174,16 +174,18 @@
                     sortable: false
                 },
                 {
-                    field: 'winImg',
-                    title: '获奖弹窗图片',
-                    sortable: false
-                },
-                {
                     title: '操作',
                     align: 'center',
                     formatter: function (value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-danger btn-xs " href="javascript:void(0)" onclick="remove(\'' + row.id + '\')">删除</a> ');
+                        if (row.awardRunningType == "READY") {
+                            actions.push('<a class="btn btn-primary btn-xs " href="javascript:void(0)" onclick="launch(\'' + row.id + '\')">上架</a> ');
+                            actions.push('<a class="btn btn-success btn-xs " href="javascript:void(0)" onclick="awardEdit(\'' + row.id + '\')">修改</a> ');
+                            actions.push('<a class="btn btn-danger btn-xs " href="javascript:void(0)" onclick="remove(\'' + row.id + '\')">删除</a> ');
+                        }
+                        if (row.awardRunningType == "RUNNING") {
+                            actions.push('<a class="btn btn-white btn-xs " href="javascript:void(0)" onclick="awardFinish(\'' + row.id + '\')">结束</a> ');
+                        }
                         return actions.join('');
                     }
                 }
@@ -202,9 +204,6 @@
                 shade: 0.3,
                 title: "新增",
                 content: prefix + "/saveIndex",
-                btn: ['确定', '关闭'],
-                // 弹层外区域关闭
-                shadeClose: true
             });
         });
     });
@@ -219,7 +218,45 @@
                 console.log(data);
             }
         });
-        refreshTableContent();
+        window.location.reload();
+    }
+
+
+    function launch(tableId) {
+        $.ajax({
+            url: prefix + "/launch",
+            type: "post",
+            data: {"id": tableId},
+            success: function (data) {
+                console.log(data);
+            }
+        });
+        window.location.reload();
+    }
+
+    function awardEdit(tableId) {
+        layer.open({
+            type: 2,
+            area: [800 + 'px', $(window).height() - 50 + 'px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: "编辑",
+            content: prefix + "/saveIndex?id=" + tableId,
+        });
+    }
+
+    function awardFinish(tableId) {
+        $.ajax({
+            url: prefix + "/finish",
+            type: "post",
+            data: {"id": tableId},
+            success: function (data) {
+                console.log(data);
+            }
+        });
+        window.location.reload();
     }
 
 </script>

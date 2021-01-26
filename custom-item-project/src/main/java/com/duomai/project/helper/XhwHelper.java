@@ -147,7 +147,7 @@ public class XhwHelper {
         return award;
     }
 
-    public List<String> drawLog() {
+    public List<String> drawLog(XhwAward hotAward) {
         List<Map> maps = xhwAwardRecordRepository.queryLuckyDrawLog();
 
         Date currentTime = new Date();
@@ -176,7 +176,15 @@ public class XhwHelper {
                 msg += "前抢中 " + xhwAwardRecord.getAwardName();
                 return msg;
             }).collect(Collectors.toList());
-
+        }
+        if (collect.size() < 20) {
+            List<String> temp = new ArrayList<>();
+            List<String> fakeLog = getFakeLog(hotAward);
+            for (int i = collect.size() - 1; i < 20; i++) {
+                temp.add(fakeLog.get(i));
+            }
+            temp.addAll(collect);
+            collect = temp;
         }
         return collect;
     }
@@ -185,5 +193,35 @@ public class XhwHelper {
     public void finishAward(XhwAward award) {
         award.setAwardRunningType(AwardRunningEnum.FINISH);
         xhwAwardRepository.save(award);
+    }
+
+    static List<String> fakeLog;
+
+    static List<String> getFakeLog(XhwAward hotAward) {
+        if (!CollectionUtils.isEmpty(fakeLog)) {
+            return fakeLog;
+        }
+        fakeLog = new ArrayList<String>();
+        fakeLog.add("133****9659 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("133****3556 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("134****3264 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("134****7019 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("134****1808 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("134****4527 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("134****1836 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("134****0533 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("134****2725 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("134****8869 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("135****6344 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("135****6562 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("135****2042 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("135****7091 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("135****5598 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("135****6525 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("135****6624 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("135****5403 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("136****7990 的网友 1秒前抢中 " + hotAward.getName());
+        fakeLog.add("136****3797 的网友 1秒前抢中 " + hotAward.getName());
+        return fakeLog;
     }
 }

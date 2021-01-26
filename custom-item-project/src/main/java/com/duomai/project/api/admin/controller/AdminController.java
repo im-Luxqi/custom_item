@@ -7,11 +7,12 @@ import com.duomai.project.configuration.tool.AES;
 import com.duomai.project.product.general.entity.XhwAward;
 import com.duomai.project.product.general.entity.XhwGroup;
 import com.duomai.project.product.general.entity.XhwSetting;
-import com.duomai.project.product.general.entity.XhwShowBar;
+import com.duomai.project.product.general.enums.AwardRunningEnum;
 import com.duomai.project.product.general.repository.XhwAwardRepository;
 import com.duomai.project.product.general.repository.XhwGroupRepository;
 import com.duomai.project.product.general.repository.XhwSettingRepository;
 import com.duomai.project.product.general.repository.XhwShowBarRepository;
+import com.duomai.project.tool.CommonDateParseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Controller
@@ -173,7 +175,20 @@ public class AdminController {
 
 
     @RequestMapping("/award/saveIndex")
-    public String awardSaveIndex(String id) {
+    public String awardSaveIndex(String id, Model model) {
+        XhwAward xhwAward = new XhwAward();
+
+        String drawStartTimeString = null;
+        if (StringUtils.isNotBlank(id)) {
+            Optional<XhwAward> byId = xhwAwardRepository.findById(id);
+            if (byId.isPresent()) {
+                xhwAward = byId.get();
+            }
+            drawStartTimeString = CommonDateParseUtil.date2string(xhwAward.getDrawStartTime(), "yyyy-MM-dd HH:mm");
+        }
+
+        model.addAttribute("currentAward", xhwAward);
+        model.addAttribute("drawStartTimeString", drawStartTimeString);
         return "admin/awardSaveIndex";
     }
 
@@ -183,12 +198,30 @@ public class AdminController {
     public Map awardInsert(XhwAward xhwAward) {
         Map resultMap = new HashMap<String, Object>();
 
-        xhwAwardRepository.save(xhwAward);
+        if (StringUtils.isNotBlank(xhwAward.getId())) {
+            Optional<XhwAward> byId = xhwAwardRepository.findById(xhwAward.getId());
+
+            if (byId.isPresent()) {
+                XhwAward db = byId.get();
+                db.setName(xhwAward.getName());
+                db.setImg(xhwAward.getImg());
+                db.setDrawStartTime(xhwAward.getDrawStartTime());
+                db.setShowNum(xhwAward.getShowNum());
+                db.setTotalNum(xhwAward.getTotalNum());
+                db.setLevel(xhwAward.getLevel());
+                db.setRemainNum(xhwAward.getTotalNum());
+                xhwAwardRepository.save(db);
+            }
+
+        } else {
+            xhwAward.setAwardRunningType(AwardRunningEnum.READY);
+            xhwAward.setSendNum(0);
+            xhwAward.setRemainNum(xhwAward.getTotalNum());
+            xhwAwardRepository.save(xhwAward);
+        }
         resultMap.put("success", true);
         return resultMap;
     }
-
-
 
 
     @PostMapping("/award/remove")
@@ -199,4 +232,33 @@ public class AdminController {
         }
         return "success";
     }
+
+    @PostMapping("/award/launch")
+    @ResponseBody
+    public String launchaward(String id) {
+        Optional<XhwAward> byId = xhwAwardRepository.findById(id);
+
+        if (byId.isPresent()) {
+            XhwAward xhwAward = byId.get();
+            xhwAward.setAwardRunningType(AwardRunningEnum.RUNNING);
+            xhwAwardRepository.save(xhwAward);
+        }
+        return "success";
+    }
+
+
+    @PostMapping("/award/finish")
+    @ResponseBody
+    public String finishaward(String id) {
+        Optional<XhwAward> byId = xhwAwardRepository.findById(id);
+
+        if (byId.isPresent()) {
+            XhwAward xhwAward = byId.get();
+            xhwAward.setAwardRunningType(AwardRunningEnum.FINISH);
+            xhwAwardRepository.save(xhwAward);
+        }
+        return "success";
+    }
+
+
 }

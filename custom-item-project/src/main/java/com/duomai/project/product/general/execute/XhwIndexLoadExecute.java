@@ -73,6 +73,10 @@ public class XhwIndexLoadExecute implements IApiExecute {
         XhwAward hotAward = xhwAwardRepository.findFirstByAwardRunningTypeOrderByLevelDesc(AwardRunningEnum.RUNNING);
         if (Objects.isNull(hotAward)) {
             hotAward = xhwAwardRepository.findFirstByAwardRunningTypeOrderByLevelAsc(AwardRunningEnum.FINISH);
+            hotAward.setTotalNum(null);
+            hotAward.setRemainNum(null);
+            hotAward.setSendNum(null);
+            hotAward.setLevel(null);
         } else {
             long l = xhwAwardRecordRepository.countByBuyerNickAndAwardId(custom.getBuyerNick(), hotAward.getId());
             hotAward.setHasGet(l > 0);
@@ -80,14 +84,13 @@ public class XhwIndexLoadExecute implements IApiExecute {
             hotAward.setRemainNum(null);
             hotAward.setSendNum(null);
             hotAward.setLevel(null);
-            hotAward.setAwardRunningType(null);
         }
         resultMap.put("hot_award", hotAward);
         //活动人数
         Integer joinNum = xhwHelper.findJoinNum();
         resultMap.put("player_num", xhwSetting.getVirtualNum() + joinNum);
         //中奖记录
-        resultMap.put("draw_record", xhwHelper.drawLog());
+        resultMap.put("draw_record", xhwHelper.drawLog(hotAward));
         //群二维码
         resultMap.put("qr_code", custom.getGroupChat());
 

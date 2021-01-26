@@ -28,14 +28,20 @@
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label>奖品名称</label>
-                        <input name="name" type="text" placeholder="奖品名称" class="form-control">
+                        <input name="id" type="hidden" th:value="${currentAward.id}" placeholder="奖品名称"
+                               class="form-control">
+                        <input name="drawStartTimeString" type="hidden" th:value="${drawStartTimeString}"
+                               class="form-control">
+                        <input name="name" type="text" th:value="${currentAward.name}" placeholder="奖品名称"
+                               class="form-control">
                     </div>
                 </div>
 
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label>奖品图片</label>
-                        <input name="img" type="text" placeholder="奖品图片" class="form-control">
+                        <input name="img" type="text" th:value="${currentAward.img}" placeholder="奖品图片"
+                               class="form-control">
                     </div>
                 </div>
 
@@ -44,7 +50,8 @@
                         <label>开抢时间</label>
                         <div class="input-group date">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <input name="drawStartTime" type="text" class="form-control" id="datetime" placeholder="yyyy-MM-dd HH:mm:ss">
+                            <input name="drawStartTime" type="text" class="form-control" id="datetime"
+                                   placeholder="yyyy-MM-dd HH:mm">
                         </div>
                     </div>
                 </div>
@@ -53,7 +60,8 @@
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label>奖品展示数量</label>
-                        <input name="showNum" type="number" placeholder="奖品展示数量" class="form-control">
+                        <input name="showNum" type="number" th:value="${currentAward.showNum}" placeholder="奖品展示数量"
+                               class="form-control">
                     </div>
                 </div>
 
@@ -61,14 +69,16 @@
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label>奖品总数量</label>
-                        <input name="totalNum" type="number" placeholder="奖品总数量" class="form-control">
+                        <input name="totalNum" type="number" th:value="${currentAward.totalNum}" placeholder="奖品总数量"
+                               class="form-control">
                     </div>
                 </div>
 
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label>优先级</label>
-                        <input name="level" type="number" placeholder="优先级" class="form-control">
+                        <input name="level" type="number" th:value="${currentAward.level}" placeholder="优先级"
+                               class="form-control">
                     </div>
                 </div>
 
@@ -112,8 +122,8 @@
     <script th:src="@{/ajax/libs/iCheck/icheck.min.js}"></script>
     <script th:src="@{/ajax/libs/layer/layer.min.js}"></script>
     <script th:src="@{/ajax/libs/layui/layui.js}"></script>
-        <script th:src="@{/crown/js/common.js?v=3.4.0}"></script>
-        <script th:src="@{/crown/js/crown-ui.js?v=3.4.0}"></script>
+    <script th:src="@{/crown/js/common.js?v=3.4.0}"></script>
+    <script th:src="@{/crown/js/crown-ui.js?v=3.4.0}"></script>
     <script th:src="@{/ajax/libs/jquery-layout/jquery.layout-latest.js}"></script>
     <script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
     <script th:src="@{/ajax/libs/datapicker/bootstrap-datetimepicker.min.js}"></script>
@@ -122,6 +132,10 @@
     var prefix = ctx + "admin/award";
     $(function () {
 
+        var drawStartTimeString = $("[name='drawStartTimeString']").val();
+        $("[name='drawStartTime']").val(drawStartTimeString);
+
+
         $("#datetime").datetimepicker();
 
         $(".submitBtn").on("click", function () {
@@ -129,7 +143,15 @@
                 url: prefix + "/insert",
                 type: "POST",//方法类型
                 dataType: "json",//预期服务器返回的数据类型
-                data: $('#form1').serialize(),
+                data: {
+                    id: $("[name='id']").val(),
+                    name: $("[name='name']").val(),
+                    img: $("[name='img']").val(),
+                    drawStartTime: $("[name='drawStartTime']").val(),
+                    showNum: $("[name='showNum']").val(),
+                    totalNum: $("[name='totalNum']").val(),
+                    level: $("[name='level']").val(),
+                },
                 success: function (data) {
                     console.log(data);//打印服务端返回的数据(调试用)
                     if (data && data.success) {
