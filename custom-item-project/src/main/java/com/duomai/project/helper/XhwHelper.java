@@ -3,12 +3,14 @@ package com.duomai.project.helper;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.duomai.common.constants.BooleanConstant;
+import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.configuration.annotation.JoinMemcache;
 import com.duomai.project.product.general.dto.XhwSettingDto;
 import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.enums.AwardRunningEnum;
 import com.duomai.project.product.general.repository.*;
 import com.duomai.project.tool.CommonDateParseUtil;
+import com.duomai.project.tool.ProjectTools;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,7 @@ public class XhwHelper {
     @Autowired
     private XhwAwardRecordRepository xhwAwardRecordRepository;
 
+    static String joinNumKey = "xinghuangwang_join";
 
     public XhwCustom findCustom(String buyerNick) {
         XhwCustom byBuyerNick = xhwCustomRepository.findByBuyerNick(buyerNick);
@@ -61,19 +64,21 @@ public class XhwHelper {
             byBuyerNick.setNewGuy(false);
             return byBuyerNick;
         }
+//        XhwGroup group = xhwGroupRepository.findFirstByFinish(0);
+//        if (group == null) {
+//            List<XhwGroup> all = xhwGroupRepository.findAll();
+//            group = all.get(new Random().nextInt(all.size()));
+//        } else {
+//            int remain = group.getRemainNum() - 1;
+//            group.setRemainNum(remain);
+//            if (remain == 0) {
+//                group.setFinish(1);
+//            }
+//            xhwGroupRepository.save(group);
+//        }
+        List<XhwGroup> all = findAllGroup();
+        XhwGroup group = all.get(new Random().nextInt(all.size()));
 
-        XhwGroup group = xhwGroupRepository.findFirstByFinish(0);
-        if (group == null) {
-            List<XhwGroup> all = xhwGroupRepository.findAll();
-            group = all.get(new Random().nextInt(all.size()));
-        } else {
-            int remain = group.getRemainNum() - 1;
-            group.setRemainNum(remain);
-            if (remain == 0) {
-                group.setFinish(1);
-            }
-            xhwGroupRepository.save(group);
-        }
 
         Date date = new Date();
         String dateString = CommonDateParseUtil.date2string(date, "yyyyMMddHHmmss");
@@ -85,12 +90,13 @@ public class XhwHelper {
                 .setIp(ip)
                 .setGroupChat(group.getQrCode());
 
-        XhwSetting joinNum = xhwSettingRepository.findFirstByK("join_num");
-        int i = Integer.parseInt(joinNum.getV()) + 1;
-        joinNum.setV(i + "");
-        xhwSettingRepository.save(joinNum);
+//        XhwSetting joinNum = xhwSettingRepository.findFirstByK("join_num");
+//        int i = Integer.parseInt(joinNum.getV()) + 1;
+//        joinNum.setV(i + "");
+//        xhwSettingRepository.save(joinNum);
         return xhwCustomRepository.save(custom);
     }
+
 
     /**
      * 2.活动配置--信息获取
@@ -109,9 +115,37 @@ public class XhwHelper {
         return xhwSettingDto;
     }
 
-    public Integer findJoinNum() {
-        XhwSetting joinNum = xhwSettingRepository.findFirstByK("join_num");
-        return Integer.valueOf(joinNum.getV());
+
+    @JoinMemcache()
+    public List<XhwGroup> findAllGroup() {
+        List<XhwGroup> all = xhwGroupRepository.findAll();
+        return all;
+    }
+
+
+    public Integer findJoinNum() throws InterruptedException {
+
+        if (!ProjectTools.hasMemCacheEnvironment()) {
+            long count = xhwCustomRepository.count();
+            int c = (int) count;
+            return c;
+        }
+
+
+        Integer xinghuangwang_join = MemcacheTools.<Integer>loadData(joinNumKey);
+        if (xinghuangwang_join == null) {
+            if (MemcacheTools.add(joinNumKey + "_lock_", 1000)) {
+                long count = xhwCustomRepository.count();
+                int c = (int) count;
+                MemcacheTools.cacheData(joinNumKey, c, 100);
+                xinghuangwang_join = c;
+                MemcacheTools.cleanData(joinNumKey + "_lock_");
+            } else {
+                Thread.sleep(50);
+                return findJoinNum();
+            }
+        }
+        return xinghuangwang_join;
     }
 
 
@@ -184,7 +218,7 @@ public class XhwHelper {
                 temp.add(fakeLog.get(i));
             }
             temp.addAll(collect);
-           return temp;
+            return temp;
         }
         return collect;
     }
