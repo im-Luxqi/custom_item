@@ -36,7 +36,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    static String userName = "wxq";
+    static String userName = "xhw";
     static String userPassward = "123";
 
     @Resource
@@ -174,6 +174,17 @@ public class AdminController {
 
         XhwAward xhwAward = new XhwAward();
         xhwAward.setName(searchName);
+        if (StringUtils.isNotBlank(searchStatus)) {
+            if (searchStatus.equals("READY")) {
+                xhwAward.setAwardRunningType(AwardRunningEnum.READY);
+            }
+            if (searchStatus.equals("RUNNING")) {
+                xhwAward.setAwardRunningType(AwardRunningEnum.RUNNING);
+            }
+            if (searchStatus.equals("FINISH")) {
+                xhwAward.setAwardRunningType(AwardRunningEnum.FINISH);
+            }
+        }
 
 
         ExampleMatcher matcher = ExampleMatcher.matching()
