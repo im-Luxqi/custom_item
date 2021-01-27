@@ -39,7 +39,7 @@ public class XhwIndexDrawExecute implements IApiExecute {
         Assert.notNull(runing_award_id, "奖品不能为空");
         //查询粉丝信息
         //todo:压测
-        XhwCustom custom = xhwHelper.findCustom(buyerNick, ip);
+        XhwCustom custom = xhwHelper.findCustom(buyerNick);
         XhwAward draw = xhwHelper.draw(runing_award_id, custom, sysParm.getRequestStartTime(), ip);
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
         if (StringUtils.isBlank(draw.getLogId())) {

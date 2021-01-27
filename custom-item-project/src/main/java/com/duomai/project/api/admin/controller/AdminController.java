@@ -14,6 +14,8 @@ import com.duomai.project.product.general.repository.XhwSettingRepository;
 import com.duomai.project.product.general.repository.XhwShowBarRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -169,7 +171,15 @@ public class AdminController {
     @GetMapping("/award/list")
     @ResponseBody
     public List<XhwAward> awardList(String searchName, String searchStatus) {
-        List<XhwAward> all = xhwAwardRepository.findAll();
+
+        XhwAward xhwAward = new XhwAward();
+        xhwAward.setName(searchName);
+
+
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains());
+        Example<XhwAward> xhwAwardExample = Example.of(xhwAward, matcher);
+        List<XhwAward> all = xhwAwardRepository.findAll(xhwAwardExample);
         return all;
     }
 
