@@ -38,11 +38,13 @@ public class XhwRefreshAwardExecute implements IApiExecute {
         XhwAward hotAward = xhwAwardRepository.findFirstByAwardRunningTypeOrderByLevelDesc(AwardRunningEnum.RUNNING);
         if (Objects.isNull(hotAward)) {
             hotAward = xhwAwardRepository.findFirstByAwardRunningTypeOrderByLevelAsc(AwardRunningEnum.FINISH);
-            hotAward.setTotalNum(null);
-            hotAward.setRemainNum(null);
-            hotAward.setSendNum(null);
+            if (!Objects.isNull(hotAward)) {
+                hotAward.setTotalNum(null);
+                hotAward.setRemainNum(null);
+                hotAward.setSendNum(null);
 //            hotAward.setDrawStartTime(null);
-            hotAward.setLevel(null);
+                hotAward.setLevel(null);
+            }
         } else {
             long l = xhwAwardRecordRepository.countByBuyerNickAndAwardId(buyerNick, hotAward.getId());
             hotAward.setHasGet(l > 0);

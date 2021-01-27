@@ -212,11 +212,13 @@ public class XhwHelper {
         }
         if (collect.size() < 20) {
             List<String> temp = new ArrayList<>();
-            List<String> fakeLog = getFakeLog(hotAward);
-            for (int i = collect.size(); i < 20; i++) {
-                temp.add(fakeLog.get(i));
+            if (hotAward != null) {
+                List<String> fakeLog = getFakeLog(hotAward);
+                for (int i = collect.size(); i < 20; i++) {
+                    temp.add(fakeLog.get(i));
+                }
+                temp.addAll(collect);
             }
-            temp.addAll(collect);
             return temp;
         }
         return collect;
