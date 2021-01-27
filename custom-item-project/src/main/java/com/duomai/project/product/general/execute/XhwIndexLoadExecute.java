@@ -76,6 +76,7 @@ public class XhwIndexLoadExecute implements IApiExecute {
             hotAward.setTotalNum(null);
             hotAward.setRemainNum(null);
             hotAward.setSendNum(null);
+//            hotAward.setDrawStartTime(null);
             hotAward.setLevel(null);
         } else {
             long l = xhwAwardRecordRepository.countByBuyerNickAndAwardId(custom.getBuyerNick(), hotAward.getId());
@@ -83,6 +84,7 @@ public class XhwIndexLoadExecute implements IApiExecute {
             hotAward.setTotalNum(null);
             hotAward.setRemainNum(null);
             hotAward.setSendNum(null);
+//            hotAward.setDrawStartTime(null);
             hotAward.setLevel(null);
         }
         resultMap.put("hot_award", hotAward);

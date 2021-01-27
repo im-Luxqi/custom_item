@@ -45,16 +45,16 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label>开抢时间</label>
-                        <div class="input-group date">
-                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                            <input name="drawStartTime" type="text" class="form-control" id="datetime"
-                                   placeholder="yyyy-MM-dd HH:mm">
-                        </div>
-                    </div>
-                </div>
+<!--                <div class="col-sm-12">-->
+<!--                    <div class="form-group">-->
+<!--                        <label>开抢时间</label>-->
+<!--                        <div class="input-group date">-->
+<!--                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>-->
+<!--                            <input name="drawStartTime" type="text" class="form-control" id="datetime"-->
+<!--                                   placeholder="yyyy-MM-dd HH:mm">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
 
 
                 <div class="col-sm-12">
@@ -132,8 +132,8 @@
     var prefix = ctx + "admin/award";
     $(function () {
 
-        var drawStartTimeString = $("[name='drawStartTimeString']").val();
-        $("[name='drawStartTime']").val(drawStartTimeString);
+        // var drawStartTimeString = $("[name='drawStartTimeString']").val();
+        // $("[name='drawStartTime']").val(drawStartTimeString);
 
 
         $("#datetime").datetimepicker();
@@ -147,7 +147,7 @@
                     id: $("[name='id']").val(),
                     name: $("[name='name']").val(),
                     img: $("[name='img']").val(),
-                    drawStartTime: $("[name='drawStartTime']").val(),
+                    // drawStartTime: $("[name='drawStartTime']").val(),
                     showNum: $("[name='showNum']").val(),
                     totalNum: $("[name='totalNum']").val(),
                     level: $("[name='level']").val(),

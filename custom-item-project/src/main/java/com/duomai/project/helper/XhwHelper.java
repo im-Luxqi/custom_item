@@ -158,6 +158,7 @@ public class XhwHelper {
         Assert.isTrue(byId.isPresent(), "不存在的奖品");
         XhwAward award = byId.get();
         Assert.isTrue(AwardRunningEnum.RUNNING.equals(award.getAwardRunningType()), "商品还未开抢");
+        Assert.isTrue(award.getCanRob() == 1, "商品还未开抢2");
         if (xhwAwardRepository.tryReduceOne(award.getId()) != 1) {
             award.setRemainNum(0);
             award.setAwardRunningType(AwardRunningEnum.FINISH);

@@ -1,7 +1,6 @@
 package com.duomai.project.product.general.entity;
 
 import com.duomai.project.product.general.enums.AwardRunningEnum;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
@@ -51,10 +50,13 @@ public class XhwAward {
     @Column(columnDefinition = "int(10) COMMENT '优先级'")
     private Integer level;
 
+    @Column(columnDefinition = "int(1) COMMENT '开抢'")
+    private Integer canRob;
 
-    @Column(columnDefinition = "DATETIME COMMENT '开枪时间'")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private Date drawStartTime;
+//
+//    @Column(columnDefinition = "DATETIME COMMENT '开枪时间'")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+//    private Date drawStartTime;
 
     @Transient
     private String logId;

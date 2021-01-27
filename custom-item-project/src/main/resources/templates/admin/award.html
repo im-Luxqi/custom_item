@@ -144,9 +144,21 @@
                         return msg;
                     },
                 }, {
-                    field: 'drawStartTime',
-                    title: '开抢时间',
-                    sortable: true
+                    field: 'canRob',
+                    title: '开抢',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        var msg = "";
+                        if (row.awardRunningType == "RUNNING") {
+
+                            if (value == 1) {
+                                msg = '<span class="btn btn-primary btn-xs " href="javascript:void(0)">开抢中</span> '
+                            } else if (value == 0) {
+                                msg = '<span class="btn btn-success btn-xs " href="javascript:void(0)">待开抢</span> '
+                            }
+                        }
+                        return msg;
+                    },
                 },
                 {
                     field: 'showNum',
@@ -169,11 +181,6 @@
                     sortable: true
                 },
                 {
-                    field: 'img',
-                    title: '奖品图片',
-                    sortable: false
-                },
-                {
                     title: '操作',
                     align: 'center',
                     formatter: function (value, row, index) {
@@ -184,6 +191,9 @@
                             actions.push('<a class="btn btn-danger btn-xs " href="javascript:void(0)" onclick="remove(\'' + row.id + '\')">删除</a> ');
                         }
                         if (row.awardRunningType == "RUNNING") {
+                            if (row.canRob == 0) {
+                                actions.push('<a class="btn btn-primary btn-xs " href="javascript:void(0)" onclick="goRob(\'' + row.id + '\')">马上抢</a> ');
+                            }
                             actions.push('<a class="btn btn-white btn-xs " href="javascript:void(0)" onclick="awardFinish(\'' + row.id + '\')">结束</a> ');
                         }
                         return actions.join('');
@@ -225,6 +235,19 @@
     function launch(tableId) {
         $.ajax({
             url: prefix + "/launch",
+            type: "post",
+            data: {"id": tableId},
+            success: function (data) {
+                console.log(data);
+            }
+        });
+        window.location.reload();
+    }
+
+
+    function goRob(tableId) {
+        $.ajax({
+            url: prefix + "/rob",
             type: "post",
             data: {"id": tableId},
             success: function (data) {

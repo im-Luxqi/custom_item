@@ -1,6 +1,7 @@
 package com.duomai.project.api.admin.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.configuration.annotation.LoginRequired;
 import com.duomai.project.configuration.dto.UserInfoForCookie;
 import com.duomai.project.configuration.tool.AES;
@@ -132,24 +133,39 @@ public class AdminController {
         return all;
     }
 
+    @LoginRequired()
     @RequestMapping("/group/saveIndex")
     public String groupSaveIndex(String id) {
         return "admin/groupSaveIndex";
     }
 
-
+    @LoginRequired()
     @PostMapping("/group/insert")
     @ResponseBody
     public Map groupInsert(XhwGroup xhwGroup) {
         Map resultMap = new HashMap<String, Object>();
 
         xhwGroup.setFinish(0);
-        xhwGroup.setRemainNum(xhwGroup.getMaxNum() * 100);
+//        xhwGroup.setRemainNum(xhwGroup.getMaxNum() * 100);
         xhwGroupRepository.save(xhwGroup);
         resultMap.put("success", true);
         return resultMap;
     }
 
+    @LoginRequired()
+    @PostMapping("/group/finish")
+    @ResponseBody
+    public String finishgroup(String id) {
+        Optional<XhwGroup> byId = xhwGroupRepository.findById(id);
+        if (byId.isPresent()) {
+            XhwGroup xhwGroup = byId.get();
+            xhwGroup.setFinish(BooleanConstant.BOOLEAN_YES);
+            xhwGroupRepository.save(xhwGroup);
+        }
+        return "success";
+    }
+
+    @LoginRequired()
     @PostMapping("/group/remove")
     @ResponseBody
     public String remveTable(String id) {
@@ -194,7 +210,7 @@ public class AdminController {
         return all;
     }
 
-
+    @LoginRequired()
     @RequestMapping("/award/saveIndex")
     public String awardSaveIndex(String id, Model model) {
         XhwAward xhwAward = new XhwAward();
@@ -205,7 +221,7 @@ public class AdminController {
             if (byId.isPresent()) {
                 xhwAward = byId.get();
             }
-            drawStartTimeString = CommonDateParseUtil.date2string(xhwAward.getDrawStartTime(), "yyyy-MM-dd HH:mm");
+//            drawStartTimeString = CommonDateParseUtil.date2string(xhwAward.getDrawStartTime(), "yyyy-MM-dd HH:mm");
         }
 
         model.addAttribute("currentAward", xhwAward);
@@ -213,7 +229,7 @@ public class AdminController {
         return "admin/awardSaveIndex";
     }
 
-
+    @LoginRequired()
     @PostMapping("/award/insert")
     @ResponseBody
     public Map awardInsert(XhwAward xhwAward) {
@@ -226,7 +242,7 @@ public class AdminController {
                 XhwAward db = byId.get();
                 db.setName(xhwAward.getName());
                 db.setImg(xhwAward.getImg());
-                db.setDrawStartTime(xhwAward.getDrawStartTime());
+//                db.setDrawStartTime(xhwAward.getDrawStartTime());
                 db.setShowNum(xhwAward.getShowNum());
                 db.setTotalNum(xhwAward.getTotalNum());
                 db.setLevel(xhwAward.getLevel());
@@ -237,6 +253,7 @@ public class AdminController {
         } else {
             xhwAward.setAwardRunningType(AwardRunningEnum.READY);
             xhwAward.setSendNum(0);
+            xhwAward.setCanRob(0);
             xhwAward.setRemainNum(xhwAward.getTotalNum());
             xhwAwardRepository.save(xhwAward);
         }
@@ -244,7 +261,7 @@ public class AdminController {
         return resultMap;
     }
 
-
+    @LoginRequired()
     @PostMapping("/award/remove")
     @ResponseBody
     public String remveaward(String id) {
@@ -254,6 +271,7 @@ public class AdminController {
         return "success";
     }
 
+    @LoginRequired()
     @PostMapping("/award/launch")
     @ResponseBody
     public String launchaward(String id) {
@@ -267,7 +285,22 @@ public class AdminController {
         return "success";
     }
 
+    @LoginRequired()
+    @PostMapping("/award/rob")
+    @ResponseBody
+    public String robaward(String id) {
+        Optional<XhwAward> byId = xhwAwardRepository.findById(id);
 
+        if (byId.isPresent()) {
+            XhwAward xhwAward = byId.get();
+            xhwAward.setCanRob(BooleanConstant.BOOLEAN_YES);
+            xhwAwardRepository.save(xhwAward);
+        }
+        return "success";
+    }
+
+
+    @LoginRequired()
     @PostMapping("/award/finish")
     @ResponseBody
     public String finishaward(String id) {

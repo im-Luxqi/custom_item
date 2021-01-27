@@ -47,7 +47,7 @@ public class XhwIndexDrawExecute implements IApiExecute {
         } else {
             resultMap.put("win", true);
             resultMap.put("win_award", draw);
-            draw.setDrawStartTime(null);
+//            draw.setDrawStartTime(null);
             draw.setAwardRunningType(null);
             draw.setLevel(null);
             draw.setSendNum(null);

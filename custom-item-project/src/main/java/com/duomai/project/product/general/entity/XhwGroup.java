@@ -28,17 +28,17 @@ public class XhwGroup {
     @Column(columnDefinition = "varchar(255) COMMENT '入群二维码'")
     private String qrCode;
 
-    @Column(columnDefinition = "int(10) COMMENT '优先级'")
-    private Integer level;
+//    @Column(columnDefinition = "int(10) COMMENT '优先级'")
+//    private Integer level;
+//
 
-
-    @Column(columnDefinition = "int(10) COMMENT '优先级'")
+    @Column(columnDefinition = "int(10) COMMENT '是否弃用'")
     private Integer finish;
 
-    @Column(columnDefinition = "int(10) COMMENT '群最大人数'")
-    private Integer maxNum;
-
-    @Column(columnDefinition = "int(10) COMMENT '剩余人数'")
-    private Integer remainNum;
+//    @Column(columnDefinition = "int(10) COMMENT '群最大人数'")
+//    private Integer maxNum;
+//
+//    @Column(columnDefinition = "int(10) COMMENT '剩余人数'")
+//    private Integer remainNum;
 
 }

@@ -118,34 +118,34 @@
                     field: 'title',
                     title: '群名称',
                     sortable: true
-                },
-                {
-                    field: 'maxNum',
-                    title: '群最大人数',
-                    sortable: true
-                },
-                {
-                    field: 'level',
-                    title: '优先级',
-                    sortable: true
+                }, {
+                    field: 'finish',
+                    title: '状态',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        var msg = "";
+                        if (value == 0) {
+                            msg = '<span class="btn btn-success btn-xs " href="javascript:void(0)">进行中</span> '
+                        } else if (value == 1) {
+                            msg = '<span class="btn btn-danger btn-xs " href="javascript:void(0)">弃用了</span> '
+                        }
+                        return msg;
+                    },
                 },
                 {
                     field: 'qrCode',
                     title: '入群二维码',
                     sortable: false,
-                    editable: {
-                        type: 'text',
-                        title: '用户名',
-                        validate: function (v) {
-                            if (!v) return '用户名不能为空';
-                        }
-                    }
                 },
                 {
                     title: '操作',
                     align: 'center',
                     formatter: function (value, row, index) {
                         var actions = [];
+
+                        if (row.finish == 0) {
+                            actions.push('<a class="btn btn-white btn-xs " href="javascript:void(0)" onclick="groupFinish(\'' + row.id + '\')">弃用了</a> ');
+                        }
                         actions.push('<a class="btn btn-danger btn-xs " href="javascript:void(0)" onclick="remove(\'' + row.id + '\')">删除</a> ');
                         return actions.join('');
                     }
@@ -180,6 +180,18 @@
             });
         });
     });
+
+    function groupFinish(tableId) {
+        $.ajax({
+            url: prefix + "/finish",
+            type: "post",
+            data: {"id": tableId},
+            success: function (data) {
+                console.log(data);
+            }
+        });
+        window.location.reload();
+    }
 
 
     function remove(tableId) {

@@ -4,7 +4,6 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.XhwHelper;
-import com.duomai.project.product.general.dto.XhwSettingDto;
 import com.duomai.project.product.general.entity.XhwAward;
 import com.duomai.project.product.general.enums.AwardRunningEnum;
 import com.duomai.project.product.general.repository.XhwAwardRecordRepository;
@@ -42,6 +41,7 @@ public class XhwRefreshAwardExecute implements IApiExecute {
             hotAward.setTotalNum(null);
             hotAward.setRemainNum(null);
             hotAward.setSendNum(null);
+//            hotAward.setDrawStartTime(null);
             hotAward.setLevel(null);
         } else {
             long l = xhwAwardRecordRepository.countByBuyerNickAndAwardId(buyerNick, hotAward.getId());
@@ -49,16 +49,17 @@ public class XhwRefreshAwardExecute implements IApiExecute {
             hotAward.setTotalNum(null);
             hotAward.setRemainNum(null);
             hotAward.setSendNum(null);
+//            hotAward.setDrawStartTime(null);
             hotAward.setLevel(null);
         }
         resultMap.put("hot_award", hotAward);
-        //活动人数
-        XhwSettingDto xhwSetting = xhwHelper.findSetting();
-        Integer joinNum = xhwHelper.findJoinNum();
-        resultMap.put("player_num", xhwSetting.getVirtualNum() + joinNum);
-        //中奖记录
-
-        resultMap.put("draw_record", xhwHelper.drawLog(hotAward));
+//        //活动人数
+//        XhwSettingDto xhwSetting = xhwHelper.findSetting();
+//        Integer joinNum = xhwHelper.findJoinNum();
+//        resultMap.put("player_num", xhwSetting.getVirtualNum() + joinNum);
+//        //中奖记录
+//
+//        resultMap.put("draw_record", xhwHelper.drawLog(hotAward));
         return YunReturnValue.ok(resultMap, "当前参与抢购的奖品");
     }
 }
