@@ -12,8 +12,6 @@ import com.duomai.project.product.general.enums.AwardRunningEnum;
 import com.duomai.project.product.general.repository.XhwAwardRepository;
 import com.duomai.project.product.general.repository.XhwGroupRepository;
 import com.duomai.project.product.general.repository.XhwSettingRepository;
-import com.duomai.project.product.general.repository.XhwShowBarRepository;
-import com.duomai.project.tool.CommonDateParseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -47,8 +45,6 @@ public class AdminController {
     private XhwSettingRepository settingRepository;
     @Resource
     private XhwGroupRepository xhwGroupRepository;
-    @Resource
-    private XhwShowBarRepository xhwShowBarRepository;
 
 
     @GetMapping("/loginIndex")
