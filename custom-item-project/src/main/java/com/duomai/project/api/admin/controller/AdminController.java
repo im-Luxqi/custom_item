@@ -17,6 +17,7 @@ import com.duomai.project.tool.CommonDateParseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -123,13 +124,13 @@ public class AdminController {
     @LoginRequired()
     @GetMapping("/group/list")
     @ResponseBody
-    public List<XhwGroup> groupList(String title) {
-        List<XhwGroup> all;
-        if (StringUtils.isNotBlank(title)) {
-            all = xhwGroupRepository.findByTitleLike("%" + title + "%");
-        } else {
-            all = xhwGroupRepository.findAll();
-        }
+    public List<XhwGroup> groupList(XhwGroup xhwGroup) {
+
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withMatcher("title", ExampleMatcher.GenericPropertyMatchers.contains());
+        Example<XhwGroup> xhwAwardExample = Example.of(xhwGroup, matcher);
+        Sort sortx = Sort.by(Sort.Direction.ASC, "title");
+        List<XhwGroup> all = xhwGroupRepository.findAll(xhwAwardExample, sortx);
         return all;
     }
 
@@ -201,12 +202,11 @@ public class AdminController {
                 xhwAward.setAwardRunningType(AwardRunningEnum.FINISH);
             }
         }
-
-
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains());
         Example<XhwAward> xhwAwardExample = Example.of(xhwAward, matcher);
-        List<XhwAward> all = xhwAwardRepository.findAll(xhwAwardExample);
+        Sort sortx = Sort.by(Sort.Direction.DESC, "level");
+        List<XhwAward> all = xhwAwardRepository.findAll(xhwAwardExample, sortx);
         return all;
     }
 

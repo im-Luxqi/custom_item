@@ -120,7 +120,7 @@ public class XhwHelper {
 
     @JoinMemcache()
     public List<XhwGroup> findAllGroup() {
-        List<XhwGroup> all = xhwGroupRepository.findAll();
+        List<XhwGroup> all = xhwGroupRepository.findByFinish(BooleanConstant.BOOLEAN_NO);
         return all;
     }
 
