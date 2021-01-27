@@ -23,7 +23,7 @@ RUN  mkdir -p ${CATALINA_HOME} &&  unzip  /tmp/apache-tomcat-9.0.19.zip -d ${CAT
     rm -rf /tmp/apache-tomcat-9.0.19.zip ${CATALINA_HOME}/apache-tomcat-9.0.19  && \
     chmod +x ${CATALINA_HOME}/bin/*sh
 # 下载部署 WAR 包
-RUN wget https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/xinhuawang/custom-item-project-0.0.1-SNAPSHOT-111.war -O /tmp/openapi.war
+RUN wget https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/xinhuawang/custom-item-project-0.0.1-SNAPSHOT-1.6.war -O /tmp/openapi.war
 
 RUN rm -rf ${CATALINA_HOME}/webapps/ROOT/*
 RUN  unzip /tmp/openapi.war -d ${CATALINA_HOME}/webapps/ROOT && \
