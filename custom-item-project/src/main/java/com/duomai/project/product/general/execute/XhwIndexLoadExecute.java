@@ -59,8 +59,8 @@ public class XhwIndexLoadExecute implements IApiExecute {
         XhwSettingDto xhwSetting = xhwHelper.findSetting();
         //活动说明
         resultMap.put("act_rule", xhwSetting.getActRule());
-        //showbar
-        List<XhwShowBar> newYearCard = xhwShowBarRepository.findAllByOrderByLevelDesc();
+        //showbar=
+        List<XhwShowBar> newYearCard = xhwHelper.findShowBar();
         if (CollectionUtils.isEmpty(newYearCard)) {
             newYearCard = new ArrayList<>();
         } else {

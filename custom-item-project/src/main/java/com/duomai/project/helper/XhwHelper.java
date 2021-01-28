@@ -40,6 +40,8 @@ public class XhwHelper {
     private XhwGroupRepository xhwGroupRepository;
     @Autowired
     private XhwSettingRepository xhwSettingRepository;
+    @Autowired
+    private XhwShowBarRepository xhwShowBarRepository;
 
     @Autowired
     private XhwAwardRepository xhwAwardRepository;
@@ -180,6 +182,12 @@ public class XhwHelper {
         return award;
     }
 
+    @JoinMemcache()
+    public List<XhwShowBar> findShowBar() {
+        return xhwShowBarRepository.findAllByOrderByLevelDesc();
+    }
+
+    @JoinMemcache()
     public List<String> drawLog(XhwAward hotAward) {
         List<Map> maps = xhwAwardRecordRepository.queryLuckyDrawLog();
 
@@ -259,4 +267,5 @@ public class XhwHelper {
         fakeLog.add("136****3797 的网友 1秒前抢中 " + hotAward.getName());
         return fakeLog;
     }
+
 }
