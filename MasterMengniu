@@ -30,7 +30,7 @@ RUN  unzip /tmp/openapi.war -d ${CATALINA_HOME}/webapps/ROOT && \
     rm -rf /tmp/openapi.war
 
 # 安装中文字体
-COPY msyh.ttc  ${JAVA_HOME}/jre/lib/fonts
+# COPY msyh.ttc  ${JAVA_HOME}/jre/lib/fonts
 # 设定 Tomcat 安装目录为容器启动目录，并采用 run 方式启动 Tomcat，在标准命令行输出 catalina 日志。
 WORKDIR $CATALINA_HOME
 CMD ["catalina.sh", "run"]
