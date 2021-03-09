@@ -2,7 +2,7 @@ spring:
   # 数据库访问配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://rm-8vbzn4jy7avkl3c0d.mysql.zhangbei.rds.aliyuncs.com:3306/xinhua_h5?useUnicode=true&amp;characterEncoding=utf8&amp;useServerPrepStmts=true
+    url: jdbc:mysql://rm-8vbxo142o269rr1d8.mysql.zhangbei.rds.aliyuncs.com:3306/xinhua_h5?useUnicode=true&amp;characterEncoding=utf8&amp;useServerPrepStmts=true
     username: xinhua_h5
     password: Duomai_2021
 
