@@ -37,5 +37,4 @@ public class CustomItemProjectApplication  extends SpringBootServletInitializer 
                 "SQL监控: \thttp://" + ip + ":" + port + path + "/druid\t(" + druid + ")\n\t" +
                 "----------------------------------------------------------");
     }
-
 }

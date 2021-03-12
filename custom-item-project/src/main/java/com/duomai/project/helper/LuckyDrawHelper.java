@@ -6,7 +6,9 @@ import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.api.taobao.enums.TaoBaoSendCouponStatus;
 import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
+import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
+import com.duomai.project.product.general.enums.TaskTypeEnum;
 import com.duomai.project.product.general.repository.*;
 import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
 import com.duomai.project.tool.CommonDateParseUtil;
@@ -522,4 +524,110 @@ public class LuckyDrawHelper {
         sysLuckyDrawRecordRepository.save(drawRecord);
         return drawRecord;
     }
+
+
+    /*  做任务抽取卡片
+     * @description
+     * @create by 王星齐
+     * @time 2021-03-12 19:24:21
+     * @param sysCustom
+     **/
+
+    public SysSettingAward sendCard(SysCustom custom, TaskTypeEnum taskType, int sendNum) {
+        AwardUseWayEnum cardType;
+        switch (taskType) {
+            case SIGN:
+                cardType = AwardUseWayEnum.CARD_ONE;
+                break;
+            case FOLLOW:
+                cardType = AwardUseWayEnum.CARD_THREE;
+                break;
+            case MEMBER:
+                cardType = AwardUseWayEnum.CARD_THREE;
+                break;
+            case SHARE:
+                cardType = AwardUseWayEnum.CARD_FOUR;
+                break;
+            case SHARE_FOLLOW:
+                cardType = AwardUseWayEnum.CARD_FIVE;
+                break;
+            case SHARE_MEMBER:
+                cardType = AwardUseWayEnum.CARD_SIX;
+                break;
+            case BROWSE:
+                cardType = AwardUseWayEnum.CARD_SEVEN;
+                break;
+            case TV:
+                cardType = AwardUseWayEnum.CARD_EIGHT;
+                break;
+            case SPEND:
+                cardType = AwardUseWayEnum.CARD_NINE;
+                break;
+            default:
+                cardType = null;
+                break;
+        }
+        Assert.isTrue(cardType != null && sendNum > 0, "不合法的领卡");
+
+        /*本次抽奖中的奖品*/
+        SysSettingAward award = sysSettingAwardRepository.findFirstByUseWay(cardType);
+        /*整理抽奖日志*/
+        Date drawTime = new Date();
+        SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord()
+                .setLuckyChance(taskType.getValue() + "----->" + cardType.getValue() + "*" + sendNum)
+                .setIsWin(BooleanConstant.BOOLEAN_NO)
+                .setIsFill(BooleanConstant.BOOLEAN_NO)
+                .setHaveExchange(BooleanConstant.BOOLEAN_NO)
+                .setDrawTime(drawTime)
+                .setPlayerHeadImg(custom.getHeadImg())
+                .setPlayerBuyerNick(custom.getBuyerNick())
+                .setPlayerZnick(custom.getZnick())
+                .setIsWin(BooleanConstant.BOOLEAN_NO)
+                .setAwardId(award.getId())
+                .setAwardImg(award.getImg())
+                .setAwardName(award.getName())
+                .setAwardType(award.getType());
+        try {
+            if (award.getRemainNum() < 1) {
+                drawRecord.setSendError("库存不够,未中奖");
+                return null;
+            }
+            if (Math.random() >= Double.parseDouble(award.getLuckyValue())) {
+                drawRecord.setSendError("运气不好，未中奖");
+                return null;
+            }
+            if (sysSettingAwardRepository.tryReduceOne(award.getId()) != 1) {
+                drawRecord.setSendError("库存不够,未中奖");
+                return null;
+            }
+            drawRecord.setIsWin(BooleanConstant.BOOLEAN_YES);
+            return award;
+        } finally {
+            SysLuckyDrawRecord save = sysLuckyDrawRecordRepository.save(drawRecord);
+            if (award != null) {
+                award.setLogId(save.getId());
+                if (AwardTypeEnum.EXCHANGE.equals(award.getType())) {
+                    SysLuckyExchangeLog sysLuckyExchangeLog = new SysLuckyExchangeLog()
+                            .setAwardId(award.getId())
+                            .setAwardImg(award.getImg())
+                            .setAwardName(award.getName())
+                            .setCreateTime(drawTime)
+                            .setBuyerNick(custom.getBuyerNick())
+                            .setWinOrUse(BooleanConstant.BOOLEAN_YES);
+                    sysExchangeLogRepository.save(sysLuckyExchangeLog);
+                }
+            }
+        }
+
+    }
+
+
+    @Transactional
+    public void drawCard(SysSettingAward award, int sendNum) {
+
+//        if(award)
+
+
+    }
+
 }

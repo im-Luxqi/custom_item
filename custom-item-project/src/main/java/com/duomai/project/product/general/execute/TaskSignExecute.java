@@ -10,6 +10,7 @@ import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysTaskSignLog;
 import com.duomai.project.product.general.repository.SysCustomRepository;
+import com.duomai.project.product.general.repository.SysTaskDailyBoardRepository;
 import com.duomai.project.product.general.repository.SysTaskSignLogRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ import java.util.Date;
 public class TaskSignExecute implements IApiExecute {
     @Autowired
     private SysTaskSignLogRepository sysTaskSignLogRepository;
+
+
+
     @Autowired
     private SysCustomRepository sysCustomRepository;
     @Autowired
@@ -38,6 +42,9 @@ public class TaskSignExecute implements IApiExecute {
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+
+
 
 
         /*1.校验*/
@@ -71,7 +78,9 @@ public class TaskSignExecute implements IApiExecute {
 
 
         /*3完成任务，获取奖励*/
-        Integer thisSignGet = 1;
+
+
+//        Integer thisSignGet = 1;
 //        if (todaySignLog.getContinuousNum() % actBaseSettingDto.getTaskSignContinuous() == 0) {
 //            thisSignGet = actBaseSettingDto.getTaskSignContinuousPayment();
 //        }
