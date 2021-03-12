@@ -5,6 +5,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 游戏基本设置
@@ -16,7 +17,7 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-public class ActBaseSettingDto  implements Serializable {
+public class ActBaseSettingDto implements Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * 活动规则
@@ -40,26 +41,13 @@ public class ActBaseSettingDto  implements Serializable {
 
 
     /**
-     * 每连续签到几天,有额外奖励
+     * 累计签到奖励（json）
      */
-    private Integer taskSignContinuous;
-
-
-    /**
-     * 每连续签到几天,那天的奖励（默认一次）
-     */
-    private Integer taskSignContinuousPayment;
+    private List<SignWinDto> taskSign;
 
     /**
      * 完成浏览任务，需要浏览几个商品
      */
     private Integer taskBrowseShouldSee;
-
-
-    /**
-     * 下单任务，满多少
-     */
-    private Double taskOrderShouldSpend;
-
 
 }

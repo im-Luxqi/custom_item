@@ -16,33 +16,15 @@ public interface ActSettingConstant {
      */
     String ACT_END_TIME = "act_end_time";
 
-
-    /**
-     * 优惠券可抽奖次数
-     */
-    String DRAW_COUPON_NUM = "draw_coupon_num";
-
    /**
-     * 每连续签到几天,有额外奖励
+     * 累计签到奖励（json）
      */
-    String TASK_SIGN_CONTINUOUS = "task_sign_continuous";
-
-   /**
-     * 每连续签到几天,那天的奖励（默认一次）
-     */
-    String TASK_SIGN_CONTINUOUS_PAYMENT = "task_sign_continuous_payment";
-
+    String TASK_SIGN = "task_sign";
 
    /**
      * 完成浏览任务，需要浏览几个商品
      */
     String TASK_BROWSE_SHOULD_SEE = "task_browse_should_see";
-
-
-   /**
-     * 下单任务，满多少
-     */
-    String TASK_ORDER_SHOULD_SPEND = "task_order_should_spend";
 
 
 }

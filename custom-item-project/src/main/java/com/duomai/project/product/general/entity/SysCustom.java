@@ -37,6 +37,8 @@ public class SysCustom {
     private String headImg;
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否授权 0:否1:是'")
     private Integer haveAuthorization;
+    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否完成新手指引 0:否1:是'")
+    private Integer haveActionGuide;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(30) COMMENT '入会途径'")
@@ -44,7 +46,7 @@ public class SysCustom {
 
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(30) COMMENT '入会途径'")
+    @Column(columnDefinition = "varchar(30) COMMENT '关注途径'")
     private FollowWayFromEnum followWayFrom;
 
 }

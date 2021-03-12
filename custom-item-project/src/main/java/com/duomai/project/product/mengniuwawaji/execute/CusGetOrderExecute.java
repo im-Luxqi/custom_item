@@ -89,7 +89,7 @@ public class CusGetOrderExecute implements IApiExecute {
                         }
                     }
                 }
-                Double taskOrderShouldSpend = config.getTaskOrderShouldSpend();
+                Double taskOrderShouldSpend = 12.00;
                 if (cunzhenMoney >= Double.valueOf(taskOrderShouldSpend)) {
                     tid.append(trade.getTid() + ",");
                     sendTime += 3;

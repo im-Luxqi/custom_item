@@ -73,7 +73,7 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
         Assert.isTrue(todayHasDraw < 15, "今日抽奖次数已达到上限，明天再来看吧");
         //抽6号瓶子需要先抽5号瓶子
         if (BottleTypeEnum.SPECIAL_SIX.equals(bottle)) {
-            List<SysSettingAward> byUseWay = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.SPECIAL_FIVE);
+            List<SysSettingAward> byUseWay = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.CARD_EIGHT);
             SysSettingAward firstSysSettingAward = byUseWay.get(0);
             long l = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndAwardIdAndIsWinAndHaveExchange(buyerNick, firstSysSettingAward.getId(), BooleanConstant.BOOLEAN_YES, BooleanConstant.BOOLEAN_NO);
             if (l == 0) {

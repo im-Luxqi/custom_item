@@ -82,6 +82,8 @@ public class SysLuckyDrawRecord {
     @Column(columnDefinition = "DATETIME COMMENT '兑换时间'")
     private Date exchangeTime;
 
+    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否展示过 0:否1:是'")
+    private Integer haveShow;
 
 
     public SysLuckyDrawRecord() {

@@ -7,13 +7,17 @@ import com.duomai.common.base.enums.IEnum;
  * @create by 王星齐
  * @time 2020-08-28 14:28:07
  */
+
 public enum AwardUseWayEnum implements IEnum {
-    COMMON_ONE("COMMON_ONE", "普通1号奶瓶"),
-    COMMON_TWO("COMMON_TWO", "普通2号奶瓶"),
-    COMMON_THREE("COMMON_THREE", "普通3号奶瓶"),
-    COMMON_FOUR("COMMON_FOUR", "普通4号奶瓶"),
-    SPECIAL_FIVE("SPECIAL_FIVE", "特殊5号奶瓶"),
-    SPECIAL_SIX("SPECIAL_SIX", "特殊6号奶瓶"),
+    CARD_ONE("CARD_ONE", "1号卡片"),
+    CARD_TWO("CARD_TWO", "2号卡片"),
+    CARD_THREE("CARD_THREE", "3号卡片"),
+    CARD_FOUR("CARD_FOUR", "4号卡片"),
+    CARD_FIVE("CARD_FIVE", "5号卡片"),
+    CARD_SIX("CARD_SIX", "6号卡片"),
+    CARD_SEVEN("CARD_SEVEN", "7号卡片"),
+    CARD_EIGHT("CARD_EIGHT", "8号卡片"),
+    CARD_NINE("CARD_NINE", "9号卡片"),
     POOL("POOL", "奖池");
     private final String code;
     private final String descp;

@@ -1,8 +1,10 @@
 package com.duomai.project.helper;
 
+import com.alibaba.fastjson.JSONArray;
 import com.duomai.project.configuration.annotation.JoinMemcache;
 import com.duomai.project.helper.constants.ActSettingConstant;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
+import com.duomai.project.product.general.dto.SignWinDto;
 import com.duomai.project.product.general.entity.SysSettingKeyValue;
 import com.duomai.project.product.general.repository.SysSettingKeyValueRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
@@ -17,10 +19,11 @@ import java.util.stream.Collectors;
 
 /**
  * 活动 常规操作
+ *
  * @description 【帮助类目录】
- *      1.任务配置--信息获取
- *      2.活动配置--信息获取
- *      3.检验时候为活动期间
+ * 1.任务配置--信息获取
+ * 2.活动配置--信息获取
+ * 3.检验时候为活动期间
  * @create by 王星齐
  * @date 2020-08-26 16:52
  */
@@ -31,7 +34,9 @@ public class ProjectHelper {
     private SysSettingKeyValueRepository sysSettingKeyValueRepository;
 
 
-    /** 2.活动配置--信息获取
+    /**
+     * 2.活动配置--信息获取
+     *
      * @description
      * @create by 王星齐
      * @time 2020-08-26 20:03:20
@@ -40,14 +45,14 @@ public class ProjectHelper {
     public ActBaseSettingDto actBaseSettingFind() {
         List<SysSettingKeyValue> byType = sysSettingKeyValueRepository.findByType(ActSettingConstant.TYPE_ACT_SETTING);
         Map<String, String> collect = byType.stream().collect(Collectors.toMap(SysSettingKeyValue::getK, SysSettingKeyValue::getV));
+        //签到条件
+        String signCondotion = collect.get(ActSettingConstant.TASK_SIGN);
+        List<SignWinDto> signWinDtos = JSONArray.parseArray(signCondotion, SignWinDto.class);
         return new ActBaseSettingDto().setActRule(collect.get(ActSettingConstant.ACT_RULE))
                 .setActStartTime(CommonDateParseUtil.string2date(collect.get(ActSettingConstant.ACT_START_TIME), CommonDateParseUtil.YYYY_MM_DD))
                 .setActEndTime(CommonDateParseUtil.getEndTimeOfDay(CommonDateParseUtil.string2date(collect.get(ActSettingConstant.ACT_END_TIME), CommonDateParseUtil.YYYY_MM_DD)))
-                .setDrawCouponNum(Integer.valueOf(collect.get(ActSettingConstant.DRAW_COUPON_NUM)))
-                .setTaskSignContinuous(Integer.valueOf(collect.get(ActSettingConstant.TASK_SIGN_CONTINUOUS)))
-                .setTaskSignContinuousPayment(Integer.valueOf(collect.get(ActSettingConstant.TASK_SIGN_CONTINUOUS_PAYMENT)))
                 .setTaskBrowseShouldSee(Integer.valueOf(collect.get(ActSettingConstant.TASK_BROWSE_SHOULD_SEE)))
-                .setTaskOrderShouldSpend(Double.valueOf(collect.get(ActSettingConstant.TASK_ORDER_SHOULD_SPEND)))
+                .setTaskSign(signWinDtos)
                 ;
     }
 
@@ -66,9 +71,10 @@ public class ProjectHelper {
             throw new Exception("活动已结束！");
     }
 
-    /** 3.检验时候为活动期间
-     * @description
-     *      使用场景-------->load请求
+    /**
+     * 3.检验时候为活动期间
+     *
+     * @description 使用场景-------->load请求
      * @create by 王星齐
      * @time 2020-08-26 20:11:04
      */

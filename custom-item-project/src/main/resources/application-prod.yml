@@ -2,10 +2,12 @@ spring:
   # 数据库访问配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://rm-k2j184l5n18e89k91.mysql.zhangbei.rds.aliyuncs.com:3306/mengniu_db?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useServerPrepStmts=true
-    userName: mengniu
-    password: Mengniu#db
-
+#    url: jdbc:mysql://rm-k2j184l5n18e89k91.mysql.zhangbei.rds.aliyuncs.com:3306/mengniu_db?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useServerPrepStmts=true
+#    userName: mengniu
+#    password: Mengniu#db
+    url: jdbc:mysql://rm-bp15b59z9xmng95fxwo.mysql.rds.aliyuncs.com:3306/mengniu?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: mengniu
+    password: Mengniu#123
 
 #系统配置
 sys:

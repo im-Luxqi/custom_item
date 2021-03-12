@@ -214,10 +214,7 @@ public class GameIndexLoadExecute implements IApiExecute {
         //1.活动规则
         ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         actBaseSettingDto.setDrawCouponNum(null);
-        actBaseSettingDto.setTaskOrderShouldSpend(null);
         actBaseSettingDto.setTaskBrowseShouldSee(null);
-        actBaseSettingDto.setTaskSignContinuousPayment(null);
-        actBaseSettingDto.setTaskSignContinuous(null);
         resultMap.put("game_rule", actBaseSettingDto);
         //2.抓娃娃机会次数
         resultMap.put("lucky_chance_num", luckyDrawHelper.unUseLuckyChance(buyerNick));
