@@ -55,6 +55,9 @@ public class XhwAward implements Serializable {
     @Column(columnDefinition = "int(1) COMMENT '开抢'")
     private Integer canRob;
 
+
+    @Column(columnDefinition = "varchar(30) COMMENT '奖品来源'")
+    private String awardFrom;
 //
 //    @Column(columnDefinition = "DATETIME COMMENT '开枪时间'")
 //    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")

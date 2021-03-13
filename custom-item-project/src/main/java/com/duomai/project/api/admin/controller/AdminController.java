@@ -243,6 +243,7 @@ public class AdminController {
                 db.setTotalNum(xhwAward.getTotalNum());
                 db.setLevel(xhwAward.getLevel());
                 db.setRemainNum(xhwAward.getTotalNum());
+                db.setAwardFrom(xhwAward.getAwardFrom());
                 xhwAwardRepository.save(db);
             }
 

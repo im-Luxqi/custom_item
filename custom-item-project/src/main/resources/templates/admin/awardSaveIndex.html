@@ -82,6 +82,13 @@
                     </div>
                 </div>
 
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>奖品所属地</label>
+                        <input name="awardFrom" type="text" th:value="${currentAward.awardFrom}" placeholder="奖品所属地"
+                               class="form-control">
+                    </div>
+                </div>
 
                 <div class="col-sm-12">
                     <div class="form-group">
@@ -151,6 +158,7 @@
                     showNum: $("[name='showNum']").val(),
                     totalNum: $("[name='totalNum']").val(),
                     level: $("[name='level']").val(),
+                    awardFrom: $("[name='awardFrom']").val(),
                 },
                 success: function (data) {
                     console.log(data);//打印服务端返回的数据(调试用)
