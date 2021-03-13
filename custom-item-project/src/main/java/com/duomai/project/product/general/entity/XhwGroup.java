@@ -5,6 +5,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 群
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Accessors(chain = true)
 @Table(name = "xhw_group")
 @org.hibernate.annotations.Table(appliesTo = "xhw_group", comment = "群")
-public class XhwGroup {
+public class XhwGroup  implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(generator = "uuid2")

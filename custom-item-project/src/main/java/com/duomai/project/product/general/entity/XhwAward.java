@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -17,7 +18,8 @@ import java.util.Date;
 @Accessors(chain = true)
 @Table(name = "xhw_award")
 @org.hibernate.annotations.Table(appliesTo = "xhw_award", comment = "奖品表")
-public class XhwAward {
+public class XhwAward implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
