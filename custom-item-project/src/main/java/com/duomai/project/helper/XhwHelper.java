@@ -218,17 +218,17 @@ public class XhwHelper {
                 return msg;
             }).collect(Collectors.toList());
         }
-        if (collect.size() < 20) {
-            List<String> temp = new ArrayList<>();
-            if (hotAward != null) {
-                List<String> fakeLog = getFakeLog(hotAward);
-                for (int i = collect.size(); i < 20; i++) {
-                    temp.add(fakeLog.get(i));
-                }
-                temp.addAll(collect);
-            }
-            return temp;
-        }
+//        if (collect.size() < 20) {
+//            List<String> temp = new ArrayList<>();
+//            if (hotAward != null) {
+//                List<String> fakeLog = getFakeLog(hotAward);
+//                for (int i = collect.size(); i < 20; i++) {
+//                    temp.add(fakeLog.get(i));
+//                }
+//                temp.addAll(collect);
+//            }
+//            return temp;
+//        }
         return collect;
     }
 
