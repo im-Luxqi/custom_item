@@ -1,5 +1,6 @@
 package com.duomai.project.product.general.entity;
 
+import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -9,13 +10,13 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * 抽奖机会表
+ * 卡片表
  */
 @Data
 @Entity
 @Accessors(chain = true)
 @Table(name = "sys_lucky_chance")
-@org.hibernate.annotations.Table(appliesTo = "sys_lucky_chance", comment = "抽奖机会表")
+@org.hibernate.annotations.Table(appliesTo = "sys_lucky_chance", comment = "卡片表")
 public class SysLuckyChance {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -35,6 +36,12 @@ public class SysLuckyChance {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "varchar(30) COMMENT '机会来源'")
     private LuckyChanceFromEnum chanceFrom;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "varchar(30) COMMENT '卡片类型'")
+    private AwardUseWayEnum cardType;
+
+
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否使用'")
     private Integer isUse;
 

@@ -179,7 +179,7 @@ public class LuckyDrawHelper {
                 .setLuckyChance(thisChance == null ? null : thisChance.getId())
                 .setIsWin(BooleanConstant.BOOLEAN_NO)
                 .setIsFill(BooleanConstant.BOOLEAN_NO)
-                .setHaveExchange(BooleanConstant.BOOLEAN_NO)
+//                .setHaveExchange(BooleanConstant.BOOLEAN_NO)
                 .setDrawTime(drawTime)
                 .setPlayerHeadImg(custom.getHeadImg())
                 .setPlayerBuyerNick(custom.getBuyerNick())
@@ -380,14 +380,14 @@ public class LuckyDrawHelper {
 //        return sysAwardRepository.findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
 //    }
 
-    /**
-     * 7.当前奖池等级
-     *
-     * @param sysCustom
-     * @description todo:等待落实奖池升级规则
-     * @create by 王星齐
-     * @time 2020-11-08 19:12:41
-     */
+//    /**
+//     * 7.当前奖池等级
+//     *
+//     * @param sysCustom
+//     * @description
+//     * @create by 王星齐
+//     * @time 2020-11-08 19:12:41
+//     */
 //    @Transactional
 //    public CustomPlayProgressDto findCurrentPoolLevel(SysCustom sysCustom) {
 //        CustomPlayProgressDto customPlayProgressDto = new CustomPlayProgressDto();
@@ -441,8 +441,8 @@ public class LuckyDrawHelper {
                 .setIsWin(BooleanConstant.BOOLEAN_YES)
                 .setIsFill(BooleanConstant.BOOLEAN_NO)
                 .setDrawTime(sendTime)
-                .setHaveExchange(BooleanConstant.BOOLEAN_NO)
-                .setExchangeTime(sendTime)
+//                .setHaveExchange(BooleanConstant.BOOLEAN_NO)
+//                .setExchangeTime(sendTime)
                 .setPlayerHeadImg(custom.getHeadImg())
                 .setPlayerBuyerNick(custom.getBuyerNick())
                 .setPlayerZnick(custom.getZnick())
@@ -577,7 +577,7 @@ public class LuckyDrawHelper {
                 .setLuckyChance(taskType.getValue() + "----->" + cardType.getValue() + "*" + sendNum)
                 .setIsWin(BooleanConstant.BOOLEAN_NO)
                 .setIsFill(BooleanConstant.BOOLEAN_NO)
-                .setHaveExchange(BooleanConstant.BOOLEAN_NO)
+//                .setHaveExchange(BooleanConstant.BOOLEAN_NO)
                 .setDrawTime(drawTime)
                 .setPlayerHeadImg(custom.getHeadImg())
                 .setPlayerBuyerNick(custom.getBuyerNick())

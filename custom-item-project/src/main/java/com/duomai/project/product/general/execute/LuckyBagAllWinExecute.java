@@ -39,7 +39,7 @@ public class LuckyBagAllWinExecute implements IApiExecute {
             x.setLuckyChance(null);
             x.setPlayerBuyerNick(null);
             x.setIsWin(null);
-            x.setHaveExchange(null);
+//            x.setHaveExchange(null);
             x.setRemark(null);
             x.setPlayerZnick(null);
             x.setPlayerHeadImg(null);

@@ -104,11 +104,11 @@ public class GameIndexLuckyExchangeExecute implements IApiExecute {
 
                         boolean todayHasWinCoupon = false;
                         for (SysLuckyDrawRecord sysLuckyDrawRecord : award2001) {
-                            if (sysLuckyDrawRecord.getExchangeTime().before(CommonDateParseUtil.getEndTimeOfDay(sysParm.getRequestStartTime()))
-                                    && sysLuckyDrawRecord.getExchangeTime().after(CommonDateParseUtil.getStartTimeOfDay(sysParm.getRequestStartTime()))) {
-                                todayHasWinCoupon = true;
-                                break;
-                            }
+//                            if (sysLuckyDrawRecord.getExchangeTime().before(CommonDateParseUtil.getEndTimeOfDay(sysParm.getRequestStartTime()))
+//                                    && sysLuckyDrawRecord.getExchangeTime().after(CommonDateParseUtil.getStartTimeOfDay(sysParm.getRequestStartTime()))) {
+//                                todayHasWinCoupon = true;
+//                                break;
+//                            }
                         }
                         Assert.isTrue(!todayHasWinCoupon, "优惠券一天只能换一次");
                     }
