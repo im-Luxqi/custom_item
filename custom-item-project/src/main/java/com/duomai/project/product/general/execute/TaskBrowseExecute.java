@@ -5,15 +5,16 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.FinishTheTaskHelper;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysSettingCommodity;
 import com.duomai.project.product.general.entity.SysTaskBrowseLog;
+import com.duomai.project.product.general.entity.SysTaskDailyBoard;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import com.duomai.project.product.general.repository.SysSettingCommodityRepository;
 import com.duomai.project.product.general.repository.SysTaskBrowseLogRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
@@ -41,12 +42,13 @@ public class TaskBrowseExecute implements IApiExecute {
 
     @Autowired
     private SysTaskBrowseLogRepository sysTaskBrowseLogRepository;
-    @Autowired
-    private SysLuckyChanceRepository sysLuckyChanceRepository;
+
     @Autowired
     private ProjectHelper projectHelper;
     @Autowired
     private LuckyDrawHelper luckyDrawHelper;
+    @Autowired
+    private FinishTheTaskHelper finishTheTaskHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -96,8 +98,15 @@ public class TaskBrowseExecute implements IApiExecute {
         long l = luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.BROWSE);
         Integer taskBrowseShouldSee = actBaseSettingDto.getTaskBrowseShouldSee();
         if (l == 0 && taskBrowseShouldSee.equals(todayHasBrowseLogs.size())) {
-            luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.BROWSE, 1,
-                    "浏览", "每日浏览，获得" + 1 + "次游戏机会");
+            Integer thisGet = 1;
+            luckyDrawHelper.sendCard(syscustom, LuckyChanceFromEnum.BROWSE, thisGet,
+                    "每日浏览，获得【有料品鉴官】一博送你的食力拼图*" + thisGet);
+        }
+        if (todayHasBrowseLogs.size() <= taskBrowseShouldSee) {
+            SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(buyerNick);
+            taskDailyBoard.setHaveFinishBrowseToday(BooleanConstant.BOOLEAN_YES);
+            taskDailyBoard.setBrowseProgress("(" + todayHasBrowseLogs.size() + "/" + taskBrowseShouldSee + ")");
+            finishTheTaskHelper.updateTaskBoard(taskDailyBoard);
         }
 
         return YunReturnValue.ok("浏览成功!");

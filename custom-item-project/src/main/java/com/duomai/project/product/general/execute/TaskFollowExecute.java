@@ -4,15 +4,18 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.FinishTheTaskHelper;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysTaskDailyBoard;
 import com.duomai.project.product.general.entity.SysTaskMemberOrFollowLog;
 import com.duomai.project.product.general.enums.FollowWayFromEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.enums.TaskTypeEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysTaskMemberOrFollowRepository;
+import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
@@ -35,6 +38,8 @@ public class TaskFollowExecute implements IApiExecute {
     private ProjectHelper projectHelper;
     @Autowired
     private LuckyDrawHelper luckyDrawHelper;
+    @Autowired
+    private FinishTheTaskHelper finishTheTaskHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -57,16 +62,24 @@ public class TaskFollowExecute implements IApiExecute {
         sysTaskMemberOrFollowRepository.save(new SysTaskMemberOrFollowLog()
                 .setBuyerNick(buyerNick)
                 .setCreateTime(sysParm.getRequestStartTime())
+                .setMemberOrFollowTime(CommonDateParseUtil.date2string(sysParm.getRequestStartTime(),"yyyy-MM-dd"))
                 .setTaskType(TaskTypeEnum.FOLLOW));
         if (FollowWayFromEnum.NON_FOLLOW.equals(syscustom.getFollowWayFrom())) {
             syscustom.setFollowWayFrom(FollowWayFromEnum.NATURE_JOIN_FOLLOW);
             sysCustomRepository.save(syscustom);
         }
 
+
+
+
         /*3完成任务，获取奖励*/
         Integer thisGet = 1;
-        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.FOLLOW, thisGet,
-                "关注", "关注店铺，获得" + thisGet + "次游戏机会");
+        luckyDrawHelper.sendCard(syscustom, LuckyChanceFromEnum.FOLLOW, thisGet,
+                "关注成功，获得【有料品鉴官】一博送你的食力拼图*" + thisGet);
+
+        SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(buyerNick);
+        taskDailyBoard.setHaveFinishFollow(BooleanConstant.BOOLEAN_YES);
+        finishTheTaskHelper.updateTaskBoard(taskDailyBoard);
         return YunReturnValue.ok("完成关注任务！");
     }
 }
