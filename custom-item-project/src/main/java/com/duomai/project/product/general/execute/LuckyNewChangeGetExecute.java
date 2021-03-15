@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** 未展示过的活动机会
+/** 卡牌获取通知
  * @author im-luxqi
  * @description
  * @create by 王星齐
@@ -57,13 +57,7 @@ public class LuckyNewChangeGetExecute implements IApiExecute {
                 x.setHaveNotification(null);
             });
         }
-
-
-
-
         result.put("notification", noShow);
-        //2.抓娃娃机会次数
-        result.put("lucky_chance_num", luckyDrawHelper.unUseLuckyChance(buyerNick));
-        return YunReturnValue.ok(result, "未展示过的获取记录");
+        return YunReturnValue.ok(result, "卡牌获取通知");
     }
 }

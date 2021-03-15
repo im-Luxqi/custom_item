@@ -56,6 +56,6 @@ public class SysTaskDailyBoard {
     private Integer haveFinishTvToday;
 
 
-    @Column(columnDefinition = "varchar(64) COMMENT '消费进度'")
+    @Column(columnDefinition = "varchar(64) COMMENT '每日消费进度'")
     private String spendProgress;
 }

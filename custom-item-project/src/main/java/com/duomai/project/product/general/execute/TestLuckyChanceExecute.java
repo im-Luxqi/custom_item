@@ -35,8 +35,8 @@ public class TestLuckyChanceExecute implements IApiExecute {
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         String buyerNick = jsonObjectAdmjson.getString("buyerNick");
         Assert.hasLength(buyerNick, "buyerNick不能为空");
-        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.DAKA, 30, null,
-                "非法获取抽奖次数", "测试大咖非法获取30次抓娃娃机会");
+//        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.FREE, 30, null,
+//                "非法获取抽奖次数", "测试大咖非法获取30次抓娃娃机会");
         return YunReturnValue.ok("恭喜【" + buyerNick + "】获取30次抽奖机会");
     }
 }

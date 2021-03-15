@@ -51,13 +51,22 @@ public class QLApiExecuteHandler {
         /**
          * 任务
          */
-
-        //任务页面load
-//        map.put("wx.dz.game.task.load", TaskDashboardExecute.class);
+        //卡牌获取通知
+        map.put("wx.dz.game.index.notification", LuckyNewChangeGetExecute.class);
         //任务--每日签到
         map.put("wx.dz.game.task.sign", TaskSignExecute.class);
         //任务--成为会员
         map.put("wx.dz.game.task.member", TaskMemberExecute.class);
+
+
+
+
+
+/*
+        //任务页面load
+//        map.put("wx.dz.game.task.load", TaskDashboardExecute.class);
+
+
         //任务--关注店铺
         map.put("wx.dz.game.task.follow", TaskFollowExecute.class);
         //任务--浏览商品
@@ -81,13 +90,11 @@ public class QLApiExecuteHandler {
 
 
 
-        /**
-         * 首页
-         */
+
+
         //游戏首页 加载
         map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
-        //抽奖机会通知
-        map.put("wx.dz.game.index.notification", LuckyNewChangeGetExecute.class);
+
         //点击抓娃娃
         map.put("wx.dz.game.lucky.draw", GameIndexLuckyDrawExecute.class);
         //我的战利品-查看明细
@@ -97,6 +104,7 @@ public class QLApiExecuteHandler {
         //本机奖品池
         map.put("wx.dz.game.lucky.pool", GameIndexLuckyPoolExecute.class);
 
+*/
 
 
     }

@@ -187,7 +187,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                     //邀请成功,发放抽奖机会
                     if (BooleanConstant.BOOLEAN_YES.equals(sysTaskInviteLog.getHaveSuccess())) {
                         sysCustomRepository.save(syscustom.setMemberWayFrom(MemberWayFromEnum.INVITEE_JOIN_MEMBER));
-                        luckyDrawHelper.sendLuckyChance(inviterCustom.getBuyerNick(), LuckyChanceFromEnum.INVITE_MEMBER, 1,
+                        luckyDrawHelper.sendLuckyChance(inviterCustom.getBuyerNick(), LuckyChanceFromEnum.FOLLOW, 1,
                                 "邀请入会" + syscustom.getZnick(), "邀请任务，获得了游戏机会");
                         resultMap.put("alter_for_invitee_flag", true);
                         resultMap.put("alter_for_invitee_msg", "恭喜你，助力成功");

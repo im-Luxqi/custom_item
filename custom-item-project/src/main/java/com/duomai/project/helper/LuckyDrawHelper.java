@@ -71,33 +71,41 @@ public class LuckyDrawHelper {
      * @time 2020-08-28 16:13:28
      */
     @Transactional
-    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, Integer number, String tid, String messageTitle, String messageContent) {
+    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, AwardUseWayEnum cardType, Integer number, String tid, String messageTitle, String messageContent) {
         Date sendTime = new Date();
-        return sysLuckyChanceRepository.saveAll(
-                IntStream.range(0, number).mapToObj((i) -> {
-                    SysLuckyChance sysLuckyChance = new SysLuckyChance().setBuyerNick(buyerNick)
-                            .setChanceFrom(chanceFrom)
-                            .setGetTime(sendTime)
-                            .setGetTimeString(CommonDateParseUtil.date2string(sendTime, "yyyy-MM-dd"))
-                            .setTidTime(sendTime)
-                            .setIsUse(BooleanConstant.BOOLEAN_NO)
-                            .setTid(tid)
-                            .setHaveNotification(BooleanConstant.BOOLEAN_YES)
-                            .setNotificationTitle("---")
-                            .setNotificationContent("---");
-                    if (i == 0) {
-                        sysLuckyChance.setNotificationTitle(messageTitle);
-                        sysLuckyChance.setNotificationContent(messageContent);
-                        sysLuckyChance.setHaveNotification(BooleanConstant.BOOLEAN_NO);
-                    }
-                    return sysLuckyChance;
-                }).collect(Collectors.toList()));
+        List<SysLuckyChance> collect = IntStream.range(0, number).mapToObj((i) -> {
+            SysLuckyChance sysLuckyChance = new SysLuckyChance().setBuyerNick(buyerNick)
+                    .setChanceFrom(chanceFrom)
+                    .setGetTime(sendTime)
+                    .setGetTimeString(CommonDateParseUtil.date2string(sendTime, "yyyy-MM-dd"))
+                    .setTidTime(sendTime)
+                    .setIsUse(BooleanConstant.BOOLEAN_NO)
+                    .setTid(tid)
+                    .setCardType(cardType)
+                    .setHaveNotification(BooleanConstant.BOOLEAN_YES)
+                    .setNotificationTitle("---")
+                    .setNotificationContent("---");
+            if (i == 0) {
+                sysLuckyChance.setNotificationTitle(messageTitle);
+                sysLuckyChance.setNotificationContent(messageContent);
+                sysLuckyChance.setHaveNotification(BooleanConstant.BOOLEAN_NO);
+            }
+            return sysLuckyChance;
+        }).collect(Collectors.toList());
+        return sysLuckyChanceRepository.saveAll(collect);
     }
 
     @Transactional
     public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, Integer number, String messageTitle, String messageContent) {
-        return sendLuckyChance(buyerNick, chanceFrom, number, null, messageTitle, messageContent);
+        return sendLuckyChance(buyerNick, chanceFrom, null, number, null, messageTitle, messageContent);
     }
+
+
+    @Transactional
+    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, AwardUseWayEnum cardType, Integer number, String messageTitle, String messageContent) {
+        return sendLuckyChance(buyerNick, chanceFrom, cardType, number, null, messageTitle, messageContent);
+    }
+
 
     @Transactional
     public List<SysLuckyChance> sendLuckyChance(List<SysLuckyChance> sysLuckyChances) {
@@ -525,15 +533,15 @@ public class LuckyDrawHelper {
         return drawRecord;
     }
 
-
-    /*  做任务抽取卡片
+    /**
+     * 任务对应的卡片类型
+     *
+     * @param taskType
      * @description
      * @create by 王星齐
-     * @time 2021-03-12 19:24:21
-     * @param sysCustom
+     * @time 2021-03-15 10:21:57
      **/
-
-    public SysSettingAward sendCard(SysCustom custom, TaskTypeEnum taskType, int sendNum) {
+    public AwardUseWayEnum taskType2CardType(LuckyChanceFromEnum taskType) {
         AwardUseWayEnum cardType;
         switch (taskType) {
             case SIGN:
@@ -567,58 +575,29 @@ public class LuckyDrawHelper {
                 cardType = null;
                 break;
         }
-        Assert.isTrue(cardType != null && sendNum > 0, "不合法的领卡");
+        Assert.isTrue(cardType != null, "无对应的卡片类型");
+        return cardType;
+    }
 
+
+
+
+    /*  做任务抽取卡片
+     * @description
+     * @create by 王星齐
+     * @time 2021-03-12 19:24:21
+     * @param sysCustom
+     **/
+
+    public void sendCard(SysCustom custom, LuckyChanceFromEnum taskType, int sendNum, String message) {
+        if (sendNum <= 0) {
+            return;
+        }
+        AwardUseWayEnum cardType = taskType2CardType(taskType);
         /*本次抽奖中的奖品*/
         SysSettingAward award = sysSettingAwardRepository.findFirstByUseWay(cardType);
-        /*整理抽奖日志*/
-        Date drawTime = new Date();
-        SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord()
-                .setLuckyChance(taskType.getValue() + "----->" + cardType.getValue() + "*" + sendNum)
-                .setIsWin(BooleanConstant.BOOLEAN_NO)
-                .setIsFill(BooleanConstant.BOOLEAN_NO)
-//                .setHaveExchange(BooleanConstant.BOOLEAN_NO)
-                .setDrawTime(drawTime)
-                .setPlayerHeadImg(custom.getHeadImg())
-                .setPlayerBuyerNick(custom.getBuyerNick())
-                .setPlayerZnick(custom.getZnick())
-                .setIsWin(BooleanConstant.BOOLEAN_NO)
-                .setAwardId(award.getId())
-                .setAwardImg(award.getImg())
-                .setAwardName(award.getName())
-                .setAwardType(award.getType());
-        try {
-            if (award.getRemainNum() < 1) {
-                drawRecord.setSendError("库存不够,未中奖");
-                return null;
-            }
-            if (Math.random() >= Double.parseDouble(award.getLuckyValue())) {
-                drawRecord.setSendError("运气不好，未中奖");
-                return null;
-            }
-            if (sysSettingAwardRepository.tryReduceOne(award.getId()) != 1) {
-                drawRecord.setSendError("库存不够,未中奖");
-                return null;
-            }
-            drawRecord.setIsWin(BooleanConstant.BOOLEAN_YES);
-            return award;
-        } finally {
-            SysLuckyDrawRecord save = sysLuckyDrawRecordRepository.save(drawRecord);
-            if (award != null) {
-                award.setLogId(save.getId());
-                if (AwardTypeEnum.EXCHANGE.equals(award.getType())) {
-                    SysLuckyExchangeLog sysLuckyExchangeLog = new SysLuckyExchangeLog()
-                            .setAwardId(award.getId())
-                            .setAwardImg(award.getImg())
-                            .setAwardName(award.getName())
-                            .setCreateTime(drawTime)
-                            .setBuyerNick(custom.getBuyerNick())
-                            .setWinOrUse(BooleanConstant.BOOLEAN_YES);
-                    sysExchangeLogRepository.save(sysLuckyExchangeLog);
-                }
-            }
-        }
-
+        sendLuckyChance(custom.getBuyerNick(), taskType, cardType, sendNum,
+                award.getImg(), message);
     }
 
 

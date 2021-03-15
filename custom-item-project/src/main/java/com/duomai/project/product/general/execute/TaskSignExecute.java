@@ -4,13 +4,16 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.FinishTheTaskHelper;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
+import com.duomai.project.product.general.dto.SignWinDto;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysTaskDailyBoard;
 import com.duomai.project.product.general.entity.SysTaskSignLog;
+import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.product.general.repository.SysTaskDailyBoardRepository;
 import com.duomai.project.product.general.repository.SysTaskSignLogRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import org.springframework.util.Assert;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @内容：任务页面 每日打卡操作
@@ -32,19 +36,17 @@ public class TaskSignExecute implements IApiExecute {
     private SysTaskSignLogRepository sysTaskSignLogRepository;
 
 
-
     @Autowired
     private SysCustomRepository sysCustomRepository;
     @Autowired
     private ProjectHelper projectHelper;
     @Autowired
     private LuckyDrawHelper luckyDrawHelper;
+    @Autowired
+    private FinishTheTaskHelper finishTheTaskHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-
-
 
 
         /*1.校验*/
@@ -78,15 +80,24 @@ public class TaskSignExecute implements IApiExecute {
 
 
         /*3完成任务，获取奖励*/
+        List<SignWinDto> taskSign = actBaseSettingDto.getTaskSign();
+        Integer sendNum = 0;
+        for (SignWinDto signWin : taskSign) {
+            if (todaySignLog.getTotalNum().equals(signWin.getTotalDay())) {
+                sendNum = signWin.getCardNum();
+                break;
+            }
+        }
+        luckyDrawHelper.sendCard(syscustom,LuckyChanceFromEnum.SIGN,sendNum,
+                "今日签到，获得【有料品鉴官】一博送你的食力拼图*" + sendNum);
 
 
-//        Integer thisSignGet = 1;
-//        if (todaySignLog.getContinuousNum() % actBaseSettingDto.getTaskSignContinuous() == 0) {
-//            thisSignGet = actBaseSettingDto.getTaskSignContinuousPayment();
-//        }
+        SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(buyerNick);
+        taskDailyBoard.setSignContinuousNum(todaySignLog.getContinuousNum());
+        taskDailyBoard.setSignTotalNum(todaySignLog.getTotalNum());
+        finishTheTaskHelper.updateTaskBoard(taskDailyBoard);
 
-//        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.SIGN, thisSignGet,
-//                "签到", "今日签到，获得" + thisSignGet + "次游戏机会");
+
         return YunReturnValue.ok("完成签到任务！");
     }
 }

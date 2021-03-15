@@ -103,7 +103,7 @@ public class CusGetOrderExecute implements IApiExecute {
         if (sendTime == 0) {
             return YunReturnValue.fail("当前没有可用的新订单");
         }
-        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.ORDER, sendTime, tid.toString(),
+        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.FREE, null,sendTime, tid.toString(),
                 "下单", "消费任务，获得" + sendTime + "次游戏机会");
         return YunReturnValue.ok("获取当前用户订单!");
     }

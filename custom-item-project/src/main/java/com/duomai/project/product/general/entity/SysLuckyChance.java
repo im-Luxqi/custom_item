@@ -54,9 +54,9 @@ public class SysLuckyChance {
 
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否已通知'")
     private Integer haveNotification;
-    @Column(columnDefinition = "varchar(100)   COMMENT '消息标题'")
+    @Column(columnDefinition = "varchar(255)   COMMENT '消息标题'")
     private String notificationTitle;
-    @Column(columnDefinition = "varchar(100)  COMMENT '消息内容'")
+    @Column(columnDefinition = "varchar(255)  COMMENT '消息内容'")
     private String notificationContent;
 
 }

@@ -4,9 +4,11 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.FinishTheTaskHelper;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysTaskDailyBoard;
 import com.duomai.project.product.general.entity.SysTaskMemberOrFollowLog;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.enums.MemberWayFromEnum;
@@ -35,6 +37,8 @@ public class TaskMemberExecute implements IApiExecute {
     private ProjectHelper projectHelper;
     @Autowired
     private LuckyDrawHelper luckyDrawHelper;
+    @Autowired
+    private FinishTheTaskHelper finishTheTaskHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -64,9 +68,14 @@ public class TaskMemberExecute implements IApiExecute {
         }
 
         /*3完成任务，获取奖励*/
-        Integer thisGet = 2;
-        luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.MEMBER, thisGet,
-                "入会", "入会成功，获得" + thisGet + "次游戏机会");
+        Integer thisGet = 1;
+        luckyDrawHelper.sendCard(syscustom, LuckyChanceFromEnum.SIGN, thisGet,
+                "入会成功，获得【有料品鉴官】一博送你的食力拼图*" + thisGet);
+
+        SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(buyerNick);
+        taskDailyBoard.setHaveFinishMember(BooleanConstant.BOOLEAN_YES);
+        finishTheTaskHelper.updateTaskBoard(taskDailyBoard);
+
         return YunReturnValue.ok("完成入会任务！");
     }
 }

@@ -78,7 +78,7 @@ public class FinishTheTaskHelper {
         if (ProjectTools.hasMemCacheEnvironment()) {
             Assert.isTrue(MemcacheTools.add("_updateTaskBoard_" + taskDailyBoard.getBuyerNick()), "点太快了，请休息下");
         }
-
+        taskDailyBoard.setUpdateTime(new Date());
         sysTaskDailyBoardRepository.save(taskDailyBoard);
     }
 
