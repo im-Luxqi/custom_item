@@ -2,9 +2,12 @@ package com.duomai.project.product.general.repository;
 
 import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.product.general.entity.SysTaskInviteLog;
+import com.duomai.project.product.general.enums.InviteTypeEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface SysTaskInviteLogRepository extends BaseRepository<SysTaskInviteLog, String> {
 
@@ -16,6 +19,9 @@ public interface SysTaskInviteLogRepository extends BaseRepository<SysTaskInvite
      * @return
      */
     Page<SysTaskInviteLog> findByMixInviterAndHaveSuccessOrderByCreateTimeDesc(String buyerNick, Integer haveSuccess, Pageable of);
+
+
+    Page<SysTaskInviteLog> findByInviteTypeAndMixInviterAndHaveSuccessOrderByCreateTimeDesc(InviteTypeEnum inviteType, String buyerNick, Integer haveSuccess, Pageable of);
 
     /**
      * test
