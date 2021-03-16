@@ -8,8 +8,6 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.product.general.dto.PageListDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyChance;
-import com.duomai.project.product.general.entity.SysTaskInviteLog;
-import com.duomai.project.product.general.entity.SysTaskShareLog;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @Component
 public class ChipResidueNumberExecute implements IApiExecute {
