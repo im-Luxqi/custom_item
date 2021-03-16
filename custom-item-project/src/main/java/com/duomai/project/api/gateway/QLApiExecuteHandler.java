@@ -8,6 +8,7 @@ import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.product.general.execute.*;
 import com.duomai.project.product.mengniuwawaji.execute.CusGetOrderExecute;
 import com.duomai.project.product.mengniuwawaji.execute.GameIndexLoadExecute;
+import com.duomai.project.product.mengniuwawaji.execute.ShareDetailsListExecute;
 import com.duomai.project.tool.ApplicationUtils;
 import com.duomai.project.tool.ProjectTools;
 import org.springframework.context.ApplicationContext;
@@ -74,7 +75,8 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
 
 
-
+        //任务--邀请明细
+        map.put("wx.dz.game.show.list.invite", ShareDetailsListExecute.class);
 
 
 /*
