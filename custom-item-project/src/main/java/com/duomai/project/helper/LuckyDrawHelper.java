@@ -5,6 +5,7 @@ import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.api.taobao.enums.TaoBaoSendCouponStatus;
 import com.duomai.project.configuration.annotation.JoinMemcache;
+import com.duomai.project.product.general.dto.CardExchangeDto;
 import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -618,4 +620,80 @@ public class LuckyDrawHelper {
     public List<SysSettingAward> findAllAward() {
         return sysSettingAwardRepository.findAll();
     }
+
+    /**
+     * 卡片效验
+     */
+    public void cardComposition(CardExchangeDto cardExchangeDto, String buyerNick){
+        // 所有未使用的卡片
+        List<SysLuckyChance> list = sysLuckyChanceRepository.findByBuyerNickAndIsUse(buyerNick, BooleanConstant.BOOLEAN_NO);
+        if (list.size() < 5){
+            Assert.isTrue(false, "卡片数量不足");
+        }
+
+        if (cardExchangeDto != null && cardExchangeDto.getCardOne() > 0){
+            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_ONE);
+            // 给的卡片数量
+            if (cardNum < cardExchangeDto.getCardOne()){
+                Assert.isTrue(false, AwardUseWayEnum.CARD_ONE.getValue() + "数量不足");
+            }
+        }
+        if (cardExchangeDto != null && cardExchangeDto.getCardTwo() > 0){
+            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_TWO);
+            // 给的卡片数量
+            if (cardNum < cardExchangeDto.getCardTwo()){
+                Assert.isTrue(false, AwardUseWayEnum.CARD_TWO.getValue() + "数量不足");
+            }
+        }
+        if (cardExchangeDto != null && cardExchangeDto.getCardThree() > 0){
+            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_THREE);
+            // 给的卡片数量
+            if (cardNum < cardExchangeDto.getCardThree()){
+                Assert.isTrue(false, AwardUseWayEnum.CARD_THREE.getValue() + "数量不足");
+            }
+        }
+        if (cardExchangeDto != null && cardExchangeDto.getCardFour() > 0){
+            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_FOUR);
+            // 给的卡片数量
+            if (cardNum < cardExchangeDto.getCardFour()){
+                Assert.isTrue(false, AwardUseWayEnum.CARD_FOUR.getValue() + "数量不足");
+            }
+        }
+        if (cardExchangeDto != null && cardExchangeDto.getCardFive() > 0){
+            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_FIVE);
+            // 给的卡片数量
+            if (cardNum < cardExchangeDto.getCardFive()){
+                Assert.isTrue(false, AwardUseWayEnum.CARD_FIVE.getValue() + "数量不足");
+            }
+        }
+        if (cardExchangeDto != null && cardExchangeDto.getCardSix() > 0){
+            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_SIX);
+            // 给的卡片数量
+            if (cardNum < cardExchangeDto.getCardSix()){
+                Assert.isTrue(false, AwardUseWayEnum.CARD_SIX.getValue() + "数量不足");
+            }
+        }
+        if (cardExchangeDto != null && cardExchangeDto.getCardSeven() > 0){
+            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_SEVEN);
+            // 给的卡片数量
+            if (cardNum < cardExchangeDto.getCardSeven()){
+                Assert.isTrue(false, AwardUseWayEnum.CARD_SEVEN.getValue() + "数量不足");
+            }
+        }
+        if (cardExchangeDto != null && cardExchangeDto.getCardEight() > 0){
+            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_EIGHT);
+            // 给的卡片数量
+            if (cardNum < cardExchangeDto.getCardEight()){
+                Assert.isTrue(false, AwardUseWayEnum.CARD_EIGHT.getValue() + "数量不足");
+            }
+        }
+        if (cardExchangeDto != null && cardExchangeDto.getCardNine() > 0){
+            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_NINE);
+            // 给的卡片数量
+            if (cardNum < cardExchangeDto.getCardNine()){
+                Assert.isTrue(false, AwardUseWayEnum.CARD_NINE.getValue() + "数量不足");
+            }
+        }
+    }
+
 }
