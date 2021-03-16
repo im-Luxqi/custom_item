@@ -61,8 +61,10 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.game.task.follow", TaskFollowExecute.class);
         //任务--浏览商品
         map.put("wx.dz.game.task.browse", TaskBrowseExecute.class);
-
-
+        //任务--观看直播
+        map.put("wx.dz.game.task.tv", TaskTvExecute.class);
+        //任务--消费增送
+        map.put("wx.dz.game.task.order", CusGetOrderExecute.class);
 
 /*
         //任务页面load
@@ -71,10 +73,8 @@ public class QLApiExecuteHandler {
 
 
 
-        //任务--观看直播
-        map.put("wx.dz.game.task.tv", TaskTvExecute.class);
-        //任务--消费增送
-        map.put("wx.dz.game.task.order", CusGetOrderExecute.class);
+
+
         //任务--浏览页
         map.put("wx.dz.game.show.list.browse", ShowBrowseListExecute.class);
         //任务--邀请明细

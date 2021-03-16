@@ -88,7 +88,7 @@ public class TaskSignExecute implements IApiExecute {
                 break;
             }
         }
-        luckyDrawHelper.sendCard(syscustom,LuckyChanceFromEnum.SIGN,sendNum,
+        luckyDrawHelper.sendCard(syscustom.getBuyerNick(),LuckyChanceFromEnum.SIGN,sendNum,
                 "今日签到，获得【有料品鉴官】一博送你的食力拼图*" + sendNum);
 
 

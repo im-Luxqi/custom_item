@@ -17,7 +17,7 @@ public enum LuckyChanceFromEnum implements IEnum {
     SHARE_MEMBER("SHARE_MEMBER", "邀请加入会员"),
     BROWSE("BROWSE", "浏览"),
     TV("TV", "观看直播"),
-    SPEND("SPEND", "消费"),
+    ORDER("ORDER", "下单"),
     ;
     private final String code;
     private final String descp;

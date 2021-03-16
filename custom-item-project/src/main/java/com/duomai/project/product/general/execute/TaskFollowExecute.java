@@ -74,7 +74,7 @@ public class TaskFollowExecute implements IApiExecute {
 
         /*3完成任务，获取奖励*/
         Integer thisGet = 1;
-        luckyDrawHelper.sendCard(syscustom, LuckyChanceFromEnum.FOLLOW, thisGet,
+        luckyDrawHelper.sendCard(syscustom.getBuyerNick(), LuckyChanceFromEnum.FOLLOW, thisGet,
                 "关注成功，获得【有料品鉴官】一博送你的食力拼图*" + thisGet);
 
         SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(buyerNick);

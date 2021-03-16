@@ -59,6 +59,24 @@ public class LuckyDrawHelper {
     private SysExchangeLogRepository sysExchangeLogRepository;
 
 
+//    @Transactional
+//    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, Integer number, String messageTitle, String messageContent) {
+//        return sendLuckyChance(buyerNick, chanceFrom, null, number, null, messageTitle, messageContent);
+//    }
+//
+//
+//    @Transactional
+//    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, AwardUseWayEnum cardType, Integer number, String messageTitle, String messageContent,String tid) {
+//        return sendLuckyChance(buyerNick, chanceFrom, cardType, number, null, messageTitle, messageContent);
+//    }
+
+
+    @Transactional
+    public List<SysLuckyChance> sendLuckyChance(List<SysLuckyChance> sysLuckyChances) {
+        return sysLuckyChanceRepository.saveAll(sysLuckyChances);
+    }
+
+
     /**
      * 1.发放游戏机会
      *
@@ -93,23 +111,6 @@ public class LuckyDrawHelper {
             return sysLuckyChance;
         }).collect(Collectors.toList());
         return sysLuckyChanceRepository.saveAll(collect);
-    }
-
-    @Transactional
-    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, Integer number, String messageTitle, String messageContent) {
-        return sendLuckyChance(buyerNick, chanceFrom, null, number, null, messageTitle, messageContent);
-    }
-
-
-    @Transactional
-    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, AwardUseWayEnum cardType, Integer number, String messageTitle, String messageContent) {
-        return sendLuckyChance(buyerNick, chanceFrom, cardType, number, null, messageTitle, messageContent);
-    }
-
-
-    @Transactional
-    public List<SysLuckyChance> sendLuckyChance(List<SysLuckyChance> sysLuckyChances) {
-        return sysLuckyChanceRepository.saveAll(sysLuckyChances);
     }
 
 
@@ -568,7 +569,7 @@ public class LuckyDrawHelper {
             case TV:
                 cardType = AwardUseWayEnum.CARD_EIGHT;
                 break;
-            case SPEND:
+            case ORDER:
                 cardType = AwardUseWayEnum.CARD_NINE;
                 break;
             default:
@@ -589,24 +590,19 @@ public class LuckyDrawHelper {
      * @param sysCustom
      **/
 
-    public void sendCard(SysCustom custom, LuckyChanceFromEnum taskType, int sendNum, String message) {
+    public void sendCard(String buyerNick, LuckyChanceFromEnum taskType, int sendNum, String message, String tid) {
         if (sendNum <= 0) {
             return;
         }
         AwardUseWayEnum cardType = taskType2CardType(taskType);
         /*本次抽奖中的奖品*/
         SysSettingAward award = sysSettingAwardRepository.findFirstByUseWay(cardType);
-        sendLuckyChance(custom.getBuyerNick(), taskType, cardType, sendNum,
+        sendLuckyChance(buyerNick, taskType, cardType, sendNum, tid,
                 award.getImg(), message);
     }
 
-
-    @Transactional
-    public void drawCard(SysSettingAward award, int sendNum) {
-
-//        if(award)
-
-
+    public void sendCard(String buyerNick, LuckyChanceFromEnum taskType, int sendNum, String message) {
+        sendCard(buyerNick, taskType, sendNum, message, null);
     }
 
 }

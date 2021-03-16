@@ -4,9 +4,11 @@ import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
+import com.duomai.project.helper.FinishTheTaskHelper;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysTaskDailyBoard;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ public class TaskTvExecute implements IApiExecute {
     private LuckyDrawHelper luckyDrawHelper;
     @Autowired
     private ProjectHelper projectHelper;
+    @Autowired
+    private FinishTheTaskHelper finishTheTaskHelper;
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -47,8 +51,12 @@ public class TaskTvExecute implements IApiExecute {
 
         long tvCount = luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.TV);
         if (tvCount == 0) {
-            luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.TV, 2,
-                    "直播", "今日观看直播，获得" + 2 + "次游戏机会");
+            Integer thisGet = 1;
+            luckyDrawHelper.sendCard(syscustom.getBuyerNick(), LuckyChanceFromEnum.TV, thisGet,
+                    "今日观看直播，获得【有料品鉴官】一博送你的食力拼图*" + thisGet);
+            SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(buyerNick);
+            taskDailyBoard.setHaveFinishTvToday(BooleanConstant.BOOLEAN_YES);
+            finishTheTaskHelper.updateTaskBoard(taskDailyBoard);
         }
         return YunReturnValue.ok("直播");
     }

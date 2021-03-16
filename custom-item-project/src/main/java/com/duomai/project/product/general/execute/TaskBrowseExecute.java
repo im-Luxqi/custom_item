@@ -99,7 +99,7 @@ public class TaskBrowseExecute implements IApiExecute {
         Integer taskBrowseShouldSee = actBaseSettingDto.getTaskBrowseShouldSee();
         if (l == 0 && taskBrowseShouldSee.equals(todayHasBrowseLogs.size())) {
             Integer thisGet = 1;
-            luckyDrawHelper.sendCard(syscustom, LuckyChanceFromEnum.BROWSE, thisGet,
+            luckyDrawHelper.sendCard(syscustom.getBuyerNick(), LuckyChanceFromEnum.BROWSE, thisGet,
                     "每日浏览，获得【有料品鉴官】一博送你的食力拼图*" + thisGet);
         }
         if (todayHasBrowseLogs.size() <= taskBrowseShouldSee) {
