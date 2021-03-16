@@ -6,7 +6,7 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.common.enums.SysErrorEnum;
 import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.product.general.execute.*;
-import com.duomai.project.product.mengniuwawaji.execute.*;
+import com.duomai.project.product.mengniuwawaji.execute.CusGetOrderExecute;
 import com.duomai.project.tool.ApplicationUtils;
 import com.duomai.project.tool.ProjectTools;
 import org.springframework.context.ApplicationContext;
@@ -47,7 +47,6 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.common.playerInfo.fill.afterAuthorization", PlayerInfoFillForAfterAuthorizationExecute.class);
 
 
-
         /**
          * 任务
          */
@@ -66,15 +65,12 @@ public class QLApiExecuteHandler {
         //任务--消费增送
         map.put("wx.dz.game.task.order", CusGetOrderExecute.class);
 
+
+
+
 /*
         //任务页面load
 //        map.put("wx.dz.game.task.load", TaskDashboardExecute.class);
-
-
-
-
-
-
         //任务--浏览页
         map.put("wx.dz.game.show.list.browse", ShowBrowseListExecute.class);
         //任务--邀请明细
@@ -87,14 +83,8 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.common.luckyBag.win.address", LuckyBagFillAwardAddressExecute.class);
 
 
-
-
-
-
-
         //游戏首页 加载
         map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
-
         //点击抓娃娃
         map.put("wx.dz.game.lucky.draw", GameIndexLuckyDrawExecute.class);
         //我的战利品-查看明细

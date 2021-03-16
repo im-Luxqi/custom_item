@@ -17,7 +17,6 @@ import com.taobao.api.response.OpenTradesSoldGetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -35,16 +34,13 @@ import java.util.List;
 @Component
 public class CusGetOrderExecute implements IApiExecute {
 
-
     @Autowired
     private LuckyDrawHelper luckyDrawHelper;
-    @Resource
+    @Autowired
     private ICusOrderInfoService cusOrderInfoService;
-
-    @Resource
+    @Autowired
     private ProjectHelper projectHelper;
-
-    @Resource
+    @Autowired
     private ITaobaoAPIService taobaoAPIService;
     @Autowired
     private FinishTheTaskHelper finishTheTaskHelper;
@@ -61,6 +57,7 @@ public class CusGetOrderExecute implements IApiExecute {
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         ActBaseSettingDto config = projectHelper.actBaseSettingFind();
 
+
         List<OpenTradesSoldGetResponse.Trade> goods = taobaoAPIService.taobaoOpenTradesSoldGet(openUId, TaoBaoTradeStatus.WAIT_SELLER_SEND_GOODS, config.getActStartTime(), config.getActEndTime());
         if (goods == null || goods.size() == 0) {
             return YunReturnValue.fail("未获取到订单");
@@ -73,7 +70,6 @@ public class CusGetOrderExecute implements IApiExecute {
 
         /*符合条件的最新订单，同步最新订单*/
         StringBuilder tid = new StringBuilder();
-        int sendTime = 0;
         List<OpenTradesSoldGetResponse.Trade> newestTrades = new ArrayList<>();
         for (OpenTradesSoldGetResponse.Trade trade : goods) {
             if (!("WAIT_SELLER_SEND_GOODS".equals(trade.getStatus()) || "SELLER_CONSIGNED_PART".equals(trade.getStatus())
@@ -83,21 +79,6 @@ public class CusGetOrderExecute implements IApiExecute {
             }
 
             if (!hasUpdateTradeIds.toString().contains(trade.getTid())) {
-
-//                double cunzhenMoney = 0;
-//                List<OpenTradesSoldGetResponse.Order> orders = trade.getOrders();
-//                if (!CollectionUtils.isEmpty(orders)) {
-//                    for (OpenTradesSoldGetResponse.Order order : orders) {
-//                        if (order.getTitle().contains("纯甄")) {
-//                            cunzhenMoney += Double.parseDouble(order.getPayment());
-//                        }
-//                    }
-//                }
-//                Double taskOrderShouldSpend = 12.00;
-//                if (cunzhenMoney >= Double.valueOf(taskOrderShouldSpend)) {
-//                    tid.append(trade.getTid() + ",");
-//                    sendTime += 3;
-//                }
                 tid.append(trade.getTid() + ",");
                 newestTrades.add(trade);
             }
@@ -128,7 +109,7 @@ public class CusGetOrderExecute implements IApiExecute {
 
         if (shouldNewSend > 0) {
             luckyDrawHelper.sendCard(buyerNick, LuckyChanceFromEnum.ORDER, shouldNewSend,
-                    "消费任务，获得【有料品鉴官】一博送你的食力拼图*" + shouldNewSend,tid.toString());
+                    "消费任务，获得【有料品鉴官】一博送你的食力拼图*" + shouldNewSend, tid.toString());
             SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(buyerNick);
             taskDailyBoard.setSpendProgress("(" + todayHasJoin + "/" + taskOrderFront + ")");
             finishTheTaskHelper.updateTaskBoard(taskDailyBoard);
