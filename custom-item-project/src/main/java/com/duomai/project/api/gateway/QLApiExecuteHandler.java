@@ -6,9 +6,7 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.common.enums.SysErrorEnum;
 import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.product.general.execute.*;
-import com.duomai.project.product.mengniuwawaji.execute.CusGetOrderExecute;
-import com.duomai.project.product.mengniuwawaji.execute.GameIndexLoadExecute;
-import com.duomai.project.product.mengniuwawaji.execute.ShareDetailsListExecute;
+import com.duomai.project.product.mengniuwawaji.execute.*;
 import com.duomai.project.tool.ApplicationUtils;
 import com.duomai.project.tool.ProjectTools;
 import org.springframework.context.ApplicationContext;
@@ -82,6 +80,8 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.common.luckyBag.win", LuckyBagAllWinExecute.class);
         //留资料 wxq
         map.put("wx.dz.common.luckyBag.win.address", LuckyBagFillAwardAddressExecute.class);
+        //碎片明细
+        map.put("wx.dz.game.show.list.chip", ChipResidueNumberExecute.class);
 
 /*
         //任务页面load

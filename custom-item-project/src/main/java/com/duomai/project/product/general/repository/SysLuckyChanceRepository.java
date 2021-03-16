@@ -3,6 +3,8 @@ package com.duomai.project.product.general.repository;
 import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -82,4 +84,13 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
      * @time 2021-03-16 14:22:23
      */
     List<SysLuckyChance> findByBuyerNickAndIsUse(String buyerNick, Integer booleanNo);
+
+    /**
+     *  查询卡片使用情况根据使用时间倒序
+     * @param buyerNick
+     * @param isUser
+     * @return
+     */
+    Page<SysLuckyChance> findByBuyerNickAndIsUseOrderByUseTimeDesc(String buyerNick, Integer isUser, Pageable of);
+
 }
