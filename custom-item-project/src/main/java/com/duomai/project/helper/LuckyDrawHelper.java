@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.api.taobao.enums.TaoBaoSendCouponStatus;
+import com.duomai.project.configuration.annotation.JoinMemcache;
 import com.duomai.project.product.general.entity.*;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
@@ -122,8 +123,8 @@ public class LuckyDrawHelper {
      * @create by 王星齐
      * @time 2020-08-28 19:31:12
      */
-    public long unUseLuckyChance(String buyerNick) {
-        return sysLuckyChanceRepository.countByBuyerNickAndIsUse(buyerNick, BooleanConstant.BOOLEAN_NO);
+    public List<SysLuckyChance> unUseLuckyChance(String buyerNick) {
+        return sysLuckyChanceRepository.findByBuyerNickAndIsUse(buyerNick, BooleanConstant.BOOLEAN_NO);
     }
 
     /**
@@ -605,4 +606,16 @@ public class LuckyDrawHelper {
         sendCard(buyerNick, taskType, sendNum, message, null);
     }
 
+    /**
+     * 所有奖品
+     *
+     * @param
+     * @description
+     * @create by 王星齐
+     * @time 2021-03-16 14:13:48
+     */
+    @JoinMemcache
+    public List<SysSettingAward> findAllAward() {
+        return sysSettingAwardRepository.findAll();
+    }
 }

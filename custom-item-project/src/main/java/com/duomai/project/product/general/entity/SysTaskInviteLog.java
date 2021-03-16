@@ -1,5 +1,6 @@
 package com.duomai.project.product.general.entity;
 
+import com.duomai.project.product.general.enums.InviteTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
@@ -46,6 +47,8 @@ public class SysTaskInviteLog {
     @Column(columnDefinition = "varchar(255) COMMENT '被邀请人头像'")
     private String inviteeImg;
 
+    @Column(columnDefinition = "varchar(30) COMMENT '邀请类型'")
+    private InviteTypeEnum inviteType;
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否邀请成功 0:否1:是'")
     private Integer haveSuccess;
 }

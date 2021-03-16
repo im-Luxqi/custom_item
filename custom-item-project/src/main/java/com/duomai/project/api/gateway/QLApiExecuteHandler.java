@@ -7,6 +7,7 @@ import com.duomai.common.enums.SysErrorEnum;
 import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.product.general.execute.*;
 import com.duomai.project.product.mengniuwawaji.execute.CusGetOrderExecute;
+import com.duomai.project.product.mengniuwawaji.execute.GameIndexLoadExecute;
 import com.duomai.project.tool.ApplicationUtils;
 import com.duomai.project.tool.ProjectTools;
 import org.springframework.context.ApplicationContext;
@@ -66,6 +67,14 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.game.task.order", CusGetOrderExecute.class);
 
 
+        /**
+         * load
+         */
+        //游戏首页 加载
+        map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
+
+
+
 
 
 /*
@@ -83,8 +92,7 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.common.luckyBag.win.address", LuckyBagFillAwardAddressExecute.class);
 
 
-        //游戏首页 加载
-        map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
+
         //点击抓娃娃
         map.put("wx.dz.game.lucky.draw", GameIndexLuckyDrawExecute.class);
         //我的战利品-查看明细

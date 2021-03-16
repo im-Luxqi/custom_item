@@ -12,10 +12,7 @@ import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.*;
-import com.duomai.project.product.general.enums.AwardTypeEnum;
-import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
-import com.duomai.project.product.general.enums.MemberWayFromEnum;
-import com.duomai.project.product.general.enums.PvPageEnum;
+import com.duomai.project.product.general.enums.*;
 import com.duomai.project.product.general.repository.*;
 import com.duomai.project.tool.CommonDateParseUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +22,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +69,7 @@ public class GameIndexLoadExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
-        resultMap.put("alter_for_shared_flag", false);
+//        resultMap.put("alter_for_shared_flag", false);
         resultMap.put("alter_for_invitee_flag", false);
 
 
@@ -205,8 +203,9 @@ public class GameIndexLoadExecute implements IApiExecute {
             //首次登录游戏免费送一次
             long l = luckyDrawHelper.countLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.FREE);
             if (l == 0) {
-//                luckyDrawHelper.sendLuckyChance(buyerNick, LuckyChanceFromEnum.FREE, 1,
-//                        "首次登录", "首次登录，获得" + 1 + "次游戏机会");
+                int getNum = 1;
+                luckyDrawHelper.sendCard(buyerNick, LuckyChanceFromEnum.FREE, getNum,
+                        "首次登录，获得【有料品鉴官】一博送你的食力拼图*" + getNum);
             }
         }
 
@@ -216,28 +215,42 @@ public class GameIndexLoadExecute implements IApiExecute {
         actBaseSettingDto.setDrawCouponNum(null);
         actBaseSettingDto.setTaskBrowseShouldSee(null);
         resultMap.put("game_rule", actBaseSettingDto);
-        //2.抓娃娃机会次数
-        resultMap.put("lucky_chance_num", luckyDrawHelper.unUseLuckyChance(buyerNick));
-        List<SysLuckyDrawRecord> unUseBattles = sysLuckyDrawRecordRepository.findByPlayerBuyerNickAndAwardTypeAndIsWinAndHaveExchange(buyerNick, AwardTypeEnum.EXCHANGE,
-                BooleanConstant.BOOLEAN_YES, BooleanConstant.BOOLEAN_NO);
-        Map<String, List<SysLuckyDrawRecord>> collect = unUseBattles.stream().collect(Collectors.groupingBy(SysLuckyDrawRecord::getAwardId));
-        List<SysSettingAward> all = sysSettingAwardRepository.findByType(AwardTypeEnum.EXCHANGE);
-        for (SysSettingAward award : all) {
-            award.setHaveGetNum(0);
-            List<SysLuckyDrawRecord> sysLuckyDrawRecords = collect.get(award.getId());
-            if (!CollectionUtils.isEmpty(sysLuckyDrawRecords)) {
-                award.setHaveGetNum(sysLuckyDrawRecords.size());
+
+        //获得奖品并分类
+        List<SysSettingAward> all = luckyDrawHelper.findAllAward();
+        List<SysSettingAward> exchangeAward = new ArrayList<>();
+        List<SysSettingAward> otherAward = new ArrayList<>();
+        all.forEach(sysSettingAward -> {
+            if (AwardTypeEnum.EXCHANGE.equals(sysSettingAward.getType())) {
+                exchangeAward.add(sysSettingAward);
+            } else {
+                otherAward.add(sysSettingAward);
             }
-            award.setEname(null);
-            award.setLuckyValue(null);
-            award.setDescription(null);
-            award.setPoolLevel(null);
-            award.setRemainNum(null);
-            award.setSendNum(null);
-            award.setTotalNum(null);
-            award.setType(null);
-            award.setUseWay(null);
-        }
+        });
+
+        //获得未使用的所有卡牌
+        List<SysLuckyChance> sysLuckyChances = luckyDrawHelper.unUseLuckyChance(buyerNick);
+        Map<AwardUseWayEnum, List<SysLuckyChance>> allCards = sysLuckyChances.stream().collect(Collectors.groupingBy(SysLuckyChance::getCardType));
+
+
+
+
+//        for (SysSettingAward award : all) {
+//            award.setHaveGetNum(0);
+//            List<SysLuckyDrawRecord> sysLuckyDrawRecords = allCards.get(award.getId());
+//            if (!CollectionUtils.isEmpty(sysLuckyDrawRecords)) {
+//                award.setHaveGetNum(sysLuckyDrawRecords.size());
+//            }
+//            award.setEname(null);
+//            award.setLuckyValue(null);
+//            award.setDescription(null);
+//            award.setPoolLevel(null);
+//            award.setRemainNum(null);
+//            award.setSendNum(null);
+//            award.setTotalNum(null);
+//            award.setType(null);
+//            award.setUseWay(null);
+//        }
 
 
         //3.我的战利品

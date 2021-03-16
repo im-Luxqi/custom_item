@@ -71,4 +71,15 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
     void deleteByBuyerNick(String buyerNick);
 
     long countByBuyerNickAndIsUseAndUseTimeBetween(String buyerNick, Integer isUse, Date start, Date end);
+
+    /**
+     * 查询所有未使用的卡牌
+     *
+     * @param buyerNick
+     * @param booleanNo
+     * @description
+     * @create by 王星齐
+     * @time 2021-03-16 14:22:23
+     */
+    List<SysLuckyChance> findByBuyerNickAndIsUse(String buyerNick, Integer booleanNo);
 }
