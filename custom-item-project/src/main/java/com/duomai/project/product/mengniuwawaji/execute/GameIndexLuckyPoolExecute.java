@@ -82,12 +82,12 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
 
         for (SysSettingAward award : all) {
 
-            award.setAwardIsNull(Boolean.FALSE);
-            award.setCanNotExchange(Boolean.FALSE);
-            award.setTodayCanNotExchange(Boolean.FALSE);
-            award.setHaveNotGetCondition(Boolean.FALSE);
+//            award.setAwardIsNull(Boolean.FALSE);
+//            award.setCanNotExchange(Boolean.FALSE);
+//            award.setTodayCanNotExchange(Boolean.FALSE);
+//            award.setHaveNotGetCondition(Boolean.FALSE);
             if (award.getRemainNum() < 1) {
-                award.setAwardIsNull(true);
+//                award.setAwardIsNull(true);
                 continue;
             }
 
@@ -103,7 +103,7 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
                         Integer drawCouponNum = actBaseSettingDto.getDrawCouponNum();
 //                        Assert.isTrue(award2001.size() < drawCouponNum, "优惠券最多兑换" + drawCouponNum + "次");
                         if (award2001.size() >= drawCouponNum) {
-                            award.setCanNotExchange(true);
+//                            award.setCanNotExchange(true);
                             continue;
                         }
 
@@ -117,7 +117,7 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
                         }
 //                        Assert.isTrue(!todayHasWinCoupon, "优惠券一天只能换一次");
                         if (todayHasWinCoupon) {
-                            award.setTodayCanNotExchange(true);
+//                            award.setTodayCanNotExchange(true);
                             continue;
                         }
                     }
@@ -131,7 +131,7 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
                 });
 //                Assert.isTrue(commonBattles.size() >= 3, "至少需要3个奶瓶才能兑换");
                 if (commonBattles.size() < 3) {
-                    award.setHaveNotGetCondition(true);
+//                    award.setHaveNotGetCondition(true);
                     continue;
                 }
             }
@@ -149,7 +149,7 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
                     }
 //                    Assert.isTrue(canPlayFlag, "每ID限制实物中奖1次");
                     if (!canPlayFlag) {
-                        award.setCanNotExchange(true);
+//                        award.setCanNotExchange(true);
                         continue;
                     }
                 }
@@ -167,7 +167,7 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
                         || CollectionUtils.isEmpty(unUseBattlesCollect.get("1003"))
                         || CollectionUtils.isEmpty(unUseBattlesCollect.get("1004"))
                 ) {
-                    award.setHaveNotGetCondition(true);
+//                    award.setHaveNotGetCondition(true);
                     continue;
                 }
 
@@ -186,7 +186,7 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
                     }
 //                    Assert.isTrue(canPlayFlag, "每ID限制实物中奖1次");
                     if (!canPlayFlag) {
-                        award.setCanNotExchange(true);
+//                        award.setCanNotExchange(true);
                         continue;
                     }
                 }
@@ -205,7 +205,7 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
                         || CollectionUtils.isEmpty(unUseBattlesCollect.get("1004"))
                         || CollectionUtils.isEmpty(unUseBattlesCollect.get("1005"))
                 ) {
-                    award.setHaveNotGetCondition(true);
+//                    award.setHaveNotGetCondition(true);
                     continue;
                 }
             }
@@ -222,7 +222,7 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
                     }
 //                    Assert.isTrue(canPlayFlag, "每ID限制实物中奖1次");
                     if (!canPlayFlag) {
-                        award.setCanNotExchange(true);
+//                        award.setCanNotExchange(true);
                         continue;
                     }
                 }
@@ -243,7 +243,7 @@ public class GameIndexLuckyPoolExecute implements IApiExecute {
                         || CollectionUtils.isEmpty(unUseBattlesCollect.get("1005"))
                         || CollectionUtils.isEmpty(unUseBattlesCollect.get("1006"))
                 ) {
-                    award.setHaveNotGetCondition(true);
+//                    award.setHaveNotGetCondition(true);
                     continue;
                 }
             }

@@ -46,7 +46,7 @@ public class SysTaskInviteLog {
 
     @Column(columnDefinition = "varchar(255) COMMENT '被邀请人头像'")
     private String inviteeImg;
-
+    @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(30) COMMENT '邀请类型'")
     private InviteTypeEnum inviteType;
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否邀请成功 0:否1:是'")

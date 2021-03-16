@@ -2,7 +2,6 @@ package com.duomai.project.product.mengniuwawaji.execute;
 
 import cn.hutool.core.lang.Assert;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
@@ -18,14 +17,12 @@ import com.duomai.project.tool.CommonDateParseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -89,8 +86,8 @@ public class GameIndexLoadExecute implements IApiExecute {
 
 
         boolean actLive = projectHelper.actTimeValidateFlag();
-        if (actLive) {
-            /*2.被邀请助力或者被邀请入会*/
+       /* if (actLive) {
+            *//*2.被邀请助力或者被邀请入会*//*
             JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
             Boolean joinMemberBack = jsonObjectAdmjson.getBoolean("joinMemberBack");
             String sharer = jsonObjectAdmjson.getString("sharer");
@@ -207,7 +204,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                 luckyDrawHelper.sendCard(buyerNick, LuckyChanceFromEnum.FREE, getNum,
                         "首次登录，获得【有料品鉴官】一博送你的食力拼图*" + getNum);
             }
-        }
+        }*/
 
 
         //1.活动规则
@@ -218,6 +215,17 @@ public class GameIndexLoadExecute implements IApiExecute {
 
         //获得奖品并分类
         List<SysSettingAward> all = luckyDrawHelper.findAllAward();
+        for (SysSettingAward award : all) {
+            award.setId(null);
+            award.setEname(null);
+            award.setLuckyValue(null);
+            award.setDescription(null);
+            award.setPoolLevel(null);
+            award.setRemainNum(null);
+            award.setSendNum(null);
+            award.setTotalNum(null);
+            award.setHaveGetNum(null);
+        }
         List<SysSettingAward> exchangeAward = new ArrayList<>();
         List<SysSettingAward> otherAward = new ArrayList<>();
         all.forEach(sysSettingAward -> {
@@ -227,37 +235,22 @@ public class GameIndexLoadExecute implements IApiExecute {
                 otherAward.add(sysSettingAward);
             }
         });
-
+        resultMap.put("award_show", otherAward);
         //获得未使用的所有卡牌
         List<SysLuckyChance> sysLuckyChances = luckyDrawHelper.unUseLuckyChance(buyerNick);
         Map<AwardUseWayEnum, List<SysLuckyChance>> allCards = sysLuckyChances.stream().collect(Collectors.groupingBy(SysLuckyChance::getCardType));
-
-
-
-
-//        for (SysSettingAward award : all) {
-//            award.setHaveGetNum(0);
-//            List<SysLuckyDrawRecord> sysLuckyDrawRecords = allCards.get(award.getId());
-//            if (!CollectionUtils.isEmpty(sysLuckyDrawRecords)) {
-//                award.setHaveGetNum(sysLuckyDrawRecords.size());
-//            }
-//            award.setEname(null);
-//            award.setLuckyValue(null);
-//            award.setDescription(null);
-//            award.setPoolLevel(null);
-//            award.setRemainNum(null);
-//            award.setSendNum(null);
-//            award.setTotalNum(null);
-//            award.setType(null);
-//            award.setUseWay(null);
-//        }
-
-
-        //3.我的战利品
-        resultMap.put("lucky_win_bottle", all);
-        //4.兑换弹幕
-        resultMap.put("lucky_exchange_barrage", sysLuckyDrawRecordRepository.queryExchangeLog());
-
+        for (SysSettingAward award : exchangeAward) {
+            award.setHaveGetNum(0);
+            List<SysLuckyChance> cards = allCards.get(award.getUseWay());
+            if (!CollectionUtils.isEmpty(cards)) {
+                award.setHaveGetNum(cards.size());
+            }
+        }
+        LinkedHashMap<AwardUseWayEnum, SysSettingAward> unUseCard = new LinkedHashMap<>();
+        exchangeAward.stream().sorted(Comparator.comparing(SysSettingAward::getUseWay)).forEach(x -> {
+            unUseCard.put(x.getUseWay(), x);
+        });
+        resultMap.put("card_show", unUseCard);
 
         return YunReturnValue.ok(resultMap, "游戏首页");
     }
