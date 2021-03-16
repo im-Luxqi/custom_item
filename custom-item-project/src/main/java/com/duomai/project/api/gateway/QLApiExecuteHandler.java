@@ -74,10 +74,14 @@ public class QLApiExecuteHandler {
         //游戏首页 加载
         map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
 
-
         //任务--邀请明细
         map.put("wx.dz.game.show.list.invite", ShareDetailsListExecute.class);
-
+        //任务--分享明细
+        map.put("wx.dz.game.show.list.share", ShowShareListExecute.class);
+        //我的奖品 wxq
+        map.put("wx.dz.common.luckyBag.win", LuckyBagAllWinExecute.class);
+        //留资料 wxq
+        map.put("wx.dz.common.luckyBag.win.address", LuckyBagFillAwardAddressExecute.class);
 
 /*
         //任务页面load
