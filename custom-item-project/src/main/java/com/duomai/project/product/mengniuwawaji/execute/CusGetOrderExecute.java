@@ -1,6 +1,7 @@
 package com.duomai.project.product.mengniuwawaji.execute;
 
 import com.duomai.common.base.execute.IApiExecute;
+import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
@@ -112,6 +113,9 @@ public class CusGetOrderExecute implements IApiExecute {
                     "消费任务，获得【有料品鉴官】一博送你的食力拼图*" + shouldNewSend, tid.toString());
             SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(buyerNick);
             taskDailyBoard.setSpendProgress("(" + todayHasJoin + "/" + taskOrderFront + ")");
+            if (todayHasJoin == taskOrderFront) {
+                taskDailyBoard.setHaveFinishSpendToday(BooleanConstant.BOOLEAN_YES);
+            }
             finishTheTaskHelper.updateTaskBoard(taskDailyBoard);
         }
         return YunReturnValue.ok("获取当前用户订单!");

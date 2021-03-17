@@ -68,14 +68,13 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.game.task.invite", TaskInviteExecute.class);
 
 
-
         /**
          * load
          */
         //游戏首页 加载
         map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
         //任务面板load
-        map.put("wx.dz.game.show.list.taskLoad", taskLoadExecute.class);
+        map.put("wx.dz.game.task.load", TaskDashboardExecute.class);
         //游戏首页 加载
         map.put("wx.dz.game.draw.load", GameDrawLoadExecute.class);
 

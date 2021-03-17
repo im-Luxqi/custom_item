@@ -88,13 +88,14 @@ public class TaskSignExecute implements IApiExecute {
                 break;
             }
         }
-        luckyDrawHelper.sendCard(syscustom.getBuyerNick(),LuckyChanceFromEnum.SIGN,sendNum,
+        luckyDrawHelper.sendCard(syscustom.getBuyerNick(), LuckyChanceFromEnum.SIGN, sendNum,
                 "今日签到，获得【有料品鉴官】一博送你的食力拼图*" + sendNum);
 
 
         SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(buyerNick);
         taskDailyBoard.setSignContinuousNum(todaySignLog.getContinuousNum());
         taskDailyBoard.setSignTotalNum(todaySignLog.getTotalNum());
+        taskDailyBoard.setHaveFinishSignToday(BooleanConstant.BOOLEAN_YES);
         finishTheTaskHelper.updateTaskBoard(taskDailyBoard);
 
 

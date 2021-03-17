@@ -34,6 +34,10 @@ public class SysTaskDailyBoard {
     private Integer signTotalNum;
     @Column(columnDefinition = "int(11) COMMENT '连续签到天数'")
     private Integer signContinuousNum;
+
+    @Column(columnDefinition = "int(1) COMMENT '今日是否签到过'")
+    private Integer haveFinishSignToday;
+
     @Column(columnDefinition = "int(1) COMMENT '是否关注店铺'")
     private Integer haveFinishFollow;
     @Column(columnDefinition = "int(1) COMMENT '是否入会'")
@@ -58,4 +62,9 @@ public class SysTaskDailyBoard {
 
     @Column(columnDefinition = "varchar(64) COMMENT '每日消费进度'")
     private String spendProgress;
+
+    @Column(columnDefinition = "int(1) COMMENT '今日是否完成消费任务'")
+    private Integer haveFinishSpendToday;
+
+
 }

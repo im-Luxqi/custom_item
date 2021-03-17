@@ -17,7 +17,7 @@ public class ApiSysParameter {
     /**
      * JsonRpc的版本号
      */
-    @NotBlank(message = "JsonRpc的版本号不能为空")
+//    @NotBlank(message = "JsonRpc的版本号不能为空")
     private String jsonrpc;
 
     /**

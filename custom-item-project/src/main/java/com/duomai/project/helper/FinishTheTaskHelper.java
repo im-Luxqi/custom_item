@@ -1,5 +1,6 @@
 package com.duomai.project.helper;
 
+import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.product.general.entity.SysTaskDailyBoard;
 import com.duomai.project.product.general.repository.SysTaskDailyBoardRepository;
@@ -56,8 +57,10 @@ public class FinishTheTaskHelper {
                 .setHaveFinishFollow(haveFinishFollow)
                 .setHaveFinishMember(haveFinishMember)
                 .setInviteFollowProgress(inviteFollowProgress)
-                .setHaveFinishBrowseToday(0)
-                .setHaveFinishTvToday(0)
+                .setHaveFinishBrowseToday(BooleanConstant.BOOLEAN_NO)
+                .setHaveFinishSignToday(BooleanConstant.BOOLEAN_NO)
+                .setHaveFinishTvToday(BooleanConstant.BOOLEAN_NO)
+                .setHaveFinishSpendToday(BooleanConstant.BOOLEAN_NO)
                 .setTodayFinishShareNum("(0/2)")
                 .setShareProgress("(0/5)")
                 .setBrowseProgress("(0/3)")

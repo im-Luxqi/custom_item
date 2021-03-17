@@ -167,8 +167,6 @@ public class TaskInviteExecute implements IApiExecute {
                 long inviteFollowNum = sysTaskInviteLogRepository.countByInviteTypeAndMixInviterAndHaveSuccess(InviteTypeEnum.INVITE_FOLLOW, inviter, BooleanConstant.BOOLEAN_YES);
 
 
-
-
                 Integer taskShouldInviteFollow = 3;
                 if (inviteFollowNum % taskShouldInviteFollow == 0) {
                     Integer thisGet = 1;
@@ -181,7 +179,11 @@ public class TaskInviteExecute implements IApiExecute {
                 invite_flag = true;
                 invite_flag_img = invite_success_img;
                 invite_flag_msg = "";
+                syscustom.setFollowWayFrom(FollowWayFromEnum.INVITEE_JOIN_FOLLOW);
+                sysCustomRepository.save(syscustom);
                 break;
+
+
             case INVITE_MEMBER:
                 //校验邀请入会情况
                 long l3 = sysTaskInviteLogRepository.countByInviteTypeAndMixInviteeAndHaveSuccessAndMixInviter(
@@ -226,6 +228,8 @@ public class TaskInviteExecute implements IApiExecute {
                 invite_flag = true;
                 invite_flag_img = invite_success_img;
                 invite_flag_msg = "";
+                syscustom.setMemberWayFrom(MemberWayFromEnum.INVITEE_JOIN_MEMBER);
+                sysCustomRepository.save(syscustom);
                 break;
         }
 
@@ -234,6 +238,6 @@ public class TaskInviteExecute implements IApiExecute {
         result.put("invite_type", invite_type);
         result.put("invite_flag_img", invite_flag_img);
         result.put("invite_flag_msg", invite_flag_msg);
-        return YunReturnValue.ok(result,"助力任务");
+        return YunReturnValue.ok(result, "助力任务");
     }
 }
