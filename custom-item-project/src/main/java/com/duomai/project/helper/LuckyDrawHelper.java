@@ -6,12 +6,16 @@ import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.api.taobao.enums.TaoBaoSendCouponStatus;
 import com.duomai.project.configuration.annotation.JoinMemcache;
 import com.duomai.project.product.general.dto.CardExchangeDto;
-import com.duomai.project.product.general.entity.*;
+import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysLuckyChance;
+import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
+import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
-import com.duomai.project.product.general.repository.*;
-import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
+import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
+import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import com.taobao.api.response.AlibabaBenefitSendResponse;
 import com.taobao.api.response.CrmPointChangeResponse;
@@ -49,25 +53,6 @@ public class LuckyDrawHelper {
     private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
     @Autowired
     private SysSettingAwardRepository sysSettingAwardRepository;
-    @Autowired
-    private SysTaskMemberOrFollowRepository sysTaskMemberOrFollowRepository;
-    @Autowired
-    private ICusOrderInfoService cusOrderInfoService;
-    @Autowired
-    private SysExchangeLogRepository sysExchangeLogRepository;
-
-
-//    @Transactional
-//    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, Integer number, String messageTitle, String messageContent) {
-//        return sendLuckyChance(buyerNick, chanceFrom, null, number, null, messageTitle, messageContent);
-//    }
-//
-//
-//    @Transactional
-//    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, AwardUseWayEnum cardType, Integer number, String messageTitle, String messageContent,String tid) {
-//        return sendLuckyChance(buyerNick, chanceFrom, cardType, number, null, messageTitle, messageContent);
-//    }
-
 
     @Transactional
     public List<SysLuckyChance> sendLuckyChance(List<SysLuckyChance> sysLuckyChances) {
@@ -371,165 +356,6 @@ public class LuckyDrawHelper {
     }
 
     /**
-     * 6.获取当前奖池中，奖品
-     *
-     * @param sysCustom
-     * @description
-     * @create by 王星齐
-     * @time 2020-11-08 19:13:22
-     */
-//    @Transactional
-//    public List<SysAward> findCustomTimeAwardPool(SysCustom sysCustom) {
-//        PoolLevelEnum currentPoolLevel = findCurrentPoolLevel(sysCustom).getCurrentPoolLevel();
-//        return sysAwardRepository.findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum.POOL, currentPoolLevel.getValue());
-//    }
-
-//    /**
-//     * 7.当前奖池等级
-//     *
-//     * @param sysCustom
-//     * @description
-//     * @create by 王星齐
-//     * @time 2020-11-08 19:12:41
-//     */
-//    @Transactional
-//    public CustomPlayProgressDto findCurrentPoolLevel(SysCustom sysCustom) {
-//        CustomPlayProgressDto customPlayProgressDto = new CustomPlayProgressDto();
-//        //累计签到天数
-//        long sign_num = 0;
-////        long sign_num = sysTaskMemberOrFollowRepository.countByBuyerNickAndTaskType(sysCustom.getBuyerNick(), TaskTypeEnum.SIGN);
-//
-//        //下单数
-//        Integer orderNum = cusOrderInfoService.countTidsByBuyerNick(sysCustom.getBuyerNick());
-//
-//        PoolLevelEnum level = PoolLevelEnum.LEVEL_1;
-//        if (sign_num >= 1) {
-//            level = PoolLevelEnum.LEVEL_1;
-//        }
-//        if (sign_num >= 3) {
-//            level = PoolLevelEnum.LEVEL_2;
-//        }
-//        if (sign_num >= 5 && orderNum >= 1) {
-//            level = PoolLevelEnum.LEVEL_3;
-//        }
-//        if (sign_num >= 7 && orderNum >= 1) {
-//            level = PoolLevelEnum.LEVEL_4;
-//        }
-//        if (sign_num >= 11 && orderNum >= 2) {
-//            level = PoolLevelEnum.LEVEL_5;
-//        }
-//        customPlayProgressDto.setCurrentPoolLevel(level);
-//        customPlayProgressDto.setOrderNum(orderNum);
-//        customPlayProgressDto.setSignNum((int) sign_num);
-//        return customPlayProgressDto;
-//    }
-
-
-    /**
-     * @param unUseBattles
-     * @param custom
-     * @param award
-     * @param sendTime
-     */
-    @Transactional
-    public SysLuckyDrawRecord directExchangeAward(List<SysLuckyDrawRecord> unUseBattles, SysCustom custom, SysSettingAward award, Date sendTime) {
-        Assert.isTrue(sysSettingAwardRepository.tryReduceOne(award.getId()) > 0, "你来晚了,奖品已兑完");
-
-        StringBuffer stringBuffer = new StringBuffer();
-        unUseBattles.forEach(x -> {
-            stringBuffer.append(x.getId()).append(",");
-        });
-
-        /*整理抽奖日志*/
-        SysLuckyDrawRecord drawRecord = new SysLuckyDrawRecord()
-                .setIsWin(BooleanConstant.BOOLEAN_YES)
-                .setIsFill(BooleanConstant.BOOLEAN_NO)
-                .setDrawTime(sendTime)
-//                .setHaveExchange(BooleanConstant.BOOLEAN_NO)
-//                .setExchangeTime(sendTime)
-                .setPlayerHeadImg(custom.getHeadImg())
-                .setPlayerBuyerNick(custom.getBuyerNick())
-                .setPlayerZnick(custom.getZnick())
-                .setAwardId(award.getId())
-                .setAwardImg(award.getImg())
-//                .setAwardLevel(award.getAwardLevel())
-                .setAwardName(award.getName())
-                .setAwardType(award.getType())
-                .setRemark("消耗:" + stringBuffer.toString() + "兑换:" + award.getName());
-
-        if (AwardTypeEnum.COUPON.equals(award.getType())) {
-            try {
-                AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon(custom.getOpenId(), award.getEname());
-                if (alibabaBenefitSendResponse.getResultSuccess() == null || !alibabaBenefitSendResponse.getResultSuccess()) {
-                    //发放失败
-                    switch (alibabaBenefitSendResponse.getResultCode()) {
-                        case "COUPON_INVALID_OR_DELETED":
-                            drawRecord.setSendError(TaoBaoSendCouponStatus.COUPON_INVALID_OR_DELETED.getInfo());
-                            break;
-                        case "APPLY_OWNSELF_COUPON":
-                            drawRecord.setSendError(TaoBaoSendCouponStatus.APPLY_OWNSELF_COUPON.getInfo());
-                            break;
-                        case "APPLY_SINGLE_COUPON_COUNT_EXCEED_LIMIT":
-                            drawRecord.setSendError(TaoBaoSendCouponStatus.APPLY_SINGLE_COUPON_COUNT_EXCEED_LIMIT.getInfo());
-                            break;
-                        case "权益已下线":
-                            drawRecord.setSendError(TaoBaoSendCouponStatus.OFF_LINE.getInfo());
-                            break;
-                        case "311权益已经被锁定":
-                            drawRecord.setSendError(TaoBaoSendCouponStatus.LOCK311.getInfo());
-                            break;
-                        case "APPLY_ONE_SELLER_COUNT_EXCEED_LIMIT":
-                            drawRecord.setSendError(TaoBaoSendCouponStatus.APPLY_ONE_SELLER_COUNT_EXCEED_LIMIT.getInfo());
-                            break;
-                        case "ERRORserver-invoke-mtee-exception":
-                            drawRecord.setSendError(TaoBaoSendCouponStatus.ERRORSERVER_INVOKE_MTEE_EXCEPTION.getInfo());
-                            break;
-                        case "NO_RIGHT_QUANTITY":
-                            drawRecord.setSendError(TaoBaoSendCouponStatus.NO_RIGHT_QUANTITY.getInfo());
-                            break;
-                        case "ERROR A_3_567":
-                            drawRecord.setSendError(TaoBaoSendCouponStatus.ERRORA_3_567.getInfo());
-                            break;
-                        case "ERROR A_3_00_005":
-                            drawRecord.setSendError(TaoBaoSendCouponStatus.ERRORA_3_00_005.getInfo());
-                            break;
-                        case "ERROR A_3_00_002":
-                            drawRecord.setSendError(TaoBaoSendCouponStatus.ERRORA_3_00_002.getInfo());
-                            break;
-                        default:
-                            drawRecord.setSendError("发放优惠券失败：-->" + alibabaBenefitSendResponse.getResultCode() + ":-->" + alibabaBenefitSendResponse.getResultMsg());
-                    }
-                    drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                //发放异常
-                drawRecord.setIsWin(BooleanConstant.BOOLEAN_NO);
-                drawRecord.setSendError("发放优惠券异常：" + e.getMessage());
-            }
-        }
-
-        if (BooleanConstant.BOOLEAN_YES.equals(drawRecord.getIsWin())) {
-            //标记已兑换的瓶子
-            String[] split = stringBuffer.toString().split(",");
-            sysLuckyDrawRecordRepository.exchangeAward(split, sendTime);
-
-            //记录瓶子兑换日志
-            List<SysLuckyExchangeLog> collect = unUseBattles.stream().map(x -> new SysLuckyExchangeLog()
-                    .setAwardId(x.getAwardId())
-                    .setAwardImg(x.getAwardImg())
-                    .setAwardName(x.getAwardName())
-                    .setCreateTime(sendTime)
-                    .setBuyerNick(custom.getBuyerNick())
-                    .setWinOrUse(BooleanConstant.BOOLEAN_NO)).collect(Collectors.toList());
-            sysExchangeLogRepository.saveAll(collect);
-        }
-        //保存兑换记录
-        sysLuckyDrawRecordRepository.save(drawRecord);
-        return drawRecord;
-    }
-
-    /**
      * 任务对应的卡片类型
      *
      * @param taskType
@@ -598,19 +424,6 @@ public class LuckyDrawHelper {
 
     public void sendCard(String buyerNick, LuckyChanceFromEnum taskType, int sendNum, String message) {
         sendCard(buyerNick, taskType, sendNum, message, null);
-    }
-
-    /**
-     * 所有奖品
-     *
-     * @param
-     * @description
-     * @create by 王星齐
-     * @time 2021-03-16 14:13:48
-     */
-    @JoinMemcache
-    public List<SysSettingAward> findAllAward() {
-        return sysSettingAwardRepository.findAll();
     }
 
     /**
@@ -756,6 +569,25 @@ public class LuckyDrawHelper {
 
         return backCards;
 
+    }
+
+    @JoinMemcache
+    public List<Map> drawLog() {
+        return sysLuckyDrawRecordRepository.queryDrawLog();
+    }
+
+
+    /**
+     * 所有奖品
+     *
+     * @param
+     * @description
+     * @create by 王星齐
+     * @time 2021-03-16 14:13:48
+     */
+    @JoinMemcache
+    public List<SysSettingAward> findAllAward() {
+        return sysSettingAwardRepository.findAll();
     }
 
 }

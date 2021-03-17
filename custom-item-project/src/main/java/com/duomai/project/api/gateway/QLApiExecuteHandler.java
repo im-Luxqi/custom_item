@@ -80,19 +80,17 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.game.draw.load", GameDrawLoadExecute.class);
 
 
-
-
         //任务--邀请明细
         map.put("wx.dz.game.show.list.invite", ShareDetailsListExecute.class);
         //任务--分享明细
         map.put("wx.dz.game.show.list.share", ShowShareListExecute.class);
+
         //我的奖品 wxq
         map.put("wx.dz.common.luckyBag.win", LuckyBagAllWinExecute.class);
         //留资料 wxq
         map.put("wx.dz.common.luckyBag.win.address", LuckyBagFillAwardAddressExecute.class);
         //碎片明细
         map.put("wx.dz.game.show.list.chip", ChipResidueNumberExecute.class);
-
         //抽奖
         map.put("wx.dz.game.lucky.draw", GameIndexLuckyDrawExecute.class);
 
@@ -102,28 +100,7 @@ public class QLApiExecuteHandler {
 //        map.put("wx.dz.game.task.load", TaskDashboardExecute.class);
         //任务--浏览页
         map.put("wx.dz.game.show.list.browse", ShowBrowseListExecute.class);
-        //任务--邀请明细
-        map.put("wx.dz.game.show.list.invite", ShowInviteListExecute.class);
-        //任务--分享明细
-        map.put("wx.dz.game.show.list.share", ShowShareListExecute.class);
-        //我的奖品 wxq
-        map.put("wx.dz.common.luckyBag.win", LuckyBagAllWinExecute.class);
-        //留资料 wxq
-        map.put("wx.dz.common.luckyBag.win.address", LuckyBagFillAwardAddressExecute.class);
-
-
-
-
-        //我的战利品-查看明细
-        map.put("wx.dz.game.show.list.exchange", ShowExchangeListExecute.class);
-        //立即兑换
-        map.put("wx.dz.game.lucky.exchange", GameIndexLuckyExchangeExecute.class);
-        //本机奖品池
-        map.put("wx.dz.game.lucky.pool", GameIndexLuckyPoolExecute.class);
-
 */
-
-
     }
 
 

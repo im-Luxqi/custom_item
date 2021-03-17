@@ -16,7 +16,7 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
 
 
     /**
-     * 兑换弹幕
+     * 抽奖弹幕
      *
      * @return
      */
