@@ -89,6 +89,8 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.common.luckyBag.win.address", LuckyBagFillAwardAddressExecute.class);
         //碎片明细
         map.put("wx.dz.game.show.list.chip", ChipResidueNumberExecute.class);
+        //任务面板load
+        map.put("wx.dz.game.show.list.taskLoad", taskLoadExecute.class);
 
         //抽奖
         map.put("wx.dz.game.lucky.draw", GameIndexLuckyDrawExecute.class);
