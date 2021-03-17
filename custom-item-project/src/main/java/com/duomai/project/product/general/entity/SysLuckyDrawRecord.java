@@ -35,22 +35,23 @@ public class SysLuckyDrawRecord {
     @Column(columnDefinition = "varchar(64) COMMENT '玩家真实昵称'")
     private String playerZnick;
 
+
+    @Column(nullable = false, columnDefinition = "int(1) COMMENT '是否中奖'")
+    private Integer isWin;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(30) COMMENT '奖品类型'")
+    private AwardTypeEnum awardType;
+
     @Column(columnDefinition = "varchar(64) COMMENT '奖品Id'")
     private String awardId;
-    @Column(columnDefinition = "varchar(64) COMMENT '奖品等级'")
-    private String awardLevel;
     @Column(columnDefinition = "varchar(64) COMMENT '奖品名称'")
     private String awardName;
     @Column(columnDefinition = "varchar(255) COMMENT '奖品图片'")
     private String awardImg;
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(30) COMMENT '奖品类型'")
-    private AwardTypeEnum awardType;
-    @Column(nullable = false, columnDefinition = "int(1) COMMENT '是否中奖'")
-    private Integer isWin;
+
     @Column(nullable = false, columnDefinition = "int(1) COMMENT '是否填写地址'")
     private Integer isFill;
-
     @Column(columnDefinition = "varchar(10) COMMENT '收件人昵称'")
     private String receviceName;
     @Column(columnDefinition = "varchar(64) COMMENT '收件人电话'")
@@ -61,30 +62,16 @@ public class SysLuckyDrawRecord {
     private String receviceProvince;
     @Column(columnDefinition = "varchar(64) COMMENT '收件人地址 区'")
     private String receviceDistrict;
-
-    @Column(columnDefinition = "varchar(64) COMMENT '身份证'")
-    private String identityNumber;
-
     @Column(columnDefinition = "text COMMENT '收件人地址 详细地址'")
     private String receviceAddress;
-
-
     @Column(columnDefinition = "DATETIME COMMENT '填写地址时间'")
     private Date receviceTime;
+
+
     @Column(columnDefinition = "text COMMENT '发奖发送错误信息'")
     private String sendError;
     @Column(columnDefinition = "text COMMENT '备注'")
     private String remark;
-
-    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '虚拟奖品是否兑换 0:否1:是'")
-    private Integer haveExchange;
-
-    @Column(columnDefinition = "DATETIME COMMENT '兑换时间'")
-    private Date exchangeTime;
-
-    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否展示过 0:否1:是'")
-    private Integer haveShow;
-
 
     public SysLuckyDrawRecord() {
     }

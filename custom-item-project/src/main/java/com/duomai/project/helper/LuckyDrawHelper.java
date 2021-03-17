@@ -632,10 +632,8 @@ public class LuckyDrawHelper {
         if (cardExchangeDto != null && cardExchangeDto.getCardOne() > 0) {
             int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_ONE);
             // 给的卡片数量
-            if (cardNum < cardExchangeDto.getCardOne()) {
-                Assert.isTrue(false, AwardUseWayEnum.CARD_ONE.getValue() + "数量不足");
-            }
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_ONE);
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_ONE.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardOne()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -647,11 +645,8 @@ public class LuckyDrawHelper {
         if (cardExchangeDto != null && cardExchangeDto.getCardTwo() > 0) {
             int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_TWO);
             // 给的卡片数量
-            if (cardNum < cardExchangeDto.getCardTwo()) {
-                Assert.isTrue(false, AwardUseWayEnum.CARD_TWO.getValue() + "数量不足");
-            }
-
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_TWO);
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_ONE.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardTwo()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -662,11 +657,8 @@ public class LuckyDrawHelper {
         if (cardExchangeDto != null && cardExchangeDto.getCardThree() > 0) {
             int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_THREE);
             // 给的卡片数量
-            if (cardNum < cardExchangeDto.getCardThree()) {
-                Assert.isTrue(false, AwardUseWayEnum.CARD_THREE.getValue() + "数量不足");
-            }
-
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_THREE);
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_THREE.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardThree()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -677,11 +669,9 @@ public class LuckyDrawHelper {
         if (cardExchangeDto != null && cardExchangeDto.getCardFour() > 0) {
             int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_FOUR);
             // 给的卡片数量
-            if (cardNum < cardExchangeDto.getCardFour()) {
-                Assert.isTrue(false, AwardUseWayEnum.CARD_FOUR.getValue() + "数量不足");
-            }
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_FOUR);
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_FOUR.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardFour()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -692,11 +682,9 @@ public class LuckyDrawHelper {
         if (cardExchangeDto != null && cardExchangeDto.getCardFive() > 0) {
             int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_FIVE);
             // 给的卡片数量
-            if (cardNum < cardExchangeDto.getCardFive()) {
-                Assert.isTrue(false, AwardUseWayEnum.CARD_FIVE.getValue() + "数量不足");
-            }
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_FIVE);
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_FIVE.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardFive()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -707,11 +695,9 @@ public class LuckyDrawHelper {
         if (cardExchangeDto != null && cardExchangeDto.getCardSix() > 0) {
             int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_SIX);
             // 给的卡片数量
-            if (cardNum < cardExchangeDto.getCardSix()) {
-                Assert.isTrue(false, AwardUseWayEnum.CARD_SIX.getValue() + "数量不足");
-            }
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_SIX);
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_SIX.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardSix()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -722,11 +708,10 @@ public class LuckyDrawHelper {
         if (cardExchangeDto != null && cardExchangeDto.getCardSeven() > 0) {
             int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_SEVEN);
             // 给的卡片数量
-            if (cardNum < cardExchangeDto.getCardSeven()) {
-                Assert.isTrue(false, AwardUseWayEnum.CARD_SEVEN.getValue() + "数量不足");
-            }
+
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_SEVEN);
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_SEVEN.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardSeven()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -737,11 +722,10 @@ public class LuckyDrawHelper {
         if (cardExchangeDto != null && cardExchangeDto.getCardEight() > 0) {
             int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_EIGHT);
             // 给的卡片数量
-            if (cardNum < cardExchangeDto.getCardEight()) {
-                Assert.isTrue(false, AwardUseWayEnum.CARD_EIGHT.getValue() + "数量不足");
-            }
+
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_EIGHT);
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_EIGHT.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardEight()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -752,11 +736,9 @@ public class LuckyDrawHelper {
         if (cardExchangeDto != null && cardExchangeDto.getCardNine() > 0) {
             int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_NINE);
             // 给的卡片数量
-            if (cardNum < cardExchangeDto.getCardNine()) {
-                Assert.isTrue(false, AwardUseWayEnum.CARD_NINE.getValue() + "数量不足");
-            }
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_NINE);
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_NINE.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardNine()) {
                 backCards.add(sysLuckyChances.get(i));

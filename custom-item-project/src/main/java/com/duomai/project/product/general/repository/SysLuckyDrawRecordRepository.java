@@ -14,16 +14,6 @@ import java.util.Map;
 public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDrawRecord, String> {
 
 
-    /**
-     * 玩家手上所有的未使用的奶瓶
-     *
-     * @param buyerNick
-     * @param awardTypeEnum
-     * @param isWin
-     * @param haveExchange
-     * @return
-     */
-    List<SysLuckyDrawRecord> findByPlayerBuyerNickAndAwardTypeAndIsWinAndHaveExchange(String buyerNick, AwardTypeEnum awardTypeEnum, Integer isWin, Integer haveExchange);
 
     /**
      * 兑换弹幕
@@ -32,8 +22,8 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
      */
     @Query(nativeQuery = true,
             value = "select award_name as awardName,player_buyer_nick as playerBuyerNick from sys_lucky_draw_record " +
-                    "where award_type in ('COUPON','GOODS')  and  is_win = 1 order by exchange_time desc limit 20")
-    List<Map> queryExchangeLog();
+                    "where is_win = 1 order by draw_time desc limit 20")
+    List<Map> queryDrawLog();
 
     /**
      * 我的奖品
@@ -63,19 +53,6 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
                     "    where id in (?1) "
     )
     int exchangeAward(String[] ids, Date exchangeTime);
-
-
-    /**
-     * 抽6号瓶子需要先抽5号瓶子
-     *
-     * @param buyerNick
-     * @param isWin
-     * @param haveExchange
-     * @param awardId
-     * @return
-     */
-    long countByPlayerBuyerNickAndAwardIdAndIsWinAndHaveExchange(String buyerNick, String awardId, Integer isWin, Integer haveExchange);
-
 
     /**
      * test

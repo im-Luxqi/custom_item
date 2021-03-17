@@ -11,8 +11,6 @@ import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
-import com.duomai.project.product.general.repository.SysLuckyChanceRepository;
-import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,10 +37,6 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
     private LuckyDrawHelper luckyDrawHelper;
     @Autowired
     private SysSettingAwardRepository sysSettingAwardRepository;
-    @Autowired
-    private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
-    @Autowired
-    private SysLuckyChanceRepository sysLuckyChanceRepository;
 
 
     @Override
@@ -57,7 +51,7 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
         Assert.isTrue(BooleanConstant.BOOLEAN_YES.equals(syscustom.getHaveAuthorization()), "请先授权");
 
         List<SysLuckyChance> sysLuckyChances = luckyDrawHelper.cardComposition(cardExchange, buyerNick);
-        List<SysSettingAward> thisTimeAwardPool = sysSettingAwardRepository.findByUseWay(AwardUseWayEnum.POOL);
+        List<SysSettingAward> thisTimeAwardPool = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.POOL);
         SysSettingAward winAward = luckyDrawHelper.luckyDraw(thisTimeAwardPool, sysLuckyChances,
                 syscustom, sysParm.getRequestStartTime());
 
@@ -73,8 +67,7 @@ public class GameIndexLuckyDrawExecute implements IApiExecute {
                     .setTotalNum(null)
                     .setLuckyValue(null)
                     .setUseWay(null)
-                    .setLogId(null)
-                    .setType(null)
+                    .setMaxCanGet(null)
                     .setPoolLevel(null);
         }
         return YunReturnValue.ok(resultMap, "玩家成功进行抽奖");
