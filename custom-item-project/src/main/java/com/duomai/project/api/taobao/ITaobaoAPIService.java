@@ -4,6 +4,7 @@ import com.duomai.project.api.taobao.enums.TaoBaoTradeStatus;
 import com.taobao.api.ApiException;
 import com.taobao.api.response.AlibabaBenefitSendResponse;
 import com.taobao.api.response.CrmMemberIdentityGetResponse;
+import com.taobao.api.response.CrmPointChangeResponse;
 import com.taobao.api.response.OpenTradesSoldGetResponse;
 
 import java.util.Date;
@@ -21,34 +22,50 @@ public interface ITaobaoAPIService {
      */
     public CrmMemberIdentityGetResponse CrmMemberIdentityGet(String buyerNick) throws ApiException;
 
-    /*查询是否为店铺会员
+    /**
+     * 查询是否为店铺会员
+     *
+     * @param buyerNick
      * @description 需要申请权限
      * @create by 王星齐
      * @time 2020-08-24 10:14:01
-     * @param buyerNick
-     * @param sessionkey
-     **/
+     */
     public boolean isMember(String buyerNick) throws ApiException;
 
 
-    /*查询卖家已卖出的交易数据（商家应用使用）
-     * @description   需要申请权限
-     * @create by 王星齐
-     * @time 2020-05-14 09:29:48
+    /**
+     * 查询卖家已卖出的交易数据（商家应用使用）
+     *
      * @param buyer_open_id
      * @param status
      * @param start_created
      * @param end_created
+     * @description
+     * @create by 王星齐
+     * @time 2021-03-17 11:33:19
      **/
     List<OpenTradesSoldGetResponse.Trade> taobaoOpenTradesSoldGet(String buyer_open_id, TaoBaoTradeStatus status, Date start_created, Date end_created) throws ApiException;
 
 
-    /*直发券
-     * @description  需要申请权限
+    /**
+     * 直发券
+     *
+     * @param openId
+     * @param ename
+     * @description
      * @create by 王星齐
-     * @time 2020-06-30 14:09:54
-     * @param mixNick
-     * @param sessionKey
-     **/
+     * @time 2021-03-17 11:32:25
+     */
     AlibabaBenefitSendResponse sendTaobaoCoupon(String openId, String ename) throws ApiException;
+
+
+    /**
+     * 积分变更
+     *
+     * @return
+     * @throws Exception
+     */
+    CrmPointChangeResponse changePoint(String buyerNick, Long point) throws Exception;
+
+
 }

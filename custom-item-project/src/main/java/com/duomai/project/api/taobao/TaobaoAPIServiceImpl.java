@@ -6,9 +6,11 @@ import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.request.AlibabaBenefitSendRequest;
 import com.taobao.api.request.CrmMemberIdentityGetRequest;
+import com.taobao.api.request.CrmPointChangeRequest;
 import com.taobao.api.request.OpenTradesSoldGetRequest;
 import com.taobao.api.response.AlibabaBenefitSendResponse;
 import com.taobao.api.response.CrmMemberIdentityGetResponse;
+import com.taobao.api.response.CrmPointChangeResponse;
 import com.taobao.api.response.OpenTradesSoldGetResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +92,18 @@ public class TaobaoAPIServiceImpl implements ITaobaoAPIService {
         req.setAppName(sysCustomProperties.getCustomConfig().getAppName());//商家来源身份标识
         req.setUserType("taobao");
         req.setIp("");
+        return client.execute(req, sysCustomProperties.getCustomConfig().getSessionkey());
+    }
+
+    @Override
+    public CrmPointChangeResponse changePoint(String buyerNick, Long point) throws Exception {
+        CrmPointChangeRequest req = new CrmPointChangeRequest();
+        //手工调整
+        req.setChangeType(1L);
+        req.setOptType(0L);
+        req.setQuantity(point);
+        req.setRemark("积分变动：增加积分");
+        req.setMixNick(buyerNick);
         return client.execute(req, sysCustomProperties.getCustomConfig().getSessionkey());
     }
 }

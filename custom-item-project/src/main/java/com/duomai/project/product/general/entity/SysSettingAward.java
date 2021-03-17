@@ -43,7 +43,6 @@ public class SysSettingAward {
     private String description;
 
 
-
     @Column(columnDefinition = "int(10) COMMENT '奖品总数量'")
     private Integer totalNum;
     @Column(columnDefinition = "int(10) COMMENT '奖品剩余数量'")
@@ -58,6 +57,8 @@ public class SysSettingAward {
     @Column(columnDefinition = "varchar(64) COMMENT '发放优惠券的标识'")
     private String ename;
 
+    @Column(columnDefinition = "int(10) COMMENT '奖品本活动最大抽到次数'")
+    private Integer maxCanGet;
 
 
     @Transient

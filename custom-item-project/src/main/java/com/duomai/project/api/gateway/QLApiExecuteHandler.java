@@ -75,6 +75,10 @@ public class QLApiExecuteHandler {
         //游戏首页 加载
         map.put("wx.dz.game.index.load", GameIndexLoadExecute.class);
 
+
+
+
+
         //任务--邀请明细
         map.put("wx.dz.game.show.list.invite", ShareDetailsListExecute.class);
         //任务--分享明细
@@ -85,6 +89,10 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.common.luckyBag.win.address", LuckyBagFillAwardAddressExecute.class);
         //碎片明细
         map.put("wx.dz.game.show.list.chip", ChipResidueNumberExecute.class);
+
+        //抽奖
+        map.put("wx.dz.game.lucky.draw", GameIndexLuckyDrawExecute.class);
+
 
 /*
         //任务页面load
@@ -102,8 +110,7 @@ public class QLApiExecuteHandler {
 
 
 
-        //点击抓娃娃
-        map.put("wx.dz.game.lucky.draw", GameIndexLuckyDrawExecute.class);
+
         //我的战利品-查看明细
         map.put("wx.dz.game.show.list.exchange", ShowExchangeListExecute.class);
         //立即兑换
