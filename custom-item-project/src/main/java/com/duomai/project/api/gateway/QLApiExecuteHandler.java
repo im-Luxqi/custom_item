@@ -64,6 +64,9 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.game.task.tv", TaskTvExecute.class);
         //任务--消费增送
         map.put("wx.dz.game.task.order", CusGetOrderExecute.class);
+        //任务--邀请任务
+        map.put("wx.dz.game.task.invite", TaskInviteExecute.class);
+
 
 
         /**

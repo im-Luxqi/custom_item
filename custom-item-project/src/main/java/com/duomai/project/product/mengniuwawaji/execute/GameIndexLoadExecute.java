@@ -3,17 +3,19 @@ package com.duomai.project.product.mengniuwawaji.execute;
 import cn.hutool.core.lang.Assert;
 import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
-import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
-import com.duomai.project.product.general.entity.*;
+import com.duomai.project.product.general.entity.SysCustom;
+import com.duomai.project.product.general.entity.SysLuckyChance;
+import com.duomai.project.product.general.entity.SysPagePvLog;
+import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.enums.*;
 import com.duomai.project.product.general.repository.*;
-import com.duomai.project.tool.CommonDateParseUtil;
+import com.duomai.project.tool.ProjectTools;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -66,9 +68,12 @@ public class GameIndexLoadExecute implements IApiExecute {
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LinkedHashMap<String, Object> resultMap = new LinkedHashMap<>();
-//        resultMap.put("alter_for_shared_flag", false);
-        resultMap.put("alter_for_invitee_flag", false);
-
+        JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
+        String inviter = jsonObjectAdmjson.getString("inviter");
+        InviteTypeEnum inviteType = ProjectTools.enumValueOf(InviteTypeEnum.class, jsonObjectAdmjson.getString("inviteType"));
+        if (StringUtils.isNotBlank(inviter)) {
+            Assert.notNull(inviteType, "邀请类型不能为空");
+        }
 
         /*1.校验是否存在玩家*/
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
@@ -86,8 +91,8 @@ public class GameIndexLoadExecute implements IApiExecute {
 
 
         boolean actLive = projectHelper.actTimeValidateFlag();
-       /* if (actLive) {
-            *//*2.被邀请助力或者被邀请入会*//*
+        if (actLive) {
+ /*           //2.被邀请助力或者被邀请入会
             JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
             Boolean joinMemberBack = jsonObjectAdmjson.getBoolean("joinMemberBack");
             String sharer = jsonObjectAdmjson.getString("sharer");
@@ -195,6 +200,17 @@ public class GameIndexLoadExecute implements IApiExecute {
                     sysTaskInviteLogRepository.save(sysTaskInviteLog);
                 }
             }
+*/
+
+
+            if (StringUtils.isNotBlank(inviter)) {
+                SysCustom inviterCustom = sysCustomRepository.findByBuyerNick(inviter);
+                resultMap.put("alter_for_inviter_name", inviterCustom.getZnick());
+                resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
+                resultMap.put("alter_for_invitee_flag", true);
+                resultMap.put("alter_for_invitee_type", inviteType.getValue());
+                resultMap.put("alter_for_invitee_msg", "我正在参加蒙牛的收集拼图活动，需要1位好友助力，请帮我助力赢大奖~");
+            }
 
 
             //首次登录游戏免费送一次
@@ -204,7 +220,7 @@ public class GameIndexLoadExecute implements IApiExecute {
                 luckyDrawHelper.sendCard(buyerNick, LuckyChanceFromEnum.FREE, getNum,
                         "首次登录，获得【有料品鉴官】一博送你的食力拼图*" + getNum);
             }
-        }*/
+        }
 
 
         //1.活动规则
@@ -251,6 +267,7 @@ public class GameIndexLoadExecute implements IApiExecute {
             unUseCard.put(x.getUseWay(), x);
         });
         resultMap.put("card_show", unUseCard);
+
 
         return YunReturnValue.ok(resultMap, "游戏首页");
     }

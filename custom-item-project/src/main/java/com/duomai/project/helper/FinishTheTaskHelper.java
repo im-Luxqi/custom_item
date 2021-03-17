@@ -43,7 +43,7 @@ public class FinishTheTaskHelper {
 
         String yestodayString = CommonDateParseUtil.date2string(CommonDateParseUtil.addDay(date, -1), "yyyy-MM-dd");
         Integer signTotalNum = taskDailyBoard != null ? taskDailyBoard.getSignTotalNum() : 0;
-        Integer signContinuousNum = taskDailyBoard != null && yestodayString.equals(taskDailyBoard.getCreateTimeString()) ? taskDailyBoard.getSignTotalNum() : 0;
+        Integer signContinuousNum = taskDailyBoard != null && yestodayString.equals(taskDailyBoard.getCreateTimeString()) ? taskDailyBoard.getSignContinuousNum() : 0;
         Integer haveFinishFollow = taskDailyBoard != null && taskDailyBoard.getHaveFinishFollow() == 1 ? 1 : 0;
         Integer haveFinishMember = taskDailyBoard != null && taskDailyBoard.getHaveFinishMember() == 1 ? 1 : 0;
         String inviteFollowProgress = taskDailyBoard != null ? taskDailyBoard.getInviteFollowProgress() : "(0/3)";

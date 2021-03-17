@@ -9,17 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface SysTaskShareLogRepository extends BaseRepository<SysTaskShareLog, String> {
 
 
-
-    /**
-     * 查询 被分享人 某日 助力次数
-     *
-     * @param mixShareder
-     * @param shareTime
-     * @return
-     */
-    long countByMixSharederAndHaveSuccessAndShareTime(String mixShareder, Integer hasSuccess, String shareTime);
-
-
     /**
      * 分页查询 分享人分享成功记录
      *
@@ -40,4 +29,26 @@ public interface SysTaskShareLogRepository extends BaseRepository<SysTaskShareLo
 
     @Transactional
     void deleteByMixShareder(String buyerNick);
+
+    /**
+     * 分享人  某天  被分享次数
+     *
+     * @param inviter
+     * @param inviteTime
+     * @description
+     * @create by 王星齐
+     * @time 2021-03-16 16:44:03
+     */
+    long countByMixSharerAndHaveSuccessAndShareTime(String inviter,Integer hasSuccess, String inviteTime);
+
+
+
+    long countByMixSharerAndHaveSuccessAndShareTimeAndMixShareder(String inviter, Integer hasSuccess, String shareTime, String invitee);
+
+    /**
+     * 查询 分享人  分享次数
+     *
+     * @return
+     */
+    long countByMixSharerAndHaveSuccess(String inviter, Integer booleanYes);
 }

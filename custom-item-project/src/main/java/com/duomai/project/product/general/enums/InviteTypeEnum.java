@@ -10,6 +10,7 @@ import com.duomai.common.base.enums.IEnum;
  * @time 2020-08-28 14:28:07
  */
 public enum InviteTypeEnum implements IEnum {
+    INVITE_COMMON("INVITE_COMMON", "邀请"),
     INVITE_FOLLOW("INVITE_FOLLOW", "邀请关注"),
     INVITE_MEMBER("INVITE_MEMBER", "邀请入会"),
     ;

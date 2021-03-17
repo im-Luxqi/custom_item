@@ -23,6 +23,21 @@ public interface SysTaskInviteLogRepository extends BaseRepository<SysTaskInvite
 
     Page<SysTaskInviteLog> findByInviteTypeAndMixInviterAndHaveSuccessOrderByCreateTimeDesc(InviteTypeEnum inviteType, String buyerNick, Integer haveSuccess, Pageable of);
 
+
+    
+    /**
+     * @description 
+     * @create by 王星齐
+     * @time 2021-03-16 18:40:10
+     * @param inviteType
+     * @param inviter
+     * @param haveSuccess
+     * @param invitee
+     */
+    long countByInviteTypeAndMixInviteeAndHaveSuccessAndMixInviter(InviteTypeEnum inviteType, String invitee, Integer haveSuccess, String inviter);
+    long countByInviteTypeAndMixInviteeAndHaveSuccess(InviteTypeEnum inviteType, String invitee, Integer haveSuccess);
+    long countByInviteTypeAndMixInviterAndHaveSuccess(InviteTypeEnum inviteFollow, String inviter, Integer booleanYes);
+
     /**
      * test
      *
@@ -33,4 +48,6 @@ public interface SysTaskInviteLogRepository extends BaseRepository<SysTaskInvite
 
     @Transactional
     void deleteByMixInvitee(String buyerNick);
+
+
 }
