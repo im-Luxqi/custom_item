@@ -59,4 +59,10 @@ public class SysLuckyChance {
     @Column(columnDefinition = "varchar(255)  COMMENT '消息内容'")
     private String notificationContent;
 
+    @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否成功'")
+    private Integer haveSuccess;
+    @Column(columnDefinition = "varchar(255)  COMMENT '卡片图片'")
+    private String cardImg;
+
+
 }

@@ -45,7 +45,15 @@ public class ChipResidueNumberExecute implements IApiExecute {
             pageListDto.getResultList().forEach(x -> {
                 x.setId(null);
                 x.setIsUse(null);
-                x.setUseTime(null);
+                x.setGetTime(null);
+                x.setGetTimeString(null);
+                x.setGetTimeString(null);
+                x.setChanceFrom(null);
+                x.setTid(null);
+                x.setTidTime(null);
+                x.setHaveNotification(null);
+                x.setNotificationContent(null);
+                x.setNotificationTitle(null);
             });
         }
         return YunReturnValue.ok(pageListDto, "碎片明细");

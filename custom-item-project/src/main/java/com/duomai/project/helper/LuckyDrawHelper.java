@@ -72,8 +72,10 @@ public class LuckyDrawHelper {
      * @time 2020-08-28 16:13:28
      */
     @Transactional
-    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, AwardUseWayEnum cardType, Integer number, String tid, String messageTitle, String messageContent) {
+    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, AwardUseWayEnum cardType, Integer number, String tid, String cardImg, String messageContent) {
         Date sendTime = new Date();
+
+
         List<SysLuckyChance> collect = IntStream.range(0, number).mapToObj((i) -> {
             SysLuckyChance sysLuckyChance = new SysLuckyChance().setBuyerNick(buyerNick)
                     .setChanceFrom(chanceFrom)
@@ -84,10 +86,9 @@ public class LuckyDrawHelper {
                     .setTid(tid)
                     .setCardType(cardType)
                     .setHaveNotification(BooleanConstant.BOOLEAN_YES)
-                    .setNotificationTitle("---")
                     .setNotificationContent("---");
             if (i == 0) {
-                sysLuckyChance.setNotificationTitle(messageTitle);
+                sysLuckyChance.setCardImg(cardImg);
                 sysLuckyChance.setNotificationContent(messageContent);
                 sysLuckyChance.setHaveNotification(BooleanConstant.BOOLEAN_NO);
             }
