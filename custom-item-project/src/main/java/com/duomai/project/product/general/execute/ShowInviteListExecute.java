@@ -51,9 +51,10 @@ public class ShowInviteListExecute implements IApiExecute {
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
-        Page<SysTaskInviteLog> list = sysTaskInviteLogRepository.findByMixInviterAndHaveSuccessOrderByCreateTimeDesc(
-                buyerNick, BooleanConstant.BOOLEAN_YES, pageListDto.startJPAPage());
-        pageListDto.setJpaResultList(list);
+        Page<SysTaskInviteLog> list = null;
+//                sysTaskInviteLogRepository.findByMixInviterAndHaveSuccessOrderByCreateTimeDesc(
+//                buyerNick, BooleanConstant.BOOLEAN_YES, pageListDto.startJPAPage());
+//        pageListDto.setJpaResultList(list);
         if (CollectionUtils.isNotEmpty(pageListDto.getResultList())) {
             pageListDto.getResultList().forEach(x -> {
                 x.setId(null);

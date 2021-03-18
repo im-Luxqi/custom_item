@@ -39,9 +39,6 @@ public interface SysTaskShareLogRepository extends BaseRepository<SysTaskShareLo
      * @create by 王星齐
      * @time 2021-03-16 16:44:03
      */
-    long countByMixSharerAndHaveSuccessAndShareTime(String inviter,Integer hasSuccess, String inviteTime);
-
-
 
     long countByMixSharerAndHaveSuccessAndShareTimeAndMixShareder(String inviter, Integer hasSuccess, String shareTime, String invitee);
 

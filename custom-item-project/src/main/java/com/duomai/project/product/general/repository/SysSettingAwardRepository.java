@@ -2,7 +2,6 @@ package com.duomai.project.product.general.repository;
 
 import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.product.general.entity.SysSettingAward;
-import com.duomai.project.product.general.enums.AwardTypeEnum;
 import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,21 +20,14 @@ public interface SysSettingAwardRepository extends BaseRepository<SysSettingAwar
                     "        and  remain_num >0")
     int tryReduceOne(String id);
 
-
-
-
     /**
      * 获取单个 某个类型的奖品
+     *
      * @param useWay
      * @return
      */
     SysSettingAward findFirstByUseWay(AwardUseWayEnum useWay);
 
-    List<SysSettingAward> findByUseWay(AwardUseWayEnum useWay);
-    List<SysSettingAward> findByType(AwardTypeEnum type);
-
     List<SysSettingAward> findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum useWay);
 
-
-    List<SysSettingAward> findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum useWay, Integer level);
 }

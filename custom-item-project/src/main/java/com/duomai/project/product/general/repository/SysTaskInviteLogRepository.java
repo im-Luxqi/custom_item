@@ -18,13 +18,8 @@ public interface SysTaskInviteLogRepository extends BaseRepository<SysTaskInvite
      * @param buyerNick
      * @return
      */
-    Page<SysTaskInviteLog> findByMixInviterAndHaveSuccessOrderByCreateTimeDesc(String buyerNick, Integer haveSuccess, Pageable of);
-
-
     Page<SysTaskInviteLog> findByInviteTypeAndMixInviterAndHaveSuccessOrderByCreateTimeDesc(InviteTypeEnum inviteType, String buyerNick, Integer haveSuccess, Pageable of);
 
-
-    
     /**
      * @description 
      * @create by 王星齐

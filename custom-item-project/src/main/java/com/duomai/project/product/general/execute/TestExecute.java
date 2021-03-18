@@ -24,7 +24,7 @@ public class TestExecute implements IApiExecute {
 
     @Override
     public YunReturnValue ApiExecute(ApiSysParameter sysParm, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        sysSettingAwardRepository.findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum.POOL, 5);
+//        sysSettingAwardRepository.findByUseWayAndPoolLevelLessThanEqualOrderByLuckyValueAsc(AwardUseWayEnum.POOL, 5);
         return YunReturnValue.ok("");
     }
 }

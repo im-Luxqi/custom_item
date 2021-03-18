@@ -4,8 +4,6 @@ import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.product.general.entity.SysTaskSignLog;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 /**
  * @author 王星齐
  */
@@ -18,15 +16,6 @@ public interface SysTaskSignLogRepository extends BaseRepository<SysTaskSignLog,
      * @return
      */
     long countByBuyerNick(String buyerNick);
-
-
-    /**
-     * 查询 玩家 所有签到记录
-     *
-     * @param buyerNick
-     * @return
-     */
-    List<SysTaskSignLog> findByBuyerNickOrderBySignTimeAsc(String buyerNick);
 
 
     /**

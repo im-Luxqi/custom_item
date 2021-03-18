@@ -37,23 +37,6 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
                     "where player_buyer_nick = ?1   and is_win = 1   order by draw_time desc ")
     List<SysLuckyDrawRecord> queryMybag(String buyernick);
 
-
-    /**
-     * 消耗 被兑换的商品
-     *
-     * @param ids
-     * @param exchangeTime
-     * @return
-     */
-    @Modifying
-    @Transactional
-    @Query(nativeQuery = true,
-            value = "update sys_lucky_draw_record" +
-                    "        set have_exchange = 1,exchange_time = ?2" +
-                    "    where id in (?1) "
-    )
-    int exchangeAward(String[] ids, Date exchangeTime);
-
     /**
      * test
      *
