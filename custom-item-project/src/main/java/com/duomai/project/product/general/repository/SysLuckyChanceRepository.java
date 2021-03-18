@@ -7,31 +7,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance, String> {
 
-    /**
-     * 查询  玩家 剩余抽奖次数
-     *
-     * @param buyerNick
-     * @param use
-     * @return
-     */
-    long countByBuyerNickAndIsUse(String buyerNick, Integer use);
 
     /**
-     * 查询  玩家 一条未使用的抽奖机会日志
+     * 查询 玩家 指定来源 的游戏机会获取数量
      *
      * @param buyerNick
-     * @param use
+     * @param from
      * @return
      */
-    SysLuckyChance findFirstByBuyerNickAndIsUse(String buyerNick, Integer use);
-
-    //获取某个任务当天完成了几次
-//    long countByBuyerNickAndChanceFromAndGetTimeBetween(String buyerNick, LuckyChanceFromEnum chanceFrom, Date startTime, Date endTime);
+    long countByHaveSuccessAndBuyerNickAndChanceFrom(Integer haveSuccess, String buyerNick, LuckyChanceFromEnum from);
 
 
     /**
@@ -42,17 +30,7 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
      * @param sendTime
      * @return
      */
-    long countByBuyerNickAndChanceFromAndGetTimeString(String buyerNick, LuckyChanceFromEnum chanceFrom, String sendTime);
-
-
-    /**
-     * 查询 玩家 指定来源 的游戏机会获取数量
-     *
-     * @param buyerNick
-     * @param from
-     * @return
-     */
-    long countByBuyerNickAndChanceFrom(String buyerNick, LuckyChanceFromEnum from);
+    long countByHaveSuccessAndBuyerNickAndChanceFromAndGetTimeString(Integer haveSuccess, String buyerNick, LuckyChanceFromEnum chanceFrom, String sendTime);
 
 
     /**
@@ -64,15 +42,6 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
      */
     List<SysLuckyChance> findByBuyerNickAndHaveNotification(String buyerNick, Integer haveNotification);
 
-    /**
-     * test
-     *
-     * @param buyerNick
-     */
-    @Transactional
-    void deleteByBuyerNick(String buyerNick);
-
-    long countByBuyerNickAndIsUseAndUseTimeBetween(String buyerNick, Integer isUse, Date start, Date end);
 
     /**
      * 查询所有未使用的卡牌
@@ -83,14 +52,23 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
      * @create by 王星齐
      * @time 2021-03-16 14:22:23
      */
-    List<SysLuckyChance> findByBuyerNickAndIsUse(String buyerNick, Integer booleanNo);
+    List<SysLuckyChance> findByHaveSuccessAndBuyerNickAndIsUse(Integer haveSuccess, String buyerNick, Integer booleanNo);
 
     /**
-     *  查询卡片使用情况根据使用时间倒序
+     * 查询卡片使用情况根据使用时间倒序
+     *
      * @param buyerNick
      * @param isUser
      * @return
      */
-    Page<SysLuckyChance> findByBuyerNickAndIsUseOrderByUseTimeDesc(String buyerNick, Integer isUser, Pageable of);
+    Page<SysLuckyChance> findByHaveSuccessAndBuyerNickAndIsUseOrderByUseTimeDesc(String buyerNick, Integer isUser, Pageable of);
 
+
+    /**
+     * test
+     *
+     * @param buyerNick
+     */
+    @Transactional
+    void deleteByBuyerNick(String buyerNick);
 }

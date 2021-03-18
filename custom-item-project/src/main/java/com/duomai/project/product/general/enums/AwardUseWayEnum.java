@@ -2,7 +2,9 @@ package com.duomai.project.product.general.enums;
 
 import com.duomai.common.base.enums.IEnum;
 
-/** 奖品使用途径
+/**
+ * 奖品使用途径
+ *
  * @description
  * @create by 王星齐
  * @time 2020-08-28 14:28:07
@@ -31,4 +33,14 @@ public enum AwardUseWayEnum implements IEnum {
     public String getValue() {
         return code;
     }
+
+
+    public static AwardUseWayEnum randomType(AwardUseWayEnum[] values) {
+        AwardUseWayEnum value = values[(int) (Math.random() * values.length)];
+        if (POOL.equals(value)) {
+            value = randomType(values);
+        }
+        return value;
+    }
+
 }

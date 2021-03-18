@@ -72,12 +72,31 @@ public class LuckyDrawHelper {
      * @time 2020-08-28 16:13:28
      */
     @Transactional
-    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum chanceFrom, AwardUseWayEnum cardType, Integer number, String tid, String cardImg, String messageContent) {
+    public List<SysLuckyChance> sendLuckyChance(Boolean success, String buyerNick, LuckyChanceFromEnum chanceFrom, AwardUseWayEnum cardType, Integer number, String tid, String cardImg, String messageContent) {
         Date sendTime = new Date();
 
+        if (!success) {
+            SysLuckyChance sysLuckyChance = new SysLuckyChance()
+                    .setBuyerNick(buyerNick)
+                    .setChanceFrom(chanceFrom)
+                    .setGetTime(sendTime)
+                    .setGetTimeString(CommonDateParseUtil.date2string(sendTime, "yyyy-MM-dd"))
+                    .setTidTime(sendTime)
+                    .setTid(tid)
+                    .setCardType(cardType)
+                    .setCardImg(cardImg)
+                    .setHaveSuccess(BooleanConstant.BOOLEAN_NO)
+                    .setNotificationContent("你未能获得碎片")
+                    .setIsUse(BooleanConstant.BOOLEAN_YES)
+                    .setHaveNotification(BooleanConstant.BOOLEAN_YES)
+                    .setHaveNotification(BooleanConstant.BOOLEAN_NO);
+            sysLuckyChanceRepository.save(sysLuckyChance);
+            return null;
+        }
 
         List<SysLuckyChance> collect = IntStream.range(0, number).mapToObj((i) -> {
             SysLuckyChance sysLuckyChance = new SysLuckyChance().setBuyerNick(buyerNick)
+                    .setHaveSuccess(BooleanConstant.BOOLEAN_YES)
                     .setChanceFrom(chanceFrom)
                     .setGetTime(sendTime)
                     .setGetTimeString(CommonDateParseUtil.date2string(sendTime, "yyyy-MM-dd"))
@@ -107,7 +126,7 @@ public class LuckyDrawHelper {
      * @time 2020-08-28 19:31:12
      */
     public List<SysLuckyChance> unUseLuckyChance(String buyerNick) {
-        return sysLuckyChanceRepository.findByBuyerNickAndIsUse(buyerNick, BooleanConstant.BOOLEAN_NO);
+        return sysLuckyChanceRepository.findByHaveSuccessAndBuyerNickAndIsUse(BooleanConstant.BOOLEAN_YES, buyerNick, BooleanConstant.BOOLEAN_NO);
     }
 
     /**
@@ -120,8 +139,8 @@ public class LuckyDrawHelper {
      */
     public long countTodayLuckyChanceFrom(String buyerNick, LuckyChanceFromEnum from) {
         Date today = new Date();
-        return sysLuckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeString(buyerNick, from,
-                CommonDateParseUtil.date2string(today, "yyyy-MM-dd"));
+        return sysLuckyChanceRepository.countByHaveSuccessAndBuyerNickAndChanceFromAndGetTimeString(BooleanConstant.BOOLEAN_YES,
+                buyerNick, from, CommonDateParseUtil.date2string(today, "yyyy-MM-dd"));
     }
 
     /**
@@ -133,7 +152,7 @@ public class LuckyDrawHelper {
      * @time 2020-10-10 20:03:49
      */
     public long countLuckyChanceFrom(String buyerNick, LuckyChanceFromEnum from) {
-        return sysLuckyChanceRepository.countByBuyerNickAndChanceFrom(buyerNick, from);
+        return sysLuckyChanceRepository.countByHaveSuccessAndBuyerNickAndChanceFrom(BooleanConstant.BOOLEAN_YES, buyerNick, from);
     }
 
 
@@ -367,32 +386,35 @@ public class LuckyDrawHelper {
     public AwardUseWayEnum taskType2CardType(LuckyChanceFromEnum taskType) {
         AwardUseWayEnum cardType;
         switch (taskType) {
-            case SIGN:
+            case FREE:
                 cardType = AwardUseWayEnum.CARD_ONE;
                 break;
-            case FOLLOW:
-                cardType = AwardUseWayEnum.CARD_THREE;
+            case SIGN:
+                cardType = AwardUseWayEnum.CARD_TWO;
                 break;
             case MEMBER:
                 cardType = AwardUseWayEnum.CARD_THREE;
                 break;
-            case SHARE:
+            case FOLLOW:
                 cardType = AwardUseWayEnum.CARD_FOUR;
                 break;
-            case SHARE_FOLLOW:
+            case SHARE:
                 cardType = AwardUseWayEnum.CARD_FIVE;
                 break;
-            case SHARE_MEMBER:
+            case TV:
                 cardType = AwardUseWayEnum.CARD_SIX;
                 break;
-            case BROWSE:
+            case SHARE_MEMBER:
                 cardType = AwardUseWayEnum.CARD_SEVEN;
                 break;
-            case TV:
+            case BROWSE:
                 cardType = AwardUseWayEnum.CARD_EIGHT;
                 break;
-            case ORDER:
+            case SHARE_FOLLOW:
                 cardType = AwardUseWayEnum.CARD_NINE;
+                break;
+            case ORDER:
+                cardType = AwardUseWayEnum.randomType(AwardUseWayEnum.values());
                 break;
             default:
                 cardType = null;
@@ -419,9 +441,16 @@ public class LuckyDrawHelper {
         AwardUseWayEnum cardType = taskType2CardType(taskType);
         /*本次抽奖中的奖品*/
         SysSettingAward award = sysSettingAwardRepository.findFirstByUseWay(cardType);
-        sendLuckyChance(buyerNick, taskType, cardType, sendNum, tid,
+
+        boolean success = false;
+        if (Math.random() < Double.parseDouble(award.getLuckyValue())) {
+            success = true;
+        }
+        sendLuckyChance(success, buyerNick, taskType, cardType, sendNum, tid,
                 award.getImg(), message);
+
     }
+
 
     public void sendCard(String buyerNick, LuckyChanceFromEnum taskType, int sendNum, String message) {
         sendCard(buyerNick, taskType, sendNum, message, null);
@@ -433,7 +462,7 @@ public class LuckyDrawHelper {
     public List<SysLuckyChance> cardComposition(CardExchangeDto cardExchangeDto, String buyerNick) throws Exception {
         Assert.notNull(cardExchangeDto, "很遗憾，碎片不足");
         // 所有未使用的卡片
-        List<SysLuckyChance> list = sysLuckyChanceRepository.findByBuyerNickAndIsUse(buyerNick, BooleanConstant.BOOLEAN_NO);
+        List<SysLuckyChance> list = unUseLuckyChance(buyerNick);
         if (list.size() < 5) {
             Assert.isTrue(false, "卡片数量不足");
         }
@@ -443,8 +472,7 @@ public class LuckyDrawHelper {
         Map<AwardUseWayEnum, List<SysLuckyChance>> collect = list.stream().collect(Collectors.groupingBy(SysLuckyChance::getCardType));
 
 
-        if (cardExchangeDto != null && cardExchangeDto.getCardOne() > 0) {
-            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_ONE);
+        if (cardExchangeDto.getCardOne() > 0) {
             // 给的卡片数量
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_ONE);
             Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_ONE.getValue() + "数量不足");
@@ -456,11 +484,10 @@ public class LuckyDrawHelper {
             frontCards += cardExchangeDto.getCardOne();
 
         }
-        if (cardExchangeDto != null && cardExchangeDto.getCardTwo() > 0) {
-            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_TWO);
+        if (cardExchangeDto.getCardTwo() > 0) {
             // 给的卡片数量
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_TWO);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_ONE.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardTwo(), AwardUseWayEnum.CARD_ONE.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardTwo()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -468,11 +495,10 @@ public class LuckyDrawHelper {
             }
             frontCards += cardExchangeDto.getCardTwo();
         }
-        if (cardExchangeDto != null && cardExchangeDto.getCardThree() > 0) {
-            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_THREE);
+        if (cardExchangeDto.getCardThree() > 0) {
             // 给的卡片数量
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_THREE);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_THREE.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardThree(), AwardUseWayEnum.CARD_THREE.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardThree()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -480,12 +506,11 @@ public class LuckyDrawHelper {
             }
             frontCards += cardExchangeDto.getCardThree();
         }
-        if (cardExchangeDto != null && cardExchangeDto.getCardFour() > 0) {
-            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_FOUR);
+        if (cardExchangeDto.getCardFour() > 0) {
             // 给的卡片数量
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_FOUR);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_FOUR.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardFour(), AwardUseWayEnum.CARD_FOUR.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardFour()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -493,12 +518,11 @@ public class LuckyDrawHelper {
             }
             frontCards += cardExchangeDto.getCardFour();
         }
-        if (cardExchangeDto != null && cardExchangeDto.getCardFive() > 0) {
-            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_FIVE);
+        if (cardExchangeDto.getCardFive() > 0) {
             // 给的卡片数量
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_FIVE);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_FIVE.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardFive(), AwardUseWayEnum.CARD_FIVE.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardFive()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -506,12 +530,11 @@ public class LuckyDrawHelper {
             }
             frontCards += cardExchangeDto.getCardFive();
         }
-        if (cardExchangeDto != null && cardExchangeDto.getCardSix() > 0) {
-            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_SIX);
+        if (cardExchangeDto.getCardSix() > 0) {
             // 给的卡片数量
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_SIX);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_SIX.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardSix(), AwardUseWayEnum.CARD_SIX.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardSix()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -519,13 +542,10 @@ public class LuckyDrawHelper {
             }
             frontCards += cardExchangeDto.getCardSix();
         }
-        if (cardExchangeDto != null && cardExchangeDto.getCardSeven() > 0) {
-            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_SEVEN);
+        if (cardExchangeDto.getCardSeven() > 0) {
             // 给的卡片数量
-
-
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_SEVEN);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_SEVEN.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardSeven(), AwardUseWayEnum.CARD_SEVEN.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardSeven()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -533,13 +553,11 @@ public class LuckyDrawHelper {
             }
             frontCards += cardExchangeDto.getCardSeven();
         }
-        if (cardExchangeDto != null && cardExchangeDto.getCardEight() > 0) {
-            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_EIGHT);
+        if (cardExchangeDto.getCardEight() > 0) {
             // 给的卡片数量
 
-
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_EIGHT);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_EIGHT.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardEight(), AwardUseWayEnum.CARD_EIGHT.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardEight()) {
                 backCards.add(sysLuckyChances.get(i));
@@ -547,12 +565,11 @@ public class LuckyDrawHelper {
             }
             frontCards += cardExchangeDto.getCardEight();
         }
-        if (cardExchangeDto != null && cardExchangeDto.getCardNine() > 0) {
-            int cardNum = Collections.frequency(list, AwardUseWayEnum.CARD_NINE);
+        if (cardExchangeDto.getCardNine() > 0) {
             // 给的卡片数量
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_NINE);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_NINE.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardNine(), AwardUseWayEnum.CARD_NINE.getValue() + "数量不足");
             int i = 0;
             while (i < cardExchangeDto.getCardNine()) {
                 backCards.add(sysLuckyChances.get(i));

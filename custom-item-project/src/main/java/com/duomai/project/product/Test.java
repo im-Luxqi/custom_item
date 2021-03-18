@@ -1,6 +1,7 @@
 package com.duomai.project.product;
 
 import com.duomai.project.product.general.entity.SysLuckyDrawRecord;
+import com.duomai.project.product.general.enums.AwardUseWayEnum;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.Trade;
@@ -19,7 +20,22 @@ public class Test {
 
 
 
-        Pattern.matches("^[A-Za-z0-9]{15,18}$","11111111111111");
+        for(int i =0;i<1000;i++){
+            AwardUseWayEnum awardUseWayEnum = AwardUseWayEnum.randomType(AwardUseWayEnum.values());
+            if(awardUseWayEnum.equals(AwardUseWayEnum.POOL)){
+                System.out.println("----------------");
+                System.out.println("----------------");
+                System.out.println("----------------");
+                System.out.println("----------------");
+                System.out.println("----------------");
+            }
+
+            System.out.println(awardUseWayEnum.getValue());
+        }
+
+
+
+//        Pattern.matches("^[A-Za-z0-9]{15,18}$","11111111111111");
 //
 //        TaobaoClient client = new DefaultTaobaoClient("http://gw.api.taobao.com/router/rest", "21699045", "20ee7d6400dda1c9670e7f997af2c2c8");
 //        TradesSoldGetRequest req = new TradesSoldGetRequest();
