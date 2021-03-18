@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 奖品表
@@ -16,7 +17,8 @@ import javax.persistence.*;
 @Accessors(chain = true)
 @Table(name = "sys_setting_award")
 @org.hibernate.annotations.Table(appliesTo = "sys_setting_award", comment = "奖品表")
-public class SysSettingAward {
+public class SysSettingAward  implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")

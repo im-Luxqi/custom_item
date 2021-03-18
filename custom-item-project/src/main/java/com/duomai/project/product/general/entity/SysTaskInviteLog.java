@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,7 +17,8 @@ import java.util.Date;
 @Accessors(chain = true)
 @Table(name = "sys_task_invite_log")
 @org.hibernate.annotations.Table(appliesTo = "sys_task_invite_log", comment = "邀请日志表")
-public class SysTaskInviteLog {
+public class SysTaskInviteLog  implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")

@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * 配置表
@@ -15,7 +16,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "sys_setting_key_value")
 @org.hibernate.annotations.Table(appliesTo = "sys_setting_key_value", comment = "配置表")
-public class SysSettingKeyValue {
+public class SysSettingKeyValue  implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @Column(columnDefinition = "varchar(30) COMMENT '编号'")
     private String k;
