@@ -24,7 +24,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -588,6 +591,32 @@ public class LuckyDrawHelper {
         return backCards;
 
     }
+
+
+    /**
+     * 卡片效验
+     */
+    public List<SysLuckyChance> jigsawCheck(List<SysLuckyChance> unUseLuckyChances) {
+        // 所有未使用的卡片
+        Map<AwardUseWayEnum, List<SysLuckyChance>> collect = unUseLuckyChances.stream().collect(Collectors.groupingBy(SysLuckyChance::getCardType));
+        if (collect.size() != 9) {
+            return null;
+        }
+        List<SysLuckyChance> backCards = new ArrayList<>();
+        backCards.add(collect.get(AwardUseWayEnum.CARD_ONE).get(0));
+        backCards.add(collect.get(AwardUseWayEnum.CARD_TWO).get(0));
+        backCards.add(collect.get(AwardUseWayEnum.CARD_THREE).get(0));
+        backCards.add(collect.get(AwardUseWayEnum.CARD_FOUR).get(0));
+        backCards.add(collect.get(AwardUseWayEnum.CARD_FIVE).get(0));
+        backCards.add(collect.get(AwardUseWayEnum.CARD_SIX).get(0));
+        backCards.add(collect.get(AwardUseWayEnum.CARD_SEVEN).get(0));
+        backCards.add(collect.get(AwardUseWayEnum.CARD_EIGHT).get(0));
+        backCards.add(collect.get(AwardUseWayEnum.CARD_NINE).get(0));
+
+        unUseLuckyChances.removeAll(backCards);
+        return backCards;
+    }
+
 
     @JoinMemcache
     public List<Map> drawLog() {

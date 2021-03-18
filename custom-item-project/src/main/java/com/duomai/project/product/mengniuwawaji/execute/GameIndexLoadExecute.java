@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
-import com.duomai.project.api.taobao.ITaobaoAPIService;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
@@ -14,14 +13,16 @@ import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.entity.SysPagePvLog;
 import com.duomai.project.product.general.entity.SysSettingAward;
 import com.duomai.project.product.general.enums.*;
-import com.duomai.project.product.general.repository.*;
+import com.duomai.project.product.general.repository.SysCustomRepository;
+import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
+import com.duomai.project.product.general.repository.SysPagePvLogRepository;
+import com.duomai.project.product.general.repository.SysSettingAwardRepository;
 import com.duomai.project.tool.ProjectTools;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
@@ -45,6 +46,12 @@ public class GameIndexLoadExecute implements IApiExecute {
 
     @Autowired
     private LuckyDrawHelper luckyDrawHelper;
+
+    @Autowired
+    private SysSettingAwardRepository sysSettingAwardRepository;
+
+    @Autowired
+    private SysLuckyDrawRecordRepository sysLuckyDrawRecordRepository;
 
     @Autowired
     private ProjectHelper projectHelper;
@@ -74,13 +81,14 @@ public class GameIndexLoadExecute implements IApiExecute {
                 .setPage(PvPageEnum.PAGE_INDEX));
 
 
+        List<SysLuckyChance> sysLuckyChances = new ArrayList<>();
         boolean actLive = projectHelper.actTimeValidateFlag();
         if (actLive) {
             if (StringUtils.isNotBlank(inviter)) {
                 SysCustom inviterCustom = sysCustomRepository.findByBuyerNick(inviter);
+                resultMap.put("alter_for_invitee_flag", true);
                 resultMap.put("alter_for_inviter_name", inviterCustom.getZnick());
                 resultMap.put("alter_for_inviter_img", inviterCustom.getHeadImg());
-                resultMap.put("alter_for_invitee_flag", true);
                 resultMap.put("alter_for_invitee_type", inviteType.getValue());
                 resultMap.put("alter_for_invitee_msg", "我正在参加蒙牛的收集拼图活动，需要1位好友助力，请帮我助力赢大奖~");
             }
@@ -91,6 +99,36 @@ public class GameIndexLoadExecute implements IApiExecute {
                 int getNum = 1;
                 luckyDrawHelper.sendCard(buyerNick, LuckyChanceFromEnum.FREE, getNum,
                         "首次登录，获得【有料品鉴官】一博送你的食力拼图*" + getNum);
+            }
+
+
+            //获得未使用的所有卡牌
+            sysLuckyChances = luckyDrawHelper.unUseLuckyChance(buyerNick);
+            List<SysLuckyChance> jigsaw = luckyDrawHelper.jigsawCheck(sysLuckyChances);
+            if (!CollectionUtils.isEmpty(jigsaw)) {
+
+                List<SysSettingAward> thisTimeAwardPool = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.JIGSAW);
+
+                long l1 = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndAwardId(buyerNick, thisTimeAwardPool.get(0).getId());
+                if (l1 == 0) {
+                    SysSettingAward winAward = luckyDrawHelper.luckyDraw(thisTimeAwardPool, jigsaw,
+                            syscustom, sysParm.getRequestStartTime());
+
+                    /*只反馈有效数据*/
+                    resultMap.put("jigsaw_win", !Objects.isNull(winAward));
+                    resultMap.put("jigsaw_award", winAward);
+                    if (!Objects.isNull(winAward)) {
+                        winAward.setEname(null)
+                                .setId(null)
+                                .setRemainNum(null)
+                                .setSendNum(null)
+                                .setTotalNum(null)
+                                .setLuckyValue(null)
+                                .setUseWay(null)
+                                .setMaxCanGet(null)
+                                .setPoolLevel(null);
+                    }
+                }
             }
         }
 
@@ -112,6 +150,7 @@ public class GameIndexLoadExecute implements IApiExecute {
             award.setRemainNum(null);
             award.setSendNum(null);
             award.setTotalNum(null);
+            award.setMaxCanGet(null);
             award.setHaveGetNum(null);
         }
         List<SysSettingAward> exchangeAward = new ArrayList<>();
@@ -124,8 +163,7 @@ public class GameIndexLoadExecute implements IApiExecute {
             }
         });
         resultMap.put("award_show", otherAward);
-        //获得未使用的所有卡牌
-        List<SysLuckyChance> sysLuckyChances = luckyDrawHelper.unUseLuckyChance(buyerNick);
+
         Map<AwardUseWayEnum, List<SysLuckyChance>> allCards = sysLuckyChances.stream().collect(Collectors.groupingBy(SysLuckyChance::getCardType));
         for (SysSettingAward award : exchangeAward) {
             award.setHaveGetNum(0);
@@ -139,7 +177,6 @@ public class GameIndexLoadExecute implements IApiExecute {
             unUseCard.put(x.getUseWay(), x);
         });
         resultMap.put("card_show", unUseCard);
-
 
         return YunReturnValue.ok(resultMap, "游戏首页");
     }

@@ -48,7 +48,7 @@ public interface ITaobaoAPIService {
 
 
     /**
-     * 直发券
+     * 直发券,发放红包
      *
      * @param openId
      * @param ename
@@ -66,6 +66,5 @@ public interface ITaobaoAPIService {
      * @throws Exception
      */
     CrmPointChangeResponse changePoint(String buyerNick, Long point) throws Exception;
-
 
 }

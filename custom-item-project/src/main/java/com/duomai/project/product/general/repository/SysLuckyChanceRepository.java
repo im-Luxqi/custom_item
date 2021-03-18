@@ -61,7 +61,7 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
      * @param isUser
      * @return
      */
-    Page<SysLuckyChance> findByHaveSuccessAndBuyerNickAndIsUseOrderByUseTimeDesc(String buyerNick, Integer isUser, Pageable of);
+    Page<SysLuckyChance> findByHaveSuccessAndBuyerNickAndIsUseOrderByUseTimeDesc(Integer haveSuccess, String buyerNick, Integer isUser, Pageable of);
 
 
     /**

@@ -20,7 +20,8 @@ public enum AwardUseWayEnum implements IEnum {
     CARD_SEVEN("CARD_SEVEN", "7号卡片"),
     CARD_EIGHT("CARD_EIGHT", "8号卡片"),
     CARD_NINE("CARD_NINE", "9号卡片"),
-    POOL("POOL", "奖池");
+    POOL("POOL", "奖池"),
+    JIGSAW("JIGSAW", "拼图奖励");
     private final String code;
     private final String descp;
 
@@ -37,7 +38,7 @@ public enum AwardUseWayEnum implements IEnum {
 
     public static AwardUseWayEnum randomType(AwardUseWayEnum[] values) {
         AwardUseWayEnum value = values[(int) (Math.random() * values.length)];
-        if (POOL.equals(value)) {
+        if (POOL.equals(value) || JIGSAW.equals(value)) {
             value = randomType(values);
         }
         return value;

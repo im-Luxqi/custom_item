@@ -39,7 +39,7 @@ public class ChipResidueNumberExecute implements IApiExecute {
         Assert.notNull(syscustom, "无效的玩家");
 
         // 查询使用过的碎片
-        Page<SysLuckyChance> list = sysLuckyChanceRepository.findByHaveSuccessAndBuyerNickAndIsUseOrderByUseTimeDesc(buyerNick, BooleanConstant.BOOLEAN_YES, pageListDto.startJPAPage());
+        Page<SysLuckyChance> list = sysLuckyChanceRepository.findByHaveSuccessAndBuyerNickAndIsUseOrderByUseTimeDesc(BooleanConstant.BOOLEAN_YES,buyerNick, BooleanConstant.BOOLEAN_YES, pageListDto.startJPAPage());
         pageListDto.setJpaResultList(list);
         if (CollectionUtils.isNotEmpty(pageListDto.getResultList())) {
             pageListDto.getResultList().forEach(x -> {

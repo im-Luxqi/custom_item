@@ -94,6 +94,8 @@ public class QLApiExecuteHandler {
         map.put("wx.dz.game.lucky.draw", GameIndexLuckyDrawExecute.class);
 
 
+
+
 /*
         //任务页面load
 //        map.put("wx.dz.game.task.load", TaskDashboardExecute.class);

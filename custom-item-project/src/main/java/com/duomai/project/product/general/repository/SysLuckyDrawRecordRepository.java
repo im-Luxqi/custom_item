@@ -44,4 +44,6 @@ public interface SysLuckyDrawRecordRepository extends BaseRepository<SysLuckyDra
      */
     @Transactional
     void deleteByPlayerBuyerNick(String buyerNick);
+
+    long countByPlayerBuyerNickAndAwardId(String buyerNick,String id);
 }
