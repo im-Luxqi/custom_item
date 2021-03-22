@@ -475,110 +475,110 @@ public class LuckyDrawHelper {
         Map<AwardUseWayEnum, List<SysLuckyChance>> collect = list.stream().collect(Collectors.groupingBy(SysLuckyChance::getCardType));
 
 
-        if (cardExchangeDto.getCardOne() > 0) {
+        if (cardExchangeDto.getCARD_ONE() > 0) {
             // 给的卡片数量
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_ONE);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardOne(), AwardUseWayEnum.CARD_ONE.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCARD_ONE(), AwardUseWayEnum.CARD_ONE.getValue() + "数量不足");
             int i = 0;
-            while (i < cardExchangeDto.getCardOne()) {
+            while (i < cardExchangeDto.getCARD_ONE()) {
                 backCards.add(sysLuckyChances.get(i));
                 i++;
             }
-            frontCards += cardExchangeDto.getCardOne();
+            frontCards += cardExchangeDto.getCARD_ONE();
 
         }
-        if (cardExchangeDto.getCardTwo() > 0) {
+        if (cardExchangeDto.getCARD_TWO() > 0) {
             // 给的卡片数量
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_TWO);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardTwo(), AwardUseWayEnum.CARD_ONE.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCARD_TWO(), AwardUseWayEnum.CARD_ONE.getValue() + "数量不足");
             int i = 0;
-            while (i < cardExchangeDto.getCardTwo()) {
+            while (i < cardExchangeDto.getCARD_TWO()) {
                 backCards.add(sysLuckyChances.get(i));
                 i++;
             }
-            frontCards += cardExchangeDto.getCardTwo();
+            frontCards += cardExchangeDto.getCARD_TWO();
         }
-        if (cardExchangeDto.getCardThree() > 0) {
+        if (cardExchangeDto.getCARD_THREE() > 0) {
             // 给的卡片数量
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_THREE);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardThree(), AwardUseWayEnum.CARD_THREE.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCARD_THREE(), AwardUseWayEnum.CARD_THREE.getValue() + "数量不足");
             int i = 0;
-            while (i < cardExchangeDto.getCardThree()) {
+            while (i < cardExchangeDto.getCARD_THREE()) {
                 backCards.add(sysLuckyChances.get(i));
                 i++;
             }
-            frontCards += cardExchangeDto.getCardThree();
+            frontCards += cardExchangeDto.getCARD_THREE();
         }
-        if (cardExchangeDto.getCardFour() > 0) {
+        if (cardExchangeDto.getCARD_FOUR() > 0) {
             // 给的卡片数量
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_FOUR);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardFour(), AwardUseWayEnum.CARD_FOUR.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCARD_FOUR(), AwardUseWayEnum.CARD_FOUR.getValue() + "数量不足");
             int i = 0;
-            while (i < cardExchangeDto.getCardFour()) {
+            while (i < cardExchangeDto.getCARD_FOUR()) {
                 backCards.add(sysLuckyChances.get(i));
                 i++;
             }
-            frontCards += cardExchangeDto.getCardFour();
+            frontCards += cardExchangeDto.getCARD_FOUR();
         }
-        if (cardExchangeDto.getCardFive() > 0) {
+        if (cardExchangeDto.getCARD_FIVE() > 0) {
             // 给的卡片数量
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_FIVE);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardFive(), AwardUseWayEnum.CARD_FIVE.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCARD_FIVE(), AwardUseWayEnum.CARD_FIVE.getValue() + "数量不足");
             int i = 0;
-            while (i < cardExchangeDto.getCardFive()) {
+            while (i < cardExchangeDto.getCARD_FIVE()) {
                 backCards.add(sysLuckyChances.get(i));
                 i++;
             }
-            frontCards += cardExchangeDto.getCardFive();
+            frontCards += cardExchangeDto.getCARD_FIVE();
         }
-        if (cardExchangeDto.getCardSix() > 0) {
+        if (cardExchangeDto.getCARD_SIX() > 0) {
             // 给的卡片数量
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_SIX);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardSix(), AwardUseWayEnum.CARD_SIX.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCARD_SIX(), AwardUseWayEnum.CARD_SIX.getValue() + "数量不足");
             int i = 0;
-            while (i < cardExchangeDto.getCardSix()) {
+            while (i < cardExchangeDto.getCARD_SIX()) {
                 backCards.add(sysLuckyChances.get(i));
                 i++;
             }
-            frontCards += cardExchangeDto.getCardSix();
+            frontCards += cardExchangeDto.getCARD_SIX();
         }
-        if (cardExchangeDto.getCardSeven() > 0) {
+        if (cardExchangeDto.getCARD_SEVEN() > 0) {
             // 给的卡片数量
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_SEVEN);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardSeven(), AwardUseWayEnum.CARD_SEVEN.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCARD_SEVEN(), AwardUseWayEnum.CARD_SEVEN.getValue() + "数量不足");
             int i = 0;
-            while (i < cardExchangeDto.getCardSeven()) {
+            while (i < cardExchangeDto.getCARD_SEVEN()) {
                 backCards.add(sysLuckyChances.get(i));
                 i++;
             }
-            frontCards += cardExchangeDto.getCardSeven();
+            frontCards += cardExchangeDto.getCARD_SEVEN();
         }
-        if (cardExchangeDto.getCardEight() > 0) {
+        if (cardExchangeDto.getCARD_EIGHT() > 0) {
             // 给的卡片数量
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_EIGHT);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardEight(), AwardUseWayEnum.CARD_EIGHT.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCARD_EIGHT(), AwardUseWayEnum.CARD_EIGHT.getValue() + "数量不足");
             int i = 0;
-            while (i < cardExchangeDto.getCardEight()) {
+            while (i < cardExchangeDto.getCARD_EIGHT()) {
                 backCards.add(sysLuckyChances.get(i));
                 i++;
             }
-            frontCards += cardExchangeDto.getCardEight();
+            frontCards += cardExchangeDto.getCARD_EIGHT();
         }
-        if (cardExchangeDto.getCardNine() > 0) {
+        if (cardExchangeDto.getCARD_NINE() > 0) {
             // 给的卡片数量
 
             List<SysLuckyChance> sysLuckyChances = collect.get(AwardUseWayEnum.CARD_NINE);
-            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCardNine(), AwardUseWayEnum.CARD_NINE.getValue() + "数量不足");
+            Assert.isTrue(sysLuckyChances.size() >= cardExchangeDto.getCARD_NINE(), AwardUseWayEnum.CARD_NINE.getValue() + "数量不足");
             int i = 0;
-            while (i < cardExchangeDto.getCardNine()) {
+            while (i < cardExchangeDto.getCARD_NINE()) {
                 backCards.add(sysLuckyChances.get(i));
                 i++;
             }
-            frontCards += cardExchangeDto.getCardNine();
+            frontCards += cardExchangeDto.getCARD_NINE();
         }
         if (frontCards < 5) {
             throw new Exception("卡片数量不足");

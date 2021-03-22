@@ -98,7 +98,7 @@ public class GameIndexLoadExecute implements IApiExecute {
             if (l == 0) {
                 int getNum = 1;
                 luckyDrawHelper.sendCard(buyerNick, LuckyChanceFromEnum.FREE, getNum,
-                        "首次登录，获得【有料品鉴官】一博送你的食力拼图*" + getNum);
+                        "恭喜你！免费登陆成功");
             }
 
 

@@ -9,22 +9,22 @@ import lombok.Data;
 @Data
 public class CardExchangeDto {
 
-    private Integer cardOne;
+    private int CARD_ONE;
 
-    private Integer cardTwo;
+    private int CARD_TWO;
 
-    private Integer cardThree;
+    private int CARD_THREE;
 
-    private Integer cardFour;
+    private int CARD_FOUR;
 
-    private Integer cardFive;
+    private int CARD_FIVE;
 
-    private Integer cardSix;
+    private int CARD_SIX;
 
-    private Integer cardSeven;
+    private int CARD_SEVEN;
 
-    private Integer cardEight;
+    private int CARD_EIGHT;
 
-    private Integer cardNine;
+    private int CARD_NINE;
 
 }

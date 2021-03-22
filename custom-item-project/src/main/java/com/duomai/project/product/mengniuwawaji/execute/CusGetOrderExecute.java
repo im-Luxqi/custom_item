@@ -110,7 +110,7 @@ public class CusGetOrderExecute implements IApiExecute {
 
         if (shouldNewSend > 0) {
             luckyDrawHelper.sendCard(buyerNick, LuckyChanceFromEnum.ORDER, shouldNewSend,
-                    "消费任务，获得【有料品鉴官】一博送你的食力拼图*" + shouldNewSend, tid.toString());
+                    "恭喜你！下单成功", tid.toString());
             SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(buyerNick);
             taskDailyBoard.setSpendProgress("(" + todayHasJoin + "/" + taskOrderFront + ")");
             if (todayHasJoin == taskOrderFront) {

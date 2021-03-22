@@ -118,7 +118,7 @@ public class TaskInviteExecute implements IApiExecute {
                 if (inviteNum % taskShouldInvite == 0) {
                     Integer thisGet = 1;
                     luckyDrawHelper.sendCard(inviter, LuckyChanceFromEnum.SHARE, thisGet,
-                            "分享助力，获得【有料品鉴官】一博送你的食力拼图*" + thisGet);
+                            "恭喜你！分享成功");
                     taskDailyBoard.setTodayFinishShareNum("(" + (inviteTime + 1) + "/" + 2 + ")");
                 }
                 taskDailyBoard.setShareProgress("(" + (inviteNum % taskShouldInvite) + "/" + taskShouldInvite + ")");
@@ -171,7 +171,7 @@ public class TaskInviteExecute implements IApiExecute {
                 if (inviteFollowNum % taskShouldInviteFollow == 0) {
                     Integer thisGet = 1;
                     luckyDrawHelper.sendCard(inviter, LuckyChanceFromEnum.SHARE_FOLLOW, thisGet,
-                            "邀请关注助力，获得【有料品鉴官】一博送你的食力拼图*" + thisGet);
+                            "恭喜你！邀请关注店铺成功");
                 }
                 SysTaskDailyBoard taskDailyBoard2 = finishTheTaskHelper.todayTaskBoard(inviter);
                 taskDailyBoard2.setInviteFollowProgress("(" + (inviteFollowNum % taskShouldInviteFollow) + "/" + taskShouldInviteFollow + ")");
@@ -223,7 +223,7 @@ public class TaskInviteExecute implements IApiExecute {
 
                 Integer thisGet = 1;
                 luckyDrawHelper.sendCard(inviter, LuckyChanceFromEnum.SHARE_MEMBER, thisGet,
-                        "邀请入会助力，获得【有料品鉴官】一博送你的食力拼图*" + thisGet);
+                        "恭喜你！邀请入会成功");
 
                 invite_flag = true;
                 invite_flag_img = invite_success_img;

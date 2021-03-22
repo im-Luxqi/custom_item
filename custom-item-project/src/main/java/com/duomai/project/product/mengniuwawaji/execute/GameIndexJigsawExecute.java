@@ -52,16 +52,15 @@ public class GameIndexJigsawExecute implements IApiExecute {
         Assert.notNull(syscustom, "无效的玩家");
         projectHelper.actTimeValidate();
         CardExchangeDto cardExchange = new CardExchangeDto();
-        cardExchange.setCardOne(1);
-        cardExchange.setCardTwo(1);
-        cardExchange.setCardThree(1);
-        cardExchange.setCardThree(1);
-        cardExchange.setCardFour(1);
-        cardExchange.setCardFive(1);
-        cardExchange.setCardSix(1);
-        cardExchange.setCardSeven(1);
-        cardExchange.setCardEight(1);
-        cardExchange.setCardNine(1);
+        cardExchange.setCARD_ONE(1);
+        cardExchange.setCARD_TWO(1);
+        cardExchange.setCARD_THREE(1);
+        cardExchange.setCARD_FOUR(1);
+        cardExchange.setCARD_FIVE(1);
+        cardExchange.setCARD_SIX(1);
+        cardExchange.setCARD_SEVEN(1);
+        cardExchange.setCARD_EIGHT(1);
+        cardExchange.setCARD_NINE(1);
         List<SysLuckyChance> sysLuckyChances = luckyDrawHelper.cardComposition(cardExchange, buyerNick);
         List<SysSettingAward> thisTimeAwardPool = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.JIGSAW);
         SysSettingAward winAward = luckyDrawHelper.luckyDraw(thisTimeAwardPool, sysLuckyChances,

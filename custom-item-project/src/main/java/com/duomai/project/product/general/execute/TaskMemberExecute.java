@@ -72,7 +72,7 @@ public class TaskMemberExecute implements IApiExecute {
         /*3完成任务，获取奖励*/
         Integer thisGet = 1;
         luckyDrawHelper.sendCard(syscustom.getBuyerNick(), LuckyChanceFromEnum.MEMBER, thisGet,
-                "入会成功，获得【有料品鉴官】一博送你的食力拼图*" + thisGet);
+                "恭喜你！加入会员成功");
 
         SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(buyerNick);
         taskDailyBoard.setHaveFinishMember(BooleanConstant.BOOLEAN_YES);

@@ -53,7 +53,7 @@ public class TaskTvExecute implements IApiExecute {
         if (tvCount == 0) {
             Integer thisGet = 1;
             luckyDrawHelper.sendCard(syscustom.getBuyerNick(), LuckyChanceFromEnum.TV, thisGet,
-                    "今日观看直播，获得【有料品鉴官】一博送你的食力拼图*" + thisGet);
+                    "恭喜你！观看直播成功");
             SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(buyerNick);
             taskDailyBoard.setHaveFinishTvToday(BooleanConstant.BOOLEAN_YES);
             finishTheTaskHelper.updateTaskBoard(taskDailyBoard);
