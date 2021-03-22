@@ -11,21 +11,21 @@ spring:
 
 #系统配置
 sys:
-  genFlag: false
+  genFlag: true
   ocsConfig:
-    host: m-k2j0085bc5f90f84.memcache.zhangbei.rds.aliyuncs.com
+    host: m-k2jf16665f239814.memcache.zhangbei.rds.aliyuncs.com
     port: 11211
-    username: m-k2j0085bc5f90f84
+    username: m-k2jf16665f239814
     password: 3sKmT2cBxnVFDo9Q
   druidConfig:
-    monitorUsername: 00096098e2254fe69193da5653200bab
-    monitorPassword: 0010510f513c48beaa06a6b1632e7bfd
+    monitorUsername: root
+    monitorPassword: root
   sysConfig:
     appkey: 21699045
     secretkey: 20ee7d6400dda1c9622699123af2c2c8
   customConfig:
     sellernick: 蒙牛
-    appkey: 31950443
-    secretkey: 5fb1037287f6bca0f66ef6557f9f3bde
-    appName: promotioncenter-3000000027083122
+    appkey: 32574527
+    secretkey: caa79306ffa86d1f8b155e35175da724
+    appName: promotioncenter-3000000037223265
     sessionkey: 500004000183ychwTcAfwTmqEKEsYP18794678R9B5I1ElqctvgcFjR9oWOgFMhbdgM

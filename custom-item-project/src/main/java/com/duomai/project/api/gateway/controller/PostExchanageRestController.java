@@ -59,7 +59,7 @@ public class PostExchanageRestController extends BaseRestController {
     @ResponseBody
     @RequestMapping(value = "/router/test2")
     public YunReturnValue test3() {
-
+        System.out.println("-------------------");
         MemcacheTools.cacheData("wwwxxxqqq", 123, 10);
 
         System.out.println("-------------------");

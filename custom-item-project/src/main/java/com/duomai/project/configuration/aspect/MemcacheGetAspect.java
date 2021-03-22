@@ -3,6 +3,7 @@ package com.duomai.project.configuration.aspect;
 import com.duomai.project.api.taobao.MemCacheData;
 import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.configuration.annotation.JoinMemcache;
+import com.duomai.project.tool.ApplicationUtils;
 import com.duomai.project.tool.ProjectTools;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +15,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -44,8 +44,9 @@ public class MemcacheGetAspect {
         JoinMemcache join = method.getAnnotation(JoinMemcache.class);
         String className = point.getTarget().getClass().getName();
 
+        String property = ApplicationUtils.getContext().getEnvironment().getProperty("spring.profiles.active");
         String key = StringUtils.isNotBlank(join.key()) ? join.key() : (className + method.getName());
-        String lock_key = lock + key;
+        String lock_key = property + lock + key;
         int timeout = join.refreshTime();
 
         if (!ProjectTools.hasMemCacheEnvironment()) {

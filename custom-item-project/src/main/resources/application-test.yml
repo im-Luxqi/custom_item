@@ -2,28 +2,28 @@ spring:
   # 数据库访问配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://rm-k2j0f3w284mu8b999.mysql.zhangbei.rds.aliyuncs.com:3306/ad_music?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useServerPrepStmts=true
-    userName: adboxrds
-    password: ad_2020box
+    url: jdbc:mysql://rm-k2j14xf62nma00m97.mysql.zhangbei.rds.aliyuncs.com:3306/mengniu_jika_test?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useServerPrepStmts=true
+    userName: mengniu
+    password: Mengniu#123
 
 
 #系统配置
 sys:
-  genFlag: false
+  genFlag: true
   ocsConfig:
-    host: m-k2j118ff490c3844.memcache.zhangbei.rds.aliyuncs.com
+    host: m-k2jf16665f239814.memcache.zhangbei.rds.aliyuncs.com
     port: 11211
-    username: m-k2j118ff490c3844
+    username: m-k2jf16665f239814
     password: 3sKmT2cBxnVFDo9Q
   druidConfig:
-    monitorUsername: 00096098e2254fe69193da5653200bab
-    monitorPassword: 0010510f513c48beaa06a6b1632e7bfd
+    monitorUsername: root
+    monitorPassword: root
   sysConfig:
     appkey: 21699045
     secretkey: 20ee7d6400dda1c9622699123af2c2c8
   customConfig:
     sellernick: 蒙牛
-    appkey: 31950443
-    secretkey: 5fb1037287f6bca0f66ef6557f9f3bde
-    appName: promotioncenter-3000000027083122
-    sessionkey: 50000000a23Ni12iys2Oui8aIvfoPdTwg8b16e4889bbteMRtifdOmzexYn9EKq2TVt
+    appkey: 32574527
+    secretkey: caa79306ffa86d1f8b155e35175da724
+    appName: promotioncenter-3000000037223265
+    sessionkey: 500004000183ychwTcAfwTmqEKEsYP18794678R9B5I1ElqctvgcFjR9oWOgFMhbdgM

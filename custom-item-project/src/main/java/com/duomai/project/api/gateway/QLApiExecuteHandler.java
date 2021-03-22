@@ -119,8 +119,9 @@ public class QLApiExecuteHandler {
         }
 
         //防连点
+        String property = ApplicationUtils.getContext().getEnvironment().getProperty("spring.profiles.active");
         if (ProjectTools.hasMemCacheEnvironment()) {
-            Assert.isTrue(MemcacheTools.add("_checkoutMultipleCommit_"
+            Assert.isTrue(MemcacheTools.add(property + "_checkoutMultipleCommit_"
                     + sysParm.getApiParameter().getYunTokenParameter().getBuyerNick()
                     + sendApiExecute.getClass().getName()), "点太快了，请休息下");
         }
