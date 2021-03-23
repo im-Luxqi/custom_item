@@ -1,7 +1,6 @@
 package com.duomai.project.product.mengniuwawaji.execute;
 
 import cn.hutool.core.lang.Assert;
-import com.alibaba.fastjson.JSONObject;
 import com.duomai.common.base.execute.IApiExecute;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
@@ -69,7 +68,9 @@ public class GameDrawLoadExecute implements IApiExecute {
             }
         });
         //获得未使用的所有卡牌
+        LinkedHashMap<AwardUseWayEnum, SysSettingAward> unUseCard = new LinkedHashMap<>();
         List<SysLuckyChance> sysLuckyChances = luckyDrawHelper.unUseLuckyChance(buyerNick);
+
         Map<AwardUseWayEnum, List<SysLuckyChance>> allCards = sysLuckyChances.stream().collect(Collectors.groupingBy(SysLuckyChance::getCardType));
         for (SysSettingAward award : exchangeAward) {
             award.setHaveGetNum(0);
@@ -78,11 +79,12 @@ public class GameDrawLoadExecute implements IApiExecute {
                 award.setHaveGetNum(cards.size());
             }
         }
-        LinkedHashMap<AwardUseWayEnum, SysSettingAward> unUseCard = new LinkedHashMap<>();
+
         exchangeAward.stream().sorted(Comparator.comparing(SysSettingAward::getUseWay)).forEach(x -> {
             unUseCard.put(x.getUseWay(), x);
         });
         resultMap.put("card_show", unUseCard);
+
         resultMap.put("draw_log", luckyDrawHelper.drawLog());
         return YunReturnValue.ok(resultMap, "游戏首页");
     }

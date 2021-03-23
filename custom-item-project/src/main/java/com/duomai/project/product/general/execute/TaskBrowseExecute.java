@@ -60,14 +60,14 @@ public class TaskBrowseExecute implements IApiExecute {
         //校验传参
         JSONObject jsonObjectAdmjson = sysParm.getApiParameter().findJsonObjectAdmjson();
         Long numId = jsonObjectAdmjson.getLong("numId");
-        Assert.notNull(numId, "商品id不能为空");
-        SysSettingCommodity commodity = sysSettingCommodityRepository.findFirstByNumId(numId);
-        Assert.notNull(commodity, "不存在的商品");
+//        Assert.notNull(numId, "商品id不能为空");
+//        SysSettingCommodity commodity = sysSettingCommodityRepository.findFirstByNumId(numId);
+//        Assert.notNull(commodity, "不存在的商品");
         //是否存在玩家
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
-        Assert.isTrue(BooleanConstant.BOOLEAN_YES.equals(syscustom.getHaveAuthorization()), "请先授权");
+//        Assert.isTrue(BooleanConstant.BOOLEAN_YES.equals(syscustom.getHaveAuthorization()), "请先授权");
 
 
         /*2.记录浏览日志*/
@@ -75,23 +75,23 @@ public class TaskBrowseExecute implements IApiExecute {
         Date today = sysParm.getRequestStartTime();
         List<SysTaskBrowseLog> todayHasBrowseLogs = sysTaskBrowseLogRepository.findByBuyerNickAndBrowseTime(buyerNick
                 , CommonDateParseUtil.date2string(today, "yyyy-MM-dd"));
-        boolean hasBrowse = false;
-        if (!CollectionUtils.isEmpty(todayHasBrowseLogs)) {
-            for (SysTaskBrowseLog x : todayHasBrowseLogs) {
-                if (x.getNumId().equals(numId)) {
-                    hasBrowse = true;
-                    break;
-                }
-            }
-        }
-        if (!hasBrowse) {
+//        boolean hasBrowse = false;
+//        if (!CollectionUtils.isEmpty(todayHasBrowseLogs)) {
+//            for (SysTaskBrowseLog x : todayHasBrowseLogs) {
+//                if (x.getNumId().equals(numId)) {
+//                    hasBrowse = true;
+//                    break;
+//                }
+//            }
+//        }
+//        if (!hasBrowse) {
             SysTaskBrowseLog thisBrowse = sysTaskBrowseLogRepository.save(new SysTaskBrowseLog()
                     .setBuyerNick(buyerNick)
                     .setCreateTime(today)
                     .setBrowseTime(CommonDateParseUtil.date2string(today, "yyyy-MM-dd"))
                     .setNumId(numId));
             todayHasBrowseLogs.add(thisBrowse);
-        }
+//        }
 
 
         //浏览送抽奖机会

@@ -2,7 +2,10 @@ package com.duomai.project.helper;
 
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.MemcacheTools;
+import com.duomai.project.configuration.annotation.JoinMemcache;
+import com.duomai.project.product.general.entity.SysSettingCommodity;
 import com.duomai.project.product.general.entity.SysTaskDailyBoard;
+import com.duomai.project.product.general.repository.SysSettingCommodityRepository;
 import com.duomai.project.product.general.repository.SysTaskDailyBoardRepository;
 import com.duomai.project.tool.CommonDateParseUtil;
 import com.duomai.project.tool.ProjectTools;
@@ -12,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author cjw
@@ -20,7 +24,8 @@ import java.util.Date;
  */
 @Component
 public class FinishTheTaskHelper {
-
+    @Autowired
+    private SysSettingCommodityRepository sysSettingCommodityRepository;
     @Autowired
     private SysTaskDailyBoardRepository sysTaskDailyBoardRepository;
 
@@ -83,6 +88,12 @@ public class FinishTheTaskHelper {
         }
         taskDailyBoard.setUpdateTime(new Date());
         sysTaskDailyBoardRepository.save(taskDailyBoard);
+    }
+
+
+    @JoinMemcache()
+    public List<SysSettingCommodity> allOrderGoods(){
+        return sysSettingCommodityRepository.findAll();
     }
 
 }

@@ -1,13 +1,11 @@
 package com.duomai.project.product.general.entity;
 
-import com.duomai.project.product.general.enums.AwardTypeEnum;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 商品表
@@ -17,7 +15,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @Table(name = "sys_setting_commodity")
 @org.hibernate.annotations.Table(appliesTo = "sys_setting_commodity", comment = "商品表")
-public class SysSettingCommodity  implements Serializable {
+public class SysSettingCommodity implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -32,10 +30,12 @@ public class SysSettingCommodity  implements Serializable {
     private String img;
     @Column(columnDefinition = "varchar(30) COMMENT '奖品价格'")
     private String price;
+    @Column(columnDefinition = "varchar(255) COMMENT '商品描述'")
+    private String des;
 
     /**
      * 今日是否浏览
      */
-    @Transient
-    private boolean todayHasBrowse;
+//    @Transient
+//    private boolean todayHasBrowse;
 }

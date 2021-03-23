@@ -67,6 +67,8 @@ public class QLApiExecuteHandler {
         //任务--邀请任务
         map.put("wx.dz.game.task.invite", TaskInviteExecute.class);
 
+        //任务--下单页
+        map.put("wx.dz.game.show.list.spend", ShowBrowseListExecute.class);
 
         /**
          * load

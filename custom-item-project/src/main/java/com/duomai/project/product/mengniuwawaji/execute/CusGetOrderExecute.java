@@ -10,6 +10,7 @@ import com.duomai.project.helper.FinishTheTaskHelper;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.dto.ActBaseSettingDto;
+import com.duomai.project.product.general.entity.SysSettingCommodity;
 import com.duomai.project.product.general.entity.SysTaskDailyBoard;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.mengniuwawaji.domain.CusOrderInfo;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
@@ -69,6 +71,10 @@ public class CusGetOrderExecute implements IApiExecute {
         StringBuilder hasUpdateTradeIds = new StringBuilder();
         dbCusOrders.forEach(x -> hasUpdateTradeIds.append(x.getTid()).append(","));
 
+        StringBuilder orderIds = new StringBuilder();
+        List<SysSettingCommodity> sysSettingCommodities = finishTheTaskHelper.allOrderGoods();
+        sysSettingCommodities.forEach(x -> orderIds.append(x.getNumId()).append(","));
+
         /*符合条件的最新订单，同步最新订单*/
         StringBuilder tid = new StringBuilder();
         List<OpenTradesSoldGetResponse.Trade> newestTrades = new ArrayList<>();
@@ -100,12 +106,25 @@ public class CusGetOrderExecute implements IApiExecute {
         Integer taskOrderFront = 3;//每日前3次有卡牌奖品
         Integer shouldNewSend = 0;
         for (int i = 1; i <= newestTrades.size(); i++) {
-            todayHasJoin++;
-            if (todayHasJoin > 3) {
-                todayHasJoin--;
-                break;
+
+            OpenTradesSoldGetResponse.Trade trade = newestTrades.get(i - 1);
+            List<OpenTradesSoldGetResponse.Order> orders = trade.getOrders();
+            AtomicBoolean effectiveOrder = new AtomicBoolean(false);
+            orders.forEach(x -> {
+                if (orderIds.toString().contains(String.valueOf(x.getNumIid()))) {
+                    effectiveOrder.set(true);
+                }
+            });
+
+            if(effectiveOrder.get()){
+                todayHasJoin++;
+                if (todayHasJoin > 3) {
+                    todayHasJoin--;
+                    break;
+                }
+                shouldNewSend += 5;
+
             }
-            shouldNewSend += 5;
         }
 
         if (shouldNewSend > 0) {

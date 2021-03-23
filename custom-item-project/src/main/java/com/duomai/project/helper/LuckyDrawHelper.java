@@ -24,10 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -618,9 +615,16 @@ public class LuckyDrawHelper {
     }
 
 
-    @JoinMemcache
-    public List<Map> drawLog() {
-        return sysLuckyDrawRecordRepository.queryDrawLog();
+    @JoinMemcache()
+    public List<Map<Object, Object>> drawLog() {
+        List<Map<Object, Object>> objects = new ArrayList<>();
+        List<Map> maps = sysLuckyDrawRecordRepository.queryDrawLog();
+        if (CollectionUtils.isNotEmpty(maps)) {
+            maps.forEach(x -> {
+                objects.add(new HashMap<>(x));
+            });
+        }
+        return objects;
     }
 
 
@@ -632,7 +636,7 @@ public class LuckyDrawHelper {
      * @create by 王星齐
      * @time 2021-03-16 14:13:48
      */
-    @JoinMemcache
+    @JoinMemcache()
     public List<SysSettingAward> findAllAward() {
         return sysSettingAwardRepository.findAll();
     }

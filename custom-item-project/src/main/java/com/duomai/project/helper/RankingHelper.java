@@ -34,7 +34,7 @@ public class RankingHelper {
      * @create by 王星齐
      * @time 2020-11-08 18:28:06
      */
-    @JoinMemcache
+    @JoinMemcache()
     public PageListDto<SysCustomRanking> rankingList(int rankSize) {
         PageListDto<SysCustomRanking> pageListDto = new PageListDto<>();
         pageListDto.setPageSize(rankSize);
