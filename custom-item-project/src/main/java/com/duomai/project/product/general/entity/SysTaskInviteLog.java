@@ -31,19 +31,19 @@ public class SysTaskInviteLog  implements Serializable {
     @Column(columnDefinition = "varchar(10) COMMENT '邀请时间，yyyy-MM-dd格式'")
     private String inviteTime;
 
-    @Column(columnDefinition = "varchar(64) COMMENT '邀请人mix'")
+    @Column(columnDefinition = "varchar(100) COMMENT '邀请人mix'")
     private String mixInviter;
 
-    @Column(columnDefinition = "varchar(64) COMMENT '邀请人'")
+    @Column(columnDefinition = "varchar(100) COMMENT '邀请人'")
     private String inviter;
 
     @Column(columnDefinition = "varchar(255) COMMENT '被邀请人头像'")
     private String inviterImg;
 
-    @Column(columnDefinition = "varchar(64) COMMENT '被邀请人mix'")
+    @Column(columnDefinition = "varchar(100) COMMENT '被邀请人mix'")
     private String mixInvitee;
 
-    @Column(columnDefinition = "varchar(64) COMMENT '被邀请人'")
+    @Column(columnDefinition = "varchar(100) COMMENT '被邀请人'")
     private String invitee;
 
     @Column(columnDefinition = "varchar(255) COMMENT '被邀请人头像'")

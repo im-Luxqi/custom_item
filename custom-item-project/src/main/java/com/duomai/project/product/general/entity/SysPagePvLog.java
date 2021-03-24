@@ -26,7 +26,7 @@ public class SysPagePvLog  implements Serializable {
     private String id;
     @Column(nullable = false, columnDefinition = "DATETIME COMMENT '创建时间'")
     private Date createTime;
-    @Column(nullable = false, columnDefinition = "varchar(64) COMMENT '用户混淆昵称'")
+    @Column(nullable = false, columnDefinition = "varchar(100) COMMENT '用户混淆昵称'")
     private String buyerNick;
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(20) COMMENT '具体的页面标识'")

@@ -29,7 +29,7 @@ public class SysCustom  implements Serializable {
     private Date createTime;
     @Column(columnDefinition = "DATETIME COMMENT '更新时间'")
     private Date updateTime;
-    @Column(nullable = false, columnDefinition = "varchar(64) COMMENT '用户混淆昵称'")
+    @Column(nullable = false, columnDefinition = "varchar(100) COMMENT '用户混淆昵称'")
     private String buyerNick;
     @Column(columnDefinition = "varchar(64) COMMENT '用户openID'")
     private String openId;

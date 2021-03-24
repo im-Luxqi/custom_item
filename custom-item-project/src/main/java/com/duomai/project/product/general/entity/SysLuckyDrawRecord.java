@@ -34,7 +34,7 @@ public class SysLuckyDrawRecord  implements Serializable {
     private String playerHeadImg;
     @Column(columnDefinition = "varchar(64) COMMENT '玩家混淆昵称'")
     private String playerBuyerNick;
-    @Column(columnDefinition = "varchar(64) COMMENT '玩家真实昵称'")
+    @Column(columnDefinition = "varchar(100) COMMENT '玩家真实昵称'")
     private String playerZnick;
 
 

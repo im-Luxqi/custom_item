@@ -387,31 +387,40 @@ public class LuckyDrawHelper {
         AwardUseWayEnum cardType;
         switch (taskType) {
             case FREE:
-                cardType = AwardUseWayEnum.CARD_ONE;
-                break;
-            case SIGN:
+//                cardType = AwardUseWayEnum.CARD_ONE;
                 cardType = AwardUseWayEnum.CARD_TWO;
                 break;
-            case MEMBER:
+            case SIGN:
+//                cardType = AwardUseWayEnum.CARD_TWO;
                 cardType = AwardUseWayEnum.CARD_THREE;
                 break;
+            case MEMBER:
+//                cardType = AwardUseWayEnum.CARD_THREE;
+                cardType = AwardUseWayEnum.CARD_NINE;
+                break;
             case FOLLOW:
-                cardType = AwardUseWayEnum.CARD_FOUR;
-                break;
-            case SHARE:
-                cardType = AwardUseWayEnum.CARD_FIVE;
-                break;
-            case TV:
+//                cardType = AwardUseWayEnum.CARD_FOUR;
                 cardType = AwardUseWayEnum.CARD_SIX;
                 break;
-            case SHARE_MEMBER:
-                cardType = AwardUseWayEnum.CARD_SEVEN;
-                break;
-            case BROWSE:
+            case SHARE:
+//                cardType = AwardUseWayEnum.CARD_FIVE;
                 cardType = AwardUseWayEnum.CARD_EIGHT;
                 break;
+            case TV:
+                cardType = AwardUseWayEnum.CARD_TWO;
+//                cardType = AwardUseWayEnum.CARD_SIX;
+                break;
+            case SHARE_MEMBER:
+//                cardType = AwardUseWayEnum.CARD_SEVEN;
+                cardType = AwardUseWayEnum.CARD_FIVE;
+                break;
+            case BROWSE:
+//                cardType = AwardUseWayEnum.CARD_EIGHT;
+                cardType = AwardUseWayEnum.CARD_FOUR;
+                break;
             case SHARE_FOLLOW:
-                cardType = AwardUseWayEnum.CARD_NINE;
+//                cardType = AwardUseWayEnum.CARD_NINE;
+                cardType = AwardUseWayEnum.CARD_SEVEN;
                 break;
             case ORDER:
                 cardType = AwardUseWayEnum.randomType(AwardUseWayEnum.values());
