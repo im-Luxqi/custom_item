@@ -54,6 +54,10 @@ public class TestKillChanceExecute implements IApiExecute {
 
 
     @Autowired
+    private SysTaskDailyBoardRepository sysTaskDailyBoardRepository;
+
+
+    @Autowired
     private ICusOrderInfoService cusOrderInfoService;
 
 
@@ -78,7 +82,7 @@ public class TestKillChanceExecute implements IApiExecute {
         sysTaskShareLogRepository.deleteByMixShareder(buyerNick);
         sysTaskShareLogRepository.deleteByMixSharer(buyerNick);
         sysTaskSignLogRepository.deleteByBuyerNick(buyerNick);
-
+        sysTaskDailyBoardRepository.deleteByBuyerNick(buyerNick);
         cusOrderInfoService.delete().eq(CusOrderInfo::getBuyerNick, buyerNick);
 
         return YunReturnValue.ok("恭喜【" + buyerNick + "】被kill");

@@ -50,4 +50,16 @@ public class ActBaseSettingDto implements Serializable {
      */
     private Integer taskBrowseShouldSee;
 
+
+    /**
+     * 完成一次分享任务需要邀请几个人
+     */
+    private Integer taskShareShould;
+
+
+
+    /**
+     * 完成一次分享关注任务需要邀请几个人
+     */
+    private Integer taskShareFollowShould;
 }

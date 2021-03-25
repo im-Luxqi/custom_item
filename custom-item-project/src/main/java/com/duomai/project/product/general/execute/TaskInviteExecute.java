@@ -8,6 +8,7 @@ import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.helper.FinishTheTaskHelper;
 import com.duomai.project.helper.LuckyDrawHelper;
 import com.duomai.project.helper.ProjectHelper;
+import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysTaskDailyBoard;
 import com.duomai.project.product.general.entity.SysTaskInviteLog;
@@ -80,17 +81,18 @@ public class TaskInviteExecute implements IApiExecute {
         InviteTypeEnum invite_type = inviteType;
         String invite_flag_img = "";
         String invite_flag_msg = "";
-
+        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         switch (inviteType) {
             case INVITE_COMMON:
                 //校验分享情况
-                long inviteTime = luckyDrawHelper.countTodayLuckyChanceFrom(inviter, LuckyChanceFromEnum.SHARE);
-                if (inviteTime >= 2) {
-                    invite_flag = false;
-                    invite_flag_img = invite_error_img;
-                    invite_flag_msg = "您今日的好友助力次数已达上限无法为好友助力，明天再来吧~";
-                    break;
-                }
+//                long inviteTime = luckyDrawHelper.countTodayLuckyChanceFrom(inviter, LuckyChanceFromEnum.SHARE);
+//                long inviteTime = luckyDrawHelper.countTodayLuckyChanceFrom(inviter, LuckyChanceFromEnum.SHARE);
+//                if (inviteTime >= 2) {
+//                    invite_flag = false;
+//                    invite_flag_img = invite_error_img;
+//                    invite_flag_msg = "您今日的好友助力次数已达上限无法为好友助力，明天再来吧~";
+//                    break;
+//                }
                 long l = sysTaskShareLogRepository.countByMixSharerAndHaveSuccessAndShareTimeAndMixShareder(inviter, BooleanConstant.BOOLEAN_YES, todayString, buyerNick);
                 if (l > 0) {
                     invite_flag = false;
@@ -98,6 +100,14 @@ public class TaskInviteExecute implements IApiExecute {
                     invite_flag_msg = "您已经帮TA助力，一起参与活动赢好礼吧~";
                     break;
                 }
+                long ll = sysTaskShareLogRepository.countByMixSharederAndHaveSuccessAndShareTime(buyerNick, BooleanConstant.BOOLEAN_YES, todayString);
+                if (ll >= 0) {
+                    invite_flag = false;
+                    invite_flag_img = invite_error_img;
+                    invite_flag_msg = "您今日的好友助力次数已达上限无法为好友助力，明天再来吧~";
+                    break;
+                }
+
                 //记录分享日志
                 SysTaskShareLog sysInviteLog = new SysTaskShareLog()
                         .setCreateTime(sysParm.getRequestStartTime())
@@ -113,13 +123,13 @@ public class TaskInviteExecute implements IApiExecute {
 
                 long inviteNum = sysTaskShareLogRepository.countByMixSharerAndHaveSuccess(inviter, BooleanConstant.BOOLEAN_YES);
                 SysTaskDailyBoard taskDailyBoard = finishTheTaskHelper.todayTaskBoard(inviter);
-                taskDailyBoard.setTodayFinishShareNum("(" + (inviteTime) + "/" + 2 + ")");
-                Integer taskShouldInvite = 5;
+//                taskDailyBoard.setTodayFinishShareNum("(" + (inviteTime) + "/" + 2 + ")");
+                Integer taskShouldInvite = actBaseSettingDto.getTaskShareShould();
                 if (inviteNum % taskShouldInvite == 0) {
                     Integer thisGet = 1;
                     luckyDrawHelper.sendCard(inviter, LuckyChanceFromEnum.SHARE, thisGet,
                             "恭喜你！分享成功");
-                    taskDailyBoard.setTodayFinishShareNum("(" + (inviteTime + 1) + "/" + 2 + ")");
+//                    taskDailyBoard.setTodayFinishShareNum("(" + (inviteTime + 1) + "/" + 2 + ")");
                 }
                 taskDailyBoard.setShareProgress("(" + (inviteNum % taskShouldInvite) + "/" + taskShouldInvite + ")");
                 finishTheTaskHelper.updateTaskBoard(taskDailyBoard);
@@ -167,7 +177,7 @@ public class TaskInviteExecute implements IApiExecute {
                 long inviteFollowNum = sysTaskInviteLogRepository.countByInviteTypeAndMixInviterAndHaveSuccess(InviteTypeEnum.INVITE_FOLLOW, inviter, BooleanConstant.BOOLEAN_YES);
 
 
-                Integer taskShouldInviteFollow = 3;
+                Integer taskShouldInviteFollow = actBaseSettingDto.getTaskShareFollowShould();
                 if (inviteFollowNum % taskShouldInviteFollow == 0) {
                     Integer thisGet = 1;
                     luckyDrawHelper.sendCard(inviter, LuckyChanceFromEnum.SHARE_FOLLOW, thisGet,

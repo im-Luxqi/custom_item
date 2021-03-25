@@ -1,5 +1,6 @@
 package com.duomai.project.api.taobao;
 
+import com.alibaba.fastjson.JSON;
 import com.duomai.project.api.taobao.enums.TaoBaoTradeStatus;
 import com.duomai.project.configuration.SysCustomProperties;
 import com.taobao.api.ApiException;
@@ -92,18 +93,39 @@ public class TaobaoAPIServiceImpl implements ITaobaoAPIService {
         req.setAppName(sysCustomProperties.getCustomConfig().getAppName());//商家来源身份标识
         req.setUserType("taobao");
         req.setIp("");
-        return client.execute(req, sysCustomProperties.getCustomConfig().getSessionkey());
+        AlibabaBenefitSendResponse execute = client.execute(req, sysCustomProperties.getCustomConfig().getSessionkey());
+
+        log.info("----------------------->调用发放优惠券方法");
+        log.info("----------------------->调用发放优惠券方法");
+        log.info("----------------------->调用发放优惠券方法");
+        log.info("----------------------->openId:"+openId);
+        log.info("----------------------->ename:"+ename);
+        log.info("----------------------->appKey:"+sysCustomProperties.getCustomConfig().getAppkey());
+        log.info("----------------------->sessionKey:"+sysCustomProperties.getCustomConfig().getSessionkey());
+        log.info("----------------------->result:"+ JSON.toJSONString(execute));
+        return execute;
     }
 
     @Override
     public CrmPointChangeResponse changePoint(String buyerNick, Long point) throws Exception {
         CrmPointChangeRequest req = new CrmPointChangeRequest();
+
+
         //手工调整
         req.setChangeType(1L);
         req.setOptType(0L);
         req.setQuantity(point);
         req.setRemark("积分变动：增加积分");
         req.setMixNick(buyerNick);
-        return client.execute(req, sysCustomProperties.getCustomConfig().getSessionkey());
+        CrmPointChangeResponse execute = client.execute(req, sysCustomProperties.getCustomConfig().getSessionkey());
+        log.info("----------------------->调用发放积分方法");
+        log.info("----------------------->调用发放积分方法");
+        log.info("----------------------->调用发放积分方法");
+        log.info("----------------------->buyerNick:"+buyerNick);
+        log.info("----------------------->point:"+point);
+        log.info("----------------------->appKey:"+sysCustomProperties.getCustomConfig().getAppkey());
+        log.info("----------------------->sessionKey:"+sysCustomProperties.getCustomConfig().getSessionkey());
+        log.info("----------------------->result:"+ JSON.toJSONString(execute));
+        return execute;
     }
 }

@@ -21,6 +21,8 @@ public class YunTokenParameter {
     private String buyerNick;
     @ParamName("user_nick")
     private String userNick;
+    @ParamName("access_token")
+    private String accessToken;
     private String dmZNick;
     private String dmAvatar;
 

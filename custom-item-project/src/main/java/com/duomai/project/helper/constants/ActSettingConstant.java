@@ -27,4 +27,16 @@ public interface ActSettingConstant {
     String TASK_BROWSE_SHOULD_SEE = "task_browse_should_see";
 
 
+   /**
+     * 完成一次分享任务需要邀请几个人
+     */
+    String TASK_SHARE_SHOULD = "task_share_should";
+
+
+   /**
+     * 完成一次分享关注任务需要邀请几个人
+     */
+    String TASK_SHARE_FOLLOW_SHOULD = "task_share_follow_should";
+
+
 }

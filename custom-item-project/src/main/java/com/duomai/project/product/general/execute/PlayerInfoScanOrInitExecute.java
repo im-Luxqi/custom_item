@@ -5,8 +5,11 @@ import com.duomai.common.constants.BooleanConstant;
 import com.duomai.common.dto.ApiSysParameter;
 import com.duomai.common.dto.YunReturnValue;
 import com.duomai.project.api.taobao.ITaobaoAPIService;
+import com.duomai.project.helper.LuckyDrawHelper;
+import com.duomai.project.helper.ProjectHelper;
 import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.enums.FollowWayFromEnum;
+import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.general.enums.MemberWayFromEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,11 @@ public class PlayerInfoScanOrInitExecute implements IApiExecute {
 
     @Autowired
     private SysCustomRepository sysCustomRepository;
+    @Autowired
+    private ProjectHelper projectHelper;
+    @Autowired
+    private LuckyDrawHelper luckyDrawHelper;
+
     @Resource
     private ITaobaoAPIService taobaoAPIService;
 

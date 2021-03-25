@@ -12,7 +12,10 @@ import com.duomai.project.product.general.entity.SysCustom;
 import com.duomai.project.product.general.entity.SysLuckyChance;
 import com.duomai.project.product.general.entity.SysPagePvLog;
 import com.duomai.project.product.general.entity.SysSettingAward;
-import com.duomai.project.product.general.enums.*;
+import com.duomai.project.product.general.enums.AwardTypeEnum;
+import com.duomai.project.product.general.enums.AwardUseWayEnum;
+import com.duomai.project.product.general.enums.InviteTypeEnum;
+import com.duomai.project.product.general.enums.PvPageEnum;
 import com.duomai.project.product.general.repository.SysCustomRepository;
 import com.duomai.project.product.general.repository.SysLuckyDrawRecordRepository;
 import com.duomai.project.product.general.repository.SysPagePvLogRepository;
@@ -94,12 +97,12 @@ public class GameIndexLoadExecute implements IApiExecute {
             }
 
             //首次登录游戏免费送一次
-            long l = luckyDrawHelper.countLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.FREE);
-            if (l == 0) {
-                int getNum = 1;
-                luckyDrawHelper.sendCard(buyerNick, LuckyChanceFromEnum.FREE, getNum,
-                        "恭喜你！免费登陆成功");
-            }
+//            long l = luckyDrawHelper.countLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.FREE);
+//            if (l == 0) {
+//                int getNum = 1;
+//                luckyDrawHelper.sendCard(buyerNick, LuckyChanceFromEnum.FREE, getNum,
+//                        "恭喜你！免费登陆成功");
+//            }
 
 
             //获得未使用的所有卡牌

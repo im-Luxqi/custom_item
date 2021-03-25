@@ -2,6 +2,7 @@ package com.duomai.project.product.general.repository;
 
 import com.duomai.common.framework.jpa.BaseRepository;
 import com.duomai.project.product.general.entity.SysTaskDailyBoard;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author 王星齐
@@ -15,4 +16,7 @@ public interface SysTaskDailyBoardRepository extends BaseRepository<SysTaskDaily
      * @param buyerNick
      **/
     SysTaskDailyBoard findFirstByBuyerNickOrderByCreateTimeDesc(String buyerNick);
+
+    @Transactional
+    void deleteByBuyerNick(String buyerNick);
 }

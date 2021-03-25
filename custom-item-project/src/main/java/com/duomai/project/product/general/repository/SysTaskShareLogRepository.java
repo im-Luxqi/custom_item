@@ -48,4 +48,6 @@ public interface SysTaskShareLogRepository extends BaseRepository<SysTaskShareLo
      * @return
      */
     long countByMixSharerAndHaveSuccess(String inviter, Integer booleanYes);
+
+    long countByMixSharederAndHaveSuccessAndShareTime(String inviter, Integer booleanYes, String todayString);
 }

@@ -3,6 +3,7 @@ package com.duomai.project.helper;
 import com.duomai.common.constants.BooleanConstant;
 import com.duomai.project.api.taobao.MemcacheTools;
 import com.duomai.project.configuration.annotation.JoinMemcache;
+import com.duomai.project.product.general.dto.ActBaseSettingDto;
 import com.duomai.project.product.general.entity.SysSettingCommodity;
 import com.duomai.project.product.general.entity.SysTaskDailyBoard;
 import com.duomai.project.product.general.repository.SysSettingCommodityRepository;
@@ -28,6 +29,8 @@ public class FinishTheTaskHelper {
     private SysSettingCommodityRepository sysSettingCommodityRepository;
     @Autowired
     private SysTaskDailyBoardRepository sysTaskDailyBoardRepository;
+    @Autowired
+    private ProjectHelper projectHelper;
 
     /* 获取今日任务面板
      * @description
@@ -47,6 +50,7 @@ public class FinishTheTaskHelper {
             return taskDailyBoard;
         }
 
+        ActBaseSettingDto actBaseSettingDto = projectHelper.actBaseSettingFind();
         String yestodayString = CommonDateParseUtil.date2string(CommonDateParseUtil.addDay(date, -1), "yyyy-MM-dd");
         Integer signTotalNum = taskDailyBoard != null ? taskDailyBoard.getSignTotalNum() : 0;
         Integer signContinuousNum = taskDailyBoard != null && yestodayString.equals(taskDailyBoard.getCreateTimeString()) ? taskDailyBoard.getSignContinuousNum() : 0;
@@ -67,8 +71,8 @@ public class FinishTheTaskHelper {
                 .setHaveFinishTvToday(BooleanConstant.BOOLEAN_NO)
                 .setHaveFinishSpendToday(BooleanConstant.BOOLEAN_NO)
                 .setTodayFinishShareNum("(0/2)")
-                .setShareProgress("(0/5)")
-                .setBrowseProgress("(0/3)")
+                .setShareProgress("(0/"+actBaseSettingDto.getTaskShareShould() +")")
+                .setBrowseProgress("(0/"+actBaseSettingDto.getTaskBrowseShouldSee()+")")
                 .setSpendProgress("(0/3)")
         );
         return todayBoard;

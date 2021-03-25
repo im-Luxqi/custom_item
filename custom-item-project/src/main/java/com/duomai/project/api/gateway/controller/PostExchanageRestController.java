@@ -46,9 +46,45 @@ public class PostExchanageRestController extends BaseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/router/test")
-    public YunReturnValue test2() {
+    public YunReturnValue test2(YunTokenParameter yunTokenParameter) {
+//        if (yunTokenParameter != null) {
+//            log.info("--------------yunTokenParameter not null---------------");
+//            log.info("token:-------------->");
+//            log.info("token:-------------->");
+//            log.info("token:-------------->");
+//            log.info(yunTokenParameter.getAccessToken());
+//
+//            log.info("all JSON :-------------->");
+//            log.info(JSON.toJSONString(yunTokenParameter));
+//        }else {
+//            log.info("--------------yunTokenParameter is null---------------");
+//        }
+
+        log.info("----------token---->" + sysCustomProperties.getCustomConfig().getSessionkey());
+
+
         return YunReturnValue.ok("云应用存活检测");
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/router/test3")
+    public YunReturnValue test3(YunTokenParameter yunTokenParameter) {
+        if (yunTokenParameter != null) {
+            log.info("--------------yunTokenParameter not null---------------");
+            log.info("token:-------------->");
+            log.info("token:-------------->");
+            log.info("token:-------------->");
+            log.info(yunTokenParameter.getAccessToken());
+
+            log.info("all JSON :-------------->");
+            log.info(JSON.toJSONString(yunTokenParameter));
+        } else {
+            log.info("--------------yunTokenParameter is null---------------");
+        }
+
+        return YunReturnValue.ok("token:----->" + yunTokenParameter.getAccessToken());
+    }
+
 
     /**
      * 云应用存活检测

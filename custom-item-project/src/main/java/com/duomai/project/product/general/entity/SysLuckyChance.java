@@ -60,6 +60,8 @@ public class SysLuckyChance  implements Serializable {
     private String notificationTitle;
     @Column(columnDefinition = "varchar(255)  COMMENT '消息内容'")
     private String notificationContent;
+    @Column(columnDefinition = "text  COMMENT '消息图片'")
+    private String notificationImg;
 
     @Column(nullable = false, columnDefinition = "int(1)  COMMENT '是否成功'")
     private Integer haveSuccess;

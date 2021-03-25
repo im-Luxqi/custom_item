@@ -80,7 +80,7 @@ public class TaskDashboardExecute implements IApiExecute {
         //4.分享任务
         Map<String, Object> shareMap = new LinkedHashMap<>();
         shareMap.put("task", LuckyChanceFromEnum.SHARE);
-        shareMap.put("title", "分享活动" + dailyBoard.getTodayFinishShareNum());
+        shareMap.put("title", "分享活动");
         shareMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon2.png");
         shareMap.put("explain", "用户每成功邀请5位好友参加活动，有机会获得1块拼图碎片");
         shareMap.put("finish", false);

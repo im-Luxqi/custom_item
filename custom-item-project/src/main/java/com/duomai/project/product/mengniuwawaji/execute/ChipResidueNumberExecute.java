@@ -52,6 +52,7 @@ public class ChipResidueNumberExecute implements IApiExecute {
                 x.setTid(null);
                 x.setTidTime(null);
                 x.setHaveNotification(null);
+                x.setNotificationImg(null);
                 x.setNotificationContent(null);
                 x.setNotificationTitle(null);
             });

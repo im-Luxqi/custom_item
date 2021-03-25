@@ -105,15 +105,54 @@ public class LuckyDrawHelper {
                     .setTid(tid)
                     .setCardType(cardType)
                     .setHaveNotification(BooleanConstant.BOOLEAN_YES)
+                    .setCardImg(cardImg)
+                    .setNotificationImg("---")
                     .setNotificationContent("---");
             if (i == 0) {
-                sysLuckyChance.setCardImg(cardImg);
                 sysLuckyChance.setNotificationContent(messageContent);
                 sysLuckyChance.setHaveNotification(BooleanConstant.BOOLEAN_NO);
+                sysLuckyChance.setNotificationImg(cardImg);
             }
             return sysLuckyChance;
         }).collect(Collectors.toList());
         return sysLuckyChanceRepository.saveAll(collect);
+    }
+
+    @Transactional
+    public List<SysLuckyChance> sendLuckyChance(String buyerNick, LuckyChanceFromEnum taskType, List<AwardUseWayEnum> cardTypes, String tid, String message) {
+
+        List<SysSettingAward> all = findAllAward();
+        Map<AwardUseWayEnum, List<SysSettingAward>> collect = all.stream().collect(Collectors.groupingBy(SysSettingAward::getUseWay));
+        Date sendTime = new Date();
+
+        List<SysLuckyChance> chances = new ArrayList<>();
+        SysLuckyChance notificationChance = null;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < cardTypes.size(); i++) {
+            AwardUseWayEnum awardUseWayEnum = cardTypes.get(i);
+            SysLuckyChance sysLuckyChance = new SysLuckyChance().setBuyerNick(buyerNick)
+                    .setHaveSuccess(BooleanConstant.BOOLEAN_YES)
+                    .setChanceFrom(taskType)
+                    .setGetTime(sendTime)
+                    .setGetTimeString(CommonDateParseUtil.date2string(sendTime, "yyyy-MM-dd"))
+                    .setTidTime(sendTime)
+                    .setIsUse(BooleanConstant.BOOLEAN_NO)
+                    .setTid(tid)
+                    .setCardType(awardUseWayEnum)
+                    .setHaveNotification(BooleanConstant.BOOLEAN_YES)
+                    .setCardImg(collect.get(awardUseWayEnum).get(0).getImg())
+                    .setNotificationContent("---");
+            if (i == 0) {
+                sysLuckyChance.setNotificationContent(message);
+                sysLuckyChance.setHaveNotification(BooleanConstant.BOOLEAN_NO);
+                notificationChance = sysLuckyChance;
+            }
+            chances.add(sysLuckyChance);
+            stringBuilder.append(sysLuckyChance.getCardImg()).append(",");
+        }
+        notificationChance.setNotificationImg(stringBuilder.toString());
+
+        return sysLuckyChanceRepository.saveAll(chances);
     }
 
 
@@ -447,6 +486,19 @@ public class LuckyDrawHelper {
         if (sendNum <= 0) {
             return;
         }
+
+        //订单单独处理
+        if (taskType.equals(LuckyChanceFromEnum.ORDER)) {
+
+            List<AwardUseWayEnum> cardTypes = new ArrayList<>();
+            while (sendNum > 0) {
+                cardTypes.add(taskType2CardType(taskType));
+                sendNum--;
+            }
+            sendLuckyChance(buyerNick, taskType, cardTypes, tid, message);
+        }
+
+
         AwardUseWayEnum cardType = taskType2CardType(taskType);
         /*本次抽奖中的奖品*/
         SysSettingAward award = sysSettingAwardRepository.findFirstByUseWay(cardType);

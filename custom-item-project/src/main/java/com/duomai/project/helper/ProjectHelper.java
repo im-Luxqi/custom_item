@@ -53,6 +53,9 @@ public class ProjectHelper {
                 .setActEndTime(CommonDateParseUtil.getEndTimeOfDay(CommonDateParseUtil.string2date(collect.get(ActSettingConstant.ACT_END_TIME), CommonDateParseUtil.YYYY_MM_DD)))
                 .setTaskBrowseShouldSee(Integer.valueOf(collect.get(ActSettingConstant.TASK_BROWSE_SHOULD_SEE)))
                 .setTaskSign(signWinDtos)
+                .setTaskShareShould(Integer.valueOf(collect.get(ActSettingConstant.TASK_SHARE_SHOULD)))
+                .setTaskShareFollowShould(Integer.valueOf(collect.get(ActSettingConstant.TASK_SHARE_FOLLOW_SHOULD)))
+                .setTaskSign(signWinDtos)
                 ;
     }
 

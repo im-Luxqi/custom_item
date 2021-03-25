@@ -52,6 +52,8 @@ public class QLApiExecuteHandler {
          */
         //卡牌获取通知
         map.put("wx.dz.game.index.notification", LuckyNewChangeGetExecute.class);
+        //任务--首次赠送
+        map.put("wx.dz.game.task.free", TaskFreeExecute.class);
         //任务--每日签到
         map.put("wx.dz.game.task.sign", TaskSignExecute.class);
         //任务--成为会员

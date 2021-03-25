@@ -53,8 +53,8 @@ public class AddressInfoFillDto {
     @NotBlank(message = "收件人地址 省 receviceProvince不能为空")
     @Length(max = 64, message = "收件人地址 省 不超过64个字符")
     private String receviceProvince;
-//    @NotBlank(message = "收件人地址 区 receviceDistrict不能为空")
-//    @Length(max = 64, message = "收件人地址 区 不超过64个字符")
+    @NotBlank(message = "收件人地址 区 receviceDistrict不能为空")
+    @Length(max = 64, message = "收件人地址 区 不超过64个字符")
     private String receviceDistrict;
     @Length(max = 140, message = "详细地址不超过140个字符")
     @NotBlank(message = "收件人地址 详细地址 不能为空")
