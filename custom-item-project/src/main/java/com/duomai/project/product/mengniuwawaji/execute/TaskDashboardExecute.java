@@ -48,7 +48,7 @@ public class TaskDashboardExecute implements IApiExecute {
         signMap.put("task", LuckyChanceFromEnum.SIGN);
         signMap.put("title", "每日打卡");
         signMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon0.png");
-        signMap.put("explain", "用户累计签到一定天数，有机会获得一定拼图碎片");
+        signMap.put("explain", "累计签到相应天数，有机会获得对应碎片");
         signMap.put("finish", BooleanConstant.BOOLEAN_YES.equals(dailyBoard.getHaveFinishSignToday()));
         signMap.put("task_end", taskFinish);
         signMap.put("sign_condition", config.getTaskSign());
@@ -61,7 +61,7 @@ public class TaskDashboardExecute implements IApiExecute {
         attentionMap.put("task", LuckyChanceFromEnum.FOLLOW);
         attentionMap.put("title", "关注店铺");
         attentionMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon1.png");
-        attentionMap.put("explain", "成功关注店铺，可以获得1块拼图碎片。");
+        attentionMap.put("explain", "关注店铺可获得1块碎片");
         attentionMap.put("finish", BooleanConstant.BOOLEAN_YES.equals(dailyBoard.getHaveFinishFollow()));
         attentionMap.put("task_end", taskFinish);
         resultList.add(attentionMap);
@@ -82,7 +82,7 @@ public class TaskDashboardExecute implements IApiExecute {
         shareMap.put("task", LuckyChanceFromEnum.SHARE);
         shareMap.put("title", "分享活动");
         shareMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon2.png");
-        shareMap.put("explain", "用户每成功邀请5位好友参加活动，有机会获得1块拼图碎片");
+        shareMap.put("explain", "每邀请5位好友参与活动，有机会获得1块碎片");
         shareMap.put("finish", false);
         shareMap.put("progress", dailyBoard.getShareProgress());
         shareMap.put("task_end", taskFinish);
@@ -94,7 +94,7 @@ public class TaskDashboardExecute implements IApiExecute {
         shareFollowMap.put("task", LuckyChanceFromEnum.SHARE_FOLLOW);
         shareFollowMap.put("title", "邀请好友关注店铺");
         shareFollowMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon2.png");
-        shareFollowMap.put("explain", "用户每日成功邀请3位好友关注店铺，有机会获得1块拼图碎片");
+        shareFollowMap.put("explain", "每邀请3位好友关注，有机会获得1块碎片");
         shareFollowMap.put("finish", false);
         shareFollowMap.put("progress", dailyBoard.getInviteFollowProgress());
         shareFollowMap.put("task_end", taskFinish);
@@ -106,7 +106,7 @@ public class TaskDashboardExecute implements IApiExecute {
         shareMemberMap.put("task", LuckyChanceFromEnum.SHARE_MEMBER);
         shareMemberMap.put("title", "邀请好友加入会员");
         shareMemberMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon2.png");
-        shareMemberMap.put("explain", "用户每成功邀请1位好友注册成为会员，有机会获得1块拼图碎片");
+        shareMemberMap.put("explain", "每邀请1位好友加入会员，有机会获得1块碎片");
         shareMemberMap.put("finish", false);
         shareMemberMap.put("progress", dailyBoard.getInviteFollowProgress());
         shareMemberMap.put("task_end", taskFinish);
@@ -118,7 +118,7 @@ public class TaskDashboardExecute implements IApiExecute {
         browseMap.put("task", LuckyChanceFromEnum.BROWSE);
         browseMap.put("title", "每日浏览宝贝");
         browseMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon3.png");
-        browseMap.put("explain", "用户每日浏览至少3款商品，浏览时长至少10s，有机会获得1块拼图碎片");
+        browseMap.put("explain", "浏览3个宝贝至少15s，有机会获得1块碎片");
         browseMap.put("finish", BooleanConstant.BOOLEAN_YES.equals(dailyBoard.getHaveFinishBrowseToday()));
         browseMap.put("task_end", taskFinish);
         browseMap.put("progress", dailyBoard.getBrowseProgress());
@@ -131,7 +131,7 @@ public class TaskDashboardExecute implements IApiExecute {
         tvMap.put("task", LuckyChanceFromEnum.TV);
         tvMap.put("title", "观看直播");
         tvMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon4.png");
-        tvMap.put("explain", "用户每日观看直播至少15s，有机会获得1块拼图碎片");
+        tvMap.put("explain", "观看直播至少20s，有机会获得1块碎片");
         tvMap.put("finish", BooleanConstant.BOOLEAN_YES.equals(dailyBoard.getHaveFinishTvToday()));
         tvMap.put("task_end", taskFinish);
         resultList.add(tvMap);
@@ -141,10 +141,10 @@ public class TaskDashboardExecute implements IApiExecute {
         orderMap.put("task", LuckyChanceFromEnum.ORDER);
         orderMap.put("title", "每日消费" + dailyBoard.getSpendProgress());
         orderMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon6.png");
-        orderMap.put("explain", "用户购买指定商品可获得5块拼图碎片，每天最多通过该任务获得15块拼图碎片");
+        orderMap.put("explain", "每单赠送5块碎片，每日最多可获得15块碎片");
         orderMap.put("finish", BooleanConstant.BOOLEAN_YES.equals(dailyBoard.getHaveFinishSpendToday()));
         orderMap.put("task_end", taskFinish);
         resultList.add(orderMap);
-        return YunReturnValue.ok(resultList, "任务页面");
+        return YunReturnValue.ok(resultList, "任务\n页面");
     }
 }

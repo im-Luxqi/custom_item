@@ -96,40 +96,35 @@ public class GameIndexLoadExecute implements IApiExecute {
                 resultMap.put("alter_for_invitee_msg", "我正在参加蒙牛的收集拼图活动，需要1位好友助力，请帮我助力赢大奖~");
             }
 
-            //首次登录游戏免费送一次
-//            long l = luckyDrawHelper.countLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.FREE);
-//            if (l == 0) {
-//                int getNum = 1;
-//                luckyDrawHelper.sendCard(buyerNick, LuckyChanceFromEnum.FREE, getNum,
-//                        "恭喜你！免费登陆成功");
-//            }
-
-
             //获得未使用的所有卡牌
             sysLuckyChances = luckyDrawHelper.unUseLuckyChance(buyerNick);
-            List<SysLuckyChance> jigsaw = luckyDrawHelper.jigsawCheck(sysLuckyChances);
+            List<SysLuckyChance> tempRemove = new ArrayList<>();
+            List<SysLuckyChance> jigsaw = luckyDrawHelper.jigsawCheck(sysLuckyChances,tempRemove);
             if (!CollectionUtils.isEmpty(jigsaw)) {
 
                 List<SysSettingAward> thisTimeAwardPool = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.JIGSAW);
 
-                long l1 = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndAwardId(buyerNick, thisTimeAwardPool.get(0).getId());
-                if (l1 == 0) {
-                    SysSettingAward winAward = luckyDrawHelper.luckyDraw(thisTimeAwardPool, jigsaw,
-                            syscustom, sysParm.getRequestStartTime());
+                if (thisTimeAwardPool.get(0).getRemainNum() > 0) {
+                    long l1 = sysLuckyDrawRecordRepository.countByPlayerBuyerNickAndAwardId(buyerNick, thisTimeAwardPool.get(0).getId());
+                    if (l1 == 0) {
+                        SysSettingAward winAward = luckyDrawHelper.luckyDraw(thisTimeAwardPool, jigsaw,
+                                syscustom, sysParm.getRequestStartTime());
 
-                    /*只反馈有效数据*/
-                    resultMap.put("jigsaw_win", !Objects.isNull(winAward));
-                    resultMap.put("jigsaw_award", winAward);
-                    if (!Objects.isNull(winAward)) {
-                        winAward.setEname(null)
-                                .setId(null)
-                                .setRemainNum(null)
-                                .setSendNum(null)
-                                .setTotalNum(null)
-                                .setLuckyValue(null)
-                                .setUseWay(null)
-                                .setMaxCanGet(null)
-                                .setPoolLevel(null);
+                        /*只反馈有效数据*/
+                        resultMap.put("jigsaw_win", !Objects.isNull(winAward));
+                        resultMap.put("jigsaw_award", winAward);
+                        if (!Objects.isNull(winAward)) {
+                            sysLuckyChances.removeAll(tempRemove);
+                            winAward.setEname(null)
+                                    .setId(null)
+                                    .setRemainNum(null)
+                                    .setSendNum(null)
+                                    .setTotalNum(null)
+                                    .setLuckyValue(null)
+                                    .setUseWay(null)
+                                    .setMaxCanGet(null)
+                                    .setPoolLevel(null);
+                        }
                     }
                 }
             }
@@ -150,7 +145,7 @@ public class GameIndexLoadExecute implements IApiExecute {
             award.setLuckyValue(null);
             award.setDescription(null);
             award.setPoolLevel(null);
-            award.setRemainNum(null);
+//            award.setRemainNum(null);
             award.setSendNum(null);
             award.setTotalNum(null);
             award.setMaxCanGet(null);

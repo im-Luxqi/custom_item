@@ -60,7 +60,7 @@ public class PostExchanageRestController extends BaseRestController {
 //            log.info("--------------yunTokenParameter is null---------------");
 //        }
 
-        log.info("----------token---->" + sysCustomProperties.getCustomConfig().getSessionkey());
+//        log.info("----------token---->" + sysCustomProperties.getCustomConfig().getSessionkey());
 
 
         return YunReturnValue.ok("云应用存活检测");

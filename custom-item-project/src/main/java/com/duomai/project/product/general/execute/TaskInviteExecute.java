@@ -101,10 +101,10 @@ public class TaskInviteExecute implements IApiExecute {
                     break;
                 }
                 long ll = sysTaskShareLogRepository.countByMixSharederAndHaveSuccessAndShareTime(buyerNick, BooleanConstant.BOOLEAN_YES, todayString);
-                if (ll >= 0) {
+                if (ll > 0) {
                     invite_flag = false;
                     invite_flag_img = invite_error_img;
-                    invite_flag_msg = "您今日的好友助力次数已达上限无法为好友助力，明天再来吧~";
+                    invite_flag_msg = "您今日的好友助力次数已达上限，\n无法为好友助力，明天再来吧~";
                     break;
                 }
 
@@ -153,13 +153,13 @@ public class TaskInviteExecute implements IApiExecute {
                 if (l2 > 0) {
                     invite_flag = false;
                     invite_flag_img = invite_error_img;
-                    invite_flag_msg = "您已经帮助其他好友助力，不可再次被邀请助力！";
+                    invite_flag_msg = "您已经帮助其他好友助力，\n不可再次被邀请助力！";
                     break;
                 }
                 if (!FollowWayFromEnum.NON_FOLLOW.equals(syscustom.getFollowWayFrom())) {
                     invite_flag = false;
                     invite_flag_img = invite_error_img;
-                    invite_flag_msg = "您不是活动期间首次关注店铺无法为好友助力！";
+                    invite_flag_msg = "您不是活动期间首次关注店铺，\n无法为好友助力！";
                     break;
                 }
 
@@ -209,13 +209,13 @@ public class TaskInviteExecute implements IApiExecute {
                 if (l4 > 0) {
                     invite_flag = false;
                     invite_flag_img = invite_error_img;
-                    invite_flag_msg = "您已经帮助其他好友助力，不可再次被邀请助力！";
+                    invite_flag_msg = "您已经帮助其他好友助力，\n不可再次被邀请助力！";
                     break;
                 }
                 if (!MemberWayFromEnum.NON_MEMBER.equals(syscustom.getMemberWayFrom())) {
                     invite_flag = false;
                     invite_flag_img = invite_error_img;
-                    invite_flag_msg = "您不是店铺新会员，无法为好友助力！";
+                    invite_flag_msg = "您不是店铺新会员，\n无法为好友助力！";
                     break;
                 }
                 SysTaskInviteLog sysTaskInviteLog2 = new SysTaskInviteLog().setCreateTime(sysParm.getRequestStartTime())

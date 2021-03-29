@@ -14,6 +14,7 @@ import org.springframework.util.Assert;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedHashMap;
 
 /**
  * @内容：任务页面 首次免费赠送
@@ -35,16 +36,21 @@ public class TaskFreeExecute implements IApiExecute {
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
         SysCustom syscustom = sysCustomRepository.findByBuyerNick(buyerNick);
         Assert.notNull(syscustom, "无效的玩家");
+
+        Boolean flag = false;
         if (projectHelper.actTimeValidateFlag()) {
 //                首次登录游戏免费送一次
             long l = luckyDrawHelper.countLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.FREE);
             if (l == 0) {
+                flag = true;
                 int getNum = 1;
                 luckyDrawHelper.sendCard(buyerNick, LuckyChanceFromEnum.FREE, getNum,
-                        "恭喜你！免费登陆成功");
+                        "恭喜你！");
 
             }
         }
-        return YunReturnValue.ok("首次登录游戏免费送一次");
+        LinkedHashMap<Object, Object> objectObjectLinkedHashMap = new LinkedHashMap<>();
+        objectObjectLinkedHashMap.put("is_first", flag);
+        return YunReturnValue.ok(objectObjectLinkedHashMap, "首次登录游戏免费送一次");
     }
 }

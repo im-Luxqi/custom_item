@@ -108,7 +108,7 @@ public class LuckyDrawHelper {
                     .setCardImg(cardImg)
                     .setNotificationImg("---")
                     .setNotificationContent("---");
-            if (i == 0) {
+            if (i == 0 && !LuckyChanceFromEnum.SHARE.equals(chanceFrom) && !LuckyChanceFromEnum.SHARE_FOLLOW.equals(chanceFrom) && !LuckyChanceFromEnum.SHARE_MEMBER.equals(chanceFrom)) {
                 sysLuckyChance.setNotificationContent(messageContent);
                 sysLuckyChance.setHaveNotification(BooleanConstant.BOOLEAN_NO);
                 sysLuckyChance.setNotificationImg(cardImg);
@@ -142,7 +142,7 @@ public class LuckyDrawHelper {
                     .setHaveNotification(BooleanConstant.BOOLEAN_YES)
                     .setCardImg(collect.get(awardUseWayEnum).get(0).getImg())
                     .setNotificationContent("---");
-            if (i == 0) {
+            if (i == 0 && !LuckyChanceFromEnum.SHARE.equals(taskType) && !LuckyChanceFromEnum.SHARE_FOLLOW.equals(taskType) && !LuckyChanceFromEnum.SHARE_MEMBER.equals(taskType)) {
                 sysLuckyChance.setNotificationContent(message);
                 sysLuckyChance.setHaveNotification(BooleanConstant.BOOLEAN_NO);
                 notificationChance = sysLuckyChance;
@@ -427,7 +427,7 @@ public class LuckyDrawHelper {
         switch (taskType) {
             case FREE:
 //                cardType = AwardUseWayEnum.CARD_ONE;
-                cardType = AwardUseWayEnum.CARD_TWO;
+                cardType = AwardUseWayEnum.CARD_ONE;
                 break;
             case SIGN:
 //                cardType = AwardUseWayEnum.CARD_TWO;
@@ -654,13 +654,13 @@ public class LuckyDrawHelper {
     /**
      * 卡片效验
      */
-    public List<SysLuckyChance> jigsawCheck(List<SysLuckyChance> unUseLuckyChances) {
+    public List<SysLuckyChance> jigsawCheck(List<SysLuckyChance> unUseLuckyChances,List<SysLuckyChance> backCards) {
         // 所有未使用的卡片
         Map<AwardUseWayEnum, List<SysLuckyChance>> collect = unUseLuckyChances.stream().collect(Collectors.groupingBy(SysLuckyChance::getCardType));
         if (collect.size() != 9) {
             return null;
         }
-        List<SysLuckyChance> backCards = new ArrayList<>();
+//        List<SysLuckyChance> backCards = new ArrayList<>();
         backCards.add(collect.get(AwardUseWayEnum.CARD_ONE).get(0));
         backCards.add(collect.get(AwardUseWayEnum.CARD_TWO).get(0));
         backCards.add(collect.get(AwardUseWayEnum.CARD_THREE).get(0));
@@ -670,8 +670,7 @@ public class LuckyDrawHelper {
         backCards.add(collect.get(AwardUseWayEnum.CARD_SEVEN).get(0));
         backCards.add(collect.get(AwardUseWayEnum.CARD_EIGHT).get(0));
         backCards.add(collect.get(AwardUseWayEnum.CARD_NINE).get(0));
-
-        unUseLuckyChances.removeAll(backCards);
+//        unUseLuckyChances.removeAll(backCards);
         return backCards;
     }
 

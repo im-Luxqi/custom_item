@@ -15,6 +15,7 @@ import com.duomai.project.product.general.entity.SysTaskDailyBoard;
 import com.duomai.project.product.general.enums.LuckyChanceFromEnum;
 import com.duomai.project.product.mengniuwawaji.domain.CusOrderInfo;
 import com.duomai.project.product.mengniuwawaji.service.ICusOrderInfoService;
+import com.duomai.project.tool.CommonDateParseUtil;
 import com.taobao.api.response.OpenTradesSoldGetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -58,10 +60,15 @@ public class CusGetOrderExecute implements IApiExecute {
 
         String openUId = sysParm.getApiParameter().getYunTokenParameter().getOpenUId();
         String buyerNick = sysParm.getApiParameter().getYunTokenParameter().getBuyerNick();
-        ActBaseSettingDto config = projectHelper.actBaseSettingFind();
+
+        projectHelper.actTimeValidate();
+//        ActBaseSettingDto config = projectHelper.actBaseSettingFind();
 
 
-        List<OpenTradesSoldGetResponse.Trade> goods = taobaoAPIService.taobaoOpenTradesSoldGet(openUId, TaoBaoTradeStatus.WAIT_SELLER_SEND_GOODS, config.getActStartTime(), config.getActEndTime());
+        Date startTimeOfDay = CommonDateParseUtil.getStartTimeOfDay(sysParm.getRequestStartTime());
+        Date endTimeOfDay = CommonDateParseUtil.getEndTimeOfDay(sysParm.getRequestStartTime());
+
+        List<OpenTradesSoldGetResponse.Trade> goods = taobaoAPIService.taobaoOpenTradesSoldGet(openUId, TaoBaoTradeStatus.WAIT_SELLER_SEND_GOODS, startTimeOfDay, endTimeOfDay);
         if (goods == null || goods.size() == 0) {
             return YunReturnValue.fail("未获取到订单");
         }
@@ -116,7 +123,7 @@ public class CusGetOrderExecute implements IApiExecute {
                 }
             });
 
-            if(effectiveOrder.get()){
+            if (effectiveOrder.get()) {
                 todayHasJoin++;
                 if (todayHasJoin > 3) {
                     todayHasJoin--;

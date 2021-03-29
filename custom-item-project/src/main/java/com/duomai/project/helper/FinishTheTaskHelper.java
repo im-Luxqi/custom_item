@@ -13,7 +13,6 @@ import com.duomai.project.tool.ProjectTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
@@ -38,9 +37,12 @@ public class FinishTheTaskHelper {
      * @time 2021-03-12 19:12:37
      * @param buyerNick
      **/
-    public SysTaskDailyBoard todayTaskBoard(String buyerNick) {
+    public SysTaskDailyBoard todayTaskBoard(String buyerNick) throws InterruptedException {
         if (ProjectTools.hasMemCacheEnvironment()) {
-            Assert.isTrue(MemcacheTools.add("_todayTaskBoard_" + buyerNick), "点太快了，请休息下");
+//            Assert.isTrue(MemcacheTools.add("_todayTaskBoard_" + buyerNick), "点太快了，请休息下");
+            if (!MemcacheTools.add("_todayTaskBoard_" + buyerNick)) {
+                Thread.sleep(500);
+            }
         }
 
         Date date = new Date();
@@ -71,8 +73,8 @@ public class FinishTheTaskHelper {
                 .setHaveFinishTvToday(BooleanConstant.BOOLEAN_NO)
                 .setHaveFinishSpendToday(BooleanConstant.BOOLEAN_NO)
                 .setTodayFinishShareNum("(0/2)")
-                .setShareProgress("(0/"+actBaseSettingDto.getTaskShareShould() +")")
-                .setBrowseProgress("(0/"+actBaseSettingDto.getTaskBrowseShouldSee()+")")
+                .setShareProgress("(0/" + actBaseSettingDto.getTaskShareShould() + ")")
+                .setBrowseProgress("(0/" + actBaseSettingDto.getTaskBrowseShouldSee() + ")")
                 .setSpendProgress("(0/3)")
         );
         return todayBoard;
@@ -86,9 +88,12 @@ public class FinishTheTaskHelper {
      * @param taskDailyBoard
      **/
     @Transactional
-    public void updateTaskBoard(SysTaskDailyBoard taskDailyBoard) {
+    public void updateTaskBoard(SysTaskDailyBoard taskDailyBoard) throws InterruptedException {
         if (ProjectTools.hasMemCacheEnvironment()) {
-            Assert.isTrue(MemcacheTools.add("_updateTaskBoard_" + taskDailyBoard.getBuyerNick()), "点太快了，请休息下");
+            if (!MemcacheTools.add("_updateTaskBoard_" + taskDailyBoard.getBuyerNick())) {
+                Thread.sleep(500);
+            }
+//            Assert.isTrue(), "点太快了，请休息下");
         }
         taskDailyBoard.setUpdateTime(new Date());
         sysTaskDailyBoardRepository.save(taskDailyBoard);
@@ -96,7 +101,7 @@ public class FinishTheTaskHelper {
 
 
     @JoinMemcache()
-    public List<SysSettingCommodity> allOrderGoods(){
+    public List<SysSettingCommodity> allOrderGoods() {
         return sysSettingCommodityRepository.findAll();
     }
 
