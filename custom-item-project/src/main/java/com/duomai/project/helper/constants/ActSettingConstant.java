@@ -16,6 +16,12 @@ public interface ActSettingConstant {
      */
     String ACT_END_TIME = "act_end_time";
 
+    /**
+     * 活动结束时间
+     */
+    String ACT_MUSIC_URL = "act_music_url";
+
+
    /**
      * 累计签到奖励（json）
      */

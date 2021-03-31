@@ -2,7 +2,7 @@ spring:
   # 数据库访问配置
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://rm-k2j14xf62nma00m97.mysql.zhangbei.rds.aliyuncs.com:3306/mengniu_jika_test?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useServerPrepStmts=true
+    url: jdbc:mysql://rm-k2j14xf62nma00m97.mysql.zhangbei.rds.aliyuncs.com:3306/mengniu_jika_real?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8&amp;useServerPrepStmts=true
     userName: mengniu
     password: Mengniu#123
 

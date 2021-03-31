@@ -71,4 +71,6 @@ public interface SysLuckyChanceRepository extends BaseRepository<SysLuckyChance,
      */
     @Transactional
     void deleteByBuyerNick(String buyerNick);
+
+    long countByBuyerNickAndChanceFromAndGetTimeString(String buyerNick, LuckyChanceFromEnum from, String date2string);
 }

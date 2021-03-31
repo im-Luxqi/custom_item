@@ -99,7 +99,7 @@ public class GameIndexLoadExecute implements IApiExecute {
             //获得未使用的所有卡牌
             sysLuckyChances = luckyDrawHelper.unUseLuckyChance(buyerNick);
             List<SysLuckyChance> tempRemove = new ArrayList<>();
-            List<SysLuckyChance> jigsaw = luckyDrawHelper.jigsawCheck(sysLuckyChances,tempRemove);
+            List<SysLuckyChance> jigsaw = luckyDrawHelper.jigsawCheck(sysLuckyChances, tempRemove);
             if (!CollectionUtils.isEmpty(jigsaw)) {
 
                 List<SysSettingAward> thisTimeAwardPool = sysSettingAwardRepository.findByUseWayOrderByLuckyValueAsc(AwardUseWayEnum.JIGSAW);
@@ -144,7 +144,7 @@ public class GameIndexLoadExecute implements IApiExecute {
             award.setEname(null);
             award.setLuckyValue(null);
             award.setDescription(null);
-            award.setPoolLevel(null);
+//            award.setPoolLevel(null);
 //            award.setRemainNum(null);
             award.setSendNum(null);
             award.setTotalNum(null);
@@ -156,10 +156,11 @@ public class GameIndexLoadExecute implements IApiExecute {
         all.forEach(sysSettingAward -> {
             if (AwardTypeEnum.EXCHANGE.equals(sysSettingAward.getType())) {
                 exchangeAward.add(sysSettingAward);
-            } else {
+            } else if (sysSettingAward.getPoolLevel() != -1) {
                 otherAward.add(sysSettingAward);
             }
         });
+        otherAward.sort(Comparator.comparing(SysSettingAward::getPoolLevel));
         resultMap.put("award_show", otherAward);
 
         Map<AwardUseWayEnum, List<SysLuckyChance>> allCards = sysLuckyChances.stream().collect(Collectors.groupingBy(SysLuckyChance::getCardType));

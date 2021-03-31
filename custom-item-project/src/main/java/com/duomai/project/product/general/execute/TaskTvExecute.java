@@ -49,7 +49,7 @@ public class TaskTvExecute implements IApiExecute {
         Assert.notNull(syscustom, "无效的玩家");
         Assert.isTrue(BooleanConstant.BOOLEAN_YES.equals(syscustom.getHaveAuthorization()), "请先授权");
 
-        long tvCount = luckyDrawHelper.countTodayLuckyChanceFrom(buyerNick, LuckyChanceFromEnum.TV);
+        long tvCount = luckyDrawHelper.countTodayLuckyChanceFrom2(buyerNick, LuckyChanceFromEnum.TV);
         if (tvCount == 0) {
             Integer thisGet = 1;
             luckyDrawHelper.sendCard(syscustom.getBuyerNick(), LuckyChanceFromEnum.TV, thisGet,

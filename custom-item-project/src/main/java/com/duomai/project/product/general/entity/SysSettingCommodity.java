@@ -36,6 +36,6 @@ public class SysSettingCommodity implements Serializable {
     /**
      * 今日是否浏览
      */
-//    @Transient
-//    private boolean todayHasBrowse;
+    @Transient
+    private boolean todayHasBrowse;
 }

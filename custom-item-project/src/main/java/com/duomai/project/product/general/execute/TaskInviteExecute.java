@@ -97,7 +97,7 @@ public class TaskInviteExecute implements IApiExecute {
                 if (l > 0) {
                     invite_flag = false;
                     invite_flag_img = invite_error_img;
-                    invite_flag_msg = "您已经帮TA助力，一起参与活动赢好礼吧~";
+                    invite_flag_msg = "您已经帮TA助力，\n一起参与活动赢好礼吧~";
                     break;
                 }
                 long ll = sysTaskShareLogRepository.countByMixSharederAndHaveSuccessAndShareTime(buyerNick, BooleanConstant.BOOLEAN_YES, todayString);
@@ -145,7 +145,7 @@ public class TaskInviteExecute implements IApiExecute {
                 if (l1 > 0) {
                     invite_flag = false;
                     invite_flag_img = invite_error_img;
-                    invite_flag_msg = "您已经帮TA助力，一起参与活动赢好礼吧~";
+                    invite_flag_msg = "您已经帮TA助力，\n一起参与活动赢好礼吧~";
                     break;
                 }
                 long l2 = sysTaskInviteLogRepository.countByInviteTypeAndMixInviteeAndHaveSuccess(
@@ -201,7 +201,7 @@ public class TaskInviteExecute implements IApiExecute {
                 if (l3 > 0) {
                     invite_flag = false;
                     invite_flag_img = invite_error_img;
-                    invite_flag_msg = "您已经帮TA助力，一起参与活动赢好礼吧~";
+                    invite_flag_msg = "您已经帮TA助力，\n一起参与活动赢好礼吧~";
                     break;
                 }
                 long l4 = sysTaskInviteLogRepository.countByInviteTypeAndMixInviteeAndHaveSuccess(

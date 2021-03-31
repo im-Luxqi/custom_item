@@ -34,4 +34,5 @@ public class SysTaskBrowseLog  implements Serializable {
     private String browseTime;
     @Column(columnDefinition = "varchar(64) COMMENT '商品id'")
     private Long numId;
+
 }

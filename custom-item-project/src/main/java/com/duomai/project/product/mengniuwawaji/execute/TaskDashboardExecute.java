@@ -131,7 +131,7 @@ public class TaskDashboardExecute implements IApiExecute {
         tvMap.put("task", LuckyChanceFromEnum.TV);
         tvMap.put("title", "观看直播");
         tvMap.put("icon", "https://cjwx.oss-cn-zhangjiakou.aliyuncs.com/front/%E8%92%99%E7%89%9B/otherindex/duteIcon4.png");
-        tvMap.put("explain", "观看直播至少20s，有机会获得1块碎片");
+        tvMap.put("explain", "观看直播至少15s，有机会获得1块碎片");
         tvMap.put("finish", BooleanConstant.BOOLEAN_YES.equals(dailyBoard.getHaveFinishTvToday()));
         tvMap.put("task_end", taskFinish);
         resultList.add(tvMap);

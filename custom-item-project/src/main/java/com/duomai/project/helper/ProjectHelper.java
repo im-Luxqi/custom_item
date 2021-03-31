@@ -56,6 +56,7 @@ public class ProjectHelper {
                 .setTaskShareShould(Integer.valueOf(collect.get(ActSettingConstant.TASK_SHARE_SHOULD)))
                 .setTaskShareFollowShould(Integer.valueOf(collect.get(ActSettingConstant.TASK_SHARE_FOLLOW_SHOULD)))
                 .setTaskSign(signWinDtos)
+                .setActMusicUrl(collect.get(ActSettingConstant.ACT_MUSIC_URL))
                 ;
     }
 

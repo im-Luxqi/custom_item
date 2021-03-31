@@ -181,6 +181,11 @@ public class LuckyDrawHelper {
         return sysLuckyChanceRepository.countByHaveSuccessAndBuyerNickAndChanceFromAndGetTimeString(BooleanConstant.BOOLEAN_YES,
                 buyerNick, from, CommonDateParseUtil.date2string(today, "yyyy-MM-dd"));
     }
+    public long countTodayLuckyChanceFrom2(String buyerNick, LuckyChanceFromEnum from) {
+        Date today = new Date();
+        return sysLuckyChanceRepository.countByBuyerNickAndChanceFromAndGetTimeString(
+                buyerNick, from, CommonDateParseUtil.date2string(today, "yyyy-MM-dd"));
+    }
 
     /**
      * 3.某个来源的赠送次数

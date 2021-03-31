@@ -56,7 +56,7 @@ public class TestController {
     @GetMapping(value = "wxq")
     public String test() throws Exception {
 
-//        taobaoAPIService.isMember("夏0122nZ6No9jp65GKADf2oNRw5f4Jgluem5SlKj13PxUtg=");
+        taobaoAPIService.isMember("夏0122nZ6No9jp65GKADf2oNRw5f4Jgluem5SlKj13PxUtg=");
 //        AlibabaBenefitSendResponse alibabaBenefitSendResponse = taobaoAPIService.sendTaobaoCoupon("AAEq2PUFANe32XlcpaKU0FVM", "f199673472814600aa272ea73edd0328");
         CrmPointChangeResponse crmPointChangeResponse = taobaoAPIService.changePoint("夏0122nZ6No9jp65GKADf2oNRw5f4Jgluem5SlKj13PxUtg=", 10L);
         if (crmPointChangeResponse == null || !crmPointChangeResponse.isSuccess()) {

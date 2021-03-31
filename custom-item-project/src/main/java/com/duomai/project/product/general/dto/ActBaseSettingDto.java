@@ -33,6 +33,11 @@ public class ActBaseSettingDto implements Serializable {
      */
     private Date actEndTime;
 
+    /**
+     * 活动结束时间
+     */
+    private String actMusicUrl;
+
 
     /**
      * 优惠券一人可以抽几张

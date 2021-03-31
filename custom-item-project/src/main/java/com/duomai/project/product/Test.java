@@ -16,22 +16,76 @@ import java.util.stream.Collectors;
 
 public class Test {
 
+    static  Object A1 = new Object();
+    static  Object A2 = new Object();
+
     public static void main(String[] args) throws Exception {
 
 
 
-        for(int i =0;i<1000;i++){
-            AwardUseWayEnum awardUseWayEnum = AwardUseWayEnum.randomType(AwardUseWayEnum.values());
-            if(awardUseWayEnum.equals(AwardUseWayEnum.POOL)){
-                System.out.println("----------------");
-                System.out.println("----------------");
-                System.out.println("----------------");
-                System.out.println("----------------");
-                System.out.println("----------------");
+
+        new Thread(()->{
+
+                try {
+                    A1.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(Thread.currentThread()+"A1");
+
+        },"线程1").start();
+
+
+        new Thread(()->{
+            synchronized(A2){
+                System.out.println("持有A2");
+
+                try {
+                   A2.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+                synchronized(A1){
+                    System.out.println(Thread.currentThread() + "持有A1");
+                }
+
+
             }
 
-            System.out.println(awardUseWayEnum.getValue());
-        }
+        },"线程2").start();
+
+
+
+
+        new Thread(()->{
+
+            A1.notify();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            A2.notify();
+        },"线程3").start();
+
+
+
+
+
+//        for(int =0;i<1000;i++){
+//            AwardUseWayEnum awardUseWayEnum = AwardUseWayEnum.randomType(AwardUseWayEnum.values());
+//            if(awardUseWayEnum.equals(AwardUseWayEnum.POOL)){
+//                System.out.println("----------------");
+//                System.out.println("----------------");
+//                System.out.println("----------------");
+//                System.out.println("----------------");
+//                System.out.println("----------------");
+//            }
+//
+//            System.out.println(awardUseWayEnum.getValue());
+//        }
 
 
 
